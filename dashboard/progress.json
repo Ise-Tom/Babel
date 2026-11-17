@@ -2,10 +2,10 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-17",
-    "commit": "fc3be723bbacf65976a59216d8a035796a24d5eb",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44142657828",
-    "ci_result": "failed",
-    "checks_passed": 10,
+    "commit": "cd6ad149870a05db4ab2a4f7fbca3e4d461af848",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44153995669",
+    "ci_result": "passed",
+    "checks_passed": 12,
     "pull_requests": [
       {
         "number": 4,
@@ -61,9 +61,14 @@
         "number": 15,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 16,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Recorded main-branch snapshot: PRs 4–7 and 9–15 were merged when checked. Main CI currently fails its npm audit (GHSA-fc5q-39xc-vjpf); proposed fixes and development work appear separately under open PRs."
+    "note": "Recorded main-branch snapshot: PRs 4–7 and 9–16 were merged when checked. All 12 main CI jobs passed. Open PR proposals are reported separately; acceptance still requires an explicit review."
   },
   "requirements": {
     "P00-01": {
@@ -700,7 +705,7 @@
       ],
       "how": "Removed TypeScript-ESLint and its picomatch path. Retained supported ESLint 10 / TypeScript 6, strict compiler checks and explicit-any AST checks; runs DOM/eval rules on compiler-erased JavaScript without bundling, minification or execution.",
       "verification": "Locked clean install; npm audit reports zero vulnerabilities. Six build/lint tests include typed HTML sinks, eval, explicit-any declarations/casts and safe text rendering; strict typecheck and lint pass.",
-      "limitations": "This replaces recommended TypeScript style rules with documented compiler/security policies; it does not claim rule-for-rule style equivalence. Main remains red until this dependency fix is merged.",
+      "limitations": "This replaces recommended TypeScript style rules with documented compiler/security policies; it does not claim rule-for-rule style equivalence. PR #16 is merged; main run 44153995669 passed all 12 jobs.",
       "source_revision": "647a7ba026622bd08f2870c22397a070b4982ef2",
       "sources": [
         {
@@ -726,6 +731,54 @@
       ],
       "problems": [
         "I13"
+      ]
+    },
+    {
+      "id": "W20",
+      "title": "Scope-based phase sizes and explicit owner acceptance reviews",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "how": "Removed the enforced ten-item sequential quota, retaining unique phase-owned IDs, nonempty requirements/evidence and feature traceability. Renamed broad dashboard substeps to requirements. Documented concrete owner review questions and separate requirement/phase acceptance. Existing scope and stable IDs are preserved.",
+      "verification": "78 Python tests pass with 98% tooling coverage. Strict types, lint, documentation checks, six build/security-lint tests and 24 desktop/mobile browser tests pass. Synthetic 3/13-item phases exercise rendering, counts and expand-all; model/design fixtures allow unequal counts and noncontiguous IDs.",
+      "limitations": "The current baseline still contains 180 requirements. Changing task counts does not estimate effort or accept work. Two current-component acceptance questions have been submitted to the owner; no affirmative answers have been recorded. Full AD functionality and phase acceptance remain outstanding.",
+      "source_revision": "fbf7cbd89be80e0f18f2464296deb4ad08383ca3",
+      "sources": [
+        {
+          "path": "scripts/check_design.py",
+          "label": "check_design.py"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "dashboard.spec.ts"
+        },
+        {
+          "path": "tests/test_design.py",
+          "label": "test_design.py"
+        },
+        {
+          "path": "tests/test_dashboard.py",
+          "label": "test_dashboard.py"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        }
+      ],
+      "problems": [
+        "I14"
       ]
     }
   ],
@@ -1072,8 +1125,8 @@
         "P01-01"
       ],
       "detail": "Main run 44142657828 failed npm audit for GHSA-fc5q-39xc-vjpf. The advisory affects picomatch through 4.0.7 and no patched version was published when checked.",
-      "resolution": "The development PR removes the vulnerable dependency path while retaining supported compiler/ESLint versions and tested DOM/eval/explicit-any checks. Its local audit is clean; main awaits merge.",
-      "next_action": "Keep all-severity audit enforcement and validate the replacement graph in hosted CI.",
+      "resolution": "PR #16 removed the vulnerable dependency path while retaining supported compiler/ESLint versions and tested DOM/eval/explicit-any checks. Merged main run 44153995669 passed all 12 jobs, including dependency audit.",
+      "next_action": "Keep all-severity audit enforcement and regression coverage on future tooling updates.",
       "source_revision": "647a7ba026622bd08f2870c22397a070b4982ef2",
       "sources": [
         {
@@ -1090,6 +1143,56 @@
         }
       ],
       "provenance": "Recorded development-session evidence and repository/CI observations; no separate public issue was created."
+    },
+    {
+      "id": "I14",
+      "title": "Fixed requirement quotas and ambiguous substep acceptance labels",
+      "status": "resolved",
+      "kind": "reporting",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "detail": "The design validator forced exactly ten sequential requirements per phase, while the report called those broad contracts substeps. Zero recorded acceptances made implemented increments hard to distinguish from owner-reviewed scope.",
+      "resolution": "Removed the fixed quota, clarified requirement/increment labels, and documented asking the owner scoped evidence-based questions before recording acceptance. Regression tests cover unequal phase sizes; statuses are unchanged while answers are pending.",
+      "next_action": "Record explicit owner answers with reviewer/date/evidence. Decompose future work according to scope and dependencies while preserving requirement coverage.",
+      "source_revision": "fbf7cbd89be80e0f18f2464296deb4ad08383ca3",
+      "sources": [
+        {
+          "path": "scripts/check_design.py",
+          "label": "check_design.py"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "dashboard.spec.ts"
+        },
+        {
+          "path": "tests/test_design.py",
+          "label": "test_design.py"
+        },
+        {
+          "path": "tests/test_dashboard.py",
+          "label": "test_dashboard.py"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        }
+      ],
+      "provenance": "Project owner requested acceptance questions and said substep counts need not be linear; no separate GitHub issue was created."
     }
   ],
   "focus_phase": 1,
