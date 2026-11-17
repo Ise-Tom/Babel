@@ -11,18 +11,14 @@
 <noscript><p>This offline dashboard needs JavaScript enabled to explore phase and implementation records.</p></noscript>
 <a class="skip" href="#content">Skip to content</a>
 <div class="app">
-  <aside class="sidebar" aria-label="Project navigation">
+  <header class="sidebar" aria-label="Project navigation">
     <div class="brand"><span class="brand-mark" aria-hidden="true">B</span><div>BABEL<small>DELIVERY WORKSPACE</small></div></div>
-    <div class="sidebar-intro">A native identity platform.<br>A visible path forward.</div>
     <nav aria-label="Dashboard views"><button id="overview-tab" class="nav-tab">▦ <span>Phase board</span></button><button id="log-tab" class="nav-tab">≡ <span>Implementation & issues</span></button></nav>
-    <div class="nav-label">DELIVERY PHASES <span>00—17</span></div>
-    <nav id="phase-nav" aria-label="Delivery phases"></nav>
-    <div class="sidebar-bottom"><span class="tiny-dot"></span> Linux-hosted · Native core<small>Engineering progress, not a production console.</small></div>
-  </aside>
+  </header>
   <div class="workspace">
-    <header class="topbar"><div class="crumb">Babel <span aria-hidden="true">/</span> Project delivery<small id="snapshot-short"></small></div><button id="download" class="button secondary">↓ Download snapshot</button></header>
-    <div class="mobile-navigation"><label for="mobile-phase">Navigate</label><select id="mobile-phase"></select></div>
+    <div class="topbar"><span id="snapshot-short" class="crumb"></span><button id="download" class="button secondary">Export JSON</button></div>
     <section class="toolbar" aria-label="Dashboard filters">
+      <div class="phase-picker"><label for="mobile-phase">Jump to a phase</label><select id="mobile-phase"></select></div>
       <div class="search-field"><label for="search">Search phases, requirements, features or implementation notes</label><input id="search" type="search" placeholder="Try “Kerberos”, “P01-04” or “RootDSE”…" autocomplete="off"></div>
       <div id="status-field"><label for="status">Requirement status</label><select id="status"><option value="all">All requirements</option><option value="planned">Planned</option><option value="in_progress">In progress</option><option value="blocked">Blocked</option><option value="accepted">Accepted</option></select></div>
     </section>

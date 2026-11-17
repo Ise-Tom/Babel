@@ -6,6 +6,22 @@ change passwords, deploy patches or operate endpoints. Viewing needs no API toke
 evidence links open the repository normally. The automated publisher uses its
 GitHub Actions job token, and the private GitHub view uses your existing login.
 
+## Interactive interface
+
+The preferred interface is the compact interactive board: all 18 phases fit in
+the tested 1440×1000 desktop viewport, with one phase picker and searchable cards.
+Choose a phase, then a substep; implementation explanations and problem histories
+open individually. Design and acceptance details remain available on demand.
+Cards can be opened anywhere, keyboard focus moves to the selected page, and
+mobile layouts use two columns plus the direct phase picker.
+
+The interactive build is still a single static HTML file. A stable HTTPS host
+must serve that build to remove downloads from the normal user flow. No host or
+domain is configured yet, and the integration cannot enable GitHub Pages. Choose
+a private server/domain or explicitly public static hosting before deployment.
+The GitHub-rendered report below is a fallback for repository browsing, not the
+preferred dashboard interface.
+
 ## Permanent view without downloads
 
 **[Open the GitHub dashboard](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md).**

@@ -23,35 +23,49 @@ test('overview has all phases and accurately reports no accepted phase', async (
   await page.screenshot({ path: resolve('..', `reports/dashboard-${info.project.name}.png`), fullPage: false });
   expect(errors).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  if (info.project.name === 'desktop') {
+    const last = await page.locator('.phase-card').last().boundingBox();
+    if (!last) throw new Error('Missing last phase');
+    expect(last.y + last.height).toBeLessThanOrEqual(page.viewportSize()?.height ?? 0);
+  }
 });
 
 test('every phase exposes ten substeps, feature associations and source design', async ({ page }) => {
   for (let id = 0; id < 18; id++) {
     await phase(page, id);
     await expect(page.locator('.requirement')).toHaveCount(10);
-    const first = page.locator('.requirement').first(); await first.locator('summary').click();
+    const first = page.locator('.requirement').first(); await first.locator(':scope > summary').click();
     await expect(first.locator('.chips .chip').first()).toBeVisible();
     await expect(first).toContainText('ACCEPTANCE STILL REQUIRED');
     await expect(page.getByRole('link', { name: 'Canonical specification' })).toBeVisible();
   }
 });
 
-test('implemented work explains how, validation, limitations and encountered problems', async ({ page }) => {
+test('implemented work explains how, validation, limitations and encountered problems', async ({ page }, info) => {
   await phase(page, 1);
-  const step = page.getByTestId('P01-01'); await step.locator('summary').click();
-  await expect(step).toContainText('HOW IT WAS DONE');
+  const step = page.getByTestId('P01-01'); await step.locator(':scope > summary').click();
+  const work = step.locator('.work-card').first();
+  await expect(work.getByText('HOW IT WAS DONE', { exact: true })).toBeHidden();
+  await work.locator(':scope > summary').click();
+  await expect(work.getByText('HOW IT WAS DONE', { exact: true })).toBeVisible();
   await expect(step).toContainText('RECORDED VALIDATION');
   await expect(step).toContainText('SBOM');
   await expect(step).toContainText('RESOLUTION');
+  const resolved = step.locator('.issue-card.resolved').first();
+  await expect(resolved.getByText('RESOLUTION', { exact: true })).toBeHidden();
+  await resolved.locator(':scope > summary').click();
+  await expect(resolved.getByText('RESOLUTION', { exact: true })).toBeVisible();
+  await page.screenshot({ path: resolve('..', `reports/dashboard-phase-${info.project.name}.png`) });
   await expect(step.locator('.work-card').first().locator('.source-links a').first()).toHaveAttribute('href', /\/blob\/3a69a6b/);
-  const other = page.getByTestId('P01-02'); await other.locator('summary').click();
+  const other = page.getByTestId('P01-02'); await other.locator(':scope > summary').click();
   await expect(other).toContainText('No implemented increment');
 });
 
 test('search, requirement filter, empty state and reset work together', async ({ page }) => {
   await page.getByRole('searchbox').fill('P01-04');
   await expect(page.locator('.phase-card')).toHaveCount(1);
-  await page.getByRole('button', { name: 'Review phase →' }).click();
+  await page.getByRole('button', { name: /^Open phase 01:/ }).click();
+  await expect(page.locator('main')).toBeFocused();
   await expect(page.locator('.requirement')).toHaveCount(1);
   await page.getByRole('searchbox').fill('');
   await page.getByLabel('Requirement status', { exact: true }).selectOption('blocked');
@@ -64,7 +78,7 @@ test('search, requirement filter, empty state and reset work together', async ({
 
 test('feature dialog and keyboard escape preserve safe text and focus', async ({ page }) => {
   await phase(page, 1);
-  const step = page.getByTestId('P01-04'); await step.locator('summary').click();
+  const step = page.getByTestId('P01-04'); await step.locator(':scope > summary').click();
   const feature = step.getByRole('button', { name: 'AD-04', exact: true }); await feature.click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await expect(page.getByRole('dialog')).toContainText('not an implementation claim');
@@ -81,6 +95,7 @@ test('journal separates open and resolved issues and links to parent requirement
   await expect(page.locator('.issue-card')).toHaveCount(5);
   await page.getByRole('button', { name: 'Open', exact: true }).click();
   await expect(page.locator('.issue-card')).toHaveCount(4);
+  await page.locator('.work-card').first().locator(':scope > summary').click();
   await page.locator('.work-card').first().getByRole('button', { name: 'P01-01' }).click();
   await expect(page.getByTestId('P01-01')).toHaveAttribute('open', '');
 });
@@ -99,7 +114,7 @@ test('deep links, back navigation and expand/collapse remain usable', async ({ p
 test('export contains the complete snapshot and works without network', async ({ page }) => {
   const requests: string[] = []; page.on('request', request => { if (request.url().startsWith('http')) requests.push(request.url()); });
   await page.context().setOffline(true);
-  const downloaded = page.waitForEvent('download'); await page.getByRole('button', { name: /Download snapshot/ }).click();
+  const downloaded = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export JSON' }).click();
   const download = await downloaded; const path = await download.path(); if (!path) throw new Error('Missing exported file');
   const data = JSON.parse(await readFile(path, 'utf8')) as Board;
   expect(data.phases).toHaveLength(18); expect(data.phases.flatMap(item => item.steps)).toHaveLength(180);
@@ -119,7 +134,8 @@ test('injected document text cannot escape the data block or execute in the UI',
 test('overview and a detailed implementation pass accessibility checks', async ({ page }) => {
   let result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
   expect(result.violations).toEqual([]);
-  await phase(page, 1); await page.getByTestId('P01-04').locator('summary').click();
+  await phase(page, 1); await page.getByTestId('P01-04').locator(':scope > summary').click();
+  await page.getByTestId('P01-04').locator('.work-card').first().locator(':scope > summary').click();
   result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
   expect(result.violations).toEqual([]);
 });
