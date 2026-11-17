@@ -791,6 +791,51 @@
         "I14",
         "I15"
       ]
+    },
+    {
+      "id": "W21",
+      "title": "Support public repository dashboard publication and prepare visibility transition",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "how": "Publisher and PR collector accept either explicit Babel visibility and reject other repository identities or unknown visibility. Retained default-branch-only publication, current-main revision checks, bounded data-only PR imports, metadata-only fork reporting and fast-forward README-only updates. Renamed the publishing workflow and corrected private-only documentation.",
+      "verification": "80 Python tests pass with 98% tooling coverage; strict types, lint, documentation links, actionlint and Zizmor pass. Tests cover public/private publication, unknown visibility, unrelated destinations and public fork metadata isolation. Gitleaks scanned fetched branch history with redacted output and found no leaks.",
+      "limitations": "Owner explicitly authorized public visibility, but GitHub rejected the integration’s private=false request with HTTP 403. The repository remains private and hosted CI is still blocked by billing. This PR must merge before default-branch publication supports public visibility. No license was invented and no paid capacity was purchased.",
+      "source_revision": "4ecfc729a9cae8d8f160dce73e344be926121457",
+      "sources": [
+        {
+          "path": "scripts/publish_dashboard.py",
+          "label": "publish_dashboard.py"
+        },
+        {
+          "path": "scripts/collect_pr_progress.py",
+          "label": "collect_pr_progress.py"
+        },
+        {
+          "path": "tests/test_dashboard_delivery.py",
+          "label": "test_dashboard_delivery.py"
+        },
+        {
+          "path": "tests/test_pr_progress.py",
+          "label": "test_pr_progress.py"
+        },
+        {
+          "path": ".github/workflows/dashboard-publish.yml",
+          "label": "dashboard-publish.yml"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        }
+      ],
+      "problems": [
+        "I15",
+        "I16"
+      ]
     }
   ],
   "problems": [
@@ -1233,6 +1278,52 @@
         }
       ],
       "provenance": "Observed GitHub run 44156039039, check run 134296912744 annotation; no pipeline commands ran."
+    },
+    {
+      "id": "I16",
+      "title": "GitHub integration cannot apply the authorized public visibility setting",
+      "status": "open",
+      "kind": "platform-permissions",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "detail": "The project owner explicitly requested public visibility. PATCH /repos/Ise-Tom/Babel with private=false returned HTTP 403, Resource not accessible by integration, despite repository metadata showing admin=true. The repository remained private on readback.",
+      "resolution": "",
+      "next_action": "Owner uses repository Settings → General → Danger Zone → Change repository visibility → Change to public. Rerun latest PR #18 CI and merge the public-compatible publisher after required checks pass. Verify actual Actions capacity; a remaining account-wide billing restriction requires account attention.",
+      "source_revision": "4ecfc729a9cae8d8f160dce73e344be926121457",
+      "sources": [
+        {
+          "path": "scripts/publish_dashboard.py",
+          "label": "publish_dashboard.py"
+        },
+        {
+          "path": "scripts/collect_pr_progress.py",
+          "label": "collect_pr_progress.py"
+        },
+        {
+          "path": "tests/test_dashboard_delivery.py",
+          "label": "test_dashboard_delivery.py"
+        },
+        {
+          "path": "tests/test_pr_progress.py",
+          "label": "test_pr_progress.py"
+        },
+        {
+          "path": ".github/workflows/dashboard-publish.yml",
+          "label": "dashboard-publish.yml"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        }
+      ],
+      "provenance": "Direct GitHub API response in the authorized visibility-change task on 2026-11-17; no automatic approval-review rejection occurred and no visibility setting was applied."
     }
   ],
   "focus_phase": 1,
