@@ -20,7 +20,8 @@ observed state, ready-to-import main ruleset and remaining controls.
 The fetched branch history, including the generated report branch, was scanned
 with Gitleaks using redacted output; no leaks were detected. This is a secret
 pattern scan, not certification of the project’s product security or licensing.
-The license decision remains open; public visibility grants no invented license.
+The owner has now selected Apache-2.0 plus DCO 1.1; remaining third-party and
+specification/reference-fixture obligations stay explicit in D-01.
 
 ## Interactive interface
 
@@ -56,14 +57,15 @@ documents the additional permissions needed to enable a site. No owner PAT is
 requested or stored. Public repository visibility was explicitly authorized by
 the owner; publishing workflows never change visibility or purchase a paid plan.
 A deployment must succeed before a site is advertised as live. The current site
-has a verified successful deployment; the hardening changes are proposed in PR #17.
+has a verified successful deployment. PR #17’s hardening is merged; a follow-up
+fix removes a denied administration write from its deployment path.
 
 The [workflow](../.github/workflows/dashboard-pages.yml) verifies the successful
 main CI run and its unexpired standalone artifact. A read-only job downloads the
 immutable artifact ID, verifies its archive SHA-256 digest and accepts only a
 bounded regular `index.html` with the strict CSP and no-referrer policy. It packages
 that verified site before the separate Pages/OIDC job runs. The privileged job
-has no source checkout; it verifies Actions-only publishing/HTTPS and rechecks
+has no source checkout; it reads and verifies Actions-only publishing/HTTPS without administration writes, and rechecks
 main immediately before deployment. Only that HTML and a `.nojekyll` marker are published. Source archives, reports and credentials are
 excluded. Failed/foreign/PR/tag/scheduled CI and outdated main revisions cannot
 publish; manual retries are restricted to main with matching successful CI.

@@ -38,6 +38,7 @@ class ComponentScope(unittest.TestCase):
                     "docs/github-main-ruleset.json",
                     ".github/workflows/ci.yml",
                     "requirements-ci.txt",
+                    "lab/windows-reference.toml",
                 ],
             ),
             [],
@@ -94,6 +95,7 @@ class ComponentScope(unittest.TestCase):
             "package.json",
             "Dockerfile",
             "docs/package.json",
+            "lab/unreviewed.toml",
             "scripts/run.sh",
         ]
         self.assertEqual(len(scope.check(ROOT, names)), len(names))

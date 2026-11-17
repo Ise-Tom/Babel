@@ -26,7 +26,10 @@ state/metadata/key/upgrade decisions. Phases 2–3 complete the AD operation mat
 trusts, functional levels, replication and failure recovery. Phases 4–5 qualify
 and release the full first-production contract; partial previews never reduce it.
 
-Use the [decision register](decisions.md) for store/toolchain/DRS/GPO uncertainties.
+PostgreSQL is the owner-selected initial store;
+[ADR 0003](adr/0003-postgresql-directory-state.md) defines its proposed local-state
+contract. The [lab definition](windows-reference-lab.md) remains unprovisioned.
+Use the [decision register](decisions.md) for qualification/toolchain/DRS/GPO uncertainties.
 Generic database consensus or a copied SYSVOL tree does not prove compatible
 AD replication. Fixed state formats and trust/key/schema transitions require
 versioning, reviewed invariants, upgrade and clean-room recovery evidence.

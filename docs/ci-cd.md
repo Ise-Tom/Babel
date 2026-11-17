@@ -205,10 +205,11 @@ Crashes retain synthetic reproductions; no production credentials enter corpora.
 
 Cargo audit/license/source policy includes development/build dependencies for the
 core and fuzz graphs. MIT/Apache/NCSA cover current development dependencies;
-NCSA is required by the libFuzzer harness. Only unpublished workspace-package
-license checks are exempt while D-01 remains open (Cargo package privacy means
-`publish = false`, independently of GitHub repository visibility); all public product/registry
-releases stay blocked. Duplicate versions are warnings, while unknown/yanked or
+NCSA is required by the libFuzzer harness. Apache-2.0 is now selected for Babel, including the native and fuzz packages.
+License checks include unpublished workspace packages; the former private-package
+exemption is disabled. `publish = false` still prevents registry publication.
+Source prereleases require the project license and normal release gates; product
+releases additionally require the remaining rights and conformance reviews. Duplicate versions are warnings, while unknown/yanked or
 advised dependencies, unapproved licenses/sources and wildcard dependencies fail.
 Native SBOM is a source Cargo.lock inventory including test/fuzz dependencies,
 not a claim those dependencies are present in the zero-runtime-dependency lab
@@ -284,8 +285,8 @@ workflow accepts only successful CI for current main from this repository. A
 read-only preflight validates the run/workflow/event/source SHA and standalone
 artifact ID/digest. The read-only verification job downloads the immutable ZIP,
 checks its SHA-256 and validates its file/content-policy boundary before uploading
-the Pages artifact. The Pages/OIDC job has no source checkout, enforces existing
-site Actions-only mode/HTTPS and rechecks current main just before deployment. PR/fork/tag/
+the Pages artifact. The Pages/OIDC job has no source checkout, reads and requires existing
+site Actions-only mode/HTTPS without administration writes and rechecks current main just before deployment. PR/fork/tag/
 scheduled/failed/outdated runs cannot publish. Manual main retries select matching
 successful CI. Official hosting actions are commit-pinned and covered by Dependabot.
 

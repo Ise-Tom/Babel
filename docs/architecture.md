@@ -72,6 +72,11 @@ write the core store, or reuse another module's execution permissions.
 
 ## Data model and consistency contracts
 
+The owner selected PostgreSQL as the initial backend.
+[ADR 0003](adr/0003-postgresql-directory-state.md) defines the proposed local
+transaction/journal boundary and remaining qualifications. Each DC owns independent
+state; PostgreSQL replication is not the domain replication protocol.
+
 | Entity | Required semantics and lifecycle |
 | --- | --- |
 | Directory object | Immutable GUID and applicable SID; normalized DN, schema/attribute versions, security descriptor, group links and deletion/tombstone state; renames preserve identity |
