@@ -13,7 +13,8 @@ concurrency:
 
 jobs:
   checks:
-    uses: ./.github/workflows/ci.yml
+    # Caller-commit workflow; retain ./ syntax supported by actionlint v1.7.12.
+    uses: ./.github/workflows/ci.yml # zizmor: ignore[self-repository]
     permissions:
       contents: read
 
@@ -43,10 +44,9 @@ jobs:
         env:
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          mkdir -p dist
-          git archive --format=tar --prefix="Babel-$RELEASE_TAG/" HEAD | gzip -n > "dist/Babel-$RELEASE_TAG.tar.gz"
+          python3 scripts/package_source.py --tag "$RELEASE_TAG" --output dist
           cd dist
-          sha256sum ./*.tar.gz > SHA256SUMS
+          sha256sum -c SHA256SUMS
       - name: Attest source archive provenance
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
@@ -57,4 +57,6 @@ jobs:
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          gh release create "$RELEASE_TAG" dist/*.tar.gz dist/SHA256SUMS             --verify-tag --draft --prerelease --title "Babel $RELEASE_TAG (source only)"             --notes-file docs/prerelease-notes.md
+          gh release create "$RELEASE_TAG" dist/*.tar.gz dist/SHA256SUMS \
+            --verify-tag --draft --prerelease --title "Babel $RELEASE_TAG (source only)" \
+            --notes-file docs/prerelease-notes.md

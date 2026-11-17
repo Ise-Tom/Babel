@@ -57,3 +57,30 @@ releases can create **draft source prereleases** after the license and approved
 ref gates pass. No service deployment exists until an application, environment,
 health/migration checks and rollback procedure exist. Production deployment is
 blocked by the roadmap's full compatibility and security gates.
+
+## ADR-0004: Portability and implementation languages (proposed)
+
+Recommend evaluating Samba AD DC on the Linux server baseline before considering
+a new AD core. Cross-platform **client** compatibility follows protocols and
+validated OS behavior, not the programming language used by the server. The
+Windows/Linux contract is mandatory; qualify macOS and other clients separately.
+No stack can promise compatibility with every OS or every protocol version.
+
+A portable administration API/UI and versioned backend adapter can isolate
+Babel's management features from Samba-specific integration. Directory writes
+must still use supported backend mechanisms and preserve its authorization,
+schema and replication semantics; an adapter is not a license to bypass them.
+A second protocol core is justified only by demonstrated requirements the
+qualified backend cannot meet and a separately funded conformance/security plan.
+
+Evaluate Go for management services and portable agents, TypeScript for the web
+interface, and Rust for new low-level agent/sensor components when needed.
+Python remains suitable for tooling and potentially administration/orchestration;
+10,000 identities alone does not make it unsuitable. Choose by component needs,
+team expertise, security review and measurements, keeping the language count
+small. This CI's Python tooling is not a decision to build the server in Python.
+
+Running all server roles on Windows/macOS as well as Linux would be a new host
+portability scope, not a consequence of cross-compiling an API. The current
+contract remains Linux-hosted; endpoint agents/sensors require separate OS APIs,
+packaging, signing and real-client tests even with Go/Rust shared code.

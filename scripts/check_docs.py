@@ -1,7 +1,8 @@
 """Check inline local Markdown file links; external URLs/fragments need separate review."""
-from pathlib import Path
+
 import re
 import sys
+from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
