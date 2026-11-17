@@ -44,7 +44,7 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T22:19:07\+01:00.
+GitHub metadata checked: 2026-11-17T22:19:33\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -69,7 +69,9 @@ GitHub metadata checked: 2026-11-17T22:19:07\+01:00.
     
     The dashboard is live at https://ise-tom.github.io/Babel/ with HTTPS/HSTS. PR #18 is merged and all 12 baseline main CI jobs passed. Progress records W22/W23, resolved hosting/visibility/capacity incidents and open admin-permission issue I18 describe this PR separately from main totals. Two owner-accepted requirements remain accepted; Phase 1 remains in progress.
     
-    Validation: 86 Python tests, 98% tooling coverage, strict types/lint, actionlint, Zizmor, six build/security-lint fixtures, actual built archive verification, 24 desktop/mobile browser tests and npm audit (zero vulnerabilities) passed locally. Full hosted CI is running for this corrected head. The stronger deployment and its Pages-token configuration step still require merge and a successful main deployment; no production protocol behavior changed.
+    Validation: 87 Python tests, 98% tooling coverage, strict types/lint, actionlint, Zizmor, six build/security-lint fixtures, actual built archive verification, 24 desktop/mobile browser tests and npm audit (zero vulnerabilities) passed locally. Full hosted CI is running for this corrected head. The stronger deployment and its Pages-token configuration step still require merge and a successful main deployment; no production protocol behavior changed.
+    
+    A hosted follow-up caught the unregistered ruleset data file and desktop overflow after progress facts grew. The corrected head registers only that JSON file with syntax/object validation, retains rejection of unrelated manifests, and compacts the dashboard without changing viewport assertions. I19 records the evidence and fix.
 
 **Changed files:**
 
