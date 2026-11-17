@@ -65,7 +65,7 @@ jobs:
           python native/babel-ldap/tests/smoke_ldap.py "$RUNNER_TEMP/babel-native-extracted/babel-ldap"
       - name: Preserve native evidence
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: native-lab-evidence
           path: reports/
@@ -106,7 +106,7 @@ jobs:
           git diff --exit-code -- Cargo.lock fuzz/Cargo.lock
       - name: Preserve dependency/security evidence
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: native-supply-chain
           path: reports/
@@ -145,7 +145,7 @@ jobs:
           git diff --exit-code -- Cargo.lock fuzz/Cargo.lock
       - name: Preserve fuzz logs and crash reproductions
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: native-fuzz-evidence
           path: |
