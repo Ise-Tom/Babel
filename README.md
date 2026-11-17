@@ -34,8 +34,10 @@ required production runtime. Advanced security capabilities extend this core pro
 
 The preferred interface is a compact, searchable phase board: select a phase,
 then open the substeps, implementation evidence and problems you need. The
-interactive build is ready for static hosting; a hosting target is still required
-for a permanent web address.
+interactive build has a public GitHub Pages deployment workflow. An owner must
+enable **Settings → Pages → Source → GitHub Actions** once; successful main CI
+then updates the same web address automatically. See the
+[hosting setup](docs/project-dashboard.md#activate-public-web-hosting-once).
 
 The **[private GitHub fallback report](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md)**
 uses the repository's existing access controls and updates after successful
@@ -55,7 +57,8 @@ npm run preview
 ```
 
 The build also produces a self-contained `dashboard/dist/index.html`, available
-as the **dashboard-standalone** CI artifact. No public hosting is configured.
+as the **dashboard-standalone** CI artifact. The Pages job publishes only this
+tested build; repository visibility stays private.
 
 ## Validate the repository
 

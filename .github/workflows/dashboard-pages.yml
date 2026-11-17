@@ -1,0 +1,103 @@
+name: Publish interactive dashboard
+
+on:
+  # The job guard additionally excludes PR/fork/tag/scheduled CI and failed runs.
+  workflow_run: # zizmor: ignore[dangerous-triggers]
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-dashboard-pages
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Verify current main CI and dashboard artifact
+    if: >-
+      github.repository == 'Ise-Tom/Babel' &&
+      ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+       (github.event_name == 'workflow_run' &&
+        github.event.workflow_run.head_repository.full_name == 'Ise-Tom/Babel' &&
+        github.event.workflow_run.head_branch == 'main' &&
+        github.event.workflow_run.conclusion == 'success' &&
+        (github.event.workflow_run.event == 'push' ||
+         github.event.workflow_run.event == 'workflow_dispatch')))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      ready: ${{ steps.source.outputs.ready }}
+      run_id: ${{ steps.source.outputs.run_id }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Require successful CI on this exact current main revision
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REVISION: ${{ github.event.workflow_run.head_sha || github.sha }}
+          CI_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: >-
+          python scripts/check_pages_source.py --revision "$SOURCE_REVISION"
+          --run-id "$CI_RUN_ID" --output "$GITHUB_OUTPUT"
+
+  deploy:
+    name: Publish verified HTML to public GitHub Pages
+    needs: verify
+    if: needs.verify.outputs.ready == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Read site configuration (owner enables Pages once in Settings)
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - name: Download only the standalone HTML from verified CI
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: dashboard-standalone
+          path: site
+          github-token: ${{ github.token }}
+          run-id: ${{ needs.verify.outputs.run_id }}
+      - name: Restrict published files to the dashboard HTML
+        run: |
+          python3 - <<'PYTHON'
+          from pathlib import Path
+          root = Path('site')
+          files = list(root.iterdir())
+          if len(files) != 1 or files[0].name != 'index.html':
+              raise SystemExit('Unexpected site files')
+          page = files[0]
+          if not page.is_file() or page.is_symlink():
+              raise SystemExit('Expected a regular HTML file')
+          if not 0 < page.stat().st_size <= 2 * 1024 * 1024:
+              raise SystemExit('Unexpected dashboard size')
+          if 'Content-Security-Policy' not in page.read_text():
+              raise SystemExit('Missing dashboard CSP')
+          (root / '.nojekyll').touch()
+          PYTHON
+      - name: Package the verified static site
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+      - name: Publish public dashboard
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

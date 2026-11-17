@@ -218,7 +218,8 @@ job. Node 24.22.1 and exact npm development dependencies are integrity-locked;
 installation scripts are disabled. Browser installation uses the pinned
 Playwright package's supported route with normal artifact/TLS verification.
 There is no runtime CDN, backend API, external telemetry or browser token. The
-verification job is read-only. CI does not deploy GitHub Pages or change visibility.
+verification job is read-only. Separate post-CI workflows publish the reports;
+repository visibility is never changed.
 
 Python validates facts/source paths/feature mappings and prevents accepted status
 without review evidence; TypeScript uses text-only DOM operations for document
@@ -249,3 +250,18 @@ out its exact source SHA. This keeps PR/reusable release checks read-only. Publi
 in the publishing workflow and leaves the prior report available. The stable report URL
 does not expire with the 14-day downloadable artifacts. Detailed progress facts
 still require review; automatic publication is not automatic acceptance.
+
+Public static hosting has been approved for the interactive dashboard. The Pages
+workflow accepts only successful CI for current main from this repository. A
+read-only preflight validates the run/workflow/event/source SHA and standalone
+artifact; a separate Pages/OIDC job downloads that immutable artifact without a
+source checkout and validates its file boundary before deployment. PR/fork/tag/
+scheduled/failed/outdated runs cannot publish. Manual main retries select matching
+successful CI. Official hosting actions are commit-pinned and covered by Dependabot.
+
+An owner must enable Pages with **Source: GitHub Actions** once, as documented in
+the [hosting guide](project-dashboard.md#activate-public-web-hosting-once). The
+default job token cannot perform initial site enablement, and the current
+integration lacks that administration access. No owner credential is stored or
+repository visibility changed. A site is advertised as live only after a successful
+deployment; failures retain the prior site and are visible in the publishing run.
