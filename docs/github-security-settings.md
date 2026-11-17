@@ -17,6 +17,15 @@ and approval for all outside collaborators. Those three observations are explici
 **owner-confirmed**, because the integration still receives HTTP 403 when reading
 the Actions administration endpoints. No broader token is requested.
 
+The owner also corrected an own-actions-only restriction after run 44191621036
+failed before starting any job. Under Actions → General, select **Allow Ise-Tom,
+and select non-Ise-Tom, actions and reusable workflows**, then **Allow actions
+created by GitHub**; leave Marketplace creators disabled. The owner confirmed this
+change. The workflows retain their full commit SHA pins, including the inspected
+nested official actions. Allowing the GitHub publisher does not widen job-token
+permissions or permit arbitrary Marketplace actions. Own-actions-only mode blocks
+`actions/checkout`, setup, artifact and Pages actions even when commit-pinned.
+
 The remaining release blocker is concrete: `source-release` returned HTTP 404.
 The proposed preflight refuses a missing/inadequately protected release
 environment before the normal workflow can automatically create one. No release
