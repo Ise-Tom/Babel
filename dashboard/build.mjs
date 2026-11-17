@@ -14,7 +14,7 @@ export async function htmlFor(data) {
   const script = result.outputFiles[0].text.replaceAll('</script', '<\\/script');
   const css = await readFile(resolve(root, 'src/style.css'), 'utf8');
   const embedded = jsonForHtml(data);
-  const csp = `default-src 'none'; script-src '${hash(script)}' '${hash(embedded)}'; style-src '${hash(css)}'; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'`;
+  const csp = `default-src 'none'; script-src '${hash(script)}' '${hash(embedded)}'; style-src '${hash(css)}'; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'`;
   return (await readFile(resolve(root, 'src/index.html'), 'utf8'))
     .replace('__CSP__', csp).replace('__CSS__', () => css).replace('__DATA__', () => embedded).replace('__JS__', () => script);
 }

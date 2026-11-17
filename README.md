@@ -32,12 +32,14 @@ required production runtime. Advanced security capabilities extend this core pro
 
 ## Project progress dashboard
 
+**[Open the live dashboard](https://ise-tom.github.io/Babel/).**
+
 The preferred interface is a compact, searchable phase board: select a phase,
 then open the requirements, implementation evidence and problems you need. The
-interactive build has a public GitHub Pages deployment workflow. An owner must
-enable **Settings → Pages → Source → GitHub Actions** once; successful main CI
-then updates the same web address automatically. See the
-[hosting setup](docs/project-dashboard.md#activate-public-web-hosting-once).
+interactive build is hosted on GitHub Pages; successful main CI updates the same
+web address automatically. See the
+[hosting setup](docs/project-dashboard.md#activate-public-web-hosting-once) and
+[security settings](docs/github-security-settings.md).
 
 The **[GitHub progress report](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md)**
 follows repository visibility and refreshes on CI state changes, including failed checks.

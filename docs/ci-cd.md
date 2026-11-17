@@ -246,7 +246,9 @@ Chromium viewport checks do not establish a complete WCAG or real-device audit.
 The tooling graph deliberately excludes TypeScript-ESLint's glob dependency path
 after GHSA-fc5q-39xc-vjpf affected all published picomatch versions through 4.0.7.
 ESLint 10 and TypeScript 6 remain supported and pinned; audit severity checks are
-unchanged. The compiler checks strict types/unused declarations, and a small
+unchanged. TypeScript 7 removed the JavaScript compiler API used by the policy;
+major compiler updates are deferred until that security check is migrated and
+qualified. See [security settings](github-security-settings.md#typescript-major-update). The compiler checks strict types/unused declarations, and a small
 compiler-AST policy rejects explicit `any` before erasure. ESLint/DOM-security
 rules inspect compiler-erased JavaScript with no bundling, minification or code
 execution; diagnostics for this view use `.ts.lint.js` virtual paths. Separate
@@ -280,8 +282,10 @@ automatic publication remains distinct from reviewed acceptance.
 Public static hosting has been approved for the interactive dashboard. The Pages
 workflow accepts only successful CI for current main from this repository. A
 read-only preflight validates the run/workflow/event/source SHA and standalone
-artifact; a separate Pages/OIDC job downloads that immutable artifact without a
-source checkout and validates its file boundary before deployment. PR/fork/tag/
+artifact ID/digest. The read-only verification job downloads the immutable ZIP,
+checks its SHA-256 and validates its file/content-policy boundary before uploading
+the Pages artifact. The Pages/OIDC job has no source checkout, enforces existing
+site Actions-only mode/HTTPS and rechecks current main just before deployment. PR/fork/tag/
 scheduled/failed/outdated runs cannot publish. Manual main retries select matching
 successful CI. Official hosting actions are commit-pinned and covered by Dependabot.
 
@@ -291,3 +295,5 @@ default job token cannot perform initial site enablement, and the current
 integration lacks that administration access. No owner credential is stored or
 repository visibility changed. A site is advertised as live only after a successful
 deployment; failures retain the prior site and are visible in the publishing run.
+The site is now live; [observed security settings](github-security-settings.md)
+distinguish verified controls from admin settings denied to the integration.

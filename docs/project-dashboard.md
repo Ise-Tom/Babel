@@ -9,19 +9,13 @@ supports both public and private Babel repositories.
 
 ## Public repository transition
 
-On 17 November 2026 the project owner explicitly requested public visibility.
-The integration’s `PATCH /repos/Ise-Tom/Babel` request with `private=false`
-returned HTTP 403, “Resource not accessible by integration”. The repository
-remained private when checked; no paid capacity was purchased. The compatible
-publisher changes are proposed in PR #18 and must be merged before the default
-branch can publish reports for a public repository.
-
-An owner can apply the authorized setting at
-[Settings → General](https://github.com/Ise-Tom/Babel/settings): **Danger Zone →
-Change repository visibility → Change to public**. Then rerun PR #18’s CI for its
-latest commit. A billing annotation before any job starts is not a test failure
-and must not be bypassed with a successful check. Confirm the actual run passes;
-a remaining account-wide billing restriction still needs account attention.
+The owner applied public visibility and merged PR #18 on 17 November 2026.
+Main CI run 44175150495 passed all 12 jobs. The dashboard was successfully
+published by run 44175624652 and is live at **https://ise-tom.github.io/Babel/**.
+The earlier billing and visibility blockers are resolved. This does not grant
+this integration administration access: settings writes still return HTTP 403.
+See [security settings and owner actions](github-security-settings.md) for the
+observed state, ready-to-import main ruleset and remaining controls.
 
 The fetched branch history, including the generated report branch, was scanned
 with Gitleaks using redacted output; no leaks were detected. This is a secret
@@ -61,14 +55,16 @@ This is a one-time owner setting. The
 documents the additional permissions needed to enable a site. No owner PAT is
 requested or stored. Public repository visibility was explicitly authorized by
 the owner; publishing workflows never change visibility or purchase a paid plan.
-The site is not live until a Pages deployment succeeds.
+A deployment must succeed before a site is advertised as live. The current site
+has a verified successful deployment; the hardening changes are proposed in PR #17.
 
 The [workflow](../.github/workflows/dashboard-pages.yml) verifies the successful
-main CI run and its unexpired standalone artifact before granting a separate
-deployment job Pages/OIDC permissions. That job does not check out the source
-repository. It downloads only the verified artifact and refuses files other than
-a regular, bounded `index.html` with the dashboard CSP. Only that HTML and a
-`.nojekyll` marker are published. Source archives, reports and credentials are
+main CI run and its unexpired standalone artifact. A read-only job downloads the
+immutable artifact ID, verifies its archive SHA-256 digest and accepts only a
+bounded regular `index.html` with the strict CSP and no-referrer policy. It packages
+that verified site before the separate Pages/OIDC job runs. The privileged job
+has no source checkout; it verifies Actions-only publishing/HTTPS and rechecks
+main immediately before deployment. Only that HTML and a `.nojekyll` marker are published. Source archives, reports and credentials are
 excluded. Failed/foreign/PR/tag/scheduled CI and outdated main revisions cannot
 publish; manual retries are restricted to main with matching successful CI.
 The previous deployed site remains available if verification or deployment fails.
