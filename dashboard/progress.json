@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "snapshot": {
-    "date": "2026-11-17",
-    "commit": "6dc9b06cdf0fc571033c4113a3bcbd508d605dd4",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44183204392",
+    "date": "2026-11-18",
+    "commit": "58c3668d466b104f7f37e0d1eb63c063124812e8",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44196083299",
     "ci_result": "passed",
-    "checks_passed": 12,
+    "checks_passed": 13,
     "pull_requests": [
       {
         "number": 4,
@@ -84,6 +84,11 @@
       },
       {
         "number": 20,
+        "state": "merged",
+        "draft": false
+      },
+      {
+        "number": 21,
         "state": "merged",
         "draft": false
       }
@@ -449,10 +454,7 @@
       ],
       "verification": "All 11 checks in the main-branch CI run passed at merge commit 3a69a6b, following PR #7.",
       "limitations": "Checks run, but GitHub merge protection is not enforced on the current private-repository plan. Passing CI does not establish AD compatibility or production readiness.",
-      "problems": [
-        "I01",
-        "I02"
-      ],
+      "problems": [],
       "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
@@ -640,9 +642,7 @@
           "label": "check_pages_source.py"
         }
       ],
-      "problems": [
-        "I10"
-      ]
+      "problems": []
     },
     {
       "id": "W17",
@@ -808,8 +808,7 @@
         }
       ],
       "problems": [
-        "I14",
-        "I15"
+        "I14"
       ]
     },
     {
@@ -852,10 +851,7 @@
           "label": "project-dashboard.md"
         }
       ],
-      "problems": [
-        "I15",
-        "I16"
-      ]
+      "problems": []
     },
     {
       "id": "W22",
@@ -969,9 +965,6 @@
         }
       ],
       "problems": [
-        "I02",
-        "I10",
-        "I18",
         "I19"
       ]
     },
@@ -1003,10 +996,7 @@
           "label": "project-dashboard.md"
         }
       ],
-      "problems": [
-        "I18",
-        "I20"
-      ]
+      "problems": []
     },
     {
       "id": "W25",
@@ -1189,8 +1179,7 @@
       ],
       "problems": [
         "I05",
-        "I21",
-        "I23"
+        "I21"
       ]
     },
     {
@@ -1222,11 +1211,7 @@
           "label": "CODEOWNERS"
         }
       ],
-      "problems": [
-        "I02",
-        "I18",
-        "I24"
-      ]
+      "problems": []
     },
     {
       "id": "W30",
@@ -1260,9 +1245,7 @@
           "label": "github-security-settings.md"
         }
       ],
-      "problems": [
-        "I22"
-      ]
+      "problems": []
     },
     {
       "id": "W31",
@@ -1297,69 +1280,10 @@
           "label": "Policy regression tests"
         }
       ],
-      "problems": [
-        "I24",
-        "I22"
-      ]
+      "problems": []
     }
   ],
   "problems": [
-    {
-      "id": "I01",
-      "title": "GitHub API initially blocked by egress policy",
-      "status": "resolved",
-      "kind": "setup",
-      "phases": [
-        0,
-        1
-      ],
-      "requirements": [
-        "P01-01"
-      ],
-      "detail": "Git reads/pushes worked while api.github.com was excluded, so draft PR creation returned Forbidden. The CLI auth error alone did not establish missing credentials.",
-      "resolution": "The owner opened Internet/API access; the PR retry succeeded without asking for a raw token.",
-      "next_action": "Keep API connectivity distinct from Git and credential readiness.",
-      "sources": [],
-      "provenance": "Recorded development-session incident; no public issue was created.",
-      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
-    },
-    {
-      "id": "I02",
-      "title": "Main PR and CI protections are enforced; solo approval adjustment tracked separately",
-      "status": "resolved",
-      "kind": "platform",
-      "phases": [
-        0,
-        1,
-        5,
-        10
-      ],
-      "requirements": [
-        "P00-10",
-        "P01-01",
-        "P05-09",
-        "P10-09"
-      ],
-      "detail": "The earlier private-plan/integration administration limitation prevented configuring protection through this integration. The owner applied Protect main ruleset 27498979; effective branch rules and its full configuration are now readable and active.",
-      "resolution": "Verified main-only scope, no bypass actors, deletion/non-fast-forward rules, one approving/code-owner review, last-push approval, stale-review dismissal, resolved threads and an up-to-date GitHub Actions CI gate (app 15368). This is actual platform evidence, not an inference from passing tests.",
-      "next_action": "Keep required PRs, up-to-date CI, resolved conversations and no force-push/deletion/bypass. Remove impossible solo approval gates as tracked in I24. This resolves platform enforcement, not independent production review or product acceptance.",
-      "sources": [
-        {
-          "path": "docs/github-security-settings.md",
-          "label": "github-security-settings.md"
-        },
-        {
-          "path": "docs/github-main-ruleset.json",
-          "label": "github-main-ruleset.json"
-        },
-        {
-          "path": ".github/CODEOWNERS",
-          "label": "CODEOWNERS"
-        }
-      ],
-      "provenance": "GitHub API observation recorded during pipeline setup; verify again before production release.",
-      "source_revision": "911ef20b425782e9cbd5d7797ecfa41fbac6578a"
-    },
     {
       "id": "I03",
       "title": "Project license and contributor policy not selected",
@@ -1623,31 +1547,6 @@
       "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
-      "id": "I10",
-      "title": "Dashboard access and Pages activation remain unavailable",
-      "status": "resolved",
-      "kind": "hosting",
-      "phases": [
-        0,
-        1
-      ],
-      "requirements": [
-        "P00-10",
-        "P01-10"
-      ],
-      "detail": "The app ran inside the cloud workspace, but no user-accessible preview route was established. GitHub returned HTTP 403 for Pages activation; the repository still reports Pages disabled.",
-      "resolution": "The owner enabled Pages and applied public visibility. Deployment run 44175624652 succeeded for main 824d5760f4f95abb341f625b6ff37ab60dbd5d1f; https://ise-tom.github.io/Babel/ returned HTTP 200 with HTTPS/HSTS. This resolves user access through public hosting, without claiming cloud localhost forwarding works.",
-      "next_action": "Keep CI-gated deployment, apply the proposed artifact hardening and use the stable HTTPS URL.",
-      "source_revision": "9700ddc9a28f62a9204bafc49e0f67390ed0036e",
-      "sources": [
-        {
-          "path": "docs/github-security-settings.md",
-          "label": "Live hosting and verified controls"
-        }
-      ],
-      "provenance": "Recorded development-session evidence and repository/CI observations; no separate public issue was created."
-    },
-    {
       "id": "I11",
       "title": "Preserve Undefined while adding boolean LDAP filters",
       "status": "resolved",
@@ -1792,57 +1691,6 @@
       "provenance": "Project owner requested acceptance questions and said substep counts need not be linear; no separate GitHub issue was created."
     },
     {
-      "id": "I15",
-      "title": "GitHub Actions jobs blocked before startup by account billing",
-      "status": "resolved",
-      "kind": "infrastructure",
-      "phases": [
-        0,
-        1
-      ],
-      "requirements": [
-        "P00-10",
-        "P01-01"
-      ],
-      "detail": "All jobs in PR #18 CI run 44156039039 have zero executed steps. GitHub annotation: The job was not started because recent account payments have failed or your spending limit needs to be increased. Automatic dashboard refresh jobs are affected too.",
-      "resolution": "After the owner made Babel public, main CI run 44175150495 executed all 12 jobs successfully. The earlier account-capacity block no longer prevents this verified public run.",
-      "next_action": "Monitor actual CI results; public standard runners do not authorize paid capacity or make all platform limits disappear.",
-      "source_revision": "9700ddc9a28f62a9204bafc49e0f67390ed0036e",
-      "sources": [
-        {
-          "path": "docs/github-security-settings.md",
-          "label": "Observed public CI recovery"
-        }
-      ],
-      "provenance": "Observed GitHub run 44156039039, check run 134296912744 annotation; no pipeline commands ran."
-    },
-    {
-      "id": "I16",
-      "title": "GitHub integration cannot apply the authorized public visibility setting",
-      "status": "resolved",
-      "kind": "platform-permissions",
-      "phases": [
-        0,
-        1
-      ],
-      "requirements": [
-        "P00-10",
-        "P01-01",
-        "P01-10"
-      ],
-      "detail": "The project owner explicitly requested public visibility. PATCH /repos/Ise-Tom/Babel with private=false returned HTTP 403, Resource not accessible by integration, despite repository metadata showing admin=true. The repository remained private on readback.",
-      "resolution": "The owner applied public visibility and merged PR #18. GitHub now reports private=false and visibility=public, and the public-compatible dashboard publisher succeeds. The integration itself still lacks administration permissions.",
-      "next_action": "Keep visibility changes explicit owner decisions and track remaining settings permissions separately under I18.",
-      "source_revision": "9700ddc9a28f62a9204bafc49e0f67390ed0036e",
-      "sources": [
-        {
-          "path": "docs/github-security-settings.md",
-          "label": "Verified visibility and remaining permissions"
-        }
-      ],
-      "provenance": "Direct GitHub API response in the authorized visibility-change task on 2026-11-17; no automatic approval-review rejection occurred and no visibility setting was applied."
-    },
-    {
       "id": "I17",
       "title": "TypeScript 7 removed the compiler API used by security lint",
       "status": "resolved",
@@ -1884,56 +1732,6 @@
       "provenance": "Observed failed hosted job 134361914270 and local reproduction of the same failure; no check was skipped."
     },
     {
-      "id": "I18",
-      "title": "Repository and Pages controls applied; Actions defaults owner-confirmed",
-      "status": "resolved",
-      "kind": "platform-permissions",
-      "phases": [
-        0,
-        1
-      ],
-      "requirements": [
-        "P00-10",
-        "P01-01",
-        "P01-10"
-      ],
-      "detail": "The integration still has restricted administration access. The owner applied the repository security controls: main protection, private vulnerability reporting and Pages main-only deployment with admin bypass disabled are verified through APIs.",
-      "resolution": "The owner explicitly confirmed read-only Actions defaults, disabled Actions approving PRs and approval for all outside collaborators. These are owner-confirmed because the Actions settings API still returns HTTP 403. No private vulnerability report was submitted or falsely marked exercised. The separate missing source-release environment is tracked under I22.",
-      "next_action": "Keep the limited integration permissions and periodically reverify actual state. Configure the protected source-release environment under I22 before source prerelease jobs can run.",
-      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710",
-      "sources": [
-        {
-          "path": "docs/github-security-settings.md",
-          "label": "github-security-settings.md"
-        },
-        {
-          "path": "docs/github-main-ruleset.json",
-          "label": "github-main-ruleset.json"
-        },
-        {
-          "path": ".github/CODEOWNERS",
-          "label": "CODEOWNERS"
-        },
-        {
-          "path": "scripts/check_release_environment.py",
-          "label": "check_release_environment.py"
-        },
-        {
-          "path": "tests/test_release_environment.py",
-          "label": "test_release_environment.py"
-        },
-        {
-          "path": ".github/workflows/release.yml",
-          "label": "release.yml"
-        },
-        {
-          "path": "docs/github-security-settings.md",
-          "label": "github-security-settings.md"
-        }
-      ],
-      "provenance": "Direct GitHub settings API responses and successful public site/deployment observations on 2026-11-17; these are GitHub permission errors, not automatic approval-review rejections."
-    },
-    {
       "id": "I19",
       "title": "Hosted hardening run caught unregistered ruleset data and viewport overflow",
       "status": "resolved",
@@ -1970,40 +1768,6 @@
         }
       ],
       "provenance": "Observed hosted repository/browser failures and inspected the actual 1440×1000 CI screenshot; not inferred from a local-only result."
-    },
-    {
-      "id": "I20",
-      "title": "Pages deployment attempted an unnecessary denied administration write",
-      "status": "resolved",
-      "kind": "deployment-permissions",
-      "phases": [
-        0,
-        1
-      ],
-      "requirements": [
-        "P00-10",
-        "P01-01",
-        "P01-10"
-      ],
-      "detail": "After PR #17 merged, main CI passed all 12 jobs and artifact verification passed, but Pages run 44179766192 failed on unconditional PUT /pages. Live settings were already Actions-only with HTTPS; the job token could not administer them.",
-      "resolution": "The follow-up removes the PUT and retains a fail-closed GET/readback check. Correct existing settings no longer require administration access; insecure settings or failed reads still stop deployment.",
-      "next_action": "Review/merge the patch and verify the next main Pages deployment; keep owner-only repository security controls explicit under I02/I18.",
-      "source_revision": "b58df33f10f80688bfeaf55e44d08d52156e7608",
-      "sources": [
-        {
-          "path": ".github/workflows/dashboard-pages.yml",
-          "label": "dashboard-pages.yml"
-        },
-        {
-          "path": "docs/github-security-settings.md",
-          "label": "github-security-settings.md"
-        },
-        {
-          "path": "docs/project-dashboard.md",
-          "label": "project-dashboard.md"
-        }
-      ],
-      "provenance": "Observed complete hosted failure logs and current API state on 2026-11-17; this is a GitHub permission rejection, not automatic approval review."
     },
     {
       "id": "I21",
@@ -2049,115 +1813,8 @@
         }
       ],
       "provenance": "Observed local real-container failure and subsequent successful 21-test integration run; not a Windows or production failure claim."
-    },
-    {
-      "id": "I22",
-      "title": "Tag-restricted source-release environment is missing",
-      "status": "open",
-      "kind": "platform-configuration",
-      "phases": [
-        0,
-        5,
-        10
-      ],
-      "requirements": [
-        "P00-10",
-        "P05-09",
-        "P10-09"
-      ],
-      "detail": "GET environments/source-release returned HTTP 404. Main and Pages protection do not establish a source-release environment. The solo profile does not require a second maintainer for draft source-only prereleases.",
-      "resolution": "",
-      "next_action": "Owner creates source-release without required reviewers, disables admin bypass and adds only a custom v* tag deployment policy; retain owner-controlled tag creation. Run the read-only solo checker after configuration. Review and merge the prepared workflow before relying on hosted enforcement.",
-      "source_revision": "911ef20b425782e9cbd5d7797ecfa41fbac6578a",
-      "sources": [
-        {
-          "path": "scripts/check_release_environment.py",
-          "label": "check_release_environment.py"
-        },
-        {
-          "path": "tests/test_release_environment.py",
-          "label": "test_release_environment.py"
-        },
-        {
-          "path": ".github/workflows/release.yml",
-          "label": "release.yml"
-        },
-        {
-          "path": "docs/github-security-settings.md",
-          "label": "github-security-settings.md"
-        }
-      ],
-      "provenance": "Direct current GitHub metadata and an expected nonzero local preflight result; no environment, tag or release was created."
-    },
-    {
-      "id": "I23",
-      "title": "Own-actions-only policy blocked official pinned GitHub Actions",
-      "status": "resolved",
-      "kind": "platform-configuration",
-      "phases": [
-        0,
-        1,
-        5
-      ],
-      "requirements": [
-        "P00-10",
-        "P01-01",
-        "P05-09"
-      ],
-      "detail": "PR #21 CI run 44191621036 ended in startup_failure with zero jobs. GitHub reported that checkout/setup/artifact actions were not allowed because actions had to belong to Ise-Tom. The same policy also blocked automatic dashboard refresh.",
-      "resolution": "The owner explicitly confirmed allowing GitHub-created actions under the selected non-owner-actions policy, leaving Marketplace creators disabled. Full SHA pins and job-scoped token permissions are retained. The prepared branch and PR are now pushed, and the GitHub dashboard was refreshed directly from trusted main code.",
-      "next_action": "All 13 jobs passed for PR #21 head 4660fe0 in CI run 44192717123 after the publisher-policy correction. Retain SHA pins and review diff/CI before merge; subsequent changes require fresh CI. No source release or cloud-environment publication was performed.",
-      "source_revision": "efff796a0768b168636598cdefb0dd157297157d",
-      "sources": [
-        {
-          "path": "docs/github-security-settings.md",
-          "label": "Correct Actions publisher policy"
-        },
-        {
-          "path": ".github/workflows/ci.yml",
-          "label": "Pinned official CI actions"
-        },
-        {
-          "path": ".github/workflows/dashboard-publish.yml",
-          "label": "Trusted-main dashboard publication"
-        }
-      ],
-      "provenance": "Actual public GitHub run annotation and the owner’s explicit settings-change confirmation; no automatic approval-review rejection occurred."
-    },
-    {
-      "id": "I24",
-      "title": "Team-only approval switches block the sole maintainer",
-      "status": "resolved",
-      "kind": "platform-configuration",
-      "phases": [
-        0,
-        1,
-        5,
-        10
-      ],
-      "requirements": [
-        "P00-10",
-        "P01-01",
-        "P05-09",
-        "P10-09"
-      ],
-      "detail": "PR #21 is authored by the sole repository owner, who cannot self-approve. Team-only code-owner, last-push and unattributed-change approval switches remained enabled after the approval count was set to zero. The integration write was denied HTTP 403.",
-      "resolution": "Subsequent owner UI changes are API-verified: required approvals zero and all three approval switches false. Effective main rules still require PRs, up-to-date GitHub Actions CI gate and resolved conversations, and block force-push/deletion with no bypass actors. A second maintainer is no longer required for development merges.",
-      "next_action": "Keep these solo development settings and inspect diff/CI before merging. Add independent review explicitly when an actual second maintainer joins; planned production security qualification is not waived.",
-      "source_revision": "911ef20b425782e9cbd5d7797ecfa41fbac6578a",
-      "sources": [
-        {
-          "path": "docs/github-security-settings.md",
-          "label": "Solo owner settings"
-        },
-        {
-          "path": "docs/github-main-ruleset.json",
-          "label": "Desired main ruleset"
-        }
-      ],
-      "provenance": "Full ruleset 27498979 and effective rules for main read back after owner changes; the failed integration PUT is not claimed as the mechanism."
     }
   ],
-  "focus_phase": 1,
-  "focus_summary": "Synthetic PostgreSQL transaction and crash tests pass. Native directory storage, key custody, AD replication and the Windows lab remain unqualified."
+  "focus_phase": 0,
+  "focus_summary": "Phase 0: build the compatibility/evidence contract and explicit design qualification plan. Problems track development work; GitHub hosting, permissions, billing and approval setup are documented outside this list."
 }
