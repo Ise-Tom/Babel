@@ -18,9 +18,9 @@ and approval for all outside collaborators. Those three observations are explici
 the Actions administration endpoints. No broader token is requested.
 
 The remaining release blocker is concrete: `source-release` returned HTTP 404.
-The locally prepared preflight refuses a missing/inadequately protected release
+The proposed preflight refuses a missing/inadequately protected release
 environment before the normal workflow can automatically create one. No release
-or repository setting has been changed by this local work.
+or repository setting has been changed by this development work.
 
 ## Apply owner settings
 
@@ -70,7 +70,8 @@ or repository setting has been changed by this local work.
 
 After applying settings, verify their actual state in GitHub, rerun current CI
 and dispatch **Publish interactive dashboard** on main. The owner merged PR #20 and its read-only Pages fix deployed successfully.
-The new storage/release-preflight work remains local and unpublished. Restrict
+The new storage/release-preflight work is proposed for review and requires merge
+and verification before becoming active. Restrict
 release-tag creation to authorized maintainers as well: an environment check in
 the reviewed workflow is not protection against arbitrary rewritten tag workflows.
 

@@ -88,7 +88,7 @@
         "draft": false
       }
     ],
-    "note": "Verified published main snapshot: PR #20 is merged, all 12 main CI jobs and Pages deployment 44183656847 succeeded. Main protection, private reporting and Pages restrictions are API-verified; Actions defaults are owner-confirmed. New PostgreSQL/release-preflight work is local and unpublished; no hosted CI is claimed for it."
+    "note": "Verified published main snapshot: PR #20 is merged, all 12 main CI jobs and Pages deployment 44183656847 succeeded. Main protection, private reporting and Pages restrictions are API-verified; Actions defaults are owner-confirmed. New PostgreSQL/release-preflight work is proposed in the development PR, separately from main totals; hosted checks report the current PR head."
   },
   "requirements": {
     "P00-01": {
@@ -1159,7 +1159,7 @@
       ],
       "how": "Added a digest-pinned official PostgreSQL 18 dependency, a bounded synthetic SQL schema and a stdlib Docker/psql controller. State, local journal, audit intent and idempotency commit together under a transactional writer allocator; synthetic UUID/SID identity is immutable. Tests use actual concurrent sessions and SIGKILL/restart. Containers have no network, ports, host binds or privileged mode, with read-only rootfs and scoped cleanup. Added a required runtime CI/coverage job, strict types/lint/security checks and test-image inventory. Process launch/timeout failures are also converted to static diagnostics so command arguments and captured output are not exported.",
       "verification": "22 component tests pass against PostgreSQL/psql 18.7; controller branch-inclusive coverage is 93%. Real cases cover collisions/injection/denial, rollback, ordered concurrent commit/rollback, kill before commit, committed-result recovery and idempotent retry after a discarded reply. Actual container isolation and cleanup are asserted. A CycloneDX test-image inventory was generated locally; 97 repository tests pass with 98% coverage.",
-      "limitations": "Local and unpublished; the prepared hosted job has not run. This is an isolated SQL experiment, not native directory storage, authentication/Windows ACL, real SID allocation, backup/upgrade, physical power-loss proof, credential protection, AD replication or capacity acceptance. The future Rust driver and production packaging remain unselected/unqualified.",
+      "limitations": "Proposed for review; hosted verification must pass on the PR head before merge. This is an isolated SQL experiment, not native directory storage, authentication/Windows ACL, real SID allocation, backup/upgrade, physical power-loss proof, credential protection, AD replication or capacity acceptance. The future Rust driver and production packaging remain unselected/unqualified.",
       "source_revision": "4d00412af3e1528758c605b16c1e5dd2c5281cfd",
       "sources": [
         {
@@ -1205,7 +1205,7 @@
       ],
       "how": "Read the active main ruleset and effective branch rules, Pages mode/environment and private-reporting status. Recorded the owner’s explicit confirmation of the three Actions defaults separately from API-verifiable controls. No repository setting or remote branch was changed.",
       "verification": "Ruleset 27498979 is active for refs/heads/main with no bypass, required review/CI and force-push/deletion protection. Private reporting is enabled. Pages is workflow/HTTPS/main-only with admin bypass false. Actions settings remain HTTP 403 and are therefore owner-confirmed, not API-verified.",
-      "limitations": "A private report was not submitted and no production phase or independent source-release approval is accepted. The existing source-release environment is missing and separately blocked by I22. Dashboard changes remain local while publication is paused.",
+      "limitations": "A private report was not submitted and no production phase or independent source-release approval is accepted. The existing source-release environment is missing and separately blocked by I22. The GitHub report includes PR proposals separately; main totals change after merge.",
       "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710",
       "sources": [
         {
@@ -1238,7 +1238,7 @@
       ],
       "how": "Prepared a read-only source-release environment preflight before the environment-bound contents/OIDC job. It requires explicit eligible reviewers, self-review prevention, disabled admin bypass and only v* tag deployments. Missing/inaccessible or weak settings fail instead of allowing normal automatic environment creation.",
       "verification": "Four policy regression tests cover missing/weak review, bypass, tag scope and denied access; helper coverage is 100% within the 97-test repository suite. Actual current GitHub metadata returns no source-release environment and the local checker exits nonzero with an owner action message. Workflow syntax/security checks pass.",
-      "limitations": "The source-release environment is still absent. The workflow change is local, not published or executed as hosted release code. It assumes the reviewed release workflow and does not replace owner-controlled release-tag creation or platform protection.",
+      "limitations": "The source-release environment is still absent. The workflow change is proposed for review and has not been executed as hosted release code. It assumes the reviewed release workflow and does not replace owner-controlled release-tag creation or platform protection.",
       "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710",
       "sources": [
         {
@@ -2027,7 +2027,7 @@
       ],
       "detail": "GET environments/source-release returned HTTP 404. Main protection, Pages restrictions and private reporting are applied, but they do not provide the independent release-environment approval required for source prereleases.",
       "resolution": "",
-      "next_action": "Owner creates source-release with eligible independent reviewers, prevent self-review, no admin bypass and custom v* tag-only deployment policy, and controls release-tag creation. Then run the read-only checker. The prepared workflow must be reviewed/published before it enforces this preflight on GitHub.",
+      "next_action": "Owner creates source-release with eligible independent reviewers, prevent self-review, no admin bypass and custom v* tag-only deployment policy, and controls release-tag creation. Then run the read-only checker. The prepared workflow must be reviewed/merged before it enforces this preflight on GitHub.",
       "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710",
       "sources": [
         {
