@@ -44,7 +44,7 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T00:03:49\+01:00.
+GitHub metadata checked: 2026-11-18T00:04:03\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -69,7 +69,7 @@ GitHub metadata checked: 2026-11-18T00:03:49\+01:00.
     
     Dashboard records W28–W31 include implementation, verification, limitations and immutable evidence. PR proposals remain separate from accepted main totals. I05 remains open for the native adapter/model, recovery/key and AD qualification; I04 remains open for Windows infrastructure. I18 distinguishes API-verified private reporting/Pages controls from owner-confirmed Actions defaults. I23 records the fixed own-actions-only startup failure; official actions retain full SHA pins and scoped token permissions.
     
-    Validation: the PostgreSQL component passed 22 real database tests at 93% controller coverage. The latest local repository suite passes 100 tests at 98% tooling coverage, including solo/team release policy and preservation of PR/CI boundaries. Ruff, strict mypy, actionlint, Zizmor, design/dashboard validation and local Markdown links pass. Prior component verification also passed 24 browser tests, six build/security-lint tests, Bandit, source archive/checksum, extracted-source secret scan and image SBOM generation. All 13 hosted CI jobs passed for previous head 4660fe0 in run 44192717123; the new head needs its own fresh hosted result.
+    Validation: the PostgreSQL component passed 22 real database tests at 93% controller coverage. The latest local repository suite passes 100 tests at 98% tooling coverage, including solo/team release policy and preservation of PR/CI boundaries. Ruff, strict mypy, actionlint, Zizmor, design/dashboard validation and local Markdown links pass. Prior component verification also passed 24 browser tests, six build/security-lint tests, Bandit, source archive/checksum, extracted-source secret scan and image SBOM generation. All 13 hosted CI jobs passed for current head 82aa43f71a493482282fbdf5d874795486aefb11: https://github.com/Ise-Tom/Babel/actions/runs/44195445726 . GitHub reports the PR merge state CLEAN with no required review approval.
     
     No merge, source release, Pages deployment or cloud-environment publication is performed by this PR. The GitHub progress report may publish PR proposals through its existing trusted-main automation.
 
