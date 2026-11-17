@@ -27,6 +27,10 @@ test('overview has all phases and accurately reports no accepted phase', async (
     const last = await page.locator('.phase-card').last().boundingBox();
     if (!last) throw new Error('Missing last phase');
     expect(last.y + last.height).toBeLessThanOrEqual(page.viewportSize()?.height ?? 0);
+  } else {
+    const first = await page.locator('.phase-card').first().boundingBox();
+    if (!first) throw new Error('Missing first phase');
+    expect(first.y + first.height).toBeLessThanOrEqual(page.viewportSize()?.height ?? 0);
   }
 });
 

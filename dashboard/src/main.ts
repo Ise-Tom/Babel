@@ -122,10 +122,10 @@ function empty(text: string): HTMLElement {
   const result = el('div', 'empty'); result.append(el('h3', '', 'No matches'), el('p', '', text), reset()); return result;
 }
 function overview(): HTMLElement {
-  const result = el('div'); result.append(header('PROJECT OVERVIEW', 'Roadmap & implementation', 'Choose a phase. Open only the steps and evidence you need.'), stats());
+  const result = el('div', 'overview-page'); result.append(header('PROJECT OVERVIEW', 'Roadmap & implementation', 'Choose a phase. Open only the steps and evidence you need.'), stats());
   const focus = el('section', 'focus'); const focusText = el('div');
   const focusPhase = board.phases.find(phase => phase.id === board.focusPhase);
-  focusText.append(el('div', 'eyebrow', 'CURRENT DEVELOPMENT FOCUS'), el('h2', '', `${String(board.focusPhase).padStart(2, '0')} / ${focusPhase?.title ?? 'Development'}`), el('p', '', board.focusSummary));
+  focusText.append(el('div', 'eyebrow', 'CURRENT FOCUS'), el('h2', '', `${String(board.focusPhase).padStart(2, '0')} / ${focusPhase?.title ?? 'Development'}`), el('p', '', board.focusSummary));
   focus.append(focusText, button(`Review Phase ${String(board.focusPhase).padStart(2, '0')} →`, 'button primary', () => navigate({ view: 'phase', phase: board.focusPhase, q: '', status: 'all' }))); result.append(focus);
   const visible = board.phases.filter(phase => filtered(phase).length > 0);
   const heading = el('div', 'list-heading'); heading.append(el('h2', '', 'The delivery plan'), el('span', 'muted', `${visible.length} of ${board.phases.length} phases · ${board.phases.reduce((sum, phase) => sum + phase.steps.length, 0)} requirements`)); result.append(heading);
