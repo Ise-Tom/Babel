@@ -744,7 +744,7 @@
         "P01-10"
       ],
       "how": "Removed the enforced ten-item sequential quota, retaining unique phase-owned IDs, nonempty requirements/evidence and feature traceability. Renamed broad dashboard substeps to requirements. Documented concrete owner review questions and separate requirement/phase acceptance. Existing scope and stable IDs are preserved.",
-      "verification": "78 Python tests pass with 98% tooling coverage. Strict types, lint, documentation checks, six build/security-lint tests and 24 desktop/mobile browser tests pass. Synthetic 3/13-item phases exercise rendering, counts and expand-all; model/design fixtures allow unequal counts and noncontiguous IDs.",
+      "verification": "78 Python tests pass with 98% tooling coverage. Strict types, lint, documentation checks, six build/security-lint tests and 24 desktop/mobile browser tests pass. Synthetic 3/13-item phases exercise rendering, counts and expand-all; model/design fixtures allow unequal counts and noncontiguous IDs. Hosted run 44156039039 did not start: GitHub reported failed recent payments or an insufficient spending limit; this is not a hosted test result.",
       "limitations": "The current baseline still contains 180 requirements. Changing task counts does not estimate effort or accept work. Two current-component acceptance questions have been submitted to the owner; no affirmative answers have been recorded. Full AD functionality and phase acceptance remain outstanding.",
       "source_revision": "fbf7cbd89be80e0f18f2464296deb4ad08383ca3",
       "sources": [
@@ -778,7 +778,8 @@
         }
       ],
       "problems": [
-        "I14"
+        "I14",
+        "I15"
       ]
     }
   ],
@@ -1193,6 +1194,35 @@
         }
       ],
       "provenance": "Project owner requested acceptance questions and said substep counts need not be linear; no separate GitHub issue was created."
+    },
+    {
+      "id": "I15",
+      "title": "GitHub Actions jobs blocked before startup by account billing",
+      "status": "open",
+      "kind": "infrastructure",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01"
+      ],
+      "detail": "All jobs in PR #18 CI run 44156039039 have zero executed steps. GitHub annotation: The job was not started because recent account payments have failed or your spending limit needs to be increased. Automatic dashboard refresh jobs are affected too.",
+      "resolution": "",
+      "next_action": "Repository/account owner checks GitHub Billing & plans and restores Actions capacity, then reruns PR CI and the private dashboard workflow. Local checks do not replace the required hosted gate.",
+      "source_revision": "cd6ad149870a05db4ab2a4f7fbca3e4d461af848",
+      "sources": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "label": "Required CI workflow"
+        },
+        {
+          "path": ".github/workflows/dashboard-publish.yml",
+          "label": "Private dashboard workflow"
+        }
+      ],
+      "provenance": "Observed GitHub run 44156039039, check run 134296912744 annotation; no pipeline commands ran."
     }
   ],
   "focus_phase": 1,
