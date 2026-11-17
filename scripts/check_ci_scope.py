@@ -69,6 +69,7 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
                 "fuzz/corpus/ldap_frame/unbind",
                 "fuzz/corpus/ldap_frame/oversized",
                 "fuzz/corpus/ldap_frame/rootdse",
+                "fuzz/corpus/ldap_frame/rootdse-filter",
             }
             or (path.parts[0] == "docs" and path.suffix == ".md")
             or (path.parts[0] in {"scripts", "tests"} and path.suffix == ".py")

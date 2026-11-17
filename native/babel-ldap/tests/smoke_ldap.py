@@ -39,6 +39,20 @@ def check_root(server: Server) -> None:
         require(attributes["supportedLDAPVersion"] == ["3"], "incorrect LDAP version")
         require(attributes["vendorName"] == ["Babel"], "incorrect vendor")
         require("supportedCapabilities" not in attributes, "unexpected AD capability claim")
+        for expression, expected in (
+            ("(&(objectClass=top)(vendorName=*))", 1),
+            ("(|(objectClass=person)(objectClass=TOP))", 1),
+            ("(!(objectClass=person))", 1),
+            ("(objectClass=person)", 0),
+            ("(!(unknownAttribute=*))", 0),
+            ("(unknownAttribute=top)", 0),
+        ):
+            connection.search("", expression, BASE, attributes=["vendorName"])
+            require(connection.result["result"] == 0, "supported filter failed")
+            entries = [item for item in connection.response if item["type"] == "searchResEntry"]
+            require(len(entries) == expected, "filter match/undefined behavior incorrect")
+        connection.search("", "(|(objectClass=top)(vendorName=Babel))", BASE)
+        require(connection.result["result"] == 53, "unsupported matching silently succeeded")
     finally:
         connection.unbind()
 

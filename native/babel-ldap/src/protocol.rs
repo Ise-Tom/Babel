@@ -1,4 +1,5 @@
 use crate::ber::{Cursor, octets, tlv, uint};
+use crate::filter::{FilterResult, evaluate};
 use crate::{MAX_ATTRIBUTE_BYTES, MAX_ATTRIBUTES, MAX_FRAME_BYTES};
 
 /// Static error categories never contain request bytes or credentials.
@@ -14,6 +15,7 @@ pub enum DecodeError {
     UnsupportedControls,
     UnsupportedOperation,
     AttributeLimit,
+    FilterLimit,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -25,7 +27,7 @@ pub enum Operation {
     Search {
         root: bool,
         scope: u32,
-        filter_supported: bool,
+        filter: FilterResult,
         types_only: bool,
         attributes: Vec<Vec<u8>>,
     },
@@ -38,7 +40,7 @@ pub struct Request {
     pub operation: Operation,
 }
 
-fn valid_attribute(name: &[u8]) -> bool {
+pub(crate) fn valid_attribute(name: &[u8]) -> bool {
     if matches!(name, b"*" | b"+" | b"1.1") {
         return true;
     }
@@ -106,9 +108,7 @@ pub fn decode(frame: &[u8]) -> Result<Request, DecodeError> {
             operation.uint(0x02)?; // timeLimit: bounded server-side independently.
             let types_only = operation.boolean()?;
             let (filter_tag, filter) = operation.tlv()?;
-            // Unsupported filters are not evaluated or recursively traversed.
-            let filter_supported =
-                filter_tag == 0x87 && filter.eq_ignore_ascii_case(b"objectClass");
+            let filter = evaluate(filter_tag, filter)?;
             let mut names = Cursor::new(operation.expect(0x30)?);
             let mut attributes = Vec::new();
             while !names.is_empty() {
@@ -125,7 +125,7 @@ pub fn decode(frame: &[u8]) -> Result<Request, DecodeError> {
             Operation::Search {
                 root: base.is_empty(),
                 scope,
-                filter_supported,
+                filter,
                 types_only,
                 attributes,
             }
@@ -217,7 +217,7 @@ pub fn respond(request: &Request) -> Option<Vec<u8>> {
         Operation::Search {
             root,
             scope,
-            filter_supported,
+            filter,
             types_only,
             attributes,
         } => Some(if !root {
@@ -227,13 +227,15 @@ pub fn respond(request: &Request) -> Option<Vec<u8>> {
                 32,
                 b"Only the public lab RootDSE exists",
             )
-        } else if *scope != 0 || !filter_supported {
+        } else if *scope != 0 || *filter == FilterResult::Unsupported {
             result(
                 request.message_id,
                 0x65,
                 53,
-                b"Only base RootDSE objectClass presence search is supported",
+                b"Search scope or matching rule is not implemented",
             )
+        } else if *filter != FilterResult::Matches {
+            result(request.message_id, 0x65, 0, b"")
         } else {
             let mut output = entry(request.message_id, attributes, *types_only);
             output.extend(result(request.message_id, 0x65, 0, b""));

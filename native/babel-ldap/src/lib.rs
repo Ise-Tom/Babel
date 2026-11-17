@@ -2,9 +2,11 @@
 #![forbid(unsafe_code)]
 
 mod ber;
+mod filter;
 pub mod protocol;
 pub mod server;
 
+pub use filter::{FilterResult, MAX_ASSERTION_BYTES, MAX_FILTER_DEPTH, MAX_FILTER_NODES};
 pub use protocol::{DecodeError, Operation, Request, decode, respond};
 
 /// Hard limit applied before allocation, including the outer BER header.

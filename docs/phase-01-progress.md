@@ -1,6 +1,7 @@
 # Phase 1 development progress
 
-Status: first native parser/RootDSE lab increment implemented; Phase 1 acceptance
+Status: native parser/RootDSE lab implemented; bounded filter extension in development;
+Phase 1 acceptance
 is **not complete**. The [phase specification](phases/phase-01.md) remains the
 normative contract. [ADR 0001](adr/0001-native-ldap-lab.md) defines the narrow
 implementation, resource bounds, toolchain choice and outstanding prerequisites.
@@ -12,7 +13,7 @@ implementation, resource bounds, toolchain choice and outstanding prerequisites.
 | P01-01 | Rust workspace, pinned compiler/locks, formatting/Clippy, generated parser tests, sanitizer fuzz, dependency/license/SBOM and packaging gates | All later native components need corresponding checks; no general security assessment |
 | P01-02 | Not implemented | Stable SID/GUID/schema/ACL and denied-state invariants |
 | P01-03 | Not implemented; lab has no state | Transactional store/journal and kill/recovery tests after design approval |
-| P01-04 | RootDSE base-search subset exercised through independent ldap3 client | DNS, full LDAP discovery/read behavior and Windows reference-client evidence |
+| P01-04 | RootDSE base-search subset; bounded presence/objectClass equality/boolean filter extension exercised by ldap3 in the development PR | DNS, general directory/schema/matching rules and Windows reference-client evidence |
 | P01-05 | Credential binds explicitly rejected, not authenticated | Reviewed Kerberos/PAC/password/key lifecycle, secure transport and actual authentication |
 | P01-06 | Not implemented | Windows domain membership, secure channel and machine credential rollover |
 | P01-07 | Not implemented | Policy directory/SYSVOL state and actual client application/recovery |
@@ -40,7 +41,8 @@ python native/babel-ldap/tests/smoke_ldap.py target/debug/babel-ldap
 cargo run --locked -p babel-ldap -- --listen 127.0.0.1:1389
 ```
 
-The manual listener is a loopback lab endpoint; stop it with Ctrl-C. An
+The filter extension and its limits are described in
+[ADR 0002](adr/0002-bounded-rootdse-filters.md). The manual listener is a loopback lab endpoint; stop it with Ctrl-C. An
 independent client can ask the empty DN for `supportedLDAPVersion`/`vendorName`
 using a base `(objectClass=*)` search. Do not expose it publicly or send real
 credentials. It cannot join a computer, serve accounts or replace AD.
