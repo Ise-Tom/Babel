@@ -44,11 +44,11 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T22:15:25\+01:00.
+GitHub metadata checked: 2026-11-17T22:15:48\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-### [\#17 · Bump typescript from 6.0.3 to 7.0.2 in /dashboard](<https://github.com/Ise-Tom/Babel/pull/17>)
+### [\#17 · Harden public dashboard deployment and retain compatible security lint](<https://github.com/Ise-Tom/Babel/pull/17>)
 
 **In review · Pending merge · CI: in\_progress** · Head 4ef5b4d
 
@@ -57,62 +57,19 @@ GitHub metadata checked: 2026-11-17T22:15:25\+01:00.
 
 **PR description (untrusted text):**
 
-    Bumps [typescript](https://github.com/microsoft/TypeScript) from 6.0.3 to 7.0.2.
-    <details>
-    <summary>Release notes</summary>
-    <p><em>Sourced from <a href="https://github.com/microsoft/TypeScript/releases">typescript's releases</a>.</em></p>
-    <blockquote>
-    <h2>TypeScript 7.0.2</h2>
-    <p><a href="https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/">https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/</a></p>
-    <p>This tag was originally released at: <a href="https://github.com/microsoft/typescript-go/releases/tag/typescript%2Fv7.0.2">https://github.com/microsoft/typescript-go/releases/tag/typescript%2Fv7.0.2</a></p>
-    </blockquote>
-    </details>
-    <details>
-    <summary>Commits</summary>
-    <ul>
-    <li><a href="https://github.com/microsoft/TypeScript/commit/1e4744d68260a7cb91b62b12edc3f6a2187faaf1"><code>1e4744d</code></a> Merge branch 'main' into ts7-release</li>
-    <li><a href="https://github.com/microsoft/TypeScript/commit/a5a219c3b5da0db4fa0ecf6c0b1f588c9af9c669"><code>a5a219c</code></a><code>microsoft/typescript-go#4558</code></li>
-    <li><a href="https://github.com/microsoft/TypeScript/commit/ecfe30dce91368d52c9a49b6095bb0b673a238f8"><code>ecfe30d</code></a> Update status localization</li>
-    <li><a href="https://github.com/microsoft/TypeScript/commit/5de25b5f8fec2ca35eadaed041f1f06d2e214895"><code>5de25b5</code></a> Hide executable name in TypeScript status</li>
-    <li><a href="https://github.com/microsoft/TypeScript/commit/d7ce74a75da2b80e8201506a1599c06549432b93"><code>d7ce74a</code></a> Show bundled TypeScript version for packaged servers</li>
-    <li><a href="https://github.com/microsoft/TypeScript/commit/29be66a607707f90d7a53103a4469bb3015a4d54"><code>29be66a</code></a> Correct TS 7 release version to 7.0.2</li>
-    <li><a href="https://github.com/microsoft/TypeScript/commit/ed2bd1bfa4aac5211ce4bc58fcd1313c7eddc8ff"><code>ed2bd1b</code></a> Merge branch 'main' into ts7-release</li>
-    <li><a href="https://github.com/microsoft/TypeScript/commit/887307575c58ea640dbeba3b4e8fdb6347cd3044"><code>8873075</code></a> Bump the github-actions group across 1 directory with 3 updates (microsoft/ty...</li>
-    <li><a href="https://github.com/microsoft/TypeScript/commit/9427131ae2d4e230a90ee8a09daac4e75da3e311"><code>9427131</code></a> Set up stable / nightly extension split, other prep (microsoft/typescript-go#...</li>
-    <li><a href="https://github.com/microsoft/TypeScript/commit/d4eaca5460a1f5f02a829e62706794b0a6fb903e"><code>d4eaca5</code></a><code>microsoft/typescript-go#4549</code></li>
-    <li>Additional commits viewable in <a href="https://github.com/microsoft/TypeScript/compare/v6.0.3...v7.0.2">compare view</a></li>
-    </ul>
-    </details>
-    <details>
-    <summary>Maintainer changes</summary>
-    <p>This version was pushed to npm by <a href="https://www.npmjs.com/~microsoft1es">microsoft1es</a>, a new releaser for typescript since your current version.</p>
-    </details>
-    <br />
+    The TypeScript 7.0.2 update passed typechecking but removed the JavaScript compiler API used by security lint, producing `ScriptTarget.Latest` errors. This correction keeps TypeScript 6.0.3 and the existing AST/DOM/eval safeguards, defers automatic compiler-major updates until that policy is migrated, and updates the branch to current main. No check is skipped or weakened.
     
+    The public dashboard deployment is hardened alongside the compatibility fix:
     
-    [![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=typescript&package-manager=npm_and_yarn&previous-version=6.0.3&new-version=7.0.2)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)
+    - Validate successful CI for exact current main, select the immutable artifact ID and verify its archive SHA-256 digest.
+    - Bound archive/HTML size; reject additional files, path traversal, symlinks, active external content and weak/duplicate browser policies. CI verifies the actual build against the same deployment policy.
+    - Package verified content in the read-only job. The separate Pages/OIDC job has no project checkout/code execution, attempts and verifies Actions-only publishing/HTTPS, and rechecks main immediately before deployment.
+    - Add no-referrer and block images; retain hash-authorized scripts/styles and no network API.
+    - Add owner CODEOWNERS, an importable main protection ruleset and observed-state/owner configuration instructions. The integration’s admin-setting writes returned HTTP 403, so those settings are not claimed as applied.
     
-    Dependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.
+    The dashboard is live at https://ise-tom.github.io/Babel/ with HTTPS/HSTS. PR #18 is merged and all 12 baseline main CI jobs passed. Progress records W22/W23, resolved hosting/visibility/capacity incidents and open admin-permission issue I18 describe this PR separately from main totals. Two owner-accepted requirements remain accepted; Phase 1 remains in progress.
     
-    [//]: # (dependabot-automerge-start)
-    [//]: # (dependabot-automerge-end)
-    
-    ---
-    
-    <details>
-    <summary>Dependabot commands and options</summary>
-    <br />
-    
-    You can trigger Dependabot actions by commenting on this PR:
-    - `@dependabot rebase` will rebase this PR
-    - `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it
-    - `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency
-    - `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)
-    - `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)
-    - `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)
-    
-    
-    </details>
+    Validation: 86 Python tests, 98% tooling coverage, strict types/lint, actionlint, Zizmor, six build/security-lint fixtures, actual built archive verification, 24 desktop/mobile browser tests and npm audit (zero vulnerabilities) passed locally. Full hosted CI is running for this corrected head. The stronger deployment and its Pages-token configuration step still require merge and a successful main deployment; no production protocol behavior changed.
 
 **Changed files:**
 
@@ -389,7 +346,7 @@ Delivery gates and source packaging exist; real product upgrade/recovery/governa
 
 **Acceptance evidence required:** Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact.
 
-**Pending PR proposals:** [\#17: Bump typescript from 6.0.3 to 7.0.2 in /dashboard](<https://github.com/Ise-Tom/Babel/pull/17>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#17: Harden public dashboard deployment and retain compatible security lint](<https://github.com/Ise-Tom/Babel/pull/17>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition. See the [implementation journal](#implementation-journal).
 
@@ -417,7 +374,7 @@ Current native LDAP component development safeguards accepted by the project own
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-17. Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: development safeguards for the current native LDAP component, not the full server or future components. PR \#16 and its 12-job successful CI run: https://github.com/Ise-Tom/Babel/pull/16 ; https://github.com/Ise-Tom/Babel/actions/runs/44152161324 . Merged main cd6ad149870a05db4ab2a4f7fbca3e4d461af848 also passed all 12 jobs in run 44153995669.
 
-**Pending PR proposals:** [\#17: Bump typescript from 6.0.3 to 7.0.2 in /dashboard](<https://github.com/Ise-Tom/Babel/pull/17>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#17: Harden public dashboard deployment and retain compatible security lint](<https://github.com/Ise-Tom/Babel/pull/17>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W01: Native Rust workspace and reproducible builds; W02: Bounded BER / LDAP decoder; W06: Independent client and packaged-binary checks; W07: Property tests and core coverage gate; W08: Sanitizer fuzz smoke; W09: Native dependency, license and SBOM checks; W10: Required native and repository CI gates; W13: Tested source and lab archive packaging; W17: Bounded LDAP RootDSE filter discovery; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition. See the [implementation journal](#implementation-journal).
 
@@ -529,7 +486,7 @@ Project owner accepted the current prototype’s scope inventory and limitation 
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-17. Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: documentation, tests and CLI label the current prototype as a loopback-only LDAP discovery lab and disclose missing production/domain functionality. Evidence pinned to merged main: https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phase-01-progress.md ; https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/native/babel-ldap/src/main.rs . This accepts scope reporting, not those missing features or production readiness.
 
-**Pending PR proposals:** [\#17: Bump typescript from 6.0.3 to 7.0.2 in /dashboard](<https://github.com/Ise-Tom/Babel/pull/17>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#17: Harden public dashboard deployment and retain compatible security lint](<https://github.com/Ise-Tom/Babel/pull/17>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W17: Bounded LDAP RootDSE filter discovery; W18: Open-PR-aware private progress reporting; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition. See the [implementation journal](#implementation-journal).
 
@@ -1047,7 +1004,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** No self-approved high-risk publication or privileged fork runner; platform limitations are disclosed, never treated as enforced protection.
 
-**Pending PR proposals:** [\#17: Bump typescript from 6.0.3 to 7.0.2 in /dashboard](<https://github.com/Ise-Tom/Babel/pull/17>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#17: Harden public dashboard deployment and retain compatible security lint](<https://github.com/Ise-Tom/Babel/pull/17>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1709,7 +1666,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Actual required-check/review/ref/environment protections are verified where supported; unavailable private-repo features remain explicit release risks.
 
-**Pending PR proposals:** [\#17: Bump typescript from 6.0.3 to 7.0.2 in /dashboard](<https://github.com/Ise-Tom/Babel/pull/17>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#17: Harden public dashboard deployment and retain compatible security lint](<https://github.com/Ise-Tom/Babel/pull/17>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
