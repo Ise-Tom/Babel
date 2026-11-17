@@ -1205,9 +1205,9 @@
         "P10-09"
       ],
       "how": "Read the active main ruleset and effective branch rules, Pages mode/environment and private-reporting status. Recorded the owner’s explicit confirmation of the three Actions defaults separately from API-verifiable controls. No repository setting or remote branch was changed.",
-      "verification": "Ruleset 27498979 is active for refs/heads/main with no bypass, required review/CI and force-push/deletion protection. Private reporting is enabled. Pages is workflow/HTTPS/main-only with admin bypass false. Actions settings remain HTTP 403 and are therefore owner-confirmed, not API-verified.",
-      "limitations": "A private report was not submitted and no production phase or independent source-release approval is accepted. The existing source-release environment is missing and separately blocked by I22. The GitHub report includes PR proposals separately; main totals change after merge.",
-      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710",
+      "verification": "The initial team ruleset was API-verified with CI, review and force-push/deletion protection. The current sole maintainer requested a solo development profile; the latest readback has approval count zero but three approval switches still enabled (I24). Pages/private reporting observations remain valid. Actions defaults are owner-confirmed because their API returns HTTP 403.",
+      "limitations": "Team approval is not sustainable for the sole maintainer and is being replaced for development, without claiming independent review. Source-release remains absent (I22). Main acceptance totals change after merge, not from PR proposals.",
+      "source_revision": "911ef20b425782e9cbd5d7797ecfa41fbac6578a",
       "sources": [
         {
           "path": "docs/github-security-settings.md",
@@ -1224,12 +1224,13 @@
       ],
       "problems": [
         "I02",
-        "I18"
+        "I18",
+        "I24"
       ]
     },
     {
       "id": "W30",
-      "title": "Fail source prereleases before an unprotected review environment can be auto-created",
+      "title": "Validate existing source-release protections before draft source prereleases",
       "status": "implemented",
       "kind": "implementation",
       "requirements": [
@@ -1237,10 +1238,10 @@
         "P05-09",
         "P10-09"
       ],
-      "how": "Prepared a read-only source-release environment preflight before the environment-bound contents/OIDC job. It requires explicit eligible reviewers, self-review prevention, disabled admin bypass and only v* tag deployments. Missing/inaccessible or weak settings fail instead of allowing normal automatic environment creation.",
-      "verification": "Four policy regression tests cover missing/weak review, bypass, tag scope and denied access; helper coverage is 100% within the 97-test repository suite. Actual current GitHub metadata returns no source-release environment and the local checker exits nonzero with an owner action message. Workflow syntax/security checks pass.",
+      "how": "Read-only preflight precedes the contents/OIDC job. Explicit solo mode requires no reviewer gate, disabled admin bypass and only v* tag deployments. Optional team mode additionally requires eligible independent reviewers and self-review prevention. Missing/inaccessible settings fail before automatic environment creation.",
+      "verification": "Seven release-policy regression tests pass, including solo/team profiles, protected tag scope, denied access and preservation of mandatory PR/CI boundaries in the ruleset template. The 100-test repository suite passes at 98% coverage; this helper has 100% coverage. Workflow syntax/security checks pass. No hosted release was run.",
       "limitations": "The source-release environment is still absent. The workflow change is proposed for review and has not been executed as hosted release code. It assumes the reviewed release workflow and does not replace owner-controlled release-tag creation or platform protection.",
-      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710",
+      "source_revision": "911ef20b425782e9cbd5d7797ecfa41fbac6578a",
       "sources": [
         {
           "path": "scripts/check_release_environment.py",
@@ -1260,6 +1261,44 @@
         }
       ],
       "problems": [
+        "I22"
+      ]
+    },
+    {
+      "id": "W31",
+      "title": "Adapt development governance to the sole maintainer without bypassing CI",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P05-09",
+        "P10-09"
+      ],
+      "how": "Changed the main ruleset template to zero approvals with code-owner, last-push and unattributed-change approval disabled. Kept PRs, up-to-date GitHub Actions CI gate, resolved conversations and no force-push/deletion/bypass. Aligned source-only prerelease preflight, owner guidance and contribution policy; CODEOWNERS still records ownership.",
+      "verification": "100 repository tests pass with 98% coverage, including solo/team release modes and main ruleset safeguards. Ruff, strict mypy, actionlint, Zizmor and local Markdown links pass. The integration settings write was denied HTTP 403; the latest live rule is only partially adjusted and PR #21 remains blocked.",
+      "limitations": "Implementation is proposed in PR #21; no successful remote ruleset write is claimed. Owner UI action is tracked in I24. This is owner review plus CI, not independent review; future production security qualification remains required. Source-release is still absent; no release/tag/merge/deployment was triggered.",
+      "source_revision": "911ef20b425782e9cbd5d7797ecfa41fbac6578a",
+      "sources": [
+        {
+          "path": "docs/github-main-ruleset.json",
+          "label": "Solo ruleset preserving CI"
+        },
+        {
+          "path": "docs/github-security-settings.md",
+          "label": "Owner settings and evidence"
+        },
+        {
+          "path": "scripts/check_release_environment.py",
+          "label": "Solo/team source-release preflight"
+        },
+        {
+          "path": "tests/test_release_environment.py",
+          "label": "Policy regression tests"
+        }
+      ],
+      "problems": [
+        "I24",
         "I22"
       ]
     }
@@ -1286,7 +1325,7 @@
     },
     {
       "id": "I02",
-      "title": "Main review and CI protection are now enforced",
+      "title": "Main PR and CI protections are enforced; solo approval adjustment tracked separately",
       "status": "resolved",
       "kind": "platform",
       "phases": [
@@ -1303,7 +1342,7 @@
       ],
       "detail": "The earlier private-plan/integration administration limitation prevented configuring protection through this integration. The owner applied Protect main ruleset 27498979; effective branch rules and its full configuration are now readable and active.",
       "resolution": "Verified main-only scope, no bypass actors, deletion/non-fast-forward rules, one approving/code-owner review, last-push approval, stale-review dismissal, resolved threads and an up-to-date GitHub Actions CI gate (app 15368). This is actual platform evidence, not an inference from passing tests.",
-      "next_action": "Retain the active ruleset and independent reviews; publish the new required database gate only through the reviewed workflow. This resolves repository main protection, not whole product/release acceptance.",
+      "next_action": "Keep required PRs, up-to-date CI, resolved conversations and no force-push/deletion/bypass. Remove impossible solo approval gates as tracked in I24. This resolves platform enforcement, not independent production review or product acceptance.",
       "sources": [
         {
           "path": "docs/github-security-settings.md",
@@ -1319,7 +1358,7 @@
         }
       ],
       "provenance": "GitHub API observation recorded during pipeline setup; verify again before production release.",
-      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710"
+      "source_revision": "911ef20b425782e9cbd5d7797ecfa41fbac6578a"
     },
     {
       "id": "I03",
@@ -2013,7 +2052,7 @@
     },
     {
       "id": "I22",
-      "title": "Protected source-release review environment is missing",
+      "title": "Tag-restricted source-release environment is missing",
       "status": "open",
       "kind": "platform-configuration",
       "phases": [
@@ -2026,10 +2065,10 @@
         "P05-09",
         "P10-09"
       ],
-      "detail": "GET environments/source-release returned HTTP 404. Main protection, Pages restrictions and private reporting are applied, but they do not provide the independent release-environment approval required for source prereleases.",
+      "detail": "GET environments/source-release returned HTTP 404. Main and Pages protection do not establish a source-release environment. The solo profile does not require a second maintainer for draft source-only prereleases.",
       "resolution": "",
-      "next_action": "Owner creates source-release with eligible independent reviewers, prevent self-review, no admin bypass and custom v* tag-only deployment policy, and controls release-tag creation. Then run the read-only checker. The prepared workflow must be reviewed/merged before it enforces this preflight on GitHub.",
-      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710",
+      "next_action": "Owner creates source-release without required reviewers, disables admin bypass and adds only a custom v* tag deployment policy; retain owner-controlled tag creation. Run the read-only solo checker after configuration. Review and merge the prepared workflow before relying on hosted enforcement.",
+      "source_revision": "911ef20b425782e9cbd5d7797ecfa41fbac6578a",
       "sources": [
         {
           "path": "scripts/check_release_environment.py",
@@ -2067,7 +2106,7 @@
       ],
       "detail": "PR #21 CI run 44191621036 ended in startup_failure with zero jobs. GitHub reported that checkout/setup/artifact actions were not allowed because actions had to belong to Ise-Tom. The same policy also blocked automatic dashboard refresh.",
       "resolution": "The owner explicitly confirmed allowing GitHub-created actions under the selected non-owner-actions policy, leaving Marketplace creators disabled. Full SHA pins and job-scoped token permissions are retained. The prepared branch and PR are now pushed, and the GitHub dashboard was refreshed directly from trusted main code.",
-      "next_action": "Verify the corrected PR CI run and retain independent review before merge; no Pages deployment, source release or cloud-environment publication is performed by this PR.",
+      "next_action": "All 13 jobs passed for PR #21 head 4660fe0 in CI run 44192717123 after the publisher-policy correction. Retain SHA pins and review diff/CI before merge; subsequent changes require fresh CI. No source release or cloud-environment publication was performed.",
       "source_revision": "efff796a0768b168636598cdefb0dd157297157d",
       "sources": [
         {
@@ -2084,6 +2123,39 @@
         }
       ],
       "provenance": "Actual public GitHub run annotation and the owner’s explicit settings-change confirmation; no automatic approval-review rejection occurred."
+    },
+    {
+      "id": "I24",
+      "title": "Team-only approval switches block the sole maintainer",
+      "status": "open",
+      "kind": "platform-configuration",
+      "phases": [
+        0,
+        1,
+        5,
+        10
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P05-09",
+        "P10-09"
+      ],
+      "detail": "PR #21 is authored by the sole repository owner, who cannot self-approve. The live ruleset now has approval count zero but code-owner, last-push and extra unattributed-change approvals remain enabled. Integration PUT was denied HTTP 403.",
+      "resolution": "",
+      "next_action": "In Protect main ruleset 27498979, keep approvals zero and disable the three remaining approval switches. Keep required PR, up-to-date CI gate, resolved conversations and force-push/deletion protection with no bypass. Verify effective rules and PR mergeability after the owner change; no second maintainer is needed for current development.",
+      "source_revision": "911ef20b425782e9cbd5d7797ecfa41fbac6578a",
+      "sources": [
+        {
+          "path": "docs/github-security-settings.md",
+          "label": "Solo owner settings"
+        },
+        {
+          "path": "docs/github-main-ruleset.json",
+          "label": "Desired main ruleset"
+        }
+      ],
+      "provenance": "Live ruleset and PR readback, plus actual HTTP 403 on the attempted configuration update; no settings change is inferred from committed JSON."
     }
   ],
   "focus_phase": 1,
