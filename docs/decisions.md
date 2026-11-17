@@ -1,6 +1,8 @@
 # Design decisions and release blockers
 
-The native-core and Linux-hosting directions are accepted. The following choices
+The native-core and Linux-hosting directions are accepted. Rust 1.100.0 is
+selected for the initial bounded lab slice in [ADR 0001](adr/0001-native-ldap-lab.md);
+this does not resolve broader crypto/storage/client decisions. The following choices
 need accountable named owners and evidence; proposals are not implemented facts.
 Independent design/testing may continue while an external decision is pending.
 Do not silently select license terms, buy infrastructure or weaken acceptance.
@@ -9,7 +11,7 @@ Do not silently select license terms, buy infrastructure or weaken acceptance.
 | --- | --- | --- | --- |
 | D-01 | Choose open source license, contributor terms and compatible dependency/specification obligations; review actual linking/distribution and reference-fixture rights | Project owner with legal review | Phase 0; public distribution/external contributions and all product/source releases |
 | D-02 | Ratify client builds/editions, functional levels, trust/migration and integration scope; Windows 11 and Server 2022/2025 plus Linux are proposed, macOS later | Product/protocol lead | Before operation conformance acceptance; first production blocked by an incomplete matrix |
-| D-03 | Qualify Rust/toolchain and async/parser/TLS/Kerberos dependencies, TypeScript UI plan and optional Go agents; compare security maintenance, portability, packaging and team capacity | Core/security maintainers | Before new product source and CI scope extension; no language selected merely by Python helper files |
+| D-03 | Qualify Rust/toolchain and async/parser/TLS/Kerberos dependencies, TypeScript UI plan and optional Go agents; compare security maintenance, portability, packaging and team capacity | Core/security maintainers | Rust 1.100.0 lab subset accepted in ADR 0001; broader runtime/crypto choices require review before corresponding source and CI scope extension |
 | D-04 | Select transactional store/key custody from crash/index/locking benchmarks; compare embedded transactional and isolated-store approaches, ffi/security and backup costs | Storage/security maintainers | Before persistent valuable credentials or stable disk formats; no database engine is invented here |
 | D-05 | Specify AD-compatible conflict/RID/FSMO/DRS metadata, naming contexts, snapshot epochs and required functional levels | Protocol/replication maintainers | Before multi-controller writes or fixed recovery formats; worked partition/concurrency/rollback cases required |
 | D-06 | Qualify GPO/SYSVOL consistency and inter-DC transport, including any Windows-DC coexistence/DFS-R profile; ordinary file copying is not compatible replication evidence | Protocol/policy maintainers | Before complete GPO/mixed-domain claims in Phases 2–3 |

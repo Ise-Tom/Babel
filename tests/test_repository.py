@@ -145,6 +145,35 @@ class VerifiedInstaller(unittest.TestCase):
 
 
 class InstallerAbuseCases(unittest.TestCase):
+    def test_unknown_tool_selection_is_rejected_before_network(self):
+        with (
+            tempfile.TemporaryDirectory() as directory,
+            patch.object(installer.urllib.request, "urlopen") as request,
+            self.assertRaises(SystemExit),
+        ):
+            installer.install(Path(directory), ["unknown-fixture"])
+        request.assert_not_called()
+
+    def test_tool_selection_does_not_fetch_unrequested_artifacts(self):
+        archive = VerifiedInstaller.archive()
+        with tempfile.TemporaryDirectory() as directory:
+            with (
+                patch.object(
+                    installer,
+                    "TOOLS",
+                    {
+                        "tool": ("https://example.com", hashlib.sha256(archive).hexdigest()),
+                        "other": ("http://invalid.example", "0" * 64),
+                    },
+                ),
+                patch.object(
+                    installer.urllib.request, "urlopen", return_value=io.BytesIO(archive)
+                ) as request,
+            ):
+                installer.install(Path(directory), ["tool"])
+                self.assertEqual(request.call_count, 1)
+                self.assertFalse((Path(directory) / "other").exists())
+
     def test_insecure_url_is_rejected_without_network(self):
         with tempfile.TemporaryDirectory() as directory:
             with (

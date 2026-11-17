@@ -1,7 +1,7 @@
 # System design baseline
 
-Status: reviewable native-core design; product behavior is not implemented or
-qualified. The owner selected a native AD-compatible core. All 18 detailed
+Status: reviewable native-core design with an initial bounded LDAP lab implementation;
+production behavior is not qualified. See [progress](phase-01-progress.md). The owner selected a native AD-compatible core. All 18 detailed
 [phase specifications](phases/README.md) refine this design and the
 [requirements](requirements.md). Library/database/toolchain decisions not yet
 experimentally justified are tracked in [decisions](decisions.md), not hidden
@@ -42,8 +42,8 @@ Proposed implementation: Rust for the native protocol/state integration and its
 initial management service, TypeScript for a future browser UI, Python for lab
 orchestration/tooling. Consider Go only when its agent/service advantages justify
 another maintained toolchain; Rust sensor components and platform bindings need
-OS-specific reviews. These are design recommendations requiring D-03/toolchain
-qualification before product source; current Python CI does not select the server
+OS-specific reviews. Rust 1.100.0 is now qualified only for the initial lab slice in
+[ADR 0001](adr/0001-native-ldap-lab.md); broader choices still require D-03 review; current Python CI does not select the server
 language. Avoid introducing several server languages before a measured need.
 
 Wire compatibility is qualified independently of language. Version internal APIs

@@ -1,6 +1,7 @@
 # Verification and evidence plan
 
-Current implementation: repository tooling only. Phase documents, threat models
+Current implementation: repository tooling and the first bounded Rust LDAP
+RootDSE lab slice described in [progress](phase-01-progress.md). Phase documents, threat models
 and acceptance criteria are executable-evidence specifications, not implemented
 AD/endpoint tests. The new design integrity check validates coverage/structure;
 it cannot prove protocol correctness, security or feasibility.

@@ -2,8 +2,9 @@
 
 Design baseline: native Babel, 2026-11-17. Owner scope is a **full AD-like
 production identity server hosted on Linux**, targeting **10,000 human identities
-and 10,000 computer accounts across three sites**. No product capacity, protocol
-or security requirement below is represented as implemented or measured.
+and 10,000 computer accounts across three sites**. The first LDAP lab subset is documented in [progress](phase-01-progress.md);
+no complete production capacity/protocol/security requirement below is claimed
+accepted from that partial evidence.
 
 The [18 phase specifications](phases/README.md) define the complete conception,
 interfaces/state, security/failure behavior and 180 verifiable phase requirements.
@@ -34,8 +35,9 @@ review. Design associations do not mark any requirement delivered.
 Babel owns its native AD-compatible directory/domain core; it must not require
 Samba AD DC, its database or its administration tools in production. Reuse of
 reviewed libraries is permitted. The [native-core plan](native-core-plan.md)
-defines model/protocol/conformance milestones; no native behavior is currently
-implemented. This direction does not relax any AD, security or capacity gate.
+defines model/protocol/conformance milestones; only the bounded read-only
+LDAP lab subset is currently implemented, with [progress](phase-01-progress.md)
+recording the remaining gates. This direction does not relax any AD, security or capacity gate.
 
 ## Linux server hosting
 

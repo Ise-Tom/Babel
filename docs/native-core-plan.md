@@ -33,6 +33,6 @@ versioning, reviewed invariants, upgrade and clean-room recovery evidence.
 
 The server remains Linux-hosted; language portability does not imply every-OS
 hosting/client support. Administration and later endpoint components use scoped
-core APIs, not raw-store access. No implementation or current conformance result
-is supplied by this plan. See [validation](validation-plan.md) before claiming a
+core APIs, not raw-store access. The first implementation is described in [Phase 1 progress](phase-01-progress.md);
+this dependency plan itself supplies no production conformance evidence. See [validation](validation-plan.md) before claiming a
 native operation or release gate is supported.

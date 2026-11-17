@@ -1,8 +1,8 @@
 # Babel
 
 Babel aims to be an open source Active Directory replacement with a clearer,
-safer administration experience. **This repository is a planning and delivery
-foundation; no directory server or production-ready identity service exists yet.**
+safer administration experience. **An experimental Rust LDAP RootDSE lab slice is implemented. No domain
+controller or production-ready identity service exists yet.**
 
 The first production release must be **hosted on Linux servers**, providing
 Windows domain compatibility for **10,000 identities across three sites**.
@@ -18,6 +18,7 @@ automation API/CLI. Babel will build its own native AD-compatible core, with
 reviewed libraries and a protocol conformance harness; Samba AD DC will not be a
 required production runtime. Advanced security capabilities extend this core product.
 
+- [Phase 1 implementation progress and native commands](docs/phase-01-progress.md)
 - [Product, security, and capacity requirements](docs/requirements.md)
 - [Complete phase designs and acceptance specifications](docs/phases/README.md)
 - [Verification plan](docs/validation-plan.md) and [open design decisions](docs/decisions.md)

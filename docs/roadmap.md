@@ -8,8 +8,8 @@ required. Reviewed libraries remain allowed; no custom cryptography is planned.
 
 Every phase now has a complete [design/requirements specification](phases/README.md).
 All 180 phase requirements refine and trace the 130 existing global capability
-IDs. Existing CI verifies document integrity and tooling only; no native server
-or endpoint capability is represented as implemented. Dates, staffing, cost and
+IDs. Existing CI now also checks the bounded Rust LDAP lab slice; full domain and
+endpoint acceptance remains outstanding. See [progress](phase-01-progress.md). Dates, staffing, cost and
 production readiness require the decisions and evidence listed below.
 
 | Phase | Design, scope and requirements | Delivery boundary |

@@ -17,6 +17,7 @@ runs cancel superseded runs; releases wait for their own full CI invocation.
 | Static security and dependency audit | Bandit on all shipped Python tools, offline Zizmor workflow-security checks, strict pip-audit of the complete locked CI dependency graph; known advisories block regardless of severity |
 | Workflow lint | actionlint, including shell analysis when provided by the runner |
 | Secret scan | Redacted Gitleaks scan of full available Git history and checked-out files |
+| Native LDAP lab | Pinned Rust build/format/Clippy, property/transport tests and independent ldap3 process smoke, >=90% instrumented core line coverage, address-sanitizer fuzz, Cargo.lock advisory/license/source audit and CycloneDX inventory |
 | CI gate | Always-run aggregate; any failed, skipped or cancelled prerequisite blocks success |
 
 Security/coverage evidence is uploaded with 14-day retention, including a
@@ -35,13 +36,13 @@ requirements-ci.in -o requirements-ci.txt`, review the entire diff and run all
 checks; rehashing an unexpected artifact is not a verification fix. Pin the
 chosen lock-generator version in the update process before automating refreshes.
 
-The [binary installer](../scripts/install_ci_tools.py) separately pins Gitleaks
-and actionlint HTTPS archives and their SHA-256 digests. It extracts only the
+The [binary installer](../scripts/install_ci_tools.py) separately pins Gitleaks, actionlint
+and Syft HTTPS archives and their SHA-256 digests. It extracts only the
 expected executable after verification and installs via a unique temporary
 file. Review upstream checksums/notes monthly and promptly for advisories;
 Dependabot does not update these binary pins. Workflow actions are SHA-pinned.
 Zizmor runs offline for deterministic, no-token PR analysis; online-only action
-advisory checks are outside its coverage. One documented low-severity syntax
+advisory checks are outside its coverage. Documented low-severity syntax
 exception retains the caller-commit `./` reusable-workflow reference because
 the pinned actionlint does not yet support Zizmor's suggested `$/` syntax.
 Bandit has scoped suppressions for reviewed fixed-argv Git subprocess calls,
@@ -54,8 +55,10 @@ empty acceptance rows and global requirements not assigned to any phase. It is
 a document-consistency gate, not proof of protocol/security correctness. See the
 [validation plan](validation-plan.md) for product evidence still required.
 
-The [scope guard](../scripts/check_ci_scope.py) deliberately supports only this
-repository's docs, workflow definitions and Python tooling. New application
+The [scope guard](../scripts/check_ci_scope.py) deliberately supports this
+repository's docs, workflow definitions, Python tooling and the explicitly
+registered native/babel-ldap plus fuzz components. Unregistered native components
+and other-language files still fail. New application
 source/manifests, Dockerfiles or scripts in another language fail until the
 contributor adds locked build/lint/type/unit/integration/security/dependency
 and packaging checks and updates the reviewed policy. This detects unfamiliar
@@ -63,8 +66,10 @@ trees; it cannot infer whether Python placed under `scripts/` is really a new
 application or defend against a maintainer weakening the guard. Review is still
 required for workflow/policy changes.
 
-There is still no application build, real domain/client integration, load/soak,
-fuzzing, independent security assessment or live deployment to exercise. Add
+The native lab now has executable build, independent RootDSE-client, fuzz,
+coverage and supply-chain gates; see [Phase 1 progress](phase-01-progress.md).
+There is still no full domain/client integration, load/soak,
+independent security assessment or production deployment to exercise. Add
 these with the corresponding implementation and trusted lab infrastructure;
 they remain production blockers in the [roadmap](roadmap.md). Code coverage
 excludes CLI entry-point dispatch; CLI scope/docs/packaging receive workflow
@@ -166,11 +171,41 @@ upgrade and restore jobs on the qualified Linux baseline, plus Windows client
 join/login/GPO tests against those Linux-hosted controllers. Keep Windows AD
 reference-domain tests separate from the standalone Linux-only server test so
 an accidental Windows Server runtime dependency is detected. Ubuntu workflow
-runners currently validate repository tooling only; they do not prove Babel
-can yet be hosted on Linux. Additional distributions/architectures and container
+runners now validate repository tooling and a loopback LDAP lab; that does not
+qualify full Linux domain-controller hosting. Additional distributions/architectures and container
 images need dedicated validation before being advertised as supported.
 
 Every future deploy must name an immutable artifact, snapshot/backup and schema
 migration prerequisites, readiness checks, rollback limits, abort conditions
 and operator ownership. Identity infrastructure cannot be deployed safely with
 a generic SSH copy/restart workflow.
+
+## Native lab CI boundary
+
+The reusable native workflow is a required prerequisite of `CI gate`, including
+source-prerelease reuse. It pins Rust 1.100.0, nightly-2026-11-17, cargo-llvm-cov
+0.9.1, cargo-deny 0.21.0 and cargo-fuzz 0.13.2; installs use official toolchain
+verification or checksum-verified/locked registry artifacts. Review these pins
+for compiler/tool advisories; Dependabot covers both Cargo manifests/locks but
+does not update toolchain or installed CLI pins automatically. No untrusted
+build cache, fork secret or privileged runner is introduced.
+
+Core coverage is >=90% lines, excluding test/CLI-dispatch files; the actual
+instrumented service is exercised by the independent client. The PR fuzzer runs
+up to 20k iterations/20 seconds with 16-KiB input/512-MiB RSS bounds; schedules use
+200k iterations/120 seconds. Both decode/respond and transport framing are fuzzed.
+Crashes retain synthetic reproductions; no production credentials enter corpora.
+
+Cargo audit/license/source policy includes development/build dependencies for the
+core and fuzz graphs. MIT/Apache/NCSA cover current development dependencies;
+NCSA is required by the libFuzzer harness. Only unpublished private workspace
+license checks are exempt while D-01 remains open; all public product/registry
+releases stay blocked. Duplicate versions are warnings, while unknown/yanked or
+advised dependencies, unapproved licenses/sources and wildcard dependencies fail.
+Native SBOM is a source Cargo.lock inventory including test/fuzz dependencies,
+not a claim those dependencies are present in the zero-runtime-dependency lab
+binary or that all product licensing decisions have been approved.
+
+The lab-binary tar/checksum is an internal 14-day CI artifact, not a production
+release/installer. No native source change completes Phase 1 as a whole. Windows
+join/authentication, storage/ACL, DNS, TLS and GPO remain explicit future gates.

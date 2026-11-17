@@ -42,11 +42,35 @@ class ComponentScope(unittest.TestCase):
             [],
         )
 
+    def test_reviewed_native_component_and_fuzz_scope_are_registered(self):
+        self.assertEqual(
+            scope.check(
+                ROOT,
+                [
+                    "Cargo.toml",
+                    "Cargo.lock",
+                    "rust-toolchain.toml",
+                    "deny.toml",
+                    "native/babel-ldap/Cargo.toml",
+                    "native/babel-ldap/src/lib.rs",
+                    "native/babel-ldap/tests/transport.rs",
+                    "native/babel-ldap/tests/smoke_ldap.py",
+                    "fuzz/Cargo.lock",
+                    "fuzz/fuzz_targets/ldap_frame.rs",
+                    "fuzz/corpus/ldap_frame/rootdse",
+                ],
+            ),
+            [],
+        )
+
     def test_new_languages_and_build_manifests_need_gates(self):
         names = [
             "src/server.go",
+            "native/unregistered/src/main.rs",
+            "native/babel-ldap/other.js",
+            "fuzz/unreviewed.rs",
             "src/server.py",
-            "Cargo.toml",
+            "unregistered/Cargo.toml",
             "package.json",
             "Dockerfile",
             "docs/package.json",

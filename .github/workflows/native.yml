@@ -1,0 +1,174 @@
+name: Native LDAP lab
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  CARGO_BUILD_JOBS: '2'
+  CARGO_TERM_COLOR: never
+  PIP_DISABLE_PIP_VERSION_CHECK: '1'
+
+jobs:
+  core:
+    name: Native build, tests and coverage
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Install hash-locked independent LDAP test client
+        run: python -m pip install --require-hashes -r requirements-ci.txt -r requirements-ci.in
+      - name: Activate pinned native toolchain
+        run: rustup toolchain install 1.100.0 --profile minimal --component rustfmt,clippy,llvm-tools-preview
+      - name: Native formatting and static checks
+        run: |
+          cargo fmt --all --check
+          cargo fmt --manifest-path fuzz/Cargo.toml --check
+          cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: Unit, negative, property and transport tests
+        run: cargo test --workspace --all-targets --locked
+      - name: Release build and independent LDAP client
+        run: |
+          cargo build --workspace --release --locked
+          python native/babel-ldap/tests/smoke_ldap.py target/release/babel-ldap
+      - name: Install pinned coverage tool
+        run: |
+          cargo install cargo-llvm-cov --version 0.9.1 --locked --root "$RUNNER_TEMP/babel-native-tools"
+          echo "$RUNNER_TEMP/babel-native-tools/bin" >> "$GITHUB_PATH"
+      - name: Instrumented core and process coverage (minimum 90 percent lines)
+        run: |
+          cargo llvm-cov --workspace --all-targets --no-report
+          LLVM_PROFILE_FILE="$PWD/target/llvm-cov-target/babel-smoke-%p-%m.profraw" \
+            python native/babel-ldap/tests/smoke_ldap.py target/llvm-cov-target/debug/babel-ldap
+          mkdir -p reports
+          cargo llvm-cov report --ignore-filename-regex '/tests/|/main.rs$' --fail-under-lines 90 \
+            --lcov --output-path reports/native-coverage.lcov
+      - name: Internal lab archive and checksum verification (not a release)
+        run: |
+          mkdir -p reports
+          tar --dereference -cf reports/babel-ldap-lab-linux-x86_64.tar -C target/release babel-ldap
+          (cd reports && sha256sum babel-ldap-lab-linux-x86_64.tar > native-SHA256SUMS && sha256sum -c native-SHA256SUMS)
+          mkdir -p "$RUNNER_TEMP/babel-native-extracted"
+          tar -xf reports/babel-ldap-lab-linux-x86_64.tar -C "$RUNNER_TEMP/babel-native-extracted"
+          python native/babel-ldap/tests/smoke_ldap.py "$RUNNER_TEMP/babel-native-extracted/babel-ldap"
+      - name: Preserve native evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: native-lab-evidence
+          path: reports/
+          retention-days: 14
+
+  supply-chain:
+    name: Native dependency and license audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Activate pinned toolchain and fetch locked graphs
+        run: |
+          rustup toolchain install 1.100.0 --profile minimal
+          cargo fetch --locked
+          cargo fetch --manifest-path fuzz/Cargo.toml --locked
+      - name: Install pinned audit and verified SBOM tools
+        run: |
+          cargo install cargo-deny --version 0.21.0 --locked --root "$RUNNER_TEMP/babel-native-tools"
+          echo "$RUNNER_TEMP/babel-native-tools/bin" >> "$GITHUB_PATH"
+          python3 scripts/install_ci_tools.py --directory "$RUNNER_TEMP/babel-ci-tools" --tools syft
+      - name: Audit advisories, licenses, bans and sources including development graphs
+        run: |
+          mkdir -p reports
+          cargo deny --locked --all-features --format json check 2>&1 | tee reports/native-audit.jsonl
+          cargo deny --manifest-path fuzz/Cargo.toml --config deny.toml --locked --all-features \
+            --format json check 2>&1 | tee reports/fuzz-audit.jsonl
+      - name: Native Cargo.lock CycloneDX dependency inventory
+        env:
+          SYFT_CHECK_FOR_APP_UPDATE: 'false'
+        run: |
+          "$RUNNER_TEMP/babel-ci-tools/syft" scan dir:. \
+            --source-name Babel-native-development --override-default-catalogers rust-cargo-lock-cataloger \
+            --exclude '**/target/**' --exclude '**/.git/**' --exclude '**/reports/**' \
+            -o cyclonedx-json=reports/native-dependencies.cdx.json
+          git diff --exit-code -- Cargo.lock fuzz/Cargo.lock
+      - name: Preserve dependency/security evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: native-supply-chain
+          path: reports/
+          retention-days: 14
+
+  fuzz:
+    name: Native sanitizer fuzz
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install pinned toolchains and fuzz driver
+        run: |
+          rustup toolchain install 1.100.0 --profile minimal
+          rustup toolchain install nightly-2026-11-17 --profile minimal
+          cargo +1.100.0 install cargo-fuzz --version 0.13.2 --locked --root "$RUNNER_TEMP/babel-native-tools"
+          echo "$RUNNER_TEMP/babel-native-tools/bin" >> "$GITHUB_PATH"
+          cargo +nightly-2026-11-17 fetch --manifest-path fuzz/Cargo.toml --locked
+      - name: Bounded address-sanitizer fuzz of decoder, responder and framing
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          CARGO_NET_OFFLINE: 'true'
+        run: |
+          mkdir -p reports
+          babel_fuzz_seconds=20
+          babel_fuzz_runs=20000
+          if [ "$EVENT_NAME" = schedule ]; then
+            babel_fuzz_seconds=120
+            babel_fuzz_runs=200000
+          fi
+          cargo +nightly-2026-11-17 fuzz run ldap_frame -- \
+            -runs="$babel_fuzz_runs" -max_total_time="$babel_fuzz_seconds" \
+            -max_len=16384 -rss_limit_mb=512 -seed=1 2>&1 | tee reports/native-fuzz.log
+          git diff --exit-code -- Cargo.lock fuzz/Cargo.lock
+      - name: Preserve fuzz logs and crash reproductions
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: native-fuzz-evidence
+          path: |
+            reports/native-fuzz.log
+            fuzz/artifacts/
+          retention-days: 14
+
+  gate:
+    name: Native gate
+    if: ${{ always() }}
+    needs: [core, supply-chain, fuzz]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Require every native job to succeed
+        env:
+          JOB_RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'PYTHON'
+          import json, os, sys
+          results = json.loads(os.environ['JOB_RESULTS'])
+          failures = [name for name, job in results.items() if job['result'] != 'success']
+          if failures:
+              sys.exit('Native gates did not succeed: ' + ', '.join(failures))
+          print('All native checks succeeded')
+          PYTHON

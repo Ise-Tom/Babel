@@ -2,7 +2,8 @@
 
 Design baseline: native AD-compatible core, Linux-hosted services and Windows/Linux
 client/agent qualification. These specifications replace the previous summary-only
-phase descriptions. Product implementation and acceptance remain outstanding.
+phase descriptions. The first LDAP lab increment has started; full product acceptance remains outstanding.
+See [progress](../phase-01-progress.md) for exact supported behavior.
 Existing CI validates tooling and document integrity; it does not validate AD.
 
 Each of the 18 phases has ten uniquely identified requirements, technical design,

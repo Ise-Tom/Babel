@@ -15,6 +15,10 @@ ROOT_FILES = {
     "pyproject.toml",
     "requirements-ci.in",
     "requirements-ci.txt",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "deny.toml",
 }
 
 
@@ -24,6 +28,26 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
         path = Path(name)
         allowed = (
             name in ROOT_FILES
+            or (
+                path.parts[:2] == ("native", "babel-ldap")
+                and (
+                    name == "native/babel-ldap/Cargo.toml"
+                    or (
+                        len(path.parts) >= 4
+                        and path.parts[2] in {"src", "tests"}
+                        and path.suffix == ".rs"
+                    )
+                    or name == "native/babel-ldap/tests/smoke_ldap.py"
+                )
+            )
+            or name in {"fuzz/Cargo.toml", "fuzz/Cargo.lock", "fuzz/fuzz_targets/ldap_frame.rs"}
+            or name
+            in {
+                "fuzz/corpus/ldap_frame/anonymous-bind",
+                "fuzz/corpus/ldap_frame/unbind",
+                "fuzz/corpus/ldap_frame/oversized",
+                "fuzz/corpus/ldap_frame/rootdse",
+            }
             or (path.parts[0] == "docs" and path.suffix == ".md")
             or (path.parts[0] in {"scripts", "tests"} and path.suffix == ".py")
             or (path.parts[0] == ".github" and path.suffix in {".yml", ".yaml", ".md"})

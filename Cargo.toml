@@ -1,0 +1,4 @@
+[workspace]
+members = ["native/babel-ldap"]
+exclude = ["fuzz"]
+resolver = "2"

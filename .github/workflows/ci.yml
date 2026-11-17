@@ -42,8 +42,8 @@ jobs:
           python scripts/check_docs.py
       - name: Formatting, lint and strict types
         run: |
-          ruff format --check scripts tests
-          ruff check scripts tests
+          ruff format --check scripts tests native/babel-ldap/tests/smoke_ldap.py
+          ruff check scripts tests native/babel-ldap/tests/smoke_ldap.py
           mypy
       - name: Source archive smoke test
         run: |
@@ -124,7 +124,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Install verified CI binaries
-        run: python3 scripts/install_ci_tools.py --directory "$RUNNER_TEMP/babel-ci-tools"
+        run: python3 scripts/install_ci_tools.py --directory "$RUNNER_TEMP/babel-ci-tools" --tools actionlint
       - name: Validate Actions syntax and shell snippets
         run: '"$RUNNER_TEMP/babel-ci-tools/actionlint"'
 
@@ -138,16 +138,22 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Install verified CI binaries
-        run: python3 scripts/install_ci_tools.py --directory "$RUNNER_TEMP/babel-ci-tools"
+        run: python3 scripts/install_ci_tools.py --directory "$RUNNER_TEMP/babel-ci-tools" --tools gitleaks
       - name: Scan full Git history and checked-out files
         run: |
           "$RUNNER_TEMP/babel-ci-tools/gitleaks" git --redact --no-banner .
           "$RUNNER_TEMP/babel-ci-tools/gitleaks" dir --redact --no-banner .
 
+  native:
+    # Caller-commit workflow; ./ is supported by the pinned actionlint.
+    uses: ./.github/workflows/native.yml # zizmor: ignore[self-repository]
+    permissions:
+      contents: read
+
   gate:
     name: CI gate
     if: ${{ always() }}
-    needs: [repository, tests, security, workflows, secrets]
+    needs: [repository, tests, security, workflows, secrets, native]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

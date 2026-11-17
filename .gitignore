@@ -8,3 +8,12 @@ __pycache__/
 .coverage
 coverage.xml
 /reports/
+/target/
+/fuzz/target/
+/fuzz/artifacts/
+/fuzz/coverage/
+/fuzz/corpus/ldap_frame/*
+!/fuzz/corpus/ldap_frame/anonymous-bind
+!/fuzz/corpus/ldap_frame/unbind
+!/fuzz/corpus/ldap_frame/oversized
+!/fuzz/corpus/ldap_frame/rootdse

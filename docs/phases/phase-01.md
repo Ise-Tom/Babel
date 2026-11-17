@@ -3,6 +3,10 @@
 Status: specified; product acceptance not demonstrated.
 Owner roles: protocol/storage and management maintainers; named accountable owners must be assigned before execution.
 
+The first bounded Rust LDAP lab increment has started; see
+[implementation progress](../phase-01-progress.md) and [ADR 0001](../adr/0001-native-ldap-lab.md).
+No full phase requirement is marked accepted by this source change.
+
 ## Scope and entry
 
 Requires Phase 0 model/toolchain gates for the component being implemented. Deliver bounded N-01–N-06 increments; partial protocol previews use synthetic data and cannot be advertised as production AD.
