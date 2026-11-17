@@ -10,7 +10,7 @@ GitHub Actions job token, and the private GitHub view uses your existing login.
 
 The preferred interface is the compact interactive board: all 18 phases fit in
 the tested 1440×1000 desktop viewport, with one phase picker and searchable cards.
-Choose a phase, then a substep; implementation explanations and problem histories
+Choose a phase, then a requirement; implementation explanations and problem histories
 open individually. Design and acceptance details remain available on demand.
 Cards can be opened anywhere, keyboard focus moves to the selected page, and
 mobile layouts use two columns plus the direct phase picker.
@@ -59,13 +59,13 @@ completion; reload the stable web address to see a newly deployed snapshot.
 **[Open the GitHub dashboard](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md).**
 Bookmark this URL. It uses the private repository's existing GitHub permissions;
 no new hosting account, token, public site or plan upgrade is needed. The page
-shows a phase board, expandable substeps, feature definitions, implementation
+shows a phase board, expandable requirements, feature definitions, implementation
 explanations and the issue journal. Use the browser's Find command to search.
 The standalone HTML provides the richer interactive filters/export interface.
 
 The private report also shows open PR descriptions, files, draft/review and CI
 state, and proposed work/problem updates from each PR's `dashboard/progress.json`.
-Those entries link to immutable PR-head evidence and to affected substeps. They
+Those entries link to immutable PR-head evidence and to affected requirements. They
 are shown separately from the checked main revision: an implemented increment
 inside a PR is pending merge, and does not accept a requirement or phase.
 The collector bounds untrusted JSON/text and reads it only through GitHub APIs;
@@ -114,7 +114,7 @@ interactive UI remains a hosting/access-control decision.
 
 - Phase board and direct phase navigation, including design, state/interfaces,
   security/failure, capacity and dependency notes from the canonical phase files.
-- Every requirement as an expandable substep with associated capability IDs and
+- Every requirement as an expandable item with associated capability IDs and
   the acceptance evidence still required. Feature dialogs show the full contract.
 - Narrow implemented increments with how, recorded validation, limitations and
   links to the source revision. Design artifacts are labeled separately.
@@ -150,9 +150,15 @@ choice. No production identities, credentials or customer evidence belong here.
 
 [Phase documents](phases/README.md) own requirements/design; the four capability
 catalogs own feature definitions. [Associations](../dashboard/associations.json)
-map every substep to existing features. [Progress facts](../dashboard/progress.json)
+map every requirement to existing features. [Progress facts](../dashboard/progress.json)
 provide dated overrides, implemented work, incidents and evidence references.
 The [model builder](../scripts/build_dashboard.py) combines and validates these.
+
+Requirement counts and granular work increments are independent and may differ
+between phases. There is no ten-item quota or requirement for contiguous IDs.
+Existing scope and IDs remain intact; adding or splitting tasks must follow the
+actual work and dependencies, not a target count. Counts do not measure effort.
+Independent work can overlap when its documented entry dependencies are met.
 
 A **planned** requirement has no implementation evidence recorded. **In progress**
 means partial work, not acceptance. **Blocked** records an explicit unmet
@@ -174,11 +180,17 @@ test/review evidence, not an automatically incremented completion counter.
 
 1. Update canonical phase/feature definitions when scope/design changes. Maintain
    stable IDs and the existing design review rules.
-2. Update associations for changed substeps; unknown/missing IDs fail validation.
+2. Update associations for changed requirements; unknown/missing IDs fail validation.
 3. Add granular work records with what/how, verified behavior, limits and real
    source files. Keep false starts/resolved incidents with truthful provenance.
-4. Change requirement status only with an explicit explanation. Record acceptance
-   review separately; green CI or a documentation edit alone is insufficient.
+4. Ask the project owner concrete acceptance questions when an increment meets a
+   requirement: identify the ID, exact scope, source/PR, tests and remaining limits.
+   Offer acceptance, keeping it pending, or requesting changes. Record an explicit
+   affirmative answer as reviewer/date/evidence on that requirement. A pending
+   question or silence leaves acceptance unchanged. If the delivered scope is
+   narrower than the requirement, keep the requirement open and propose a stable
+   child requirement with its own criteria before requesting its acceptance.
+   Green CI alone is insufficient; phase acceptance remains a separate review.
 5. Refresh snapshot commit/date/CI/PR observations when actually checked. Set
    `source_revision` on work/problem records to preserve historical source links
    independently of that snapshot. Review

@@ -102,7 +102,7 @@ function header(eyebrow: string, title: string, description: string): HTMLElemen
   const result = el('section', 'page-heading'); result.append(el('div', 'eyebrow', eyebrow), el('h1', '', title), el('p', 'intro', description)); return result;
 }
 function notice(): HTMLElement {
-  return el('div', 'notice', 'Implemented increments are narrower than accepted requirements. Recorded code and design artifacts do not automatically accept a phase or establish production readiness.');
+  return el('div', 'notice', 'Implemented increments are narrower than accepted requirements. Acceptance follows an explicit owner review of the scope, evidence and limits. Phase sizes vary; counts are not effort percentages.');
 }
 function stats(): HTMLElement {
   const result = el('section', 'stats'); result.setAttribute('aria-label', 'Snapshot summary');
@@ -159,7 +159,7 @@ function requirement(step: Step): HTMLDetailsElement {
   detail.append(body); return detail;
 }
 function phaseView(phase: Phase): HTMLElement {
-  const result = el('div'); result.append(header(`PHASE ${String(phase.id).padStart(2, '0')} / ${phase.id <= 5 ? 'CORE PLATFORM' : phase.id <= 10 ? 'SECURITY & OPERATIONS' : 'ENDPOINT SERVICES'}`, phase.title, 'Open a substep to inspect its features, work and problems.'));
+  const result = el('div'); result.append(header(`PHASE ${String(phase.id).padStart(2, '0')} / ${phase.id <= 5 ? 'CORE PLATFORM' : phase.id <= 10 ? 'SECURITY & OPERATIONS' : 'ENDPOINT SERVICES'}`, phase.title, 'Open a requirement to inspect its features, work and problems.'));
   const meta = el('div', 'phase-meta'); meta.append(badge(phase.status), el('span', 'muted', `${phase.steps.filter(s => s.status === 'accepted').length} of ${phase.steps.length} requirements accepted`), link('Canonical specification →', phase.url, 'text-link')); result.append(meta, notice());
   const architecture = el('details', 'design-notes'); const summary = el('summary', '', 'Design, dependencies & operational constraints'); architecture.append(summary);
   const notes = el('div', 'notes-body');
@@ -175,7 +175,7 @@ function phaseView(phase: Phase): HTMLElement {
     const open = !details.every(item => item.open); for (const item of details) item.open = open;
   });
   toggle.disabled = steps.length === 0;
-  listHead.append(el('h2', '', 'Substeps & requirements'), el('span', 'muted', `${steps.length} of ${phase.steps.length} shown`), toggle); result.append(listHead);
+  listHead.append(el('h2', '', 'Requirements & acceptance'), el('span', 'muted', `${steps.length} of ${phase.steps.length} shown`), toggle); result.append(listHead);
   result.addEventListener('toggle', () => {
     const details = [...result.querySelectorAll<HTMLDetailsElement>('.requirement')];
     const all = details.length > 0 && details.every(item => item.open);
