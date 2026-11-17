@@ -26,12 +26,15 @@ regularly; a pin prevents drift but does not make an old version safe forever.
 - Base-scope empty-DN RootDSE search with `(objectClass=*)`, projected
   `objectClass`, `supportedLDAPVersion`, `vendorName` and `vendorVersion`.
   Explicit names are case-insensitive; `*`, `+`, `1.1` and `typesOnly` are tested.
+- The development extension in [ADR 0002](0002-bounded-rootdse-filters.md) adds
+  bounded presence/objectClass equality and AND/OR/NOT with Undefined semantics.
 - No AD capability OIDs, naming contexts, StartTLS, schema, credentials, accounts,
-  controls, general filters/search or domain operations are advertised. Unknown
+  controls, general directory/schema matching or domain operations are advertised. Unknown
   controls/malformed requests close the session; unsupported operations never
   return a fabricated authentication or account success.
 - Maximum 16 KiB total frame, four BER length octets, 64 attributes of 64 bytes,
-  1,024-byte base/bind DNs; checked lengths before body allocation, no recursion.
+  1,024-byte base/bind DNs; checked lengths before body allocation. The filter
+  extension additionally enforces depth/node/assertion budgets before evaluation.
 - Loopback-only single-active-connection service, five-second **total** session
   budget enforced on every read/write, 32 requests/session. Fragmented/coalesced
   TCP messages are supported. A slow/malformed client cannot create unbounded

@@ -63,10 +63,28 @@ shows a phase board, expandable substeps, feature definitions, implementation
 explanations and the issue journal. Use the browser's Find command to search.
 The standalone HTML provides the richer interactive filters/export interface.
 
-The initial report is labeled **development preview**. After the dashboard PR
-is merged, a separate publishing workflow updates the report automatically on pushes
-to main, after the full CI workflow succeeds. Manual CI runs on
-main can also refresh it. Failed CI leaves the previous report available.
+The private report also shows open PR descriptions, files, draft/review and CI
+state, and proposed work/problem updates from each PR's `dashboard/progress.json`.
+Those entries link to immutable PR-head evidence and to affected substeps. They
+are shown separately from the checked main revision: an implemented increment
+inside a PR is pending merge, and does not accept a requirement or phase.
+The collector bounds untrusted JSON/text and reads it only through GitHub APIs;
+it never checks out or executes PR source. Fork PRs retain description/file/CI
+metadata but their structured progress is not imported. Missing/invalid progress
+produces an explicit note instead of fabricated completion.
+
+PR CI requested/in-progress/completed events refresh the report, including failed
+PR checks; main CI state changes and a manual main dispatch can refresh it too.
+The publisher executes only default-branch code and records current main CI health,
+including failures. This private report is not a deployment or release gate; public
+Pages still requires successful main CI. A PR closed without another CI event is removed on
+the next refresh; it is not a live browser feed. Metadata records its check time.
+Listings are bounded to 50 PRs/100 files per PR and flag truncation. This overlay
+is private-report-only: public HTML/Pages artifacts never fetch private PR bodies.
+
+Development previews are labeled explicitly. After the PR tracking change is
+merged, the separate publishing workflow includes proposals automatically.
+Outdated report revisions and publication failures retain the previous report.
 Progress explanations still need reviewed source changes; publishing does not
 infer acceptance from green checks or rewrite the evidence snapshot date.
 
@@ -84,8 +102,9 @@ python scripts/render_dashboard.py --revision <full-source-commit> --preview
 ```
 
 The [publisher](../scripts/publish_dashboard.py) uses the runner's GitHub CLI and
-job token to update only `dashboard-live`. Pull requests, forks, tags and scheduled
-runs do not publish. If a repository policy denies the job write access, its error
+job token to update only `dashboard-live`. The [collector](../scripts/collect_pr_progress.py)
+reads PR metadata as data; no PR-head code executes with the publishing token.
+If a repository policy denies the job write access, its error
 appears in the publishing workflow; the previous report remains available. The publisher never bypasses
 that policy. This route uses GitHub's Markdown rendering, not GitHub Pages; the
 current integration cannot configure Pages (HTTP 403). A separately hosted full
@@ -160,7 +179,9 @@ test/review evidence, not an automatically incremented completion counter.
    source files. Keep false starts/resolved incidents with truthful provenance.
 4. Change requirement status only with an explicit explanation. Record acceptance
    review separately; green CI or a documentation edit alone is insufficient.
-5. Refresh snapshot commit/date/CI/PR observations when actually checked. Review
+5. Refresh snapshot commit/date/CI/PR observations when actually checked. Set
+   `source_revision` on work/problem records to preserve historical source links
+   independently of that snapshot. Review
    facts as code; this reporting tool does not grant release authority.
 6. Build and run tests. Do not commit generated HTML, installed dependencies,
    test output or browser binaries; CI retains the reviewed build artifact.

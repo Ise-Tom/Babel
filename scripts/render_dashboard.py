@@ -38,6 +38,101 @@ def source_links(items: list[dict[str, str]]) -> str:
     return " · ".join(link(item["path"], item["url"]) for item in items)
 
 
+def open_pr_section(data: dict[str, Any]) -> list[str]:
+    if "pullRequests" not in data:
+        return []
+    prs = data["pullRequests"]
+    lines = [
+        "",
+        "## Open pull requests",
+        "",
+        "Main-branch totals above exclude these proposals. CI success does not merge "
+        "a PR or accept a requirement. Validation below is author-recorded until reviewed.",
+        "",
+        f"GitHub metadata checked: {escaped(data['prObservation']['checked_at'])}.",
+        "",
+        f"**Current main CI: {escaped(data['mainCi']['state'])}.** "
+        "A failed build is shown here; it does not qualify a public deployment or product release.",
+        "",
+    ]
+    if data["prObservation"]["limited"]:
+        lines.extend(["PR listing is limited to the first 50 open PRs.", ""])
+    if not prs:
+        lines.extend(["No open pull requests against main were observed.", ""])
+    for pr in prs:
+        label = f"#{pr['number']} · {pr['title']}"
+        lines.extend(
+            [
+                f"### {link(label, pr['url'])}",
+                "",
+                f"**{'Draft' if pr['draft'] else 'In review'} · Pending merge · "
+                f"CI: {escaped(pr['ci'])}** · Head {escaped(pr['head'][:7])}",
+                "",
+                "<details>",
+                "<summary>Description, changed files and proposed progress</summary>",
+                "",
+                "**PR description (untrusted text):**",
+                "",
+            ]
+        )
+        lines.extend(
+            "    " + line for line in (pr["body"] or "No description provided.").splitlines()
+        )
+        lines.extend(["", "**Changed files:**", ""])
+        lines.extend(f"- {escaped(name)}" for name in pr["files"])
+        if pr["note"]:
+            lines.extend(["", escaped(pr["note"]), ""])
+        if not pr["workItems"]:
+            lines.extend(
+                [
+                    "",
+                    "No structured work increment delta was imported; "
+                    "inspect the description/files.",
+                    "",
+                ]
+            )
+        for item in pr["workItems"]:
+            lines.extend(
+                [
+                    "",
+                    f"#### Proposed {escaped(item['id'])} · {escaped(item['title'])}",
+                    "",
+                    f"**Substeps:** {', '.join(escaped(r) for r in item['requirements'])}",
+                    "",
+                    f"**How it was done:** {escaped(item['how'])}",
+                    "",
+                    f"**Recorded validation:** {escaped(item['verification'])}",
+                    "",
+                    f"**Limits and remaining work:** {escaped(item['limitations'])}",
+                    "",
+                    f"**PR-head evidence:** {source_links(item['sources'])}",
+                    "",
+                ]
+            )
+        for problem in pr["problems"]:
+            lines.extend(
+                [
+                    f"#### Proposed problem update: {escaped(problem['id'])} · "
+                    f"{escaped(problem['title'])}",
+                    "",
+                    f"**Proposed status:** {escaped(problem['status'])}",
+                    "",
+                    escaped(problem["detail"]),
+                    "",
+                    f"**Resolution:** {escaped(problem['resolution'] or 'Still open')}",
+                    "",
+                    f"**Next action:** {escaped(problem['next_action'])}",
+                    "",
+                    f"**Provenance:** {escaped(problem['provenance'])}",
+                    "",
+                    source_links(problem["sources"]),
+                    "",
+                ]
+            )
+        lines.extend(["", "</details>", ""])
+    return lines
+
+
 def render(data: dict[str, Any], *, preview: bool = False) -> str:
     phases = data["phases"]
     work = data["workItems"]
@@ -55,8 +150,12 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
         "Read this page in your browser using the repository's existing GitHub access. "
         "Bookmark this URL; no download or additional account is needed.",
         "",
-        "> **Development preview.** Automatic updates start after the dashboard PR is merged."
+        "> **Development preview.** "
+        "Automatic PR synchronization starts after this change is merged."
         if preview
+        else "> Main code and open-PR proposals are reported separately. "
+        "CI failures remain visible; public deployment still requires successful main CI."
+        if "mainCi" in data
         else "> Updated automatically after the full CI gate passes on main. "
         "A failed build preserves the last published report.",
         "",
@@ -98,6 +197,7 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
             f"| [{number:02} · {escaped(phase['title'])}](#phase-{number:02}) "
             f"| {LABELS[phase['status']]} | {count}/{len(phase['steps'])} | {increments} |"
         )
+    lines.extend(open_pr_section(data))
     for phase in phases:
         number = phase["id"]
         lines.extend(
@@ -143,6 +243,24 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
                     [
                         f"**Acceptance review:** {escaped(proof['reviewer'])}, "
                         f"{escaped(proof['date'])}. {escaped(proof['evidence'])}",
+                        "",
+                    ]
+                )
+            pending = [
+                pr
+                for pr in data.get("pullRequests", [])
+                if any(
+                    step["id"] in item["requirements"] for item in pr["workItems"] + pr["problems"]
+                )
+            ]
+            if pending:
+                lines.extend(
+                    [
+                        "**Pending PR proposals:** "
+                        + "; ".join(
+                            link(f"#{pr['number']}: {pr['title']}", pr["url"]) for pr in pending
+                        )
+                        + ". See [open PR progress](#open-pull-requests).",
                         "",
                     ]
                 )

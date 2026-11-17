@@ -140,7 +140,7 @@ fn unsupported_searches_return_failure_not_empty_success() {
     for (base, scope, filter, code) in [
         (b"dc=example".as_slice(), 0, tlv(0x87, b"objectClass"), 32),
         (b"".as_slice(), 2, tlv(0x87, b"objectClass"), 53),
-        (b"".as_slice(), 0, tlv(0x87, b"cn"), 53),
+        (b"".as_slice(), 0, tlv(0xa4, b""), 53),
     ] {
         let response =
             respond(&decode(&search(base, scope, &filter, &[], false)).unwrap()).unwrap();
@@ -210,10 +210,218 @@ fn controls_attribute_limits_and_large_frames_fail_closed() {
 }
 
 #[test]
-fn unsupported_nested_filters_are_not_recursively_evaluated() {
+fn malformed_nested_filters_are_rejected() {
     let filter = tlv(0xa0, &vec![0xa0; 4000]);
-    let request = decode(&search(b"", 0, &filter, &[], false)).unwrap();
-    assert!(has(&respond(&request).unwrap(), &[10, 1, 53]));
+    assert!(decode(&search(b"", 0, &filter, &[], false)).is_err());
+}
+
+fn equality(name: &[u8], value: &[u8]) -> Vec<u8> {
+    let mut assertion = tlv(4, name);
+    assertion.extend(tlv(4, value));
+    tlv(0xa3, &assertion)
+}
+
+fn filter_reply(filter: &[u8]) -> Vec<u8> {
+    respond(&decode(&search(b"", 0, filter, &[b"vendorName"], false)).unwrap()).unwrap()
+}
+
+#[test]
+fn rootdse_presence_and_object_class_equality_support_boolean_filters() {
+    for filter in [
+        tlv(0x87, b"VENDORNAME"),
+        equality(b"OBJECTCLASS", b"TOP"),
+        equality(b"2.5.4.0", b"2.5.6.0"),
+        tlv(0xa2, &equality(b"objectClass", b"person")),
+        tlv(
+            0xa0,
+            &[
+                equality(b"objectClass", b"top"),
+                tlv(0x87, b"vendorVersion"),
+            ]
+            .concat(),
+        ),
+        tlv(
+            0xa1,
+            &[
+                equality(b"objectClass", b"person"),
+                equality(b"objectClass", b"top"),
+            ]
+            .concat(),
+        ),
+    ] {
+        let reply = filter_reply(&filter);
+        assert!(has(&reply, b"Babel"));
+        assert!(has(&reply, &[10, 1, 0]));
+    }
+}
+
+#[test]
+fn nonmatches_and_undefined_filters_return_success_without_an_entry() {
+    for filter in [
+        equality(b"objectClass", b"person"),
+        tlv(0x87, b"unknownAttribute"),
+        tlv(0xa2, &tlv(0x87, b"unknownAttribute")),
+        equality(b"unknownAttribute", b"top"),
+        tlv(0xa2, &equality(b"unknownAttribute", b"top")),
+        equality(b"objectClass", b"*"),
+        tlv(0xa2, &equality(b"objectClass", b"*")),
+        equality(b"objectClass", b"top;lang-en"),
+        equality(b"objectClass", &[0xff]),
+        tlv(
+            0xa0,
+            &[
+                tlv(0x87, b"unknownAttribute"),
+                equality(b"objectClass", b"person"),
+            ]
+            .concat(),
+        ),
+        tlv(
+            0xa1,
+            &[
+                tlv(0x87, b"unknownAttribute"),
+                equality(b"objectClass", b"person"),
+            ]
+            .concat(),
+        ),
+    ] {
+        let reply = filter_reply(&filter);
+        assert!(!has(&reply, b"Babel"));
+        assert!(has(&reply, &[10, 1, 0]));
+    }
+    let undefined = tlv(0x87, b"unknownAttribute");
+    assert!(has(
+        &filter_reply(&tlv(
+            0xa1,
+            &[undefined.clone(), equality(b"objectClass", b"top")].concat()
+        )),
+        b"Babel"
+    ));
+    assert!(!has(
+        &filter_reply(&tlv(
+            0xa0,
+            &[undefined, equality(b"objectClass", b"top")].concat()
+        )),
+        b"Babel"
+    ));
+}
+
+#[test]
+fn unsupported_matching_is_not_hidden_by_boolean_short_circuiting() {
+    for unsupported in [
+        tlv(0xa4, b""),
+        tlv(0xa5, b""),
+        tlv(0xa6, b""),
+        tlv(0xa8, b""),
+        tlv(0xa9, b""),
+        equality(b"vendorName", b"Babel"),
+    ] {
+        for filter in [
+            unsupported.clone(),
+            tlv(0xa2, &unsupported),
+            tlv(
+                0xa1,
+                &[equality(b"objectClass", b"top"), unsupported.clone()].concat(),
+            ),
+            tlv(
+                0xa0,
+                &[equality(b"objectClass", b"person"), unsupported].concat(),
+            ),
+        ] {
+            let reply = filter_reply(&filter);
+            assert!(has(&reply, &[10, 1, 53]));
+            assert!(!has(&reply, b"Babel"));
+        }
+    }
+}
+
+#[test]
+fn filter_depth_node_assertion_and_structural_limits_are_enforced() {
+    use babel_ldap::{MAX_ASSERTION_BYTES, MAX_FILTER_DEPTH, MAX_FILTER_NODES};
+    let mut nested = tlv(0x87, b"objectClass");
+    for _ in 1..MAX_FILTER_DEPTH {
+        nested = tlv(0xa2, &nested);
+    }
+    assert!(decode(&search(b"", 0, &nested, &[], false)).is_ok());
+    nested = tlv(0xa2, &nested);
+    assert_eq!(
+        decode(&search(b"", 0, &nested, &[], false)),
+        Err(DecodeError::FilterLimit)
+    );
+    for count in [MAX_FILTER_NODES - 1, MAX_FILTER_NODES] {
+        let filter = tlv(0xa0, &tlv(0x87, b"objectClass").repeat(count));
+        assert_eq!(
+            decode(&search(b"", 0, &filter, &[], false)).is_ok(),
+            count < MAX_FILTER_NODES
+        );
+    }
+    assert!(
+        decode(&search(
+            b"",
+            0,
+            &equality(b"objectClass", &vec![b'a'; MAX_ASSERTION_BYTES]),
+            &[],
+            false
+        ))
+        .is_ok()
+    );
+    assert_eq!(
+        decode(&search(
+            b"",
+            0,
+            &equality(b"objectClass", &vec![b'a'; MAX_ASSERTION_BYTES + 1]),
+            &[],
+            false
+        )),
+        Err(DecodeError::FilterLimit)
+    );
+    for filter in [
+        tlv(0xa0, b""),
+        tlv(0xa1, b""),
+        tlv(0xa2, b""),
+        tlv(0xa2, &tlv(0x87, b"objectClass").repeat(2)),
+        tlv(0xa7, b""),
+        tlv(0x87, b"*"),
+        equality(b"", b"top"),
+        equality(&[b'a'; 65], b"top"),
+        tlv(0xa3, &tlv(4, b"objectClass")),
+    ] {
+        assert!(decode(&search(b"", 0, &filter, &[], false)).is_err());
+    }
+}
+
+#[test]
+fn filter_assertions_are_never_retained_or_echoed() {
+    let frame = search(
+        b"",
+        0,
+        &equality(b"unknownAttribute", b"fixture-not-a-credential"),
+        &[],
+        false,
+    );
+    let request = decode(&frame).unwrap();
+    assert!(!format!("{request:?}").contains("fixture-not-a-credential"));
+    assert!(!has(
+        &respond(&request).unwrap(),
+        b"fixture-not-a-credential"
+    ));
+}
+
+proptest! {
+    #![proptest_config(ProptestConfig::with_cases(256))]
+    #[test]
+    fn boolean_filter_order_and_double_negation_preserve_results(a in 0usize..3, b in 0usize..3, and in any::<bool>()) {
+        let leaves = [equality(b"objectClass", b"top"), equality(b"objectClass", b"person"), tlv(0x87, b"unknownAttribute")];
+        let tag = if and { 0xa0 } else { 0xa1 };
+        let filter = tlv(tag, &[leaves[a].clone(), leaves[b].clone()].concat());
+        let reversed = tlv(tag, &[leaves[b].clone(), leaves[a].clone()].concat());
+        prop_assert_eq!(filter_reply(&filter), filter_reply(&reversed));
+        prop_assert_eq!(filter_reply(&filter), filter_reply(&tlv(0xa2, &tlv(0xa2, &filter))));
+    }
+    #[test]
+    fn object_class_assertions_match_only_the_public_class(value in "[a-zA-Z][a-zA-Z0-9-]{0,40}") {
+        let reply = filter_reply(&equality(b"objectClass", value.as_bytes()));
+        prop_assert_eq!(has(&reply, b"Babel"), value.eq_ignore_ascii_case("top"));
+    }
 }
 
 proptest! {

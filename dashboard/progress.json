@@ -2,10 +2,10 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-17",
-    "commit": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44089549252",
-    "ci_result": "passed",
-    "checks_passed": 11,
+    "commit": "fc3be723bbacf65976a59216d8a035796a24d5eb",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44142657828",
+    "ci_result": "failed",
+    "checks_passed": 10,
     "pull_requests": [
       {
         "number": 4,
@@ -26,9 +26,44 @@
         "number": 7,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 9,
+        "state": "merged",
+        "draft": false
+      },
+      {
+        "number": 10,
+        "state": "merged",
+        "draft": false
+      },
+      {
+        "number": 11,
+        "state": "merged",
+        "draft": false
+      },
+      {
+        "number": 12,
+        "state": "merged",
+        "draft": false
+      },
+      {
+        "number": 13,
+        "state": "merged",
+        "draft": false
+      },
+      {
+        "number": 14,
+        "state": "merged",
+        "draft": false
+      },
+      {
+        "number": 15,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Verified main-branch snapshot. PRs 4–7 were merged when checked; this is not live GitHub or production status."
+    "note": "Recorded main-branch snapshot: PRs 4–7 and 9–15 were merged when checked. Main CI currently fails its npm audit (GHSA-fc5q-39xc-vjpf); proposed fixes and development work appear separately under open PRs."
   },
   "requirements": {
     "P00-01": {
@@ -81,7 +116,7 @@
     },
     "P01-04": {
       "status": "in_progress",
-      "note": "Only the public RootDSE base-search subset works; DNS and broader discovery/read behavior are missing."
+      "note": "Read-only RootDSE discovery exists. The development PR extends presence/objectClass equality and boolean filters with strict budgets and Undefined semantics. DNS, real directory queries and Windows discovery evidence remain open."
     },
     "P01-05": {
       "status": "blocked",
@@ -128,7 +163,8 @@
       ],
       "verification": "Linux debug/release builds and Clippy passed locally and in PR #7.",
       "limitations": "This qualifies the lab toolchain only; crypto, storage and other runtime libraries remain undecided.",
-      "problems": []
+      "problems": [],
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "W02",
@@ -156,7 +192,8 @@
       ],
       "verification": "Negative tests cover truncation, malformed lengths/IDs/tags, unsupported controls and attribute limits; generated inputs exercise bounded behavior.",
       "limitations": "Only the declared LDAP subset is decoded; this is not full LDAP or AD conformance.",
-      "problems": []
+      "problems": [],
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "W03",
@@ -179,7 +216,8 @@
       ],
       "verification": "The independent ldap3 client reads supportedLDAPVersion and vendor metadata from the running binary.",
       "limitations": "There are no users, groups, schema, directory state or general searches.",
-      "problems": []
+      "problems": [],
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "W04",
@@ -207,7 +245,8 @@
       ],
       "verification": "Tests verify credential rejection, no credential echo in debug/response/stdout/stderr, and unsupported search failures.",
       "limitations": "This is a safeguard, not authentication or password management. There is no TLS; never send real credentials.",
-      "problems": []
+      "problems": [],
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "W05",
@@ -231,7 +270,8 @@
       ],
       "verification": "Socket tests cover idle deadlines, framing, public-interface refusal and request limits. A malformed peer does not kill the process.",
       "limitations": "The sequential listener is a lab design, not a production availability or throughput claim.",
-      "problems": []
+      "problems": [],
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "W06",
@@ -255,7 +295,8 @@
       ],
       "verification": "Positive RootDSE, credential denial, scope denial, malformed-peer recovery and extracted-binary checks passed.",
       "limitations": "This is Linux client evidence, not Windows domain join or a deployment qualification.",
-      "problems": []
+      "problems": [],
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "W07",
@@ -282,7 +323,8 @@
       ],
       "verification": "21 Rust integration/property tests passed. Local measured core line coverage exceeded 90%; Python tooling had 34 passing tests and 98% combined coverage.",
       "limitations": "Core line coverage excludes test/CLI dispatch files. Percentages do not measure coverage of future AD functionality.",
-      "problems": []
+      "problems": [],
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "W08",
@@ -311,7 +353,8 @@
       "limitations": "A bounded fuzz run is not proof that no vulnerability exists. Longer schedules apply after the workflow reaches main.",
       "problems": [
         "I07"
-      ]
+      ],
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "W09",
@@ -342,7 +385,8 @@
         "I06",
         "I07",
         "I08"
-      ]
+      ],
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "W10",
@@ -373,7 +417,8 @@
       "problems": [
         "I01",
         "I02"
-      ]
+      ],
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "W11",
@@ -402,7 +447,8 @@
       "limitations": "A consistent document is not passing product evidence; no phase has been accepted.",
       "problems": [
         "I09"
-      ]
+      ],
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "W12",
@@ -436,7 +482,8 @@
         "I03",
         "I04",
         "I05"
-      ]
+      ],
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "W13",
@@ -470,6 +517,215 @@
       "limitations": "No production installer, signed native product release, directory upgrade or recovery deployment exists.",
       "problems": [
         "I03"
+      ],
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
+    },
+    {
+      "id": "W14",
+      "title": "Phase dashboard and portable engineering report",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-08",
+        "P00-10",
+        "P01-10"
+      ],
+      "how": "Built a typed standalone dashboard from canonical phase/feature documents and reviewed progress facts, with phase/substep navigation, source evidence, issues and export.",
+      "verification": "PR #11 implementation includes model/security tests and desktop/mobile browser validation.",
+      "limitations": "This is engineering reporting, not the product directory administration UI. It does not implement P01-08 or accept a phase.",
+      "source_revision": "20e2ea9affb745c4fb7b281475e647eb087c8a8a",
+      "sources": [
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": "scripts/build_dashboard.py",
+          "label": "build_dashboard.py"
+        }
+      ],
+      "problems": []
+    },
+    {
+      "id": "W15",
+      "title": "Permanent private GitHub dashboard publication",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-08",
+        "P00-10",
+        "P01-10"
+      ],
+      "how": "Rendered the validated model into a README-only automation branch using structured GitHub API requests, privacy checks, idempotence and fast-forward publication.",
+      "verification": "The report branch was created and read back; idempotent refresh and stale-main handling were exercised.",
+      "limitations": "The original publication only followed main and omitted open-PR proposals; that limitation is addressed by the current development PR.",
+      "source_revision": "64580b9881c12d18d5a6df028110b8ed40324424",
+      "sources": [
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "scripts/publish_dashboard.py",
+          "label": "publish_dashboard.py"
+        },
+        {
+          "path": ".github/workflows/dashboard-publish.yml",
+          "label": "dashboard-publish.yml"
+        }
+      ],
+      "problems": [
+        "I12"
+      ]
+    },
+    {
+      "id": "W16",
+      "title": "Compact interactive interface and verified static-hosting workflow",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10",
+        "P01-10"
+      ],
+      "how": "Replaced duplicate navigation with compact phase cards and a phase picker; made work/problems expandable. Added a separate Pages workflow consuming only an immutable successful-main HTML artifact.",
+      "verification": "PR #15 CI passed its 22 browser checks and hosting-source validation tests. The later merged main audit failure is recorded independently.",
+      "limitations": "A configured workflow is not a live site. Pages is not enabled and no in-chat preview route was established.",
+      "source_revision": "17228586920c9783ef3708f24ec782e542f48140",
+      "sources": [
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": ".github/workflows/dashboard-pages.yml",
+          "label": "dashboard-pages.yml"
+        },
+        {
+          "path": "scripts/check_pages_source.py",
+          "label": "check_pages_source.py"
+        }
+      ],
+      "problems": [
+        "I10"
+      ]
+    },
+    {
+      "id": "W17",
+      "title": "Bounded LDAP RootDSE filter discovery",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-01",
+        "P01-04",
+        "P01-10"
+      ],
+      "how": "Evaluates presence, objectClass descriptor/OID equality and AND/OR/NOT against the fixed public RootDSE. Uses True/False/Undefined semantics, visits every branch, enforces depth 8 / 64 nodes / 256 assertion bytes and never retains assertion bytes.",
+      "verification": "Local validation: 28 Rust tests, generated boolean/identifier properties, independent ldap3 positive/empty/unsupported checks, 94.49% core line coverage (filter module 100%) and 20,000 sanitizer-fuzz iterations without a crash.",
+      "limitations": "Lab-only synthetic/public data. Other matching rules, general directory/schema queries, DNS, credentials, TLS and Windows domain interoperability remain unimplemented.",
+      "source_revision": "dca754d98dd339962c761b934b701e59c6544544",
+      "sources": [
+        {
+          "path": "native/babel-ldap/src/filter.rs",
+          "label": "filter.rs"
+        },
+        {
+          "path": "native/babel-ldap/src/protocol.rs",
+          "label": "protocol.rs"
+        },
+        {
+          "path": "native/babel-ldap/tests/protocol.rs",
+          "label": "protocol.rs"
+        },
+        {
+          "path": "native/babel-ldap/tests/smoke_ldap.py",
+          "label": "smoke_ldap.py"
+        },
+        {
+          "path": "docs/adr/0002-bounded-rootdse-filters.md",
+          "label": "0002-bounded-rootdse-filters.md"
+        }
+      ],
+      "problems": [
+        "I11"
+      ]
+    },
+    {
+      "id": "W18",
+      "title": "Open-PR-aware private progress reporting",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-08",
+        "P00-10",
+        "P01-10"
+      ],
+      "how": "Reads open PR descriptions/files/CI state and bounded progress JSON as data. Shows new/changed work and problem records separately from main totals, links PR-head evidence to affected substeps and preserves per-record historical revisions.",
+      "verification": "Local validation: 74 Python tests with 98% combined tooling coverage. GitHub Markdown rendering verified that a hostile PR description remained inert and preserved all phase disclosures.",
+      "limitations": "Automatic PR refresh activates after merge. Fork structured facts are omitted; metadata has explicit listing limits. Private overlays never enter public HTML artifacts.",
+      "source_revision": "647a7ba026622bd08f2870c22397a070b4982ef2",
+      "sources": [
+        {
+          "path": "scripts/collect_pr_progress.py",
+          "label": "collect_pr_progress.py"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "scripts/build_dashboard.py",
+          "label": "build_dashboard.py"
+        },
+        {
+          "path": ".github/workflows/dashboard-publish.yml",
+          "label": "dashboard-publish.yml"
+        },
+        {
+          "path": "tests/test_pr_progress.py",
+          "label": "test_pr_progress.py"
+        }
+      ],
+      "problems": [
+        "I12"
+      ]
+    },
+    {
+      "id": "W19",
+      "title": "Remove unpatched vulnerable tooling dependency path",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10",
+        "P01-01"
+      ],
+      "how": "Removed TypeScript-ESLint and its picomatch path. Retained supported ESLint 10 / TypeScript 6, strict compiler checks and explicit-any AST checks; runs DOM/eval rules on compiler-erased JavaScript without bundling, minification or execution.",
+      "verification": "Locked clean install; npm audit reports zero vulnerabilities. Six build/lint tests include typed HTML sinks, eval, explicit-any declarations/casts and safe text rendering; strict typecheck and lint pass.",
+      "limitations": "This replaces recommended TypeScript style rules with documented compiler/security policies; it does not claim rule-for-rule style equivalence. Main remains red until this dependency fix is merged.",
+      "source_revision": "647a7ba026622bd08f2870c22397a070b4982ef2",
+      "sources": [
+        {
+          "path": "dashboard/package.json",
+          "label": "package.json"
+        },
+        {
+          "path": "dashboard/package-lock.json",
+          "label": "package-lock.json"
+        },
+        {
+          "path": "dashboard/lint.mjs",
+          "label": "lint.mjs"
+        },
+        {
+          "path": "dashboard/eslint.config.mjs",
+          "label": "eslint.config.mjs"
+        },
+        {
+          "path": "dashboard/tests/lint.test.mjs",
+          "label": "lint.test.mjs"
+        }
+      ],
+      "problems": [
+        "I13"
       ]
     }
   ],
@@ -490,7 +746,8 @@
       "resolution": "The owner opened Internet/API access; the PR retry succeeded without asking for a raw token.",
       "next_action": "Keep API connectivity distinct from Git and credential readiness.",
       "sources": [],
-      "provenance": "Recorded development-session incident; no public issue was created."
+      "provenance": "Recorded development-session incident; no public issue was created.",
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "I02",
@@ -518,7 +775,8 @@
           "label": "CI/CD enforcement boundary"
         }
       ],
-      "provenance": "GitHub API observation recorded during pipeline setup; verify again before production release."
+      "provenance": "GitHub API observation recorded during pipeline setup; verify again before production release.",
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "I03",
@@ -543,7 +801,8 @@
           "label": "D-01"
         }
       ],
-      "provenance": "Current repository decision register; third-party development license policy does not choose the project license."
+      "provenance": "Current repository decision register; third-party development license policy does not choose the project license.",
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "I04",
@@ -573,7 +832,8 @@
           "label": "Phase 1 remaining gates"
         }
       ],
-      "provenance": "Explicitly outstanding; no Windows test is marked passed."
+      "provenance": "Explicitly outstanding; no Windows test is marked passed.",
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "I05",
@@ -601,7 +861,8 @@
           "label": "Storage and replication decisions"
         }
       ],
-      "provenance": "Design blocker, not an implemented storage defect."
+      "provenance": "Design blocker, not an implemented storage defect.",
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "I06",
@@ -627,7 +888,8 @@
           "label": "Native supply-chain job"
         }
       ],
-      "provenance": "Recorded development-session tool-selection correction; no checksum or advisory bypass was introduced."
+      "provenance": "Recorded development-session tool-selection correction; no checksum or advisory bypass was introduced.",
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "I07",
@@ -653,7 +915,8 @@
           "label": "Fuzz manifest"
         }
       ],
-      "provenance": "Initial cargo-deny findings and subsequent passing audits."
+      "provenance": "Initial cargo-deny findings and subsequent passing audits.",
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "I08",
@@ -675,7 +938,8 @@
           "label": "Cargo.lock inventory command"
         }
       ],
-      "provenance": "Recorded local validation failure and correction; the failed output was not counted as evidence."
+      "provenance": "Recorded local validation failure and correction; the failed output was not counted as evidence.",
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
     },
     {
       "id": "I09",
@@ -701,9 +965,133 @@
           "label": "Negative cases"
         }
       ],
-      "provenance": "Recorded implementation-test failure; no product conformance was affected."
+      "provenance": "Recorded implementation-test failure; no product conformance was affected.",
+      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
+    },
+    {
+      "id": "I10",
+      "title": "Dashboard access and Pages activation remain unavailable",
+      "status": "open",
+      "kind": "hosting",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-10"
+      ],
+      "detail": "The app ran inside the cloud workspace, but no user-accessible preview route was established. GitHub returned HTTP 403 for Pages activation; the repository still reports Pages disabled.",
+      "resolution": "",
+      "next_action": "Keep progress available on the private GitHub report; a future hosting change needs an actually verified accessible URL.",
+      "source_revision": "17228586920c9783ef3708f24ec782e542f48140",
+      "sources": [
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        },
+        {
+          "path": ".github/workflows/dashboard-pages.yml",
+          "label": "dashboard-pages.yml"
+        }
+      ],
+      "provenance": "Recorded development-session evidence and repository/CI observations; no separate public issue was created."
+    },
+    {
+      "id": "I11",
+      "title": "Preserve Undefined while adding boolean LDAP filters",
+      "status": "resolved",
+      "kind": "protocol-design",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P01-04"
+      ],
+      "detail": "A binary match/nonmatch model would incorrectly turn an unrecognized attribute into a match when negated. Unsupported matching also must not be hidden by a true OR branch.",
+      "resolution": "Implemented explicit Undefined/Unsupported outcomes, full branch validation and exact resource limits with negative/property/client tests.",
+      "next_action": "Review matching rules before any general directory/schema implementation.",
+      "source_revision": "dca754d98dd339962c761b934b701e59c6544544",
+      "sources": [
+        {
+          "path": "native/babel-ldap/src/filter.rs",
+          "label": "filter.rs"
+        },
+        {
+          "path": "native/babel-ldap/tests/protocol.rs",
+          "label": "protocol.rs"
+        }
+      ],
+      "provenance": "Recorded development-session evidence and repository/CI observations; no separate public issue was created."
+    },
+    {
+      "id": "I12",
+      "title": "Progress facts and the GitHub report omitted recent PR contents",
+      "status": "resolved",
+      "kind": "reporting",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-08",
+        "P01-10"
+      ],
+      "detail": "Main progress still referenced the initial native snapshot after dashboard PRs merged; pending implementation and its explanations were absent until manual updates.",
+      "resolution": "Backfilled merged dashboard work and added bounded private PR overlays with per-record revisions, pending labels and current main CI health.",
+      "next_action": "Update progress facts in every development PR; automatic PR import activates after this change is merged.",
+      "source_revision": "647a7ba026622bd08f2870c22397a070b4982ef2",
+      "sources": [
+        {
+          "path": "scripts/collect_pr_progress.py",
+          "label": "collect_pr_progress.py"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "label": "CONTRIBUTING.md"
+        }
+      ],
+      "provenance": "Recorded development-session evidence and repository/CI observations; no separate public issue was created."
+    },
+    {
+      "id": "I13",
+      "title": "Main CI rejected newly vulnerable picomatch tooling graph",
+      "status": "resolved",
+      "kind": "supply-chain",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01"
+      ],
+      "detail": "Main run 44142657828 failed npm audit for GHSA-fc5q-39xc-vjpf. The advisory affects picomatch through 4.0.7 and no patched version was published when checked.",
+      "resolution": "The development PR removes the vulnerable dependency path while retaining supported compiler/ESLint versions and tested DOM/eval/explicit-any checks. Its local audit is clean; main awaits merge.",
+      "next_action": "Keep all-severity audit enforcement and validate the replacement graph in hosted CI.",
+      "source_revision": "647a7ba026622bd08f2870c22397a070b4982ef2",
+      "sources": [
+        {
+          "path": "dashboard/package-lock.json",
+          "label": "package-lock.json"
+        },
+        {
+          "path": "dashboard/lint.mjs",
+          "label": "lint.mjs"
+        },
+        {
+          "path": "dashboard/tests/lint.test.mjs",
+          "label": "lint.test.mjs"
+        }
+      ],
+      "provenance": "Recorded development-session evidence and repository/CI observations; no separate public issue was created."
     }
   ],
   "focus_phase": 1,
-  "focus_summary": "A bounded RootDSE lab service is working. Identity state, durable storage, authentication and domain services are still ahead."
+  "focus_summary": "The read-only RootDSE lab is implemented. The development PR adds bounded LDAP boolean/objectClass filters and PR-aware progress reporting; durable identities, DNS, authentication and domain services remain future work."
 }

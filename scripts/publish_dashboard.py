@@ -5,6 +5,7 @@ import json
 import re
 import subprocess  # nosec B404
 from collections.abc import Callable
+from pathlib import Path
 from typing import Any
 
 from build_dashboard import ROOT, build
@@ -85,7 +86,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--revision", required=True)
     parser.add_argument("--preview", action="store_true")
+    parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument("--include-prs", action="store_true")
     options = parser.parse_args()
-    model = build(ROOT, options.revision)
+    model = build(options.root, options.revision)
+    if options.include_prs:
+        from collect_pr_progress import collect
+
+        collect(model, options.root)
     report = render(model, preview=options.preview)
     print(publish(report, options.revision, preview=options.preview))

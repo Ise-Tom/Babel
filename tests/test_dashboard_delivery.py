@@ -45,7 +45,7 @@ class PersistentReport(unittest.TestCase):
     def test_preview_cannot_claim_main_publication(self):
         report = view.render(self.data, preview=True)
         self.assertIn("Development preview", report)
-        self.assertIn("after the dashboard PR is merged", report)
+        self.assertIn("after this change is merged", report)
         self.assertNotIn("Updated automatically after the full CI gate", report)
 
     def test_authored_markup_is_literal_and_unsafe_links_are_rejected(self):

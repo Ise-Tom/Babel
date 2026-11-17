@@ -17,6 +17,7 @@ coverage.xml
 !/fuzz/corpus/ldap_frame/unbind
 !/fuzz/corpus/ldap_frame/oversized
 !/fuzz/corpus/ldap_frame/rootdse
+!/fuzz/corpus/ldap_frame/rootdse-filter
 /dashboard/node_modules/
 /dashboard/generated/
 /dashboard/dist/

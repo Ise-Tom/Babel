@@ -243,7 +243,7 @@ get('download').addEventListener('click', () => {
 });
 get('snapshot-short').textContent = `Snapshot ${board.snapshot.date} · ${board.snapshot.commit.slice(0, 7)}`;
 const footer = get('footer');
-footer.append(el('span', '', `Evidence snapshot: ${board.snapshot.date} · ${board.snapshot.commit.slice(0, 7)}. `), link(`Native snapshot CI: ${board.snapshot.ci_result} · ${board.snapshot.checks_passed} passing checks →`, board.snapshot.ci_url), el('p', '', board.snapshot.note), el('small', '', `Design build ${board.buildRevision.slice(0, 7)} · Offline report; no live GitHub connection.`));
+footer.append(el('span', '', `Evidence snapshot: ${board.snapshot.date} · ${board.snapshot.commit.slice(0, 7)}. `), link(`Evidence snapshot CI: ${board.snapshot.ci_result} · ${board.snapshot.checks_passed} passing checks →`, board.snapshot.ci_url), el('p', '', board.snapshot.note), el('small', '', `Design build ${board.buildRevision.slice(0, 7)} · Offline report; no live GitHub connection.`));
 window.addEventListener('popstate', () => { state = readState(); render(); });
 window.addEventListener('hashchange', () => { state = readState(); render(); });
 render();
