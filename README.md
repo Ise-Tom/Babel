@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T23:38:41\+01:00.
+GitHub metadata checked: 2026-11-17T23:43:16\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#21 · Add PostgreSQL state recovery experiments and verified security progress](<https://github.com/Ise-Tom/Babel/pull/21>)
 
-**In review · Pending merge · CI: startup\_failure** · Head 34cb216
+**In review · Pending merge · CI: in\_progress** · Head 4660fe0
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -102,7 +102,7 @@ GitHub metadata checked: 2026-11-17T23:38:41\+01:00.
 
 **Limits and remaining work:** Proposed for review; hosted verification must pass on the PR head before merge. This is an isolated SQL experiment, not native directory storage, authentication/Windows ACL, real SID allocation, backup/upgrade, physical power-loss proof, credential protection, AD replication or capacity acceptance. The future Rust driver and production packaging remain unselected/unqualified.
 
-**PR-head evidence:** [experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
+**PR-head evidence:** [experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
 
 
 #### Proposed W29 · Verify owner-applied repository protections and security settings
@@ -115,7 +115,7 @@ GitHub metadata checked: 2026-11-17T23:38:41\+01:00.
 
 **Limits and remaining work:** A private report was not submitted and no production phase or independent source-release approval is accepted. The existing source-release environment is missing and separately blocked by I22. The GitHub report includes PR proposals separately; main totals change after merge.
 
-**PR-head evidence:** [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/CODEOWNERS>)
+**PR-head evidence:** [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/.github/CODEOWNERS>)
 
 
 #### Proposed W30 · Fail source prereleases before an unprotected review environment can be auto-created
@@ -128,7 +128,7 @@ GitHub metadata checked: 2026-11-17T23:38:41\+01:00.
 
 **Limits and remaining work:** The source-release environment is still absent. The workflow change is proposed for review and has not been executed as hosted release code. It assumes the reviewed release workflow and does not replace owner-controlled release-tag creation or platform protection.
 
-**PR-head evidence:** [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-security-settings.md>)
+**PR-head evidence:** [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/docs/github-security-settings.md>)
 
 #### Proposed problem update: I02 · Main review and CI protection are now enforced
 
@@ -142,7 +142,7 @@ The earlier private-plan/integration administration limitation prevented configu
 
 **Provenance:** GitHub API observation recorded during pipeline setup; verify again before production release.
 
-[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/CODEOWNERS>)
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/.github/CODEOWNERS>)
 
 #### Proposed problem update: I05 · Synthetic PostgreSQL recovery passes; native adapter and AD state qualification remain
 
@@ -156,7 +156,7 @@ An isolated PostgreSQL 18.7/official psql experiment now passes synthetic create
 
 **Provenance:** Design blocker, not an implemented storage defect.
 
-[experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
+[experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
 
 #### Proposed problem update: I18 · Repository and Pages controls applied; Actions defaults owner-confirmed
 
@@ -170,7 +170,7 @@ The integration still has restricted administration access. The owner applied th
 
 **Provenance:** Direct GitHub settings API responses and successful public site/deployment observations on 2026-11-17; these are GitHub permission errors, not automatic approval-review rejections.
 
-[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/CODEOWNERS>) · [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-security-settings.md>)
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/.github/CODEOWNERS>) · [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/docs/github-security-settings.md>)
 
 #### Proposed problem update: I21 · PostgreSQL temporary initialization server looked ready before final startup
 
@@ -184,7 +184,7 @@ The first real container experiment saw pg\_isready succeed against the official
 
 **Provenance:** Observed local real-container failure and subsequent successful 21-test integration run; not a Windows or production failure claim.
 
-[experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
+[experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
 
 #### Proposed problem update: I22 · Protected source-release review environment is missing
 
@@ -198,7 +198,21 @@ GET environments/source-release returned HTTP 404. Main protection, Pages restri
 
 **Provenance:** Direct current GitHub metadata and an expected nonzero local preflight result; no environment, tag or release was created.
 
-[scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-security-settings.md>)
+[scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/docs/github-security-settings.md>)
+
+#### Proposed problem update: I23 · Own-actions-only policy blocked official pinned GitHub Actions
+
+**Proposed status:** resolved
+
+PR \#21 CI run 44191621036 ended in startup\_failure with zero jobs. GitHub reported that checkout/setup/artifact actions were not allowed because actions had to belong to Ise-Tom. The same policy also blocked automatic dashboard refresh.
+
+**Resolution:** The owner explicitly confirmed allowing GitHub-created actions under the selected non-owner-actions policy, leaving Marketplace creators disabled. Full SHA pins and job-scoped token permissions are retained. The prepared branch and PR are now pushed, and the GitHub dashboard was refreshed directly from trusted main code.
+
+**Next action:** Verify the corrected PR CI run and retain independent review before merge; no Pages deployment, source release or cloud-environment publication is performed by this PR.
+
+**Provenance:** Actual public GitHub run annotation and the owner’s explicit settings-change confirmation; no automatic approval-review rejection occurred.
+
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/docs/github-security-settings.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/.github/workflows/ci.yml>) · [.github/workflows/dashboard-publish.yml](<https://github.com/Ise-Tom/Babel/blob/4660fe0950086338452abfab933bbdb1766c7f95/.github/workflows/dashboard-publish.yml>)
 
 
 </details>
