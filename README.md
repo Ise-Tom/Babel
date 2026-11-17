@@ -44,7 +44,7 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T23:48:50\+01:00.
+GitHub metadata checked: 2026-11-17T23:49:38\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -67,7 +67,9 @@ GitHub metadata checked: 2026-11-17T23:48:50\+01:00.
     
     Dashboard records W28–W30 include this PR’s implementation, tests, limitations and immutable source evidence. I02 is resolved using the active main ruleset/effective branch rules. I18 distinguishes API-verified private reporting/Pages controls from owner-confirmed Actions defaults. I05 remains open for the native adapter/model, recovery/key and AD qualification; Windows infrastructure remains open under I04, and the missing release environment is I22. PR proposals remain separate from accepted main totals.
     
-    Validation: 22 component tests against PostgreSQL/psql 18.7 with 93% controller coverage; 97 repository tests with 98% tooling coverage; 24 browser tests and six build/security-lint tests. Strict types/lint, Bandit, actionlint, Zizmor, source archive/checksum, extracted-source secret scan and test-image SBOM generation passed locally. Hosted CI must verify this PR head. No merge, tag, release, Pages deployment or cloud-environment publication is performed by opening this PR.
+    Validation: 22 component tests against PostgreSQL/psql 18.7 with 93% controller coverage; 97 repository tests with 98% tooling coverage; 24 browser tests and six build/security-lint tests. Strict types/lint, Bandit, actionlint, Zizmor, source archive/checksum, extracted-source secret scan and test-image SBOM generation passed locally. All 13 hosted CI jobs passed for head 4660fe0950086338452abfab933bbdb1766c7f95: https://github.com/Ise-Tom/Babel/actions/runs/44192717123 . No merge, tag, release, Pages deployment or cloud-environment publication is performed by opening this PR.
+    
+    The initial run 44191621036 was rejected before any jobs started because the repository allowed only Ise-Tom-owned actions. The owner enabled GitHub-created actions, retaining full SHA pins and restrictive token permissions. I23 records this resolved configuration issue. The corrected run passed all 13 jobs; independent review is still required by the active main ruleset.
 
 **Changed files:**
 
