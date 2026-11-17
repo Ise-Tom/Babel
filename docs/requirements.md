@@ -1,11 +1,33 @@
 # Requirements and acceptance contract
 
-Status: proposed engineering contract, 2026-11-17. Owner-selected scope is a
-**full Active Directory replacement from the first production release**, at
-**10,000 identities across three sites**. Nothing below is a measured result.
-Delivery milestones do not reduce that production scope. Every requirement must
-have an owner, automated evidence where feasible, and a documented exception
-process before a release candidate. Track implementation with requirement IDs.
+Design baseline: native Babel, 2026-11-17. Owner scope is a **full AD-like
+production identity server hosted on Linux**, targeting **10,000 human identities
+and 10,000 computer accounts across three sites**. No product capacity, protocol
+or security requirement below is represented as implemented or measured.
+
+The [18 phase specifications](phases/README.md) define the complete conception,
+interfaces/state, security/failure behavior and 180 verifiable phase requirements.
+They trace all 130 core/security/patch/endpoint capability IDs. This document is
+the first-production baseline; later modules retain their own normative contracts.
+No roadmap phase may silently remove a baseline function or replace executable
+acceptance with a written promise. See [verification](validation-plan.md) for
+per-phase evidence and [decisions](decisions.md) for unresolved owners/experiments.
+
+## Requirement authority and phase allocation
+
+| Contract | Detailed design / qualification | Production meaning |
+| --- | --- | --- |
+| PLAT, AD, IAM, OPS, UX, SEC | Phases 0–4 design/implement/qualify; Phase 5 promotes the reviewed bundle | Mandatory first-production gate; Phase 6 sustains it |
+| Advanced identity, privilege, policy, detection and platform security | Phases 7–10, with earlier baseline overlap | All selected profiles must satisfy their catalog and phase requirements before module release |
+| PATCH-01–PATCH-15 | Phases 11–13 | Real verified remediation on supported Windows/Linux endpoints; separate later service |
+| REMOTE-01–REMOTE-06 | Phase 14 and joint Phase 17 | Attended/unattended session support with separately authorized channels |
+| FILE-01–FILE-05 | Phase 15 and joint Phase 17 | General authenticated server-to-device upload, not implicit execution/retrieval |
+| EDR-01–EDR-08 | Phase 16 and joint Phase 17 | Native supported-OS telemetry, measured detection and controlled response |
+
+A capability selected for first-production compatibility cannot be deferred to
+an advanced phase. Stable IDs survive this redesign; updated acceptance retains
+prior intent. Requirement changes need an impact ADR, updated evidence and owner
+review. Design associations do not mark any requirement delivered.
 
 ## Native implementation boundary
 
@@ -25,7 +47,7 @@ for interoperability testing and migration/coexistence scenarios.
 
 Proposed initial validation baseline: Ubuntu Server 24.04 LTS on x86-64, on a
 VM or physical server, with systemd-managed services. Ratify the exact supported
-distribution/kernel/backend versions in Phase 0. Other Linux distributions,
+distribution/kernel/native-core versions in Phase 0 (D-02/D-03). Other Linux distributions,
 ARM64 and container deployment require their own qualification; they are not
 implied by the Linux hosting requirement. Kubernetes is not a prerequisite.
 
@@ -35,7 +57,7 @@ implied by the Linux hosting requirement. Kubernetes is not a prerequisite.
 | PLAT-02 | Repeatable Linux installation, service supervision, reboot recovery, upgrade and removal that preserves directory data by default | Fresh-host install, reboot and interrupted-upgrade tests; documented service ordering, DNS/time/firewall prerequisites and explicit data-deletion procedure |
 | PLAT-03 | Linux host hardening and persistent data integrity | Verified service identities, minimum required privileges, secret/data file permissions, applicable AppArmor/SELinux policy, filesystem ACL/xattr preservation and backup/restore tests |
 
-Document any backend requirement for root privileges and constrain it; the web
+Document any native-core/OS requirement for root privileges and constrain it; the web
 administration process must not gain root merely to manage a privileged backend.
 Capacity, replication and recovery benchmarks below must run on the qualified
 Linux hosts. Running repository checks on an Ubuntu CI runner alone does not

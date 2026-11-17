@@ -1,90 +1,72 @@
-# Initial threat model
+# Native Babel threat model and phase controls
 
-Status: design input, not a completed audit. Revisit on every architecture or
-trust-boundary change. Link tests to SEC IDs in the requirements.
+Status: design baseline, not a completed assessment. Applies to the native core,
+Linux operations and all later endpoint services. Every detailed [phase](phases/README.md)
+contains its own security/failure requirements; this register links shared attack
+paths to design and executable-evidence obligations. Revisit it when an interface,
+provider, supported protocol, privileged actor or persistence format changes.
 
-## Assets and boundaries
+## Assets, trust and non-goals
 
-Highest-value assets are password verifiers, Kerberos/replication/trust keys,
-privileged group membership, ACLs, schema, GPO/SYSVOL content, backups and update
-signing identity. A directory controls downstream workstation/server trust.
-Boundaries include untrusted domain clients -> protocol listeners; browser ->
-admin API -> directory; DC -> DC over WAN; agent -> update service; backup ->
-restore domain; fork PR -> CI runner; release workflow -> artifact consumer.
+Tier 0 assets include directory ACLs/schema/IDs, password verifiers, ticket/service/
+trust/replication keys, GPO/SYSVOL, DC hosts and coherent encrypted recovery state.
+Separate high-impact assets include fleet enrollment/signing/dispatch authority,
+remote sessions, uploaded content, sensor/rule provenance and forensic evidence.
+A compromised writable DC is domain compromise. A compromised endpoint kernel/root
+may defeat local monitoring. Shared management UI roles do not provide hostile-
+tenant isolation over one privileged directory or unrestricted executor.
 
-Trust the selected OS, reviewed native-core components/libraries and administrator-controlled
-root keys only to the stated level. Writable DC compromise gives domain-wide
-credentials and authority. Isolate test domains from the host and corporate
-networks. Production identity data is prohibited in public CI.
+Trust only declared components at their reviewed boundary: protocol client to
+listener/core; core to transactional store/key provider; DC to authenticated DC;
+browser/API to delegated mutation; backup to clean restore; CI to signer/consumer;
+external IdP/CA/posture source to scoped connector; agent/relay/operator to scoped
+patch/support/file/EDR authority. Authenticate identity and data provenance at each
+boundary; transport encryption alone is not action approval or trustworthy state.
 
-| Attacker / failure | Attack path and impact | Required mitigation and evidence |
-| --- | --- | --- |
-| Unauthenticated network client | Malformed LDAP/RPC/Kerberos input, amplification or expensive queries exhaust DCs or execute code | Bounded parsing/queries, fuzzing and resource budgets; SEC-02/08 |
-| Compromised workstation or low-privilege user | Relay, replay, ticket theft, weak delegation or ACL escalation grants domain admin | Signing/channel binding, replay checks, least delegation, denied-operation matrix and red-team scenarios; SEC-01/02/03 |
-| Stolen admin session / malicious website | CSRF, XSS or session replay changes privileged policy | Admin MFA, CSP, CSRF, secure cookies, short sessions, step-up and revocation tests; SEC-05 |
-| Rogue replica or network partition | Unauthorized replication leaks all password hashes; stale policy or conflicts preserve access | Authenticate/authorize replicas, protect replication keys, audit DCSync-like access; partition and convergence tests; SEC-01/06/09 |
-| Backup theft or destructive insider | Exfiltrates credentials or destroys recoverability | Encryption with separate key custody, immutable copies, dual control and isolated restore tests; SEC-06/10/11 |
-| Malicious contributor / dependency | PR executes privileged CI or poisoned artifact reaches a DC | No PR secrets, read-only token, ephemeral runners, pinned actions/tools, reviewed locks, verified provenance and protected release refs; SEC-10 |
-| Disk-full, clock skew or expired certificate | Login outage, inconsistent replication or failed recovery | Capacity alarms, time/DNS health, rotation, fault injection and documented recovery; OPS-01 |
+## Attacks, failure cases and required evidence
 
-## Required design reviews
+| ID | Threat / consequence | Required control and proof | Primary phases |
+| --- | --- | --- | --- |
+| T-01 | Unauthenticated malformed LDAP/RPC/Kerberos/DNS or expensive nested queries cause execution/exhaustion | Bounded parser/query/state-machine budgets, fuzz/property corpus and DoS measurements; no unbounded allocations | 0–4, 10 |
+| T-02 | Wrong ACL/normalization/schema handling leaks attributes or grants privilege | One core authority, stable identifiers, denied-operation/property tests and reference access comparisons | 0–2, 4 |
+| T-03 | Stolen tickets, weak service credentials or flawed PAC/delegation/replay validation permit impersonation | Reviewed crypto, key custody/lifetimes, PAC/delegation/replay/downgrade and rotation tests; disclose detection limits | 1–4, 7–9 |
+| T-04 | NTLM relay, unsigned binds/channels or legacy fallback bypass auth policy | Secure LDAP/SMB/Netlogon defaults and expiring scoped compatibility exceptions, tested on actual clients | 1–4, 7–9 |
+| T-05 | GPO/SYSVOL edits, scripts or partial version updates persist privileged code | Approved policy scope/diffs, correct file/AD ACLs, staged consistency/reconciliation and actual resultant-policy/revert tests | 1–4, 7 |
+| T-06 | CSRF/XSS/session theft/helpdesk recovery or MFA enrollment takeover changes domain policy | Phishing-resistant admin auth, session/CSRF controls, scoped recovery/step-up and browser/API denial/abuse tests | 1, 4, 7 |
+| T-07 | Forged external claims, connector SSRF or certificate-template/mapping abuse escalates identity | Scoped issuers/destinations, no arbitrary privileged URL fetch, claim/audience/nonce/template authorization and provider-loss tests | 0, 8–9 |
+| T-08 | Unauthorized replication, stale restore, conflict/RID errors or partial cursor commits leak credentials or corrupt identity | Replica ACLs, native metadata invariants, atomic progress, partition/conflict/rollback and clean replica recovery tests | 0–4, 9 |
+| T-09 | Backup theft, lost keys or insider destruction makes compromise/recovery permanent | Independent encryption/custody, immutable/offline copies, coherent state and full-dataset clean-room restore/rotation | 0, 3–6, 9 |
+| T-10 | Malicious dependency/contributor/builder/signer distributes domain compromise | Locked/verified artifacts, least-privilege ephemeral CI, scoped signing and actual review/ref protection; independent rebuild/update replay tests | 0–1, 4–6, 10 |
+| T-11 | Approver self-approval, stale grants, nested privilege or scope replacement bypasses least privilege | Expiring exact-scope grants, separation of duty, real effective-access tests and audited exception expiry | 1–4, 7 |
+| T-12 | Cloned device identity, enrollment replay or poisoned inventory changes fleet targets | Unique mTLS enrollment, revocation/rotation, authenticated timestamped inventory and denied target-change tests | 11–17 |
+| T-13 | Poisoned patch/catalog/relay or replayed offline install executes across the fleet | Vendor/content verification, immutable campaign scope, native typed executor, cancellation/expiry, canary pause and receipt reconciliation | 11–13, 17 |
+| T-14 | Remote session theft, consent/elevation bypass or relay visibility exposes users/admins | Separate channel grants, visible attended consent, explicit unattended policy, encrypted authenticated paths and bounded disconnect/rescue | 14, 17 |
+| T-15 | Upload traversal/symlink/reparse races, overwrite or autoexecution creates persistence | Destination-at-open/finalization validation, quotas, staged receipts, separate execution rights and real filesystem race tests | 15, 17 |
+| T-16 | Sensor/rule tamper, forged events, PID reuse or dropped telemetry hides threats | Signed rules/agents, provenance/gap visibility, supported native sensors, labeled detection tests and honest root/kernel limits | 16–17 |
+| T-17 | False detections or stolen response authority isolate every DC/device | Typed scoped expiring response, independent mass-action approval, blast-radius limits and isolation/rescue/emergency-stop drills | 9, 16–17 |
+| T-18 | Endpoint traffic, cache misses or event storm starves core authentication | Independent credentials/resources, priorities/quotas/backpressure and combined fleet/directory WAN/load/fault qualification | 3–4, 11–17 |
+| T-19 | Recording/inventory/evidence/diagnostic overcollection leaks personal or secret data | Purpose/field minimization, consent/access/retention, redaction and unauthorized collection/export tests | All; especially 6, 8, 14–17 |
+| T-20 | Disk-full, audit loss, clock skew, expired provider trust or unavailable queue creates unsafe success | Durable security/audit transition rules, explicit conservative/degraded behavior, bounded queues and restart/provider/time fault tests | 1–6, 8–17 |
 
-Review protocol downgrade behavior, account recovery and lockout abuse, password
-reset versus key rotation semantics, constrained/resource-based delegation,
-trust SID filtering, GPO script execution, certificate enrollment/PKINIT and
-schema extensions. For the [native core](native-core-plan.md), review identity/ACL
-semantics, parser bounds, credential formats, durable acknowledgments, replication
-metadata and restore/upgrade transitions before storing valuable credentials.
-Reuse reviewed cryptography and assess library CVE response. Babel owns parser/
-state-machine correctness and integrated protocol security; memory safety alone
-does not prevent authorization or replication flaws.
+## Response and residual risk
 
-Bind management only to an explicitly configured trusted network until secured.
-Enumerate ports by the selected implementation, including dynamic RPC ranges;
-separate replication/admin traffic where feasible. Validate DNS and time before
-protocol diagnosis. Protect audit export separately from domain-admin control,
-and document what evidence is lost when a DC itself is compromised.
+Baseline secure defaults and first-production requirements cannot be deferred to
+advanced features. Any legacy exception has an owner, scope, expiry, visibility
+and explicit release effect. Web MFA does not impose MFA on every legacy domain
+protocol. Offline devices/partitioned replicas cannot honor instantaneous global
+revocation; expose known/unknown state and reauthorize expiring actions on reconnect.
 
-## Extended feature trust boundaries
+For domain compromise, isolate evidence, revoke/quarantine through a rehearsed
+plan, restore clean state and rotate affected administrator, service, machine,
+trust and ticket-signing credentials with correct sequencing. For fleet compromise,
+stop dispatch, rotate enrollment/signing authority, inspect content/rules/queued
+jobs and recover through an independent rescue channel. File/process quarantine
+does not reverse earlier execution; restoring an old image does not prove safe
+schema/key/replication state. Test irreversible cases explicitly.
 
-The [extended security roadmap](security-roadmap.md) introduces additional
-boundaries to review before implementation: recovery operators and approvers;
-CA/HSM/KMS providers; device posture agents; federation/provisioning sources;
-SIEM collectors; and automated incident responders. Test stolen recovery
-factors, malicious identity claims, false posture, CA/template abuse, approval
-bypass, audit tampering and destructive false-positive response. Each module
-needs explicit authority, failure behavior, secret custody and blast-radius
-limits. External provider claims must not silently grant domain privilege.
-
-## Future endpoint patch-management boundary
-
-The [later patch-management module](patch-management-roadmap.md) adds highly
-privileged endpoint executors, enrollment/signing authorities, catalog sources
-and site relays. Treat malicious campaigns, compromised catalog/agent updates,
-replayed offline jobs, stolen device identities and mass reboot as distinct
-fleet-wide threats. Enforce approval/scope separation, authenticated expiring
-commands, verified native packages, rollout limits and independent post-install
-evidence. Relay compromise must not grant deployment authority. Keep patch
-service failures and credentials isolated from core directory operation, and
-rehearse controller compromise before releasing that module.
-
-## Future remote operations and EDR boundaries
-
-The [final endpoint operations phases](endpoint-operations-roadmap.md) add remote
-session brokers, general upload paths, telemetry/rule pipelines and privileged
-response agents. Assess stolen operator sessions, consent/elevation bypass,
-relay visibility, malicious destination paths, forged/suppressed endpoint events
-and false-positive mass containment. Separate support, transfer, patch and EDR
-authority; enforce session/job expiry, recording/privacy policy, command scope
-and a tested rescue path. A compromised root/kernel or fleet controller can
-defeat local monitoring; sensor health and independent audit are evidence, not
-proof of endpoint integrity.
-
-## Residual risks and release conditions
-
-Legacy Windows/application compatibility can conflict with secure defaults.
-Any weakening needs a documented threat, scoped exception, expiry, visibility,
-and an explicit release decision. A passing secret scanner cannot prove absence
-of secrets; rotate leaked keys even after deleting history. A green CI result
-currently validates only the delivery foundation. Independent assessment,
-protocol interop and recovery tests remain mandatory before production.
+A secret scan cannot prove no secrets exist; rotate leaked credentials even after
+history removal. Static analysis, memory-safe languages and green CI are useful
+controls, not proof of conformance/security. Independent assessments, real-client
+negative tests, capacity faults and current recovery evidence gate production.
+The [validation plan](validation-plan.md) defines required results; the
+[decision register](decisions.md) names unresolved authority/infrastructure choices.

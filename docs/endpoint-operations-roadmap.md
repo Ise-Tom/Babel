@@ -1,9 +1,14 @@
-# Remote operations and endpoint detection roadmap
+# Remote operations and EDR capability contract
 
 Status: proposed final roadmap expansion, following endpoint patch management.
 The scope includes remote desktop/terminal support, general server-to-device
 file upload and native endpoint detection and response (EDR) for supported
-Windows and Linux devices. These capabilities are planned, not implemented.
+Windows and Linux devices. These capabilities are planned, not implemented. Complete conception and
+acceptance are specified in [Phase 14](phases/phase-14.md),
+[Phase 15](phases/phase-15.md), [Phase 16](phases/phase-16.md) and joint
+[Phase 17](phases/phase-17.md). All 19 stable REMOTE/FILE/EDR IDs below remain
+normative and traced. The phase designs now include proposed concurrency, event
+and outage profiles; those are ratification targets rather than measurements.
 They do not change the first production AD-like server contract.
 
 All management services and session/transfer/telemetry relays run on Linux.

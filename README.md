@@ -19,6 +19,8 @@ reviewed libraries and a protocol conformance harness; Samba AD DC will not be a
 required production runtime. Advanced security capabilities extend this core product.
 
 - [Product, security, and capacity requirements](docs/requirements.md)
+- [Complete phase designs and acceptance specifications](docs/phases/README.md)
+- [Verification plan](docs/validation-plan.md) and [open design decisions](docs/decisions.md)
 - [Threat model](docs/threat-model.md) and [extended security roadmap](docs/security-roadmap.md)
 - [Delivery roadmap and release gates](docs/roadmap.md)
 - [Later endpoint patch management](docs/patch-management-roadmap.md)
@@ -37,6 +39,7 @@ python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install --require-hashes -r requirements-ci.txt -r requirements-ci.in
 python scripts/check_ci_scope.py
+python scripts/check_design.py
 python scripts/check_docs.py
 ruff format --check scripts tests
 ruff check scripts tests

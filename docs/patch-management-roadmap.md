@@ -1,7 +1,12 @@
-# Endpoint patch management roadmap
+# Endpoint patch management capability contract
 
-Status: planned later product capability, after the core AD-like server and
-advanced security milestones. The goal is Tanium-like endpoint patch-management
+Status: planned later product capability; no patch service/agent is implemented.
+[Phase 11](phases/phase-11.md), [Phase 12](phases/phase-12.md) and
+[Phase 13](phases/phase-13.md) are the complete per-phase design and acceptance
+specifications, refined by joint [Phase 17](phases/phase-17.md). The 15 stable
+PATCH IDs below remain normative and fully traced.
+
+The module follows the native AD-like server and advanced security milestones. The goal is Tanium-like endpoint patch-management
 functionality: discover, assess, target, approve, distribute, install, verify and
 report remediation across a fleet. This does not claim Tanium feature parity,
 protocol compatibility or equivalent measured performance.

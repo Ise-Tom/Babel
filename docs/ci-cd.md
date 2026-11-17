@@ -12,7 +12,7 @@ runs cancel superseded runs; releases wait for their own full CI invocation.
 
 | Job | Executable gate |
 | --- | --- |
-| Repository checks | Reject unsupported source/build trees and symlinks, local Markdown links, Ruff formatting/lint, strict mypy, source-archive smoke test and checksum verification |
+| Repository checks | Reject unsupported source/build trees and symlinks, all 18 phase specifications and requirement traceability, local Markdown links, Ruff formatting/lint, strict mypy, source-archive smoke test and checksum verification |
 | Tests (3.12), Tests (3.13) | Existing utility/integrity tests plus source-packaging and CI-scope regression tests; minimum 90% combined statement/branch coverage of callable script code |
 | Static security and dependency audit | Bandit on all shipped Python tools, offline Zizmor workflow-security checks, strict pip-audit of the complete locked CI dependency graph; known advisories block regardless of severity |
 | Workflow lint | actionlint, including shell analysis when provided by the runner |
@@ -48,6 +48,11 @@ Bandit has scoped suppressions for reviewed fixed-argv Git subprocess calls,
 HTTPS-only downloads and the subprocess imports; there is no global security
 rule disable list. Tests are functional fixtures, not shipped executable code,
 and are linted/tested but excluded from Bandit's production-tool scan.
+
+The design integrity check rejects missing phase specs, duplicate/unknown IDs,
+empty acceptance rows and global requirements not assigned to any phase. It is
+a document-consistency gate, not proof of protocol/security correctness. See the
+[validation plan](validation-plan.md) for product evidence still required.
 
 The [scope guard](../scripts/check_ci_scope.py) deliberately supports only this
 repository's docs, workflow definitions and Python tooling. New application
