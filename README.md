@@ -7,19 +7,19 @@ Read this page in your browser using the repository's existing GitHub access. Bo
 
 Report source: [cd6ad14](<https://github.com/Ise-Tom/Babel/tree/cd6ad149870a05db4ab2a4f7fbca3e4d461af848>). Recorded implementation evidence: 2026-11-17, [fc3be72](<https://github.com/Ise-Tom/Babel/tree/fc3be723bbacf65976a59216d8a035796a24d5eb>). These are separate revisions. Rebuilding does not accept requirements or refresh evidence.
 
-**18 phases · 180 substeps · 130 features · 0 phases accepted · 19 recorded increments · 5 open problems**
+**18 phases · 180 requirements · 130 features · 0 phases accepted · 19 recorded increments · 5 open problems**
 
-Implemented increments can be narrower than their parent requirement. Design records and passing CI do not establish AD compatibility or production readiness.
+Implemented increments can be narrower than their parent requirement. Acceptance is recorded after an explicit owner review of the stated scope, evidence and limits. Requirement and increment counts can differ between phases and are not effort percentages. Design records and passing CI do not establish AD compatibility or production readiness.
 
 **Current focus:** Phase 01 — The read-only RootDSE lab is implemented. The development PR adds bounded LDAP boolean/objectClass filters and PR-aware progress reporting; durable identities, DNS, authentication and domain services remain future work.
 
 [Phase board](#phase-board) · [Implementation journal](#implementation-journal) · [Problems encountered](#problems-encountered) · [Feature catalog](#feature-catalog)
 
-Use your browser's Find command to search. Expand a phase's substeps to read its details. The standalone HTML adds interactive search/filtering and JSON export; this GitHub view is the persistent report.
+Use your browser's Find command to search. Expand a phase's requirements to read its details. The standalone HTML adds interactive search/filtering and JSON export; this GitHub view is the persistent report.
 
 ## Phase board
 
-| Phase | Status | Accepted substeps | Recorded increments |
+| Phase | Status | Accepted requirements | Recorded increments |
 | --- | --- | --- | --- |
 | [00 · Contract, native-core design and laboratory](#phase-00) | In progress | 0/10 | 10 |
 | [01 · Native core and end-to-end development slice](#phase-01) | In progress | 0/10 | 17 |
@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's substeps to read its
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T20:13:17\+01:00.
+GitHub metadata checked: 2026-11-17T20:14:59\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#18 · Clarify owner acceptance and allow phase-specific requirement counts](<https://github.com/Ise-Tom/Babel/pull/18>)
 
-**Draft · Pending merge · CI: unknown** · Head c8f97eb
+**Draft · Pending merge · CI: unknown** · Head 2972851
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -62,6 +62,10 @@ GitHub metadata checked: 2026-11-17T20:13:17\+01:00.
     Progress facts include this change as W20, the resolved reporting issue I14, and the verified merged PR #16 snapshot (12 successful main CI jobs). The private GitHub report shows this PR’s proposed progress separately until merge.
     
     Validation: 78 Python tests, 98% tooling coverage, strict Python/TypeScript checks, lint and documentation checks, six build/security-lint tests, and 24 desktop/mobile browser tests. Synthetic unequal phase sizes and noncontiguous IDs exercise validation, rendering, filtering and expand-all. No product protocol behavior changed.
+    
+    The project owner explicitly accepted P01-01 (current LDAP development safeguards) and P01-10 (current prototype scope and limitation reporting). Both now carry dated reviewer/evidence records. Phase 1 remains in progress. These reviewed records update the main dashboard count after merge.
+    
+    Hosted validation is blocked: run 44156039039 executed zero steps because GitHub reported recent account payments failed or the spending limit needs increasing. Local verification passed; required hosted checks still need rerunning after account capacity is restored. The dashboard records this as I15.
 
 **Changed files:**
 
@@ -77,7 +81,7 @@ GitHub metadata checked: 2026-11-17T20:13:17\+01:00.
 
 #### Proposed W19 · Remove unpatched vulnerable tooling dependency path
 
-**Substeps:** P00-10, P01-01
+**Requirements:** P00-10, P01-01
 
 **How it was done:** Removed TypeScript-ESLint and its picomatch path. Retained supported ESLint 10 / TypeScript 6, strict compiler checks and explicit-any AST checks; runs DOM/eval rules on compiler-erased JavaScript without bundling, minification or execution.
 
@@ -85,20 +89,20 @@ GitHub metadata checked: 2026-11-17T20:13:17\+01:00.
 
 **Limits and remaining work:** This replaces recommended TypeScript style rules with documented compiler/security policies; it does not claim rule-for-rule style equivalence. PR \#16 is merged; main run 44153995669 passed all 12 jobs.
 
-**PR-head evidence:** [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/package.json>) · [dashboard/package-lock.json](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/package-lock.json>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/lint.mjs>) · [dashboard/eslint.config.mjs](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/eslint.config.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/tests/lint.test.mjs>)
+**PR-head evidence:** [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/package.json>) · [dashboard/package-lock.json](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/package-lock.json>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/lint.mjs>) · [dashboard/eslint.config.mjs](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/eslint.config.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/tests/lint.test.mjs>)
 
 
 #### Proposed W20 · Scope-based phase sizes and explicit owner acceptance reviews
 
-**Substeps:** P00-10, P01-01, P01-10
+**Requirements:** P00-10, P01-01, P01-10
 
-**How it was done:** Removed the enforced ten-item sequential quota, retaining unique phase-owned IDs, nonempty requirements/evidence and feature traceability. Renamed broad dashboard substeps to requirements. Documented concrete owner review questions and separate requirement/phase acceptance. Existing scope and stable IDs are preserved.
+**How it was done:** Removed the enforced ten-item sequential quota, retaining unique phase-owned IDs, nonempty requirements/evidence and feature traceability. Renamed broad dashboard substeps to requirements. Documented concrete owner review questions and separate requirement/phase acceptance. Existing scope and stable IDs are preserved. The project owner explicitly approved P01-01 and P01-10 for their stated current-component scopes; reviewer/date/evidence records are stored on both requirements.
 
 **Recorded validation:** 78 Python tests pass with 98% tooling coverage. Strict types, lint, documentation checks, six build/security-lint tests and 24 desktop/mobile browser tests pass. Synthetic 3/13-item phases exercise rendering, counts and expand-all; model/design fixtures allow unequal counts and noncontiguous IDs. Hosted run 44156039039 did not start: GitHub reported failed recent payments or an insufficient spending limit; this is not a hosted test result.
 
-**Limits and remaining work:** The current baseline still contains 180 requirements. Changing task counts does not estimate effort or accept work. Two current-component acceptance questions have been submitted to the owner; no affirmative answers have been recorded. Full AD functionality and phase acceptance remain outstanding.
+**Limits and remaining work:** Two scoped requirements \(P01-01 and P01-10\) are accepted by explicit owner answers on 2026-11-17. These approval records are proposed in PR \#18 until merge; the main baseline count updates after merge. The current baseline retains 180 requirements, and full AD functionality and Phase 1 acceptance remain outstanding. Future components must satisfy their own safeguards.
 
-**PR-head evidence:** [scripts/check\_design.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/scripts/check_design.py>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/scripts/render_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/tests/dashboard.spec.ts>) · [tests/test\_design.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/tests/test_design.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/tests/test_dashboard.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/docs/project-dashboard.md>)
+**PR-head evidence:** [scripts/check\_design.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/scripts/check_design.py>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/scripts/render_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/tests/dashboard.spec.ts>) · [tests/test\_design.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/tests/test_design.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/tests/test_dashboard.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/docs/project-dashboard.md>)
 
 #### Proposed problem update: I13 · Main CI rejected newly vulnerable picomatch tooling graph
 
@@ -112,7 +116,7 @@ Main run 44142657828 failed npm audit for GHSA-fc5q-39xc-vjpf. The advisory affe
 
 **Provenance:** Recorded development-session evidence and repository/CI observations; no separate public issue was created.
 
-[dashboard/package-lock.json](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/package-lock.json>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/lint.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/tests/lint.test.mjs>)
+[dashboard/package-lock.json](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/package-lock.json>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/lint.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/tests/lint.test.mjs>)
 
 #### Proposed problem update: I14 · Fixed requirement quotas and ambiguous substep acceptance labels
 
@@ -120,13 +124,13 @@ Main run 44142657828 failed npm audit for GHSA-fc5q-39xc-vjpf. The advisory affe
 
 The design validator forced exactly ten sequential requirements per phase, while the report called those broad contracts substeps. Zero recorded acceptances made implemented increments hard to distinguish from owner-reviewed scope.
 
-**Resolution:** Removed the fixed quota, clarified requirement/increment labels, and documented asking the owner scoped evidence-based questions before recording acceptance. Regression tests cover unequal phase sizes; statuses are unchanged while answers are pending.
+**Resolution:** Removed the fixed quota, clarified requirement/increment labels and documented scoped owner acceptance questions. The owner answered “Accept this scope” for P01-01 and P01-10; both carry reviewer/date/evidence records. Unequal-size regression tests pass. Phase acceptance remains outstanding.
 
-**Next action:** Record explicit owner answers with reviewer/date/evidence. Decompose future work according to scope and dependencies while preserving requirement coverage.
+**Next action:** Merge the reviewed acceptance records after required checks can run; continue decomposing future work according to scope and dependencies while preserving requirement coverage.
 
 **Provenance:** Project owner requested acceptance questions and said substep counts need not be linear; no separate GitHub issue was created.
 
-[scripts/check\_design.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/scripts/check_design.py>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/scripts/render_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/tests/dashboard.spec.ts>) · [tests/test\_design.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/tests/test_design.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/tests/test_dashboard.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/docs/project-dashboard.md>)
+[scripts/check\_design.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/scripts/check_design.py>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/scripts/render_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/tests/dashboard.spec.ts>) · [tests/test\_design.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/tests/test_design.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/tests/test_dashboard.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/docs/project-dashboard.md>)
 
 #### Proposed problem update: I15 · GitHub Actions jobs blocked before startup by account billing
 
@@ -140,7 +144,7 @@ All jobs in PR \#18 CI run 44156039039 have zero executed steps. GitHub annotati
 
 **Provenance:** Observed GitHub run 44156039039, check run 134296912744 annotation; no pipeline commands ran.
 
-[.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/.github/workflows/ci.yml>) · [.github/workflows/dashboard-publish.yml](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/.github/workflows/dashboard-publish.yml>)
+[.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/.github/workflows/ci.yml>) · [.github/workflows/dashboard-publish.yml](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/.github/workflows/dashboard-publish.yml>)
 
 
 </details>
@@ -229,7 +233,7 @@ No structured work increment delta was imported; inspect the description/files.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-00.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P00-01
 
@@ -241,7 +245,7 @@ The scope exists, but exact client builds and the approved operation matrix are 
 
 **Acceptance evidence required:** Reviewed matrix maps every AD requirement to expected positive/negative behavior and an owner; unknown/unsupported operations stay visible.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P00-02
 
@@ -289,7 +293,7 @@ No licensed isolated Windows reference lab is recorded.
 
 **Acceptance evidence required:** Two fresh deployments run discovery probes, isolate egress, clean up resources and publish exact image/build identifiers.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P00-06
 
@@ -301,7 +305,7 @@ Owner license/contributor decision is required before distribution.
 
 **Acceptance evidence required:** Owner decision and dependency obligations recorded before source distribution; missing decisions block release rather than receiving invented terms.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P00-07
 
@@ -363,7 +367,7 @@ Delivery gates and source packaging exist; real product upgrade/recovery/governa
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-01.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P01-01
 
@@ -389,7 +393,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Property tests preserve IDs on rename and reject collisions, invalid schema writes and unauthorized inherited/nested access.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P01-03
 
@@ -401,7 +405,7 @@ Storage/identity/replication decisions must precede durable credential state.
 
 **Acceptance evidence required:** Kill/restart at each commit boundary yields either the old or new complete state and never acknowledges an undurable successful write.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P01-04
 
@@ -437,7 +441,7 @@ Windows lab, DNS/authentication and membership implementation are missing.
 
 **Acceptance evidence required:** A supported Windows client joins, logs in and rotates its machine password; unsigned/unauthorized membership requests fail.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P01-07
 
@@ -449,7 +453,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** A Windows client applies and reverts a declared policy; interrupted writes recover without silently serving contradictory versions.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P01-08
 
@@ -461,7 +465,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Create/disable/reset/group workflows succeed only with correct rights; API and UI denied-operation cases produce matching audit evidence.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P01-09
 
@@ -499,7 +503,7 @@ The current subset is documented; the full phase is not accepted.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-02.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P02-01
 
@@ -511,7 +515,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Synthetic import/export and reference queries compare IDs, object attributes, ACLs and schema; incompatible operations have explicit failures.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P02-02
 
@@ -523,7 +527,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** User/admin changes, history/lockout/expiry, disable/delete/restore and denied actions pass through every supported protocol/API path.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P02-03
 
@@ -535,7 +539,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Real client/service AS/TGS and delegation cases pass; replay, wrong key, invalid PAC, expired tickets and weak-encryption downgrade are rejected.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P02-04
 
@@ -547,7 +551,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** RSAT and LDAP clients agree with the reference for selected controls; unauthorized attributes never appear in search or error output.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P02-05
 
@@ -559,7 +563,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Signed updates, stale records, wrong-site discovery and DNS failure tests produce the declared outcomes on supported clients.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P02-06
 
@@ -571,7 +575,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Client join/rejoin, secure-channel reset and service-account operations pass; signing/sealing and least-privilege rejection are verified.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P02-07
 
@@ -583,7 +587,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Actual resultant policy and scripts match the reference; filesystem and directory permissions/versions remain reconciled after failures.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P02-08
 
@@ -595,7 +599,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Unsupported levels are rejected; role handoff, failed holder and schema upgrade tests preserve a recoverable authoritative state.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P02-09
 
@@ -607,7 +611,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Two reference forests exercise permitted/denied cross-domain access, trust removal and a rehearsed migration/recovery path.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P02-10
 
@@ -619,7 +623,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Every AD contract row has real-client evidence with exact builds/spec revisions and no unexplained failure, skip or unrun acceptance case.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -631,7 +635,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-03.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P03-01
 
@@ -643,7 +647,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Unknown, revoked and insufficiently privileged replicas cannot read credential changes or alter membership; every enrollment is audited.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P03-02
 
@@ -655,7 +659,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Duplicate/reordered/interrupted exchanges do not lose acknowledged local transactions or skip unapplied remote changes.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P03-03
 
@@ -667,7 +671,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Model-based tests cover modify/modify, move/rename, group membership, delete/modify and tombstone/lingering-object conflicts.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P03-04
 
@@ -679,7 +683,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Lose one DC or site, transfer/seize a role through the supported procedure and demonstrate correct client discovery and surviving authentication.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P03-05
 
@@ -691,7 +695,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** A partition causes visible stale/unknown warnings with measured convergence; UI/API never claims instant global disable during disconnection.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P03-06
 
@@ -703,7 +707,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Restore old snapshots with conflicting invocation/progress metadata; reject/quarantine unsafe joins and follow a tested recovery path.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P03-07
 
@@ -715,7 +719,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Recover at full dataset size in an isolated clean environment without the original domain or a sole directory-held recovery key.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P03-08
 
@@ -727,7 +731,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Fault-drill reports measure DC &lt;=60 s failover and full-domain &lt;=1 h RPO/&lt;=4 h RTO; exceeded targets block qualification.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P03-09
 
@@ -739,7 +743,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Test invalid/expired certificates, lost issuer and interrupted rotation; preserve intended authentication without accepting compromised old keys indefinitely.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P03-10
 
@@ -751,7 +755,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Disk-full, queue pressure, clock fault, 24-hour partition/rejoin and process kill have bounded memory/retries and auditable data-loss outcomes.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -763,7 +767,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-04.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P04-01
 
@@ -775,7 +779,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Report covers protocol, keys, admin UI/API, replication, supply chain and restore; findings have owners, retests and explicit dispositions.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P04-02
 
@@ -787,7 +791,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Invalid TLS, anonymous sensitive reads, unsigned channels and weak crypto fail; exceptions carry scope/expiry/audit and cannot silently become defaults.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P04-03
 
@@ -799,7 +803,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Publish dataset, hardware, caches, concurrency, rates, percentiles and unexpected errors; each baseline target is met or release-blocking.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P04-04
 
@@ -811,7 +815,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** 24-hour soak and DC/site failures show bounded queues/storage, no unexplained credential/data corruption and documented degraded behavior.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P04-05
 
@@ -823,7 +827,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** For each privileged/auth/policy/key operation, expected events and denied cases are present, correlated and redacted; export loss is visible.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P04-06
 
@@ -835,7 +839,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** At least five admins achieve &gt;=90% unassisted completion per declared journey, including delegation, policy, diagnosis and restore; publish time-on-task.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P04-07
 
@@ -847,7 +851,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** WCAG 2.2 AA audit and manual assistive-technology journeys pass for the administration surface; unsupported settings are never silently discarded.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P04-08
 
@@ -859,7 +863,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Role/session expiry, CSRF, unauthorized export/reset, recovery bypass and stale privilege tests preserve authorization and provide safe actionable errors.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P04-09
 
@@ -871,7 +875,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** ADR records DC/backup/audit capacity, retention, bandwidth and expansion triggers; suggested 4-vCPU/16-GiB sizing is not treated as measured beforehand.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P04-10
 
@@ -883,7 +887,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Every baseline requirement maps to current passing evidence; outstanding exceptions, unsupported clients and residual risks are explicit and approved before Phase 5.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -895,7 +899,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-05.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P05-01
 
@@ -907,7 +911,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Package digest, SBOM and provenance resolve to the same source/build identity; rebuilding during production promotion is prohibited.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P05-02
 
@@ -919,7 +923,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Approved license/obligations and supported-version matrix ship with artifacts; missing notices or unclear redistribution rights block publication.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P05-03
 
@@ -931,7 +935,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Consumer verification rejects modified bytes, wrong signer, expired/untrusted metadata and replayed unsupported releases.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P05-04
 
@@ -943,7 +947,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Every Phase 0–4 baseline gate has current passing evidence; skipped client/capacity/security acceptance does not count as a pass.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P05-05
 
@@ -955,7 +959,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Fresh Linux hosts and prior supported versions preserve identities, permissions, keys and policy state; incompatible downgrade is rejected.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P05-06
 
@@ -967,7 +971,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Domain join/login/password/GPO/replication/restore smoke tests pass before production approval, with synthetic credentials and scoped access.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P05-07
 
@@ -979,7 +983,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Canary/DC rollout preserves remaining authentication/DNS service; induced health/convergence failure pauses expansion and alerts the operator.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P05-08
 
@@ -991,7 +995,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Runbooks identify irreversible transitions and expected RPO/RTO; exercises recover safely without replaying incompatible schema/key state.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P05-09
 
@@ -1003,7 +1007,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** No self-approved high-risk publication or privileged fork runner; platform limitations are disclosed, never treated as enforced protection.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P05-10
 
@@ -1015,7 +1019,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** A new operator verifies/install/updates/restores using shipped docs; unsupported levels/clients and disclosure contacts are explicit.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -1027,7 +1031,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-06.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P06-01
 
@@ -1039,7 +1043,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Published matrix identifies release support/EOL and upgrade paths; advisory intake reaches accountable maintainers.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P06-02
 
@@ -1051,7 +1055,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Synthetic fault injection produces timely actionable alerts; cached offline login and missing telemetry do not count as online service success.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P06-03
 
@@ -1063,7 +1067,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Exercises prove private report receipt, severity/impact assessment, patch/mitigation tracking and secure publication without premature sensitive details.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P06-04
 
@@ -1075,7 +1079,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Quarterly full-dataset isolated restores meet &lt;=1 h RPO/&lt;=4 h RTO and include credentials, SYSVOL and recovery-key access.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P06-05
 
@@ -1087,7 +1091,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Certificate/key/legacy-protocol exceptions have owners and expiry; expired/unowned exceptions cannot silently continue.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P06-06
 
@@ -1099,7 +1103,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Export is explicitly scoped/redacted and access-audited; credential material, arbitrary user data and complete environments are excluded.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P06-07
 
@@ -1111,7 +1115,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Monthly site-level availability and growth trends include exclusions/outages and remediation; breaches generate owned corrective work.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P06-08
 
@@ -1123,7 +1127,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Daily/periodic scans actually run, stale results alert, signatures stay verified and urgent advisories do not wait for routine schedules.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P06-09
 
@@ -1135,7 +1139,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Separate contacts, signing recovery and backup custody restore operations without a single absent administrator or failed domain provider.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P06-10
 
@@ -1147,7 +1151,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Removal preserves required evidence/backup holds while preventing indefinite unnecessary identity data retention; migrations are auditable.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -1159,7 +1163,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-07.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P07-01
 
@@ -1171,7 +1175,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Origin/replay/unauthorized enrollment tests fail; multiple factors, replacement and recovery are audited with no SMS-only Tier 0 bypass.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P07-02
 
@@ -1183,7 +1187,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Grant expiry remains enforced after worker restart; tests cover nested groups, stale sessions/tickets and delayed replication with declared limits.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P07-03
 
@@ -1195,7 +1199,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** UI/API/bulk operations reject self-approval and scope substitution; signed-off target/content changes require reapproval.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P07-04
 
@@ -1207,7 +1211,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Qualified LAPS/gMSA/keytab retrieval, rotation, offline behavior and denied readers pass; secrets never appear in logs or broad inventory.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P07-05
 
@@ -1219,7 +1223,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Spray, enumeration, recovery impersonation and unauthorized reset/group request tests fail; breach checks do not export raw passwords.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P07-06
 
@@ -1231,7 +1235,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Results match actual ACL/trust/nested-group decisions; unauthorized viewers cannot enumerate protected relationships.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P07-07
 
@@ -1243,7 +1247,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Version/SYSVOL consistency, out-of-band edits and resultant-policy comparisons are validated; revert restores real client behavior.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P07-08
 
@@ -1255,7 +1259,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** A rehearsed IdP/provider outage preserves audited emergency access with separate custody and post-use rotation, without permanent hidden bypass.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P07-09
 
@@ -1267,7 +1271,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Expired grants/exceptions fail closed; keyboard/screen-reader and policy-simulation journeys include safe bulk-change previews.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P07-10
 
@@ -1279,7 +1283,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Negative/auth-strength/latency/recovery evidence covers selected feature IDs and mixed load; new security service failures cannot silently bypass MFA.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -1291,7 +1295,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-08.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P08-01
 
@@ -1303,7 +1307,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Real supported clients pass valid mapping/rotation and reject invalid templates, SAN escalation, expired/revoked certificates and weak mappings.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P08-02
 
@@ -1315,7 +1319,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Issuer/audience, nonce/state/PKCE where applicable, malicious attributes, duplicate events and cross-organization mix-ups are tested; unknown claims grant no privilege.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P08-03
 
@@ -1327,7 +1331,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Spoofed/stale/missing posture and provider outage behavior match approved policy; no raw posture flag grants Tier 0 membership.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P08-04
 
@@ -1339,7 +1343,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Expiry forecasting, safe overlap, CA/CRL/OCSP failure and renewal tests produce accurate status without disabling verification.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P08-05
 
@@ -1351,7 +1355,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Schema/version/provenance, gap detection, redaction and denied-reader tests pass; root-controlled local files are not claimed tamper-proof.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P08-06
 
@@ -1363,7 +1367,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Versioned fixtures measure expected alerts and false positives; missing endpoint signals/forged ticket limits are disclosed.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P08-07
 
@@ -1375,7 +1379,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Decoys have no real privilege, trigger approved handling and cannot be accidentally promoted into normal production accounts.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P08-08
 
@@ -1387,7 +1391,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** LDAP/UI/API attribute denials, purpose-scoped exports, deletion/hold and residency policy tests pass without breaking required discovery.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P08-09
 
@@ -1399,7 +1403,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Independent deployment/forest boundaries are documented; shared writable DCs are never sold as hostile-tenant isolation based only on UI roles.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P08-10
 
@@ -1411,7 +1415,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Reports show freshness, unsupported/unknown state, rule quality, provider dependencies and mixed-load overhead; a module outage does not stop core domain auth.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -1423,7 +1427,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-09.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P09-01
 
@@ -1435,7 +1439,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Disable/quarantine/trust/key actions reject wrong scope, replay, expired approval and unauthorized API calls; execution and cancellation are audited.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P09-02
 
@@ -1447,7 +1451,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Ticket-signing double rotation, service/machine/trust/admin keys and downstream effects are sequenced and verified in an isolated lab.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P09-03
 
@@ -1459,7 +1463,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** A compromised/stale replica cannot contaminate clean state; evidence preservation, trust revocation, role recovery and controlled reenrollment are exercised.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P09-04
 
@@ -1471,7 +1475,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Exact RODC/password-replication semantics, permitted caches, theft blast radius and credential reset behavior pass; writable state is never labeled read-only.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P09-05
 
@@ -1483,7 +1487,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Supported key operations, latency, outage, backup/custody and provider recovery are tested; unsupported AD verifiers/keys are explicitly excluded.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P09-06
 
@@ -1495,7 +1499,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Capabilities, systemd sandboxing, LSM policies, RPC ranges and update paths pass functional/denied tests without a privileged-container default.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P09-07
 
@@ -1507,7 +1511,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Independent recovery works after directory/provider loss and reconciles revoked identities, key epochs and directory/SYSVOL consistency.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P09-08
 
@@ -1519,7 +1523,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** MFA/audit/KMS/CA failures have explicit per-operation behavior; no silent auth bypass, unbounded audit flood or hidden evidence loss occurs.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P09-09
 
@@ -1531,7 +1535,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Tabletops plus technical drills record response time, operator mistakes, evidence retained and follow-up fixes.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P09-10
 
@@ -1543,7 +1547,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Noisy response/relay/query workloads cannot exceed approved blast radius or violate authentication SLOs without an explicit failed qualification.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -1555,7 +1559,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-10.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P10-01
 
@@ -1567,7 +1571,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Independent rebuilds compare bytes or documented nondeterminism; SBOM/provenance/commit/artifact identities align and license notices are reviewed.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P10-02
 
@@ -1579,7 +1583,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Expired/version-replayed metadata and malicious mirrors fail verification; signing-key compromise and offline update recovery are rehearsed.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P10-03
 
@@ -1591,7 +1595,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** LDAP/RPC/Kerberos/DNS/policy inputs exercise bounded parsers with sanitizer/property regressions; failures yield minimized tracked cases.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P10-04
 
@@ -1603,7 +1607,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Versioned selected operations compare real outputs/state effects; divergence is triaged, not accepted solely because a second implementation matches.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P10-05
 
@@ -1615,7 +1619,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Models for authorization, grant expiry, replication conflict and key transitions state assumptions and find/reject known counterexamples.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P10-06
 
@@ -1627,7 +1631,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Published program scope, safe-harbor/disclosure handling and funded remediation produce retested findings without exposing active secrets.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P10-07
 
@@ -1639,7 +1643,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Loss/compromise of one signer/reviewer cannot silently publish a trusted update; emergency process and audit remain usable.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P10-08
 
@@ -1651,7 +1655,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Freshness/uncertainty, safe previews and exception expiry are tested; new operators complete privileged and emergency runbooks without hidden knowledge.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P10-09
 
@@ -1663,7 +1667,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Actual required-check/review/ref/environment protections are verified where supported; unavailable private-repo features remain explicit release risks.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P10-10
 
@@ -1675,7 +1679,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Reports include test/model scope, failures, skips, unsupported platforms and residual risks; a green scanner suite is never labeled proof of security.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -1687,7 +1691,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-11.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P11-01
 
@@ -1699,7 +1703,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Exact Windows editions/builds, Linux releases/architectures and selected third-party products have native-engine feasibility and licensing evidence.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P11-02
 
@@ -1711,7 +1715,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Replay/cloned tokens, wrong device identities and revoked certificates fail; enrollment/rotation/rescue are audited without embedded domain-admin secrets.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P11-03
 
@@ -1723,7 +1727,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Compare actual OS/native package tools and reboot state; missing/stale/unknown/unsupported observations remain distinguishable.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P11-04
 
@@ -1735,7 +1739,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Vendor signatures/backports/prerequisites and known-issue fixtures yield correct applicable/not-applicable results beyond version-string matching.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P11-05
 
@@ -1747,7 +1751,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Approved device/OU/tag mappings resist spoofed inventory and unauthorized cross-group changes; hostname reuse does not inherit device authority.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P11-06
 
@@ -1759,7 +1763,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** WSUS/Intune/native locks and EOL products surface actionable conflicts; the service does not race another manager into unsupported state.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P11-07
 
@@ -1771,7 +1775,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** A malicious inventory payload cannot execute a command, read arbitrary files or gain package-install/EDR/support rights.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P11-08
 
@@ -1783,7 +1787,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Poisoned cache/metadata, wrong recipient and signature failures are rejected; relay possession of payload never authorizes installation.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P11-09
 
@@ -1795,7 +1799,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Fields/roles/retention are documented; 10k fleet simulation plus representative real endpoints reports freshness, resource and storage overhead.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P11-10
 
@@ -1807,7 +1811,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Controller/agent restart, certificate expiry and provider outage preserve device identity and show stale state without affecting domain login.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -1819,7 +1823,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-12.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P12-01
 
@@ -1831,7 +1835,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Changing membership/digest/privileged scope requires reapproval; self-approval, cross-group API calls and stale authorization fail.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P12-02
 
@@ -1843,7 +1847,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Bad patch/health/error-rate fixtures pause later rings; missing report coverage cannot count as promotion success.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P12-03
 
@@ -1855,7 +1859,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** DST/time-zone, sleep/offline devices, active sessions, grace/deferral and forced reboot scenarios match explicit approved policy.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P12-04
 
@@ -1867,7 +1871,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Blocked devices are reported separately; competing native transactions and unsupported reboot suppression are not overridden silently.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P12-05
 
@@ -1879,7 +1883,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Vendor signatures plus approved digests survive retries/proxies; tamper, replay, incomplete files and quota failures block installation.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P12-06
 
@@ -1891,7 +1895,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Expired/cancelled jobs cannot run after reconnect; duplicate IDs and lost replies cannot cause repeated install or arbitrary command execution.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P12-07
 
@@ -1903,7 +1907,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Native version/state and health checks confirm remediation; exit zero, downloaded content or offline silence alone never counts as verified.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P12-08
 
@@ -1915,7 +1919,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Uninstall works where supported; irreversible kernel/application/state changes follow tested restore/reimage/forward-fix with recorded limitations.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P12-09
 
@@ -1927,7 +1931,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Known-exploited/exposed asset priority is explainable; override scope, expiry, independent approval and audit prevent unlimited emergency privilege.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P12-10
 
@@ -1939,7 +1943,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** A controller rollout cannot reboot all site DCs together; induced auth/replication health failure pauses and recovers the campaign.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -1951,7 +1955,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-13.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P13-01
 
@@ -1963,7 +1967,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Publish exact platform/device counts and real versus simulated roles; containers/simulators cannot replace native install/reboot evidence.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P13-02
 
@@ -1975,7 +1979,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Connected/stale/offline/unsupported categories are explicit; p95 ack and &gt;=99% inventory targets exclude neither unexplained failures nor hidden missing agents.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P13-03
 
@@ -1987,7 +1991,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** 10k-agent recovery after controller/site outage preserves authorization/cancellation, avoids duplicate installs and publishes convergence and queue metrics.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P13-04
 
@@ -1999,7 +2003,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Transfer tests measure cache hits/misses/eviction/retries under configured site limits; control API rate is not reported as distribution throughput.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P13-05
 
@@ -2011,7 +2015,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Missing/stale/offline/unverified/EOL devices cannot appear compliant; risk-based overdue time and exception expiry are reproducible from raw receipts.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P13-06
 
@@ -2023,7 +2027,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Role/target/approval/audit behavior agrees across clients; connector outages and duplicate tickets cannot grant new execution rights.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P13-07
 
@@ -2035,7 +2039,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Backups, expired certificates, full disks and process failures reconcile endpoint reality before resuming approved campaigns.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P13-08
 
@@ -2047,7 +2051,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Stop dispatch, revoke/rotate trust, inspect queue/catalog, recover signing/enrollment and reinstall trusted agents through a documented rescue process.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P13-09
 
@@ -2059,7 +2063,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Supported old/new combinations preserve identity and job semantics; staged signed-agent rollout pauses bad versions and retains recovery.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P13-10
 
@@ -2071,7 +2075,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Independent review, resource/storage/retention sizing, failure runbooks and mixed-load no-directory-SLO-regression evidence are approved before production.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -2083,7 +2087,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-14.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P14-01
 
@@ -2095,7 +2099,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Real Windows sessions and Linux headless/X11/Wayland cases have a versioned supported/unsupported matrix and tested maintained protocol engines.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P14-02
 
@@ -2107,7 +2111,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Wrong-device, replayed/expired tokens and stolen low-privilege accounts cannot open a session or reuse a privileged endpoint credential.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P14-03
 
@@ -2119,7 +2123,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Denied/expired/misleading requests fail; local user sees operator identity and can terminate a session without a remote approval.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P14-04
 
@@ -2131,7 +2135,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** No implicit permission from domain membership or patch role; expired device/operator grants fail and administrative access is audited.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P14-05
 
@@ -2143,7 +2147,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Denied channels cannot be reenabled through protocol/API bypass; locked screens, user switching and OS security prompts remain enforced.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P14-06
 
@@ -2155,7 +2159,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Certificate/recipient failures close connections; NAT/proxy and relay compromise tests document who can see session content and protect credential custody.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P14-07
 
@@ -2167,7 +2171,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** A connected session loses authority within a configured, tested &lt;=60 s revocation target; offline/broker-failed cases follow explicit safe expiry rules.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P14-08
 
@@ -2179,7 +2183,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Notice, policy, access/retention and sensitive-input boundaries are tested; no covert sessions or indiscriminate credential/key logging is allowed.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P14-09
 
@@ -2191,7 +2195,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Session identity and consent are revalidated; no unnoticed takeover, indefinitely cached grant or unintended concurrent control survives switching/restart.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P14-10
 
@@ -2203,7 +2207,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Published concurrency/bitrate/latency plus compromised-operator/broker rescue tests pass without affecting identity or emergency recovery paths.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -2215,7 +2219,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-15.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P15-01
 
@@ -2227,7 +2231,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Target/digest/path changes require renewed approval; upload-only and cross-group operators cannot gain execution, patch or retrieval rights.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P15-02
 
@@ -2239,7 +2243,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Wrong sender/device, tampered metadata, unauthenticated hash substitution and untrusted TLS are rejected; staged confidential files are access-restricted.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P15-03
 
@@ -2251,7 +2255,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Real Windows reparse and Linux symlink/rename race tests cannot escape allowed directories or overwrite privileged startup/system files.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P15-04
 
@@ -2263,7 +2267,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Default deny for privileged locations; approved overwrite preserves declared permissions and cannot convert a data upload into executable persistence.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P15-05
 
@@ -2275,7 +2279,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Corrupt/reordered/replayed chunks, offset overflow, connection loss and retries cannot finalize incorrect or unauthorized content.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P15-06
 
@@ -2287,7 +2291,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Partial files are never treated as delivered; unsupported atomic behavior is visible and staged fallback is tested with interrupted finalization.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P15-07
 
@@ -2299,7 +2303,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Full disk, expired/cancelled jobs and abandoned staged data remain bounded; reconnect revalidates authority before continuing.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P15-08
 
@@ -2311,7 +2315,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Type/size/scanning failures block according to policy; detection limits are documented and uploads cannot silently launch installers/scripts.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P15-09
 
@@ -2323,7 +2327,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Operator/device/path/digest/outcome are auditable without raw contents; uploading never grants access to user files or unsolicited endpoint surveillance.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P15-10
 
@@ -2335,7 +2339,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Concurrent representative real filesystem transfers survive agent/controller restarts and malicious paths without directory SLO regression.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -2347,7 +2351,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-16.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P16-01
 
@@ -2359,7 +2363,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Per-device identity/revocation, staged signed updates and authorized rescue/uninstall pass; module rights are isolated from support and patch executors.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P16-02
 
@@ -2371,7 +2375,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Process lineage/hashes, network, file and selected persistence/security events match fixture ground truth; unavailable sources/blind spots are explicit.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P16-03
 
@@ -2383,7 +2387,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** PID reuse, clock changes, reconnect duplicates, reordered events and buffer overflow cannot silently corrupt identity or claim complete healthy telemetry.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P16-04
 
@@ -2395,7 +2399,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Labeled malicious/benign synthetic scenarios measure precision/recall and alert delay; costly/untrusted rules cannot exhaust endpoint resources.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P16-05
 
@@ -2407,7 +2411,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Case/timeline/collection actions require scope and audit; evidence hashes/provenance/retention and denied-reader tests pass without blanket memory/credential extraction.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P16-06
 
@@ -2419,7 +2423,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Wrong process generation, expired/replayed jobs, protected system targets and unauthorized analysts are rejected; quarantine limitations are documented.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P16-07
 
@@ -2431,7 +2435,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Narrow authenticated rescue paths survive isolation; two-person/mass-action limits and false-positive tests prevent fleet/DC lockout; release-from-isolation is rehearsed.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P16-08
 
@@ -2443,7 +2447,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Disk/memory quotas, encryption/access controls, sequence gaps and reconnect backpressure preserve visibility; outages do not stall domain login or fill disks indefinitely.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P16-09
 
@@ -2455,7 +2459,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Stopped/stale sensors, changed policy and signer failure alert with provenance; root/kernel control is not claimed containable by local tamper protection.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P16-10
 
@@ -2467,7 +2471,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Real endpoint performance, false positives/negatives, benign safety and SIEM/SOAR connector replay/authorization tests pass before enforcement is enabled.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -2479,7 +2483,7 @@ No implemented increment is recorded for this substep.
 [Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phases/phase-17.md>)
 
 <details>
-<summary>10 substeps, associated features and evidence</summary>
+<summary>10 requirements, associated features and evidence</summary>
 
 ### P17-01
 
@@ -2491,7 +2495,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Reports identify real versus simulated endpoints/sessions, platform counts, traffic mix and exact build/rule versions; all individual contracts remain satisfied.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P17-02
 
@@ -2503,7 +2507,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** 50 desktop/100 terminal/250 transfer and EDR steady/burst profiles publish CPU/RAM/disk/IOPS/network/retention sizing, cost and endpoint overhead.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P17-03
 
@@ -2515,7 +2519,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Telemetry floods, relay misses, large transfers and reconnect storms cannot starve core directory services within approved resource isolation limits.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P17-04
 
@@ -2527,7 +2531,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** 24-hour partition, clock/DNS faults, full disks, expired issuers and 10k reconnect preserve authorization, bounded queues and truthful unknown state.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P17-05
 
@@ -2539,7 +2543,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Actual endpoint patch/file/isolation/session states are verified before replay; duplicate, cancelled and expired jobs cannot gain fresh authority.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P17-06
 
@@ -2551,7 +2555,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Support/upload/patch/EDR roles cannot exchange execution authority; external review includes enrollment, brokers, privileged executors, signing and recovery.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P17-07
 
@@ -2563,7 +2567,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Stop dispatch, revoke/rotate identities and rules, inspect queues and reenroll through an independent rescue path; offline stop limits and irreversible actions are explicit.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P17-08
 
@@ -2575,7 +2579,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Notice/consent/recording/evidence retention and accessible triage/patch/support journeys pass; missing data cannot appear as healthy/compliant.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P17-09
 
@@ -2587,7 +2591,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Signed artifacts, SBOM/provenance, staged agent upgrades/version skew and supported Linux/Windows packages pass with defined rollback/forward-recovery.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 ### P17-10
 
@@ -2599,7 +2603,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** All PATCH/REMOTE/FILE/EDR and selected security gates have current evidence, operator/support owners and known limits; no unrun acceptance is labeled production ready.
 
-No implemented increment is recorded for this substep.
+No implemented increment is recorded for this requirement.
 
 </details>
 
@@ -2609,7 +2613,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P01-01, P00-04
+**Requirements:** P01-01, P00-04
 
 **How it was done:** Pinned Rust 1.100.0 and locked Cargo graphs. The native runtime uses only the standard library, and its library/binary forbid unsafe code. Development and fuzz dependencies are separate from runtime code.
 
@@ -2625,7 +2629,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P01-01, P01-04
+**Requirements:** P01-01, P01-04
 
 **How it was done:** Implemented checked definite BER lengths and integer/tag validation without recursion. Frames are capped at 16 KiB, with attribute count/name and DN bounds applied before accepting requests.
 
@@ -2641,7 +2645,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P01-04
+**Requirements:** P01-04
 
 **How it was done:** Implemented empty-DN base searches for objectClass presence. Explicit attribute projection, \*, \+, 1.1 and typesOnly select static public metadata. No AD capability OIDs or naming contexts are advertised.
 
@@ -2657,7 +2661,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P01-05, P01-09
+**Requirements:** P01-05, P01-09
 
 **How it was done:** Only anonymous access to public lab metadata succeeds. Credential/SASL binds fail. Parsed request/debug state retains no bind DN or password, and service diagnostics use static messages.
 
@@ -2673,7 +2677,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P01-04, P01-09
+**Requirements:** P01-04, P01-09
 
 **How it was done:** Implemented fragmented/coalesced frame reads and a loopback-only, single-active-connection listener. Every read/write uses the remaining five-second total deadline; sessions stop after 32 requests.
 
@@ -2689,7 +2693,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P01-01, P01-04
+**Requirements:** P01-01, P01-04
 
 **How it was done:** A separate Python ldap3 client launches the Rust process on an ephemeral loopback port. CI tests the release binary, then extracts the internal archive and tests that executable again.
 
@@ -2705,7 +2709,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P01-01
+**Requirements:** P01-01
 
 **How it was done:** Added native negative/integration/property tests and instrumented coverage. The actual process is exercised in addition to direct parser tests; the core gate requires at least 90% lines.
 
@@ -2721,7 +2725,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P01-01
+**Requirements:** P01-01
 
 **How it was done:** Added a separate locked libFuzzer target for decode/respond and frame reading, seeded only with synthetic wire data. The PR budget caps iterations, time, input size and RSS.
 
@@ -2737,7 +2741,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P01-01
+**Requirements:** P01-01
 
 **How it was done:** Cargo deny checks advisories, licenses, sources and dependency bans for core and fuzz graphs, including development/build dependencies. Checksum-pinned Syft catalogs Cargo.lock into a CycloneDX inventory.
 
@@ -2753,7 +2757,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P01-01, P00-08
+**Requirements:** P01-01, P00-08
 
 **How it was done:** Added native build/coverage, supply-chain and sanitizer-fuzz jobs behind a reusable fail-closed aggregate. New source scopes must be explicitly registered with checks. Actions/tools/dependencies are pinned or hash-locked.
 
@@ -2769,7 +2773,7 @@ No implemented increment is recorded for this substep.
 
 **Design recorded**
 
-**Substeps:** P00-08
+**Requirements:** P00-08
 
 **How it was done:** Created 18 phase designs with 180 phase requirements referencing all 130 global capability IDs. CI checks missing phases, unknown/duplicate IDs, empty acceptance and unassigned capabilities.
 
@@ -2785,7 +2789,7 @@ No implemented increment is recorded for this substep.
 
 **Design recorded**
 
-**Substeps:** P00-02, P00-03, P00-07, P00-09
+**Requirements:** P00-02, P00-03, P00-07, P00-09
 
 **How it was done:** Documented component authority, identity/state/replication invariants, attack paths and capacity assumptions. Unresolved choices have owner roles and explicit blocking points.
 
@@ -2801,7 +2805,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P00-10, P01-01
+**Requirements:** P00-10, P01-01
 
 **How it was done:** Source packaging archives the tested commit with deterministic compression and checksum verification. The lab archive is checked after extraction; source release remains license-gated and creates drafts only.
 
@@ -2817,7 +2821,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P00-08, P00-10, P01-10
+**Requirements:** P00-08, P00-10, P01-10
 
 **How it was done:** Built a typed standalone dashboard from canonical phase/feature documents and reviewed progress facts, with phase/substep navigation, source evidence, issues and export.
 
@@ -2833,7 +2837,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P00-08, P00-10, P01-10
+**Requirements:** P00-08, P00-10, P01-10
 
 **How it was done:** Rendered the validated model into a README-only automation branch using structured GitHub API requests, privacy checks, idempotence and fast-forward publication.
 
@@ -2849,7 +2853,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P00-10, P01-10
+**Requirements:** P00-10, P01-10
 
 **How it was done:** Replaced duplicate navigation with compact phase cards and a phase picker; made work/problems expandable. Added a separate Pages workflow consuming only an immutable successful-main HTML artifact.
 
@@ -2865,7 +2869,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P01-01, P01-04, P01-10
+**Requirements:** P01-01, P01-04, P01-10
 
 **How it was done:** Evaluates presence, objectClass descriptor/OID equality and AND/OR/NOT against the fixed public RootDSE. Uses True/False/Undefined semantics, visits every branch, enforces depth 8 / 64 nodes / 256 assertion bytes and never retains assertion bytes.
 
@@ -2881,7 +2885,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P00-08, P00-10, P01-10
+**Requirements:** P00-08, P00-10, P01-10
 
 **How it was done:** Reads open PR descriptions/files/CI state and bounded progress JSON as data. Shows new/changed work and problem records separately from main totals, links PR-head evidence to affected substeps and preserves per-record historical revisions.
 
@@ -2897,7 +2901,7 @@ No implemented increment is recorded for this substep.
 
 **Implemented increment**
 
-**Substeps:** P00-10, P01-01
+**Requirements:** P00-10, P01-01
 
 **How it was done:** Removed TypeScript-ESLint and its picomatch path. Retained supported ESLint 10 / TypeScript 6, strict compiler checks and explicit-any AST checks; runs DOM/eval rules on compiler-erased JavaScript without bundling, minification or execution.
 
