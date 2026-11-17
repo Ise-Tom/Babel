@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T22:40:30\+01:00.
+GitHub metadata checked: 2026-11-17T22:41:49\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#20 · Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>)
 
-**Draft · Pending merge · CI: in\_progress** · Head 2cb330c
+**Draft · Pending merge · CI: pending** · Head 19ac9a2
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -81,6 +81,7 @@ GitHub metadata checked: 2026-11-17T22:40:30\+01:00.
 - dashboard/package-lock.json
 - dashboard/package.json
 - dashboard/progress.json
+- dashboard/tests/dashboard.spec.ts
 - deny.toml
 - docs/adr/0001-native-ldap-lab.md
 - docs/adr/0003-postgresql-directory-state.md
@@ -97,6 +98,7 @@ GitHub metadata checked: 2026-11-17T22:40:30\+01:00.
 - native/babel-ldap/Cargo.toml
 - scripts/check\_ci\_scope.py
 - scripts/check\_lab\_definition.py
+- tests/test\_dashboard.py
 - tests/test\_delivery.py
 - tests/test\_lab\_definition.py
 
@@ -110,7 +112,7 @@ GitHub metadata checked: 2026-11-17T22:40:30\+01:00.
 
 **Limits and remaining work:** The patch does not grant repository administration access or claim a deployment already succeeded. Missing/insecure settings and failed reads still block publication.
 
-**PR-head evidence:** [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/.github/workflows/dashboard-pages.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/github-security-settings.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/project-dashboard.md>)
+**PR-head evidence:** [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/.github/workflows/dashboard-pages.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/github-security-settings.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/project-dashboard.md>)
 
 
 #### Proposed W25 · Apply owner-selected Apache-2.0 license and DCO contribution terms
@@ -123,7 +125,7 @@ GitHub metadata checked: 2026-11-17T22:40:30\+01:00.
 
 **Limits and remaining work:** DCO sign-off review is a maintainer responsibility, not an invented automated check. Third-party/specification/reference-fixture rights and production qualification remain open; publish=false remains in Rust manifests.
 
-**PR-head evidence:** [LICENSE](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/LICENSE>) · [DCO](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/DCO>) · [NOTICE](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/NOTICE>) · [CONTRIBUTING.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/CONTRIBUTING.md>) · [Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/Cargo.toml>) · [native/babel-ldap/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/native/babel-ldap/Cargo.toml>) · [fuzz/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/fuzz/Cargo.toml>) · [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/dashboard/package.json>) · [deny.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/deny.toml>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/decisions.md>)
+**PR-head evidence:** [LICENSE](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/LICENSE>) · [DCO](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/DCO>) · [NOTICE](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/NOTICE>) · [CONTRIBUTING.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/CONTRIBUTING.md>) · [Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/Cargo.toml>) · [native/babel-ldap/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/native/babel-ldap/Cargo.toml>) · [fuzz/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/fuzz/Cargo.toml>) · [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/dashboard/package.json>) · [deny.toml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/deny.toml>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/decisions.md>)
 
 
 #### Proposed W26 · Prepare an isolated Windows reference lab definition without provisioning
@@ -136,7 +138,7 @@ GitHub metadata checked: 2026-11-17T22:40:30\+01:00.
 
 **Limits and remaining work:** This is configuration preparation only. No images downloaded, terms accepted, VMs created, infrastructure purchased or Windows operations tested. I04 remains open; exact client builds and two clean real lab runs are required.
 
-**PR-head evidence:** [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/scripts/check_ci_scope.py>)
+**PR-head evidence:** [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/scripts/check_ci_scope.py>)
 
 
 #### Proposed W27 · Record PostgreSQL selection and a reviewable native state contract
@@ -149,7 +151,7 @@ GitHub metadata checked: 2026-11-17T22:40:30\+01:00.
 
 **Limits and remaining work:** No database is installed or implemented by this ADR. Key custody, crash/index/locking evidence, AD conflict/RID/FSMO and GPO/SYSVOL contracts remain separate gates. A future backend migration still needs data/recovery/conformance qualification.
 
-**PR-head evidence:** [docs/adr/0003-postgresql-directory-state.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/adr/0003-postgresql-directory-state.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/decisions.md>) · [docs/architecture.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/architecture.md>) · [docs/native-core-plan.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/native-core-plan.md>)
+**PR-head evidence:** [docs/adr/0003-postgresql-directory-state.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/adr/0003-postgresql-directory-state.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/decisions.md>) · [docs/architecture.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/architecture.md>) · [docs/native-core-plan.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/native-core-plan.md>)
 
 #### Proposed problem update: I03 · Project license and contributor policy not selected
 
@@ -163,7 +165,7 @@ No project LICENSE is selected. Native crates remain unpublished and source-prer
 
 **Provenance:** Current repository decision register; third-party development license policy does not choose the project license.
 
-[LICENSE](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/LICENSE>) · [DCO](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/DCO>) · [NOTICE](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/NOTICE>) · [CONTRIBUTING.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/CONTRIBUTING.md>) · [Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/Cargo.toml>) · [native/babel-ldap/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/native/babel-ldap/Cargo.toml>) · [fuzz/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/fuzz/Cargo.toml>) · [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/dashboard/package.json>) · [deny.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/deny.toml>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/decisions.md>)
+[LICENSE](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/LICENSE>) · [DCO](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/DCO>) · [NOTICE](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/NOTICE>) · [CONTRIBUTING.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/CONTRIBUTING.md>) · [Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/Cargo.toml>) · [native/babel-ldap/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/native/babel-ldap/Cargo.toml>) · [fuzz/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/fuzz/Cargo.toml>) · [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/dashboard/package.json>) · [deny.toml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/deny.toml>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/decisions.md>)
 
 #### Proposed problem update: I04 · Windows lab definition prepared; host and real-client evidence are missing
 
@@ -177,7 +179,7 @@ The owner has no lab host and explicitly requested a definition only. A two-netw
 
 **Provenance:** Explicitly outstanding; no Windows test is marked passed.
 
-[lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/scripts/check_ci_scope.py>)
+[lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/scripts/check_ci_scope.py>)
 
 #### Proposed problem update: I05 · PostgreSQL selected; durable-state and AD replication qualification remain
 
@@ -191,7 +193,7 @@ The owner accepted PostgreSQL as the initial backend. ADR 0003 proposes identity
 
 **Provenance:** Design blocker, not an implemented storage defect.
 
-[docs/adr/0003-postgresql-directory-state.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/adr/0003-postgresql-directory-state.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/decisions.md>) · [docs/architecture.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/architecture.md>) · [docs/native-core-plan.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/native-core-plan.md>)
+[docs/adr/0003-postgresql-directory-state.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/adr/0003-postgresql-directory-state.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/decisions.md>) · [docs/architecture.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/architecture.md>) · [docs/native-core-plan.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/native-core-plan.md>)
 
 #### Proposed problem update: I18 · Repository security administration remains blocked; Pages settings are verified
 
@@ -205,7 +207,7 @@ Pages now reports build\_type=workflow and https\_enforced=true, and its environ
 
 **Provenance:** Direct GitHub settings API responses and successful public site/deployment observations on 2026-11-17; these are GitHub permission errors, not automatic approval-review rejections.
 
-[.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/.github/workflows/dashboard-pages.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/github-security-settings.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/project-dashboard.md>)
+[.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/.github/workflows/dashboard-pages.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/github-security-settings.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/project-dashboard.md>)
 
 #### Proposed problem update: I20 · Pages deployment attempted an unnecessary denied administration write
 
@@ -219,7 +221,7 @@ After PR \#17 merged, main CI passed all 12 jobs and artifact verification passe
 
 **Provenance:** Observed complete hosted failure logs and current API state on 2026-11-17; this is a GitHub permission rejection, not automatic approval review.
 
-[.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/.github/workflows/dashboard-pages.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/github-security-settings.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/project-dashboard.md>)
+[.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/.github/workflows/dashboard-pages.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/github-security-settings.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/19ac9a2c58d0ea473532eedf65b1789f55c43370/docs/project-dashboard.md>)
 
 
 </details>
