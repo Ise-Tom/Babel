@@ -24,7 +24,11 @@ language's build, lint, type checks, unit tests, and dependency lockfiles in CI
 alongside the first implementation. Protocol code needs interoperability and
 negative tests; authorization changes need explicit denied-operation tests.
 Changes to security boundaries, cryptography, replication, or release workflows
-need a maintainer review with security expertise before merge.
+need a maintainer review with security expertise before merge. In the current
+solo-maintainer development profile, the owner reviews the diff and passing CI
+and merges through the PR; no second-person approval or self-approval event is
+required. PRs, up-to-date CI and resolved conversations remain mandatory. This
+is not independent security review; production qualification gates remain open.
 
 Use synthetic fixtures and disposable test domains. Follow [SECURITY.md](SECURITY.md)
 for vulnerabilities rather than posting exploitation details publicly.

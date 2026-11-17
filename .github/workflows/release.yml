@@ -19,7 +19,7 @@ jobs:
       contents: read
 
   release-environment:
-    name: Verify existing protected source-release environment
+    name: Verify solo source-release environment and tag restrictions
     needs: checks
     runs-on: ubuntu-24.04
     timeout-minutes: 5
@@ -32,7 +32,7 @@ jobs:
       - name: Fail before an unprotected environment can be automatically created
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/check_release_environment.py
+        run: python3 scripts/check_release_environment.py --mode solo
 
   release:
     name: Draft source prerelease

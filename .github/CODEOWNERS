@@ -1,2 +1,3 @@
-# The repository owner reviews changes, including workflow and policy changes.
+# Ownership record; the solo development ruleset does not require CODEOWNER approval.
+# The owner reviews the diff and passing CI before merging each PR.
 * @Ise-Tom

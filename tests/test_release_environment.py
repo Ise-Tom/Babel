@@ -1,6 +1,7 @@
-"""Missing review controls must block release before an environment job can auto-create one."""
+"""Validate solo/team release policy without bypassing CI, tag or environment protections."""
 
 import copy
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -29,7 +30,42 @@ class ReleaseEnvironment(unittest.TestCase):
         self.policies = {"total_count": 1, "branch_policies": [{"type": "tag", "name": "v*"}]}
 
     def test_explicit_independent_review_and_scoped_tags_are_required(self):
+        policy.validate(self.environment, self.policies, mode="team")
+
+    def test_solo_mode_needs_no_reviewer_but_retains_tag_and_bypass_controls(self):
+        self.environment["protection_rules"] = []
         policy.validate(self.environment, self.policies)
+        self.environment["can_admins_bypass"] = True
+        with self.assertRaises(ValueError):
+            policy.validate(self.environment, self.policies)
+
+    def test_solo_mode_rejects_the_deadlocking_team_approval_requirement(self):
+        with self.assertRaisesRegex(ValueError, "another reviewer"):
+            policy.validate(self.environment, self.policies)
+        with self.assertRaisesRegex(ValueError, "Unknown"):
+            policy.validate(self.environment, self.policies, mode="unknown")
+
+    def test_solo_main_ruleset_retains_required_ci_and_pull_request_boundaries(self):
+        root = Path(__file__).resolve().parents[1]
+        template = json.loads((root / "docs/github-main-ruleset.json").read_text())
+        self.assertEqual(template["bypass_actors"], [])
+        self.assertEqual(template["conditions"]["ref_name"]["include"], ["refs/heads/main"])
+        rules = {r["type"]: r for r in template["rules"]}
+        self.assertTrue({"deletion", "non_fast_forward"} <= rules.keys())
+        reviews = rules["pull_request"]["parameters"]
+        self.assertEqual(reviews["required_approving_review_count"], 0)
+        for flag in (
+            "require_code_owner_review",
+            "require_last_push_approval",
+            "require_extra_approval_for_unattributed_changes",
+        ):
+            self.assertFalse(reviews[flag])
+        self.assertTrue(reviews["required_review_thread_resolution"])
+        checks = rules["required_status_checks"]["parameters"]
+        self.assertTrue(checks["strict_required_status_checks_policy"])
+        self.assertEqual(
+            checks["required_status_checks"], [{"context": "CI gate", "integration_id": 15368}]
+        )
 
     def test_bypass_self_review_missing_reviewers_or_wrong_scope_are_rejected(self):
         changes = [
@@ -48,7 +84,7 @@ class ReleaseEnvironment(unittest.TestCase):
             environment = copy.deepcopy(self.environment)
             change(environment)
             with self.subTest(change=change), self.assertRaises(ValueError):
-                policy.validate(environment, self.policies)
+                policy.validate(environment, self.policies, mode="team")
 
     def test_unrestricted_extra_or_branch_policies_are_rejected(self):
         for policies in (
@@ -59,7 +95,7 @@ class ReleaseEnvironment(unittest.TestCase):
             {"total_count": 1, "branch_policies": [{"name": "v*", "type": "branch"}]},
         ):
             with self.subTest(policies=policies), self.assertRaises(ValueError):
-                policy.validate(self.environment, policies)
+                policy.validate(self.environment, policies, mode="team")
 
     def test_checker_uses_read_only_fixed_endpoints_and_missing_access_fails(self):
         calls = []
@@ -68,7 +104,7 @@ class ReleaseEnvironment(unittest.TestCase):
             calls.append((method, path, payload))
             return self.environment if path.endswith("source-release") else self.policies
 
-        policy.check(request=request)
+        policy.check(request=request, mode="team")
         self.assertEqual(
             calls,
             [

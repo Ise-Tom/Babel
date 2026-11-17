@@ -79,15 +79,16 @@ Markdown links inside fences, external URLs and anchors are not checked.
 
 ## Required merge gate and current platform limitation
 
-Configure **CI gate** as a required status check with a PR/review ruleset, and
-require independent review of workflow/policy changes. A successful job is not
-itself enforced merge protection. The earlier private-repository configuration
-rejected ruleset access with HTTP 403. The owner has now explicitly authorized a
-public repository. The active main ruleset and effective branch rules now verify review, up-to-date
-CI gate, no bypass, and force-push/deletion protection. Release-environment approval
-remains missing and is independently gated; main protection alone is not release approval. Bandit, Zizmor and
-pip-audit remain required; additional available security services must not replace
-those checks with unconditional success.
+The solo-maintainer development profile requires a PR and an up-to-date
+**CI gate**, resolved conversations, no bypass actors and force-push/deletion
+protection. Required approval count is zero; code-owner, last-push and extra
+unattributed-change approval must be disabled. The owner reviews workflow/policy
+changes and CI before merging, without a GitHub self-approval event. This does not
+claim independent review. The [owner settings guide](github-security-settings.md)
+distinguishes the proposed template from observed live settings; committing JSON
+cannot change GitHub's rules. Independent production security qualification remains
+a separate roadmap gate. Bandit, Zizmor and pip-audit remain required; additional
+security services must not replace them with unconditional success.
 
 Standard GitHub-hosted Ubuntu runners are used throughout the current workflows.
 Public repositories qualify for free standard runner usage under GitHub’s policy;
@@ -108,8 +109,7 @@ archives the tested commit with deterministic gzip metadata, computes SHA-256,
 creates GitHub build provenance via OIDC, then creates a **draft**, prerelease
 GitHub release containing the source archive and checksum file. It does not
 publish a package, image or server. Draft publication remains a maintainer act.
-The license gate currently blocks draft creation because the owner has not
-selected a license.
+Apache-2.0 is selected. The source-release environment still needs owner configuration.
 
 Once configured, a maintainer creates a protected prerelease tag on a reviewed
 main commit, e.g. `v0.1.0-alpha.1`. Never move/reuse release tags. A failed run
@@ -127,27 +127,27 @@ repository and reviewed workflow identity.
 These controls are not enabled by committing YAML. Apply them before relying
 on this pipeline; GitHub plan/visibility can limit features:
 
-1. Protect main with a ruleset: PRs required, at least one independent maintainer
-   approval, stale approvals dismissed, review of latest push, conversation
-   resolution, no force-push/deletion and no ordinary bypass. Require status
-   check **CI gate**, selecting the actual GitHub Actions check after the first
-   successful run. This requires an eligible repository plan/visibility.
+1. Protect main using the solo profile above and the committed ruleset template.
+   Keep **CI gate** required from GitHub Actions, with the branch up to date.
+   An additional maintainer is not required to merge development PRs.
 2. Restrict Actions to approved actions, require full commit SHA pins where
    supported, set default workflow token to read-only, and disable Actions
    creating/approving PRs. Use ephemeral hosted runners for untrusted PRs.
-3. Create environment **source-release**, require independent reviewer approval,
-   disallow self-review/admin bypass where available, restrict deployment refs
-   to protected release tags. A workflow's environment name alone does not
-   configure approval. If protection is unavailable, keep tag creation limited
-   and rely on reviewed draft publication; do not claim enforced approval.
+3. Create environment **source-release** with no required reviewers for solo
+   draft source prereleases, no admin bypass and only custom **tag** policy `v*`.
+   The read-only preflight fails if these controls are missing or inaccessible.
+   When adding a real second maintainer, change both environment settings and the
+   workflow preflight to `--mode team`; that profile requires independent approval
+   with self-review prevention. Neither profile authorizes production releases.
 4. Protect `v*` tags against creation/update/deletion by untrusted actors through
    a tag ruleset; limit creation to release maintainers. A tag on an unreviewed
    commit could change the workflow itself, so the main-ancestry check alone is
    not a sufficient release security boundary.
 5. Enable private vulnerability reporting, dependency graph/alerts, and secret
-   scanning/push protection where supported. Configure two actual security
-   contacts and a real CODEOWNERS team for workflow/security reviews; no
-   invented GitHub usernames are committed here.
+   scanning/push protection where supported. The current security contact and CODEOWNERS owner are the sole maintainer.
+   Add a backup contact and independent reviewer as the project grows, before
+   claiming team review or production response coverage; no invented usernames
+   are committed here.
 6. Confirm GitHub artifact attestations are available for this repository's
    visibility/plan and Actions has the required permissions. Keep the provenance
    gate fail-closed if unavailable; choose an independently reviewed signing
@@ -312,8 +312,9 @@ PostgreSQL driver, credential store or Windows/replication acceptance. See
 
 Source prereleases also have a read-only preflight for the existing protected
 `source-release` environment before the environment-bound write/OIDC job can run.
-It requires explicit independent reviewers, self-review prevention, no admin bypass
-and only `v*` tag deployments. Missing/inaccessible settings fail before the normal
+The explicit `--mode solo` profile requires no review-approval gate, no admin bypass
+and only `v*` tag deployments. Optional team mode requires independent reviewers
+and self-review prevention. Missing/inaccessible settings fail before the normal
 workflow could automatically create an unprotected environment. This assumes the
 reviewed release workflow; owner-controlled release tag creation and the platform
 environment remain necessary against unauthorized workflow/tag changes.
