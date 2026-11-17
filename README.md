@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T22:18:17\+01:00.
+GitHub metadata checked: 2026-11-17T22:19:07\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#17 · Harden public dashboard deployment and retain compatible security lint](<https://github.com/Ise-Tom/Babel/pull/17>)
 
-**In review · Pending merge · CI: failure** · Head 4ef5b4d
+**In review · Pending merge · CI: in\_progress** · Head 90a2c60
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -84,6 +84,7 @@ GitHub metadata checked: 2026-11-17T22:18:17\+01:00.
 - dashboard/progress.json
 - dashboard/src/index.html
 - dashboard/src/main.ts
+- dashboard/src/style.css
 - dashboard/tests/build.test.mjs
 - dashboard/tests/dashboard.spec.ts
 - docs/architecture.md
@@ -93,6 +94,7 @@ GitHub metadata checked: 2026-11-17T22:18:17\+01:00.
 - docs/phases/README.md
 - docs/project-dashboard.md
 - docs/validation-plan.md
+- scripts/check\_ci\_scope.py
 - scripts/check\_design.py
 - scripts/check\_pages\_source.py
 - scripts/collect\_pr\_progress.py
@@ -101,6 +103,7 @@ GitHub metadata checked: 2026-11-17T22:18:17\+01:00.
 - scripts/verify\_pages\_artifact.py
 - tests/test\_dashboard.py
 - tests/test\_dashboard\_delivery.py
+- tests/test\_delivery.py
 - tests/test\_design.py
 - tests/test\_pages\_artifact.py
 - tests/test\_pages\_deployment.py
@@ -116,20 +119,20 @@ GitHub metadata checked: 2026-11-17T22:18:17\+01:00.
 
 **Limits and remaining work:** TypeScript 7 is deliberately not adopted. Migration to its different unstable APIs needs a separate qualified change; a passing compiler CLI alone does not establish equivalent security lint.
 
-**PR-head evidence:** [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/package.json>) · [.github/dependabot.yml](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/dependabot.yml>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/lint.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/tests/lint.test.mjs>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>)
+**PR-head evidence:** [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/dashboard/package.json>) · [.github/dependabot.yml](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/.github/dependabot.yml>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/dashboard/lint.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/dashboard/tests/lint.test.mjs>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/docs/github-security-settings.md>)
 
 
 #### Proposed W23 · Verify Pages archives and minimize privileged deployment operations
 
 **Requirements:** P00-10, P01-01, P01-10
 
-**How it was done:** Read-only preflight validates exact main CI, immutable artifact ID, size and SHA-256 digest. A bounded verifier rejects extra/traversing/symlink files and weak browser policy, then packages only HTML/.nojekyll. The separate Pages/OIDC job has no checkout or project-code execution, attempts Actions-only/HTTPS configuration and rechecks main before deployment. Added no-referrer policy, blocked images, CODEOWNERS, a main ruleset template and verified owner settings.
+**How it was done:** Read-only preflight validates exact main CI, immutable artifact ID, size and SHA-256 digest. A bounded verifier rejects extra/traversing/symlink files and weak browser policy, then packages only HTML/.nojekyll. The separate Pages/OIDC job has no checkout or project-code execution, attempts Actions-only/HTTPS configuration and rechecks main before deployment. Added no-referrer policy, blocked images, CODEOWNERS, a main ruleset template and verified owner settings. Registered only the named ruleset JSON with object/syntax validation in the CI scope guard; unrelated JSON manifests remain rejected. Shortened the focus summary and compacted phase cards after hosted viewport checks caught overflow.
 
-**Recorded validation:** 86 Python tests pass with 98% tooling coverage. Negative archive/CSP tests, actual standalone archive verification, strict types/lint, actionlint, Zizmor, six build/lint fixtures and 24 browser tests pass locally. Live current site returned HTTP 200; Pages API confirms HTTPS and environment main-only deployment policy.
+**Recorded validation:** 87 Python tests pass with 98% tooling coverage. Negative archive/CSP tests, actual standalone archive verification, strict types/lint, actionlint, Zizmor, six build/lint fixtures and 24 browser tests pass locally. Live current site returned HTTP 200; Pages API confirms HTTPS and environment main-only deployment policy.
 
 **Limits and remaining work:** These stronger deployment changes await PR merge and a successful main workflow run. The integration cannot mutate admin settings \(HTTP 403\). The job-token Pages configuration step must succeed and read back correctly; no success is claimed in advance. Required review, private vulnerability reporting and other owner settings remain explicit actions. GitHub Pages does not support arbitrary security response headers.
 
-**PR-head evidence:** [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/workflows/dashboard-pages.yml>) · [.github/workflows/dashboard.yml](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/workflows/dashboard.yml>) · [scripts/check\_pages\_source.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/scripts/check_pages_source.py>) · [scripts/verify\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/scripts/verify_pages_artifact.py>) · [tests/test\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/tests/test_pages_artifact.py>) · [tests/test\_pages\_deployment.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/tests/test_pages_deployment.py>) · [dashboard/build.mjs](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/build.mjs>) · [dashboard/src/index.html](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/src/index.html>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/CODEOWNERS>)
+**PR-head evidence:** [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/.github/workflows/dashboard-pages.yml>) · [.github/workflows/dashboard.yml](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/.github/workflows/dashboard.yml>) · [scripts/check\_pages\_source.py](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/scripts/check_pages_source.py>) · [scripts/verify\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/scripts/verify_pages_artifact.py>) · [tests/test\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/tests/test_pages_artifact.py>) · [tests/test\_pages\_deployment.py](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/tests/test_pages_deployment.py>) · [dashboard/build.mjs](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/dashboard/build.mjs>) · [dashboard/src/index.html](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/dashboard/src/index.html>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/.github/CODEOWNERS>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/scripts/check_ci_scope.py>) · [tests/test\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/tests/test_delivery.py>) · [dashboard/src/style.css](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/dashboard/src/style.css>)
 
 #### Proposed problem update: I02 · Merge protection administration is unavailable to the integration
 
@@ -143,7 +146,7 @@ GitHub rejected ruleset access for this private repository with HTTP 403 and req
 
 **Provenance:** GitHub API observation recorded during pipeline setup; verify again before production release.
 
-[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-main-ruleset.json>)
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/docs/github-main-ruleset.json>)
 
 #### Proposed problem update: I10 · Dashboard access and Pages activation remain unavailable
 
@@ -157,7 +160,7 @@ The app ran inside the cloud workspace, but no user-accessible preview route was
 
 **Provenance:** Recorded development-session evidence and repository/CI observations; no separate public issue was created.
 
-[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>)
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/docs/github-security-settings.md>)
 
 #### Proposed problem update: I15 · GitHub Actions jobs blocked before startup by account billing
 
@@ -171,7 +174,7 @@ All jobs in PR \#18 CI run 44156039039 have zero executed steps. GitHub annotati
 
 **Provenance:** Observed GitHub run 44156039039, check run 134296912744 annotation; no pipeline commands ran.
 
-[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>)
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/docs/github-security-settings.md>)
 
 #### Proposed problem update: I16 · GitHub integration cannot apply the authorized public visibility setting
 
@@ -185,7 +188,7 @@ The project owner explicitly requested public visibility. PATCH /repos/Ise-Tom/B
 
 **Provenance:** Direct GitHub API response in the authorized visibility-change task on 2026-11-17; no automatic approval-review rejection occurred and no visibility setting was applied.
 
-[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>)
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/docs/github-security-settings.md>)
 
 #### Proposed problem update: I17 · TypeScript 7 removed the compiler API used by security lint
 
@@ -199,7 +202,7 @@ PR \#17 run 44154241268 passed typecheck but failed dashboard lint with TypeErro
 
 **Provenance:** Observed failed hosted job 134361914270 and local reproduction of the same failure; no check was skipped.
 
-[dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/package.json>) · [.github/dependabot.yml](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/dependabot.yml>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/lint.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/tests/lint.test.mjs>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>)
+[dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/dashboard/package.json>) · [.github/dependabot.yml](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/.github/dependabot.yml>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/dashboard/lint.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/dashboard/tests/lint.test.mjs>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/docs/github-security-settings.md>)
 
 #### Proposed problem update: I18 · GitHub denies repository security and Pages settings writes to the integration
 
@@ -213,7 +216,21 @@ Pages configuration PUT, environment PUT, private vulnerability reporting enable
 
 **Provenance:** Direct GitHub settings API responses and successful public site/deployment observations on 2026-11-17; these are GitHub permission errors, not automatic approval-review rejections.
 
-[.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/workflows/dashboard-pages.yml>) · [.github/workflows/dashboard.yml](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/workflows/dashboard.yml>) · [scripts/check\_pages\_source.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/scripts/check_pages_source.py>) · [scripts/verify\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/scripts/verify_pages_artifact.py>) · [tests/test\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/tests/test_pages_artifact.py>) · [tests/test\_pages\_deployment.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/tests/test_pages_deployment.py>) · [dashboard/build.mjs](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/build.mjs>) · [dashboard/src/index.html](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/src/index.html>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/CODEOWNERS>)
+[.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/.github/workflows/dashboard-pages.yml>) · [.github/workflows/dashboard.yml](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/.github/workflows/dashboard.yml>) · [scripts/check\_pages\_source.py](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/scripts/check_pages_source.py>) · [scripts/verify\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/scripts/verify_pages_artifact.py>) · [tests/test\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/tests/test_pages_artifact.py>) · [tests/test\_pages\_deployment.py](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/tests/test_pages_deployment.py>) · [dashboard/build.mjs](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/dashboard/build.mjs>) · [dashboard/src/index.html](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/dashboard/src/index.html>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/.github/CODEOWNERS>)
+
+#### Proposed problem update: I19 · Hosted hardening run caught unregistered ruleset data and viewport overflow
+
+**Proposed status:** resolved
+
+Run 44177850164 rejected the new docs/github-main-ruleset.json under the default-deny component scope policy. The desktop browser check also measured the last phase row at 1015px in a 1000px viewport after the progress summary grew. Local browser validation had preceded that progress-data update.
+
+**Resolution:** Registered that exact non-executable JSON file with readable-object validation and negative tests; other JSON manifests remain rejected. Shortened the focus summary and reduced phase-card spacing. Rebuilt using the final progress data before rerunning browser checks; no CI assertion or source guard was removed.
+
+**Next action:** Require the corrected full hosted run to pass and keep rebuilding dashboard data before visual checks when progress facts change.
+
+**Provenance:** Observed hosted repository/browser failures and inspected the actual 1440×1000 CI screenshot; not inferred from a local-only result.
+
+[scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/scripts/check_ci_scope.py>) · [tests/test\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/tests/test_delivery.py>) · [dashboard/src/style.css](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/dashboard/src/style.css>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/90a2c609ddd459640b563000ad6367bf0ef34cb0/dashboard/tests/dashboard.spec.ts>)
 
 
 </details>
