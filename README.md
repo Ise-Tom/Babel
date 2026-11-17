@@ -44,11 +44,164 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T22:48:57\+01:00.
+GitHub metadata checked: 2026-11-17T23:38:41\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#21 · Add PostgreSQL state recovery experiments and verified security progress](<https://github.com/Ise-Tom/Babel/pull/21>)
+
+**In review · Pending merge · CI: startup\_failure** · Head 34cb216
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    Babel’s PostgreSQL choice had no executable transaction/recovery evidence, and the dashboard still listed repository controls the owner has since configured. This PR adds a bounded synthetic database experiment and records the actual security-control state. It is not a Rust production storage adapter, credential store or AD replication implementation.
+    
+    The experiment pins the official PostgreSQL 18 image by digest, uses its official psql client over a container-local Unix socket and creates only disposable synthetic state. State, journal, audit intent and idempotency receipts commit together under a transactional writer allocator. Real tests cover immutable synthetic identities, collisions, denial, retries, concurrent commit/rollback order and SIGKILL/restart before and after commit. Containers have no network, ports, host binds or privileged mode; resource limits, read-only rootfs, scoped cleanup and redacted errors are tested.
+    
+    The same change adds default-deny scope registration, strict types/lint/security checks, a required database/coverage job, reviewed image updates and a CycloneDX test-image inventory. The normal CI gate waits for the new job.
+    
+    A separate read-only source-release preflight requires an existing independent-review environment before the environment-bound write/OIDC job can run. The environment is currently missing; the check fails rather than letting the normal workflow auto-create an unprotected environment. Platform protection and owner-controlled release tags remain necessary.
+    
+    Dashboard records W28–W30 include this PR’s implementation, tests, limitations and immutable source evidence. I02 is resolved using the active main ruleset/effective branch rules. I18 distinguishes API-verified private reporting/Pages controls from owner-confirmed Actions defaults. I05 remains open for the native adapter/model, recovery/key and AD qualification; Windows infrastructure remains open under I04, and the missing release environment is I22. PR proposals remain separate from accepted main totals.
+    
+    Validation: 22 component tests against PostgreSQL/psql 18.7 with 93% controller coverage; 97 repository tests with 98% tooling coverage; 24 browser tests and six build/security-lint tests. Strict types/lint, Bandit, actionlint, Zizmor, source archive/checksum, extracted-source secret scan and test-image SBOM generation passed locally. Hosted CI must verify this PR head. No merge, tag, release, Pages deployment or cloud-environment publication is performed by opening this PR.
+
+**Changed files:**
+
+- .github/dependabot.yml
+- .github/workflows/ci.yml
+- .github/workflows/release.yml
+- README.md
+- dashboard/progress.json
+- docs/adr/0003-postgresql-directory-state.md
+- docs/adr/0004-synthetic-postgresql-state-experiment.md
+- docs/ci-cd.md
+- docs/decisions.md
+- docs/github-security-settings.md
+- docs/phase-01-progress.md
+- experiments/postgres\_store/Dockerfile
+- experiments/postgres\_store/experiment.py
+- experiments/postgres\_store/schema.sql
+- experiments/postgres\_store/test\_store.py
+- pyproject.toml
+- scripts/check\_ci\_scope.py
+- scripts/check\_release\_environment.py
+- tests/test\_delivery.py
+- tests/test\_release\_environment.py
+
+#### Proposed W28 · Run real PostgreSQL synthetic transaction and process-crash experiments
+
+**Requirements:** P00-02, P01-02, P01-03
+
+**How it was done:** Added a digest-pinned official PostgreSQL 18 dependency, a bounded synthetic SQL schema and a stdlib Docker/psql controller. State, local journal, audit intent and idempotency commit together under a transactional writer allocator; synthetic UUID/SID identity is immutable. Tests use actual concurrent sessions and SIGKILL/restart. Containers have no network, ports, host binds or privileged mode, with read-only rootfs and scoped cleanup. Added a required runtime CI/coverage job, strict types/lint/security checks and test-image inventory. Process launch/timeout failures are also converted to static diagnostics so command arguments and captured output are not exported.
+
+**Recorded validation:** 22 component tests pass against PostgreSQL/psql 18.7; controller branch-inclusive coverage is 93%. Real cases cover collisions/injection/denial, rollback, ordered concurrent commit/rollback, kill before commit, committed-result recovery and idempotent retry after a discarded reply. Actual container isolation and cleanup are asserted. A CycloneDX test-image inventory was generated locally; 97 repository tests pass with 98% coverage.
+
+**Limits and remaining work:** Proposed for review; hosted verification must pass on the PR head before merge. This is an isolated SQL experiment, not native directory storage, authentication/Windows ACL, real SID allocation, backup/upgrade, physical power-loss proof, credential protection, AD replication or capacity acceptance. The future Rust driver and production packaging remain unselected/unqualified.
+
+**PR-head evidence:** [experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
+
+
+#### Proposed W29 · Verify owner-applied repository protections and security settings
+
+**Requirements:** P00-10, P01-01, P05-09, P10-09
+
+**How it was done:** Read the active main ruleset and effective branch rules, Pages mode/environment and private-reporting status. Recorded the owner’s explicit confirmation of the three Actions defaults separately from API-verifiable controls. No repository setting or remote branch was changed.
+
+**Recorded validation:** Ruleset 27498979 is active for refs/heads/main with no bypass, required review/CI and force-push/deletion protection. Private reporting is enabled. Pages is workflow/HTTPS/main-only with admin bypass false. Actions settings remain HTTP 403 and are therefore owner-confirmed, not API-verified.
+
+**Limits and remaining work:** A private report was not submitted and no production phase or independent source-release approval is accepted. The existing source-release environment is missing and separately blocked by I22. The GitHub report includes PR proposals separately; main totals change after merge.
+
+**PR-head evidence:** [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/CODEOWNERS>)
+
+
+#### Proposed W30 · Fail source prereleases before an unprotected review environment can be auto-created
+
+**Requirements:** P00-10, P05-09, P10-09
+
+**How it was done:** Prepared a read-only source-release environment preflight before the environment-bound contents/OIDC job. It requires explicit eligible reviewers, self-review prevention, disabled admin bypass and only v\* tag deployments. Missing/inaccessible or weak settings fail instead of allowing normal automatic environment creation.
+
+**Recorded validation:** Four policy regression tests cover missing/weak review, bypass, tag scope and denied access; helper coverage is 100% within the 97-test repository suite. Actual current GitHub metadata returns no source-release environment and the local checker exits nonzero with an owner action message. Workflow syntax/security checks pass.
+
+**Limits and remaining work:** The source-release environment is still absent. The workflow change is proposed for review and has not been executed as hosted release code. It assumes the reviewed release workflow and does not replace owner-controlled release-tag creation or platform protection.
+
+**PR-head evidence:** [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-security-settings.md>)
+
+#### Proposed problem update: I02 · Main review and CI protection are now enforced
+
+**Proposed status:** resolved
+
+The earlier private-plan/integration administration limitation prevented configuring protection through this integration. The owner applied Protect main ruleset 27498979; effective branch rules and its full configuration are now readable and active.
+
+**Resolution:** Verified main-only scope, no bypass actors, deletion/non-fast-forward rules, one approving/code-owner review, last-push approval, stale-review dismissal, resolved threads and an up-to-date GitHub Actions CI gate \(app 15368\). This is actual platform evidence, not an inference from passing tests.
+
+**Next action:** Retain the active ruleset and independent reviews; publish the new required database gate only through the reviewed workflow. This resolves repository main protection, not whole product/release acceptance.
+
+**Provenance:** GitHub API observation recorded during pipeline setup; verify again before production release.
+
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/CODEOWNERS>)
+
+#### Proposed problem update: I05 · Synthetic PostgreSQL recovery passes; native adapter and AD state qualification remain
+
+**Proposed status:** open
+
+An isolated PostgreSQL 18.7/official psql experiment now passes synthetic create/rename, identity/collision, transaction/audit/receipt atomicity, idempotency, denial, concurrent ordering and process/container crash recovery tests. It is separate from the LDAP lab and contains no credential-bearing directory or Rust production adapter.
+
+**Resolution:** Still open
+
+**Next action:** Implement and qualify the Rust adapter/full native identity-schema-ACL model, host/disk/backup/upgrade and key custody. Resolve AD conflict/RID/FSMO/restore epochs and GPO/SYSVOL requirements before valuable credentials or writable multi-controller state.
+
+**Provenance:** Design blocker, not an implemented storage defect.
+
+[experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
+
+#### Proposed problem update: I18 · Repository and Pages controls applied; Actions defaults owner-confirmed
+
+**Proposed status:** resolved
+
+The integration still has restricted administration access. The owner applied the repository security controls: main protection, private vulnerability reporting and Pages main-only deployment with admin bypass disabled are verified through APIs.
+
+**Resolution:** The owner explicitly confirmed read-only Actions defaults, disabled Actions approving PRs and approval for all outside collaborators. These are owner-confirmed because the Actions settings API still returns HTTP 403. No private vulnerability report was submitted or falsely marked exercised. The separate missing source-release environment is tracked under I22.
+
+**Next action:** Keep the limited integration permissions and periodically reverify actual state. Configure the protected source-release environment under I22 before source prerelease jobs can run.
+
+**Provenance:** Direct GitHub settings API responses and successful public site/deployment observations on 2026-11-17; these are GitHub permission errors, not automatic approval-review rejections.
+
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/CODEOWNERS>) · [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-security-settings.md>)
+
+#### Proposed problem update: I21 · PostgreSQL temporary initialization server looked ready before final startup
+
+**Proposed status:** resolved
+
+The first real container experiment saw pg\_isready succeed against the official image’s temporary initialization server before the final database process was available, so the first query failed.
+
+**Resolution:** Readiness now requires the container’s final postgres PID 1 before the socket probe; startup is bounded and failed initialization removes only the owned container/volumes. The final process/crash suite passes.
+
+**Next action:** Keep the startup barrier while using this pinned image and requalify it on reviewed image changes.
+
+**Provenance:** Observed local real-container failure and subsequent successful 21-test integration run; not a Windows or production failure claim.
+
+[experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
+
+#### Proposed problem update: I22 · Protected source-release review environment is missing
+
+**Proposed status:** open
+
+GET environments/source-release returned HTTP 404. Main protection, Pages restrictions and private reporting are applied, but they do not provide the independent release-environment approval required for source prereleases.
+
+**Resolution:** Still open
+
+**Next action:** Owner creates source-release with eligible independent reviewers, prevent self-review, no admin bypass and custom v\* tag-only deployment policy, and controls release-tag creation. Then run the read-only checker. The prepared workflow must be reviewed/merged before it enforces this preflight on GitHub.
+
+**Provenance:** Direct current GitHub metadata and an expected nonzero local preflight result; no environment, tag or release was created.
+
+[scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/34cb216fa870897110176b1974246e9b41bc5512/docs/github-security-settings.md>)
+
+
+</details>
 
 
 ## Phase 00
@@ -82,6 +235,8 @@ Design invariants are documented; the identity/ACL model is not implemented or a
 
 **Acceptance evidence required:** Design review covers rename, DN collision, ACL inheritance, nested groups, concurrent updates and durable acknowledgment boundaries.
 
+**Pending PR proposals:** [\#21: Add PostgreSQL state recovery experiments and verified security progress](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W12: Threat model and open decision register; W27: Record PostgreSQL selection and a reviewable native state contract. See the [implementation journal](#implementation-journal).
 
 ### P00-03
@@ -93,6 +248,8 @@ Replication and restore contracts are designed; metadata algorithms and failure 
 **Associated features:** [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
 
 **Acceptance evidence required:** Worked partition/delete/conflict/rollback examples specify observable outcomes and map to MS-ADTS/MS-DRSR.
+
+**Pending PR proposals:** [\#21: Add PostgreSQL state recovery experiments and verified security progress](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W12: Threat model and open decision register. See the [implementation journal](#implementation-journal).
 
@@ -178,6 +335,8 @@ Delivery gates and source packaging exist; real product upgrade/recovery/governa
 
 **Acceptance evidence required:** Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact.
 
+**Pending PR proposals:** [\#21: Add PostgreSQL state recovery experiments and verified security progress](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes. See the [implementation journal](#implementation-journal).
 
 </details>
@@ -204,6 +363,8 @@ Current native LDAP component development safeguards accepted by the project own
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-17. Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: development safeguards for the current native LDAP component, not the full server or future components. PR \#16 and its 12-job successful CI run: https://github.com/Ise-Tom/Babel/pull/16 ; https://github.com/Ise-Tom/Babel/actions/runs/44152161324 . Merged main cd6ad149870a05db4ab2a4f7fbca3e4d461af848 also passed all 12 jobs in run 44153995669.
 
+**Pending PR proposals:** [\#21: Add PostgreSQL state recovery experiments and verified security progress](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W01: Native Rust workspace and reproducible builds; W02: Bounded BER / LDAP decoder; W06: Independent client and packaged-binary checks; W07: Property tests and core coverage gate; W08: Sanitizer fuzz smoke; W09: Native dependency, license and SBOM checks; W10: Required native and repository CI gates; W13: Tested source and lab archive packaging; W17: Bounded LDAP RootDSE filter discovery; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes. See the [implementation journal](#implementation-journal).
 
 ### P01-02
@@ -216,6 +377,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Property tests preserve IDs on rename and reject collisions, invalid schema writes and unauthorized inherited/nested access.
 
+**Pending PR proposals:** [\#21: Add PostgreSQL state recovery experiments and verified security progress](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract. See the [implementation journal](#implementation-journal).
 
 ### P01-03
@@ -227,6 +390,8 @@ Owner selected PostgreSQL and the local state/journal contract is proposed in AD
 **Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
 
 **Acceptance evidence required:** Kill/restart at each commit boundary yields either the old or new complete state and never acknowledges an undurable successful write.
+
+**Pending PR proposals:** [\#21: Add PostgreSQL state recovery experiments and verified security progress](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract. See the [implementation journal](#implementation-journal).
 
@@ -313,6 +478,8 @@ Project owner accepted the current prototype’s scope inventory and limitation 
 **Acceptance evidence required:** Each public operation has a tested/unsupported status; lab credentials and incomplete protocol behavior cannot be promoted as a production release.
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-17. Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: documentation, tests and CLI label the current prototype as a loopback-only LDAP discovery lab and disclose missing production/domain functionality. Evidence pinned to merged main: https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phase-01-progress.md ; https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/native/babel-ldap/src/main.rs . This accepts scope reporting, not those missing features or production readiness.
+
+**Pending PR proposals:** [\#21: Add PostgreSQL state recovery experiments and verified security progress](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W17: Bounded LDAP RootDSE filter discovery; W18: Open-PR-aware private progress reporting; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes. See the [implementation journal](#implementation-journal).
 
@@ -829,6 +996,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
 
 **Acceptance evidence required:** No self-approved high-risk publication or privileged fork runner; platform limitations are disclosed, never treated as enforced protection.
+
+**Pending PR proposals:** [\#21: Add PostgreSQL state recovery experiments and verified security progress](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1489,6 +1658,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [K-06: Hardened release governance and maintainer continuity](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Actual required-check/review/ref/environment protections are verified where supported; unavailable private-repo features remain explicit release risks.
+
+**Pending PR proposals:** [\#21: Add PostgreSQL state recovery experiments and verified security progress](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
