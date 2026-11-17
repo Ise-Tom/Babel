@@ -2,8 +2,8 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-17",
-    "commit": "208d61d0f2bcb25c75d19a6e2ad2a292732e09ef",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44179292379",
+    "commit": "6dc9b06cdf0fc571033c4113a3bcbd508d605dd4",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44183204392",
     "ci_result": "passed",
     "checks_passed": 12,
     "pull_requests": [
@@ -76,9 +76,19 @@
         "number": 18,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 19,
+        "state": "merged",
+        "draft": false
+      },
+      {
+        "number": 20,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Verified main snapshot: PR #17 is merged and all 12 main CI jobs passed. Pages has Actions publishing and HTTPS enabled, but deployment 44179766192 failed on an unnecessary settings write; the last successful public site remains available. This PR proposes the read-only deployment fix and the owner-selected license/backend and lab definition."
+    "note": "Verified published main snapshot: PR #20 is merged, all 12 main CI jobs and Pages deployment 44183656847 succeeded. Main protection, private reporting and Pages restrictions are API-verified; Actions defaults are owner-confirmed. New PostgreSQL/release-preflight work is local and unpublished; no hosted CI is claimed for it."
   },
   "requirements": {
     "P00-01": {
@@ -1136,6 +1146,121 @@
       "problems": [
         "I05"
       ]
+    },
+    {
+      "id": "W28",
+      "title": "Run real PostgreSQL synthetic transaction and process-crash experiments",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-02",
+        "P01-02",
+        "P01-03"
+      ],
+      "how": "Added a digest-pinned official PostgreSQL 18 dependency, a bounded synthetic SQL schema and a stdlib Docker/psql controller. State, local journal, audit intent and idempotency commit together under a transactional writer allocator; synthetic UUID/SID identity is immutable. Tests use actual concurrent sessions and SIGKILL/restart. Containers have no network, ports, host binds or privileged mode, with read-only rootfs and scoped cleanup. Added a required runtime CI/coverage job, strict types/lint/security checks and test-image inventory.",
+      "verification": "21 component tests pass against PostgreSQL/psql 18.7; controller branch-inclusive coverage is 93%. Real cases cover collisions/injection/denial, rollback, ordered concurrent commit/rollback, kill before commit, committed-result recovery and idempotent retry after a discarded reply. Actual container isolation and cleanup are asserted. A CycloneDX test-image inventory was generated locally; 97 repository tests pass with 98% coverage.",
+      "limitations": "Local and unpublished; the prepared hosted job has not run. This is an isolated SQL experiment, not native directory storage, authentication/Windows ACL, real SID allocation, backup/upgrade, physical power-loss proof, credential protection, AD replication or capacity acceptance. The future Rust driver and production packaging remain unselected/unqualified.",
+      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710",
+      "sources": [
+        {
+          "path": "experiments/postgres_store/Dockerfile",
+          "label": "Dockerfile"
+        },
+        {
+          "path": "experiments/postgres_store/experiment.py",
+          "label": "experiment.py"
+        },
+        {
+          "path": "experiments/postgres_store/schema.sql",
+          "label": "schema.sql"
+        },
+        {
+          "path": "experiments/postgres_store/test_store.py",
+          "label": "test_store.py"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "label": "ci.yml"
+        },
+        {
+          "path": "docs/adr/0004-synthetic-postgresql-state-experiment.md",
+          "label": "0004-synthetic-postgresql-state-experiment.md"
+        }
+      ],
+      "problems": [
+        "I05",
+        "I21"
+      ]
+    },
+    {
+      "id": "W29",
+      "title": "Verify owner-applied repository protections and security settings",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P05-09",
+        "P10-09"
+      ],
+      "how": "Read the active main ruleset and effective branch rules, Pages mode/environment and private-reporting status. Recorded the owner’s explicit confirmation of the three Actions defaults separately from API-verifiable controls. No repository setting or remote branch was changed.",
+      "verification": "Ruleset 27498979 is active for refs/heads/main with no bypass, required review/CI and force-push/deletion protection. Private reporting is enabled. Pages is workflow/HTTPS/main-only with admin bypass false. Actions settings remain HTTP 403 and are therefore owner-confirmed, not API-verified.",
+      "limitations": "A private report was not submitted and no production phase or independent source-release approval is accepted. The existing source-release environment is missing and separately blocked by I22. Dashboard changes remain local while publication is paused.",
+      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710",
+      "sources": [
+        {
+          "path": "docs/github-security-settings.md",
+          "label": "github-security-settings.md"
+        },
+        {
+          "path": "docs/github-main-ruleset.json",
+          "label": "github-main-ruleset.json"
+        },
+        {
+          "path": ".github/CODEOWNERS",
+          "label": "CODEOWNERS"
+        }
+      ],
+      "problems": [
+        "I02",
+        "I18"
+      ]
+    },
+    {
+      "id": "W30",
+      "title": "Fail source prereleases before an unprotected review environment can be auto-created",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10",
+        "P05-09",
+        "P10-09"
+      ],
+      "how": "Prepared a read-only source-release environment preflight before the environment-bound contents/OIDC job. It requires explicit eligible reviewers, self-review prevention, disabled admin bypass and only v* tag deployments. Missing/inaccessible or weak settings fail instead of allowing normal automatic environment creation.",
+      "verification": "Four policy regression tests cover missing/weak review, bypass, tag scope and denied access; helper coverage is 100% within the 97-test repository suite. Actual current GitHub metadata returns no source-release environment and the local checker exits nonzero with an owner action message. Workflow syntax/security checks pass.",
+      "limitations": "The source-release environment is still absent. The workflow change is local, not published or executed as hosted release code. It assumes the reviewed release workflow and does not replace owner-controlled release-tag creation or platform protection.",
+      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710",
+      "sources": [
+        {
+          "path": "scripts/check_release_environment.py",
+          "label": "check_release_environment.py"
+        },
+        {
+          "path": "tests/test_release_environment.py",
+          "label": "test_release_environment.py"
+        },
+        {
+          "path": ".github/workflows/release.yml",
+          "label": "release.yml"
+        },
+        {
+          "path": "docs/github-security-settings.md",
+          "label": "github-security-settings.md"
+        }
+      ],
+      "problems": [
+        "I22"
+      ]
     }
   ],
   "problems": [
@@ -1160,8 +1285,8 @@
     },
     {
       "id": "I02",
-      "title": "Merge protection administration is unavailable to the integration",
-      "status": "open",
+      "title": "Main review and CI protection are now enforced",
+      "status": "resolved",
       "kind": "platform",
       "phases": [
         0,
@@ -1175,21 +1300,25 @@
         "P05-09",
         "P10-09"
       ],
-      "detail": "GitHub rejected ruleset access for this private repository with HTTP 403 and requested a supported plan or public visibility. Passing CI is not enforced merge protection.",
-      "resolution": "",
-      "next_action": "Owner imports docs/github-main-ruleset.json, enables required review/CI gate and verifies enforcement. Public ruleset listing is empty; legacy branch protection GET returns HTTP 403, so no enforced protection is claimed.",
+      "detail": "The earlier private-plan/integration administration limitation prevented configuring protection through this integration. The owner applied Protect main ruleset 27498979; effective branch rules and its full configuration are now readable and active.",
+      "resolution": "Verified main-only scope, no bypass actors, deletion/non-fast-forward rules, one approving/code-owner review, last-push approval, stale-review dismissal, resolved threads and an up-to-date GitHub Actions CI gate (app 15368). This is actual platform evidence, not an inference from passing tests.",
+      "next_action": "Retain the active ruleset and independent reviews; publish the new required database gate only through the reviewed workflow. This resolves repository main protection, not whole product/release acceptance.",
       "sources": [
         {
           "path": "docs/github-security-settings.md",
-          "label": "Verified state and owner settings"
+          "label": "github-security-settings.md"
         },
         {
           "path": "docs/github-main-ruleset.json",
-          "label": "Importable main ruleset"
+          "label": "github-main-ruleset.json"
+        },
+        {
+          "path": ".github/CODEOWNERS",
+          "label": "CODEOWNERS"
         }
       ],
       "provenance": "GitHub API observation recorded during pipeline setup; verify again before production release.",
-      "source_revision": "9700ddc9a28f62a9204bafc49e0f67390ed0036e"
+      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710"
     },
     {
       "id": "I03",
@@ -1302,7 +1431,7 @@
     },
     {
       "id": "I05",
-      "title": "PostgreSQL selected; durable-state and AD replication qualification remain",
+      "title": "Synthetic PostgreSQL recovery passes; native adapter and AD state qualification remain",
       "status": "open",
       "kind": "design",
       "phases": [
@@ -1317,29 +1446,37 @@
         "P01-02",
         "P01-03"
       ],
-      "detail": "The owner accepted PostgreSQL as the initial backend. ADR 0003 proposes identity/ACL ownership, independent per-DC stores and atomic state/journal ordering. No storage implementation, crash evidence, credential key-custody choice, AD conflict/RID/FSMO qualification or GPO/SYSVOL transport is accepted.",
+      "detail": "An isolated PostgreSQL 18.7/official psql experiment now passes synthetic create/rename, identity/collision, transaction/audit/receipt atomicity, idempotency, denial, concurrent ordering and process/container crash recovery tests. It is separate from the LDAP lab and contains no credential-bearing directory or Rust production adapter.",
       "resolution": "",
-      "next_action": "Implement the synthetic local-store experiment with reviewed PostgreSQL version/driver and same-PR runtime CI. Qualify crash/locking/recovery and keys; resolve D-05/D-06 before credential-bearing or multi-controller writes.",
+      "next_action": "Implement and qualify the Rust adapter/full native identity-schema-ACL model, host/disk/backup/upgrade and key custody. Resolve AD conflict/RID/FSMO/restore epochs and GPO/SYSVOL requirements before valuable credentials or writable multi-controller state.",
       "sources": [
         {
-          "path": "docs/adr/0003-postgresql-directory-state.md",
-          "label": "0003-postgresql-directory-state.md"
+          "path": "experiments/postgres_store/Dockerfile",
+          "label": "Dockerfile"
         },
         {
-          "path": "docs/decisions.md",
-          "label": "decisions.md"
+          "path": "experiments/postgres_store/experiment.py",
+          "label": "experiment.py"
         },
         {
-          "path": "docs/architecture.md",
-          "label": "architecture.md"
+          "path": "experiments/postgres_store/schema.sql",
+          "label": "schema.sql"
         },
         {
-          "path": "docs/native-core-plan.md",
-          "label": "native-core-plan.md"
+          "path": "experiments/postgres_store/test_store.py",
+          "label": "test_store.py"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "label": "ci.yml"
+        },
+        {
+          "path": "docs/adr/0004-synthetic-postgresql-state-experiment.md",
+          "label": "0004-synthetic-postgresql-state-experiment.md"
         }
       ],
       "provenance": "Design blocker, not an implemented storage defect.",
-      "source_revision": "b58df33f10f80688bfeaf55e44d08d52156e7608"
+      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710"
     },
     {
       "id": "I06",
@@ -1708,8 +1845,8 @@
     },
     {
       "id": "I18",
-      "title": "Repository security administration remains blocked; Pages settings are verified",
-      "status": "open",
+      "title": "Repository and Pages controls applied; Actions defaults owner-confirmed",
+      "status": "resolved",
       "kind": "platform-permissions",
       "phases": [
         0,
@@ -1720,22 +1857,38 @@
         "P01-01",
         "P01-10"
       ],
-      "detail": "Pages now reports build_type=workflow and https_enforced=true, and its environment remains main-only. Private vulnerability reporting is still disabled, ruleset listing empty and legacy protection/Actions defaults cannot be inspected. The integration cannot apply admin settings (HTTP 403). The deployment’s unnecessary write is tracked separately as I20.",
-      "resolution": "",
-      "next_action": "Owner imports the supplied main ruleset, enables private reporting and verifies Actions/environment controls using docs/github-security-settings.md. Merge the read-only Pages fix and verify a successful deployment; no broader credential or paid service is requested.",
-      "source_revision": "b58df33f10f80688bfeaf55e44d08d52156e7608",
+      "detail": "The integration still has restricted administration access. The owner applied the repository security controls: main protection, private vulnerability reporting and Pages main-only deployment with admin bypass disabled are verified through APIs.",
+      "resolution": "The owner explicitly confirmed read-only Actions defaults, disabled Actions approving PRs and approval for all outside collaborators. These are owner-confirmed because the Actions settings API still returns HTTP 403. No private vulnerability report was submitted or falsely marked exercised. The separate missing source-release environment is tracked under I22.",
+      "next_action": "Keep the limited integration permissions and periodically reverify actual state. Configure the protected source-release environment under I22 before source prerelease jobs can run.",
+      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710",
       "sources": [
-        {
-          "path": ".github/workflows/dashboard-pages.yml",
-          "label": "dashboard-pages.yml"
-        },
         {
           "path": "docs/github-security-settings.md",
           "label": "github-security-settings.md"
         },
         {
-          "path": "docs/project-dashboard.md",
-          "label": "project-dashboard.md"
+          "path": "docs/github-main-ruleset.json",
+          "label": "github-main-ruleset.json"
+        },
+        {
+          "path": ".github/CODEOWNERS",
+          "label": "CODEOWNERS"
+        },
+        {
+          "path": "scripts/check_release_environment.py",
+          "label": "check_release_environment.py"
+        },
+        {
+          "path": "tests/test_release_environment.py",
+          "label": "test_release_environment.py"
+        },
+        {
+          "path": ".github/workflows/release.yml",
+          "label": "release.yml"
+        },
+        {
+          "path": "docs/github-security-settings.md",
+          "label": "github-security-settings.md"
         }
       ],
       "provenance": "Direct GitHub settings API responses and successful public site/deployment observations on 2026-11-17; these are GitHub permission errors, not automatic approval-review rejections."
@@ -1811,8 +1964,92 @@
         }
       ],
       "provenance": "Observed complete hosted failure logs and current API state on 2026-11-17; this is a GitHub permission rejection, not automatic approval review."
+    },
+    {
+      "id": "I21",
+      "title": "PostgreSQL temporary initialization server looked ready before final startup",
+      "status": "resolved",
+      "kind": "test-infrastructure",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P01-01",
+        "P01-03"
+      ],
+      "detail": "The first real container experiment saw pg_isready succeed against the official image’s temporary initialization server before the final database process was available, so the first query failed.",
+      "resolution": "Readiness now requires the container’s final postgres PID 1 before the socket probe; startup is bounded and failed initialization removes only the owned container/volumes. The final process/crash suite passes.",
+      "next_action": "Keep the startup barrier while using this pinned image and requalify it on reviewed image changes.",
+      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710",
+      "sources": [
+        {
+          "path": "experiments/postgres_store/Dockerfile",
+          "label": "Dockerfile"
+        },
+        {
+          "path": "experiments/postgres_store/experiment.py",
+          "label": "experiment.py"
+        },
+        {
+          "path": "experiments/postgres_store/schema.sql",
+          "label": "schema.sql"
+        },
+        {
+          "path": "experiments/postgres_store/test_store.py",
+          "label": "test_store.py"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "label": "ci.yml"
+        },
+        {
+          "path": "docs/adr/0004-synthetic-postgresql-state-experiment.md",
+          "label": "0004-synthetic-postgresql-state-experiment.md"
+        }
+      ],
+      "provenance": "Observed local real-container failure and subsequent successful 21-test integration run; not a Windows or production failure claim."
+    },
+    {
+      "id": "I22",
+      "title": "Protected source-release review environment is missing",
+      "status": "open",
+      "kind": "platform-configuration",
+      "phases": [
+        0,
+        5,
+        10
+      ],
+      "requirements": [
+        "P00-10",
+        "P05-09",
+        "P10-09"
+      ],
+      "detail": "GET environments/source-release returned HTTP 404. Main protection, Pages restrictions and private reporting are applied, but they do not provide the independent release-environment approval required for source prereleases.",
+      "resolution": "",
+      "next_action": "Owner creates source-release with eligible independent reviewers, prevent self-review, no admin bypass and custom v* tag-only deployment policy, and controls release-tag creation. Then run the read-only checker. The prepared workflow must be reviewed/published before it enforces this preflight on GitHub.",
+      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710",
+      "sources": [
+        {
+          "path": "scripts/check_release_environment.py",
+          "label": "check_release_environment.py"
+        },
+        {
+          "path": "tests/test_release_environment.py",
+          "label": "test_release_environment.py"
+        },
+        {
+          "path": ".github/workflows/release.yml",
+          "label": "release.yml"
+        },
+        {
+          "path": "docs/github-security-settings.md",
+          "label": "github-security-settings.md"
+        }
+      ],
+      "provenance": "Direct current GitHub metadata and an expected nonzero local preflight result; no environment, tag or release was created."
     }
   ],
   "focus_phase": 1,
-  "focus_summary": "Read-only LDAP discovery is implemented. PostgreSQL is selected; durable storage and the Windows lab still require implementation and evidence."
+  "focus_summary": "Synthetic PostgreSQL transaction and crash tests pass. Native directory storage, key custody, AD replication and the Windows lab remain unqualified."
 }
