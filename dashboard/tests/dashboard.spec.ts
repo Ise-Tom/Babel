@@ -1,0 +1,132 @@
+import { test, expect, type Page } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { htmlFor } from '../build.mjs';
+import type { Board } from '../src/types';
+
+const file = 'http://127.0.0.1:4173/';
+async function phase(page: Page, id: number): Promise<void> {
+  if (await page.locator('#mobile-phase').isVisible()) await page.locator('#mobile-phase').selectOption(`phase:${id}`);
+  else await page.getByRole('button', { name: new RegExp(`^Phase ${String(id).padStart(2, '0')}:`) }).click();
+}
+test.beforeEach(async ({ page }) => { await page.goto(file); });
+
+test('overview has all phases and accurately reports no accepted phase', async ({ page }, info) => {
+  const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
+  await expect(page.getByRole('heading', { name: 'Roadmap & implementation' })).toBeVisible();
+  await expect(page.locator('.phase-card')).toHaveCount(18);
+  await expect(page.locator('.stat').first()).toContainText('0 accepted');
+  await expect(page.locator('footer')).toContainText('PRs 4–7 were merged');
+  await expect(page.locator('footer')).toContainText('no live GitHub');
+  await expect(page.locator('.stats')).toContainText('13');
+  await page.screenshot({ path: resolve('..', `reports/dashboard-${info.project.name}.png`), fullPage: false });
+  expect(errors).toEqual([]);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
+test('every phase exposes ten substeps, feature associations and source design', async ({ page }) => {
+  for (let id = 0; id < 18; id++) {
+    await phase(page, id);
+    await expect(page.locator('.requirement')).toHaveCount(10);
+    const first = page.locator('.requirement').first(); await first.locator('summary').click();
+    await expect(first.locator('.chips .chip').first()).toBeVisible();
+    await expect(first).toContainText('ACCEPTANCE STILL REQUIRED');
+    await expect(page.getByRole('link', { name: 'Canonical specification' })).toBeVisible();
+  }
+});
+
+test('implemented work explains how, validation, limitations and encountered problems', async ({ page }) => {
+  await phase(page, 1);
+  const step = page.getByTestId('P01-01'); await step.locator('summary').click();
+  await expect(step).toContainText('HOW IT WAS DONE');
+  await expect(step).toContainText('RECORDED VALIDATION');
+  await expect(step).toContainText('SBOM');
+  await expect(step).toContainText('RESOLUTION');
+  await expect(step.locator('.work-card').first().locator('.source-links a').first()).toHaveAttribute('href', /\/blob\/3a69a6b/);
+  const other = page.getByTestId('P01-02'); await other.locator('summary').click();
+  await expect(other).toContainText('No implemented increment');
+});
+
+test('search, requirement filter, empty state and reset work together', async ({ page }) => {
+  await page.getByRole('searchbox').fill('P01-04');
+  await expect(page.locator('.phase-card')).toHaveCount(1);
+  await page.getByRole('button', { name: 'Review phase →' }).click();
+  await expect(page.locator('.requirement')).toHaveCount(1);
+  await page.getByRole('searchbox').fill('');
+  await page.getByLabel('Requirement status', { exact: true }).selectOption('blocked');
+  await expect(page.locator('.requirement')).toHaveCount(3);
+  await page.getByLabel('Requirement status', { exact: true }).selectOption('accepted');
+  await expect(page.getByRole('heading', { name: 'No matches' })).toBeVisible();
+  await page.getByRole('button', { name: 'Clear filters' }).click();
+  await expect(page.locator('.requirement')).toHaveCount(10);
+});
+
+test('feature dialog and keyboard escape preserve safe text and focus', async ({ page }) => {
+  await phase(page, 1);
+  const step = page.getByTestId('P01-04'); await step.locator('summary').click();
+  const feature = step.getByRole('button', { name: 'AD-04', exact: true }); await feature.click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page.getByRole('dialog')).toContainText('not an implementation claim');
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).not.toBeVisible();
+  await expect(feature).toBeFocused();
+});
+
+test('journal separates open and resolved issues and links to parent requirements', async ({ page }) => {
+  if (await page.locator('#mobile-phase').isVisible()) await page.locator('#mobile-phase').selectOption('log');
+  else await page.getByRole('button', { name: /Implementation & issues/ }).click();
+  await expect(page.getByRole('heading', { name: 'Evidence, decisions & lessons' })).toBeVisible();
+  await page.getByRole('button', { name: 'Resolved', exact: true }).click();
+  await expect(page.locator('.issue-card')).toHaveCount(5);
+  await page.getByRole('button', { name: 'Open', exact: true }).click();
+  await expect(page.locator('.issue-card')).toHaveCount(4);
+  await page.locator('.work-card').first().getByRole('button', { name: 'P01-01' }).click();
+  await expect(page.getByTestId('P01-01')).toHaveAttribute('open', '');
+});
+
+test('deep links, back navigation and expand/collapse remain usable', async ({ page }) => {
+  await page.goto(`${file}#phase=1&step=P01-04`);
+  await expect(page.getByTestId('P01-04')).toHaveAttribute('open', '');
+  await page.getByRole('button', { name: 'Expand all', exact: true }).click();
+  await expect(page.locator('.requirement[open]')).toHaveCount(10);
+  await page.getByRole('button', { name: 'Collapse all', exact: true }).click();
+  await expect(page.locator('.requirement[open]')).toHaveCount(0);
+  await phase(page, 17); await page.goBack();
+  await expect(page.getByTestId('P01-04')).toBeVisible();
+});
+
+test('export contains the complete snapshot and works without network', async ({ page }) => {
+  const requests: string[] = []; page.on('request', request => { if (request.url().startsWith('http')) requests.push(request.url()); });
+  await page.context().setOffline(true);
+  const downloaded = page.waitForEvent('download'); await page.getByRole('button', { name: /Download snapshot/ }).click();
+  const download = await downloaded; const path = await download.path(); if (!path) throw new Error('Missing exported file');
+  const data = JSON.parse(await readFile(path, 'utf8')) as Board;
+  expect(data.phases).toHaveLength(18); expect(data.phases.flatMap(item => item.steps)).toHaveLength(180);
+  expect(data.features).toHaveLength(130); expect(requests).toEqual([]);
+});
+
+test('injected document text cannot escape the data block or execute in the UI', async ({ page }) => {
+  const data = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  const target = data.phases[0]; if (!target) throw new Error('Missing phase');
+  const payload = '</script><script>globalThis.__dashboardXss=true</script>';
+  target.title = payload;
+  await page.setContent(await htmlFor(data));
+  await expect(page.getByRole('heading', { name: payload, exact: true })).toBeVisible();
+  expect(await page.evaluate(() => Object.hasOwn(globalThis, '__dashboardXss'))).toBe(false);
+});
+
+test('overview and a detailed implementation pass accessibility checks', async ({ page }) => {
+  let result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+  expect(result.violations).toEqual([]);
+  await phase(page, 1); await page.getByTestId('P01-04').locator('summary').click();
+  result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+  expect(result.violations).toEqual([]);
+});
+
+
+test('unknown route and prototype-named filter fall back to a valid overview', async ({ page }) => {
+  await page.goto(`${file}#phase=999&status=constructor`);
+  await expect(page.locator('.phase-card')).toHaveCount(18);
+  await expect(page.getByLabel('Requirement status', { exact: true })).toHaveValue('all');
+});

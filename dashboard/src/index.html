@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta http-equiv="Content-Security-Policy" content="__CSP__">
+<title>Babel — Delivery dashboard</title>
+<style>__CSS__</style>
+</head>
+<body>
+<noscript><p>This offline dashboard needs JavaScript enabled to explore phase and implementation records.</p></noscript>
+<a class="skip" href="#content">Skip to content</a>
+<div class="app">
+  <aside class="sidebar" aria-label="Project navigation">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">B</span><div>BABEL<small>DELIVERY WORKSPACE</small></div></div>
+    <div class="sidebar-intro">A native identity platform.<br>A visible path forward.</div>
+    <nav aria-label="Dashboard views"><button id="overview-tab" class="nav-tab">▦ <span>Phase board</span></button><button id="log-tab" class="nav-tab">≡ <span>Implementation & issues</span></button></nav>
+    <div class="nav-label">DELIVERY PHASES <span>00—17</span></div>
+    <nav id="phase-nav" aria-label="Delivery phases"></nav>
+    <div class="sidebar-bottom"><span class="tiny-dot"></span> Linux-hosted · Native core<small>Engineering progress, not a production console.</small></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><div class="crumb">Babel <span aria-hidden="true">/</span> Project delivery<small id="snapshot-short"></small></div><button id="download" class="button secondary">↓ Download snapshot</button></header>
+    <div class="mobile-navigation"><label for="mobile-phase">Navigate</label><select id="mobile-phase"></select></div>
+    <section class="toolbar" aria-label="Dashboard filters">
+      <div class="search-field"><label for="search">Search phases, requirements, features or implementation notes</label><input id="search" type="search" placeholder="Try “Kerberos”, “P01-04” or “RootDSE”…" autocomplete="off"></div>
+      <div id="status-field"><label for="status">Requirement status</label><select id="status"><option value="all">All requirements</option><option value="planned">Planned</option><option value="in_progress">In progress</option><option value="blocked">Blocked</option><option value="accepted">Accepted</option></select></div>
+    </section>
+    <main id="content" tabindex="-1"></main>
+    <footer id="footer"></footer>
+  </div>
+</div>
+<dialog id="feature-dialog" aria-labelledby="feature-title"><div id="feature-content"></div><button id="close-dialog" class="button secondary">Close feature</button></dialog>
+<div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+<script id="dashboard-data" type="application/json">__DATA__</script>
+<script>__JS__</script>
+</body>
+</html>

@@ -39,6 +39,7 @@ jobs:
       - name: Design traceability and documentation links
         run: |
           python scripts/check_design.py
+          python scripts/build_dashboard.py --check
           python scripts/check_docs.py
       - name: Formatting, lint and strict types
         run: |
@@ -150,10 +151,16 @@ jobs:
     permissions:
       contents: read
 
+  dashboard:
+    # Caller-commit workflow; ./ is supported by the pinned actionlint.
+    uses: ./.github/workflows/dashboard.yml # zizmor: ignore[self-repository]
+    permissions:
+      contents: read
+
   gate:
     name: CI gate
     if: ${{ always() }}
-    needs: [repository, tests, security, workflows, secrets, native]
+    needs: [repository, tests, security, workflows, secrets, native, dashboard]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

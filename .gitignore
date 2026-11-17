@@ -17,3 +17,8 @@ coverage.xml
 !/fuzz/corpus/ldap_frame/unbind
 !/fuzz/corpus/ldap_frame/oversized
 !/fuzz/corpus/ldap_frame/rootdse
+/dashboard/node_modules/
+/dashboard/generated/
+/dashboard/dist/
+/dashboard/test-results/
+/dashboard/playwright-report/

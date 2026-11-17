@@ -1,0 +1,69 @@
+name: Project dashboard
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+    working-directory: dashboard
+
+jobs:
+  verify:
+    name: Dashboard build and browser checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.22.1'
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Install integrity-locked tooling without install scripts
+        run: npm ci --ignore-scripts
+      - name: Types, code/DOM security lint and standalone build
+        run: |
+          npm run typecheck
+          npm run lint
+          npm run build
+          npm run test:build
+      - name: Audit full tooling graph and create dependency inventory
+        run: |
+          mkdir -p ../reports
+          npm audit --audit-level=low --json > ../reports/dashboard-npm-audit.json
+          npm sbom --sbom-format cyclonedx > ../reports/dashboard-dependencies.cdx.json
+      - name: Install pinned test browser through Playwright
+        run: npx --no-install playwright install --with-deps chromium
+      - name: Desktop/mobile flows, offline use, injection and accessibility
+        run: npm run test:e2e
+      - name: Render permanent GitHub report for review
+        env:
+          SOURCE_REVISION: ${{ github.sha }}
+        run: python3 ../scripts/render_dashboard.py --revision "$SOURCE_REVISION"
+      - name: Preserve standalone HTML
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: dashboard-standalone
+          path: dashboard/dist/index.html
+          retention-days: 14
+          if-no-files-found: error
+      - name: Preserve browser/security evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: dashboard-validation
+          path: |
+            dashboard/playwright-report/
+            dashboard/test-results/
+            reports/dashboard-*.png
+            reports/dashboard-*.json
+            reports/dashboard.md
+          retention-days: 14

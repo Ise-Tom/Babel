@@ -63,8 +63,27 @@ class ComponentScope(unittest.TestCase):
             [],
         )
 
+    def test_dashboard_scope_is_registered_with_its_own_gates(self):
+        self.assertEqual(
+            scope.check(
+                ROOT,
+                [
+                    "dashboard/package.json",
+                    "dashboard/package-lock.json",
+                    "dashboard/build.d.mts",
+                    "dashboard/src/main.ts",
+                    "dashboard/src/style.css",
+                    "dashboard/tests/build.test.mjs",
+                    "dashboard/progress.json",
+                ],
+            ),
+            [],
+        )
+
     def test_new_languages_and_build_manifests_need_gates(self):
         names = [
+            "dashboard/unregistered.go",
+            "dashboard/src/unreviewed.py",
             "src/server.go",
             "native/unregistered/src/main.rs",
             "native/babel-ldap/other.js",

@@ -1,0 +1,709 @@
+{
+  "schema_version": 1,
+  "snapshot": {
+    "date": "2026-11-17",
+    "commit": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44089549252",
+    "ci_result": "passed",
+    "checks_passed": 11,
+    "pull_requests": [
+      {
+        "number": 4,
+        "state": "merged",
+        "draft": false
+      },
+      {
+        "number": 5,
+        "state": "merged",
+        "draft": false
+      },
+      {
+        "number": 6,
+        "state": "merged",
+        "draft": false
+      },
+      {
+        "number": 7,
+        "state": "merged",
+        "draft": false
+      }
+    ],
+    "note": "Verified main-branch snapshot. PRs 4–7 were merged when checked; this is not live GitHub or production status."
+  },
+  "requirements": {
+    "P00-01": {
+      "status": "in_progress",
+      "note": "The scope exists, but exact client builds and the approved operation matrix are not complete."
+    },
+    "P00-02": {
+      "status": "in_progress",
+      "note": "Design invariants are documented; the identity/ACL model is not implemented or accepted."
+    },
+    "P00-03": {
+      "status": "in_progress",
+      "note": "Replication and restore contracts are designed; metadata algorithms and failure evidence remain open."
+    },
+    "P00-04": {
+      "status": "in_progress",
+      "note": "Rust is accepted only for the bounded lab subset; broader crypto/store libraries remain under review."
+    },
+    "P00-05": {
+      "status": "blocked",
+      "note": "No licensed isolated Windows reference lab is recorded."
+    },
+    "P00-06": {
+      "status": "blocked",
+      "note": "Owner license/contributor decision is required before distribution."
+    },
+    "P00-07": {
+      "status": "in_progress",
+      "note": "Threat model exists; named contacts and the complete operating security process are not established."
+    },
+    "P00-08": {
+      "status": "in_progress",
+      "note": "Design traceability tooling is implemented; full compatibility/evidence acceptance is not complete."
+    },
+    "P00-09": {
+      "status": "in_progress",
+      "note": "Provisional workloads are specified; no production benchmark has ratified them."
+    },
+    "P00-10": {
+      "status": "in_progress",
+      "note": "Delivery gates and source packaging exist; real product upgrade/recovery/governance acceptance remains."
+    },
+    "P01-01": {
+      "status": "in_progress",
+      "note": "The lab component has executable checks; future native components need their own gates and review."
+    },
+    "P01-03": {
+      "status": "blocked",
+      "note": "Storage/identity/replication decisions must precede durable credential state."
+    },
+    "P01-04": {
+      "status": "in_progress",
+      "note": "Only the public RootDSE base-search subset works; DNS and broader discovery/read behavior are missing."
+    },
+    "P01-05": {
+      "status": "blocked",
+      "note": "Credential rejection is implemented; real Kerberos/password/key behavior awaits design and conformance prerequisites."
+    },
+    "P01-06": {
+      "status": "blocked",
+      "note": "Windows lab, DNS/authentication and membership implementation are missing."
+    },
+    "P01-09": {
+      "status": "in_progress",
+      "note": "Lab limits and diagnostics are tested; TLS, Linux service lifecycle and production privileges are not."
+    },
+    "P01-10": {
+      "status": "in_progress",
+      "note": "The current subset is documented; the full phase is not accepted."
+    }
+  },
+  "phase_acceptance": {},
+  "work_items": [
+    {
+      "id": "W01",
+      "title": "Native Rust workspace and reproducible builds",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-01",
+        "P00-04"
+      ],
+      "how": "Pinned Rust 1.100.0 and locked Cargo graphs. The native runtime uses only the standard library, and its library/binary forbid unsafe code. Development and fuzz dependencies are separate from runtime code.",
+      "sources": [
+        {
+          "path": "Cargo.toml",
+          "label": "Cargo.toml"
+        },
+        {
+          "path": "rust-toolchain.toml",
+          "label": "rust-toolchain.toml"
+        },
+        {
+          "path": "native/babel-ldap/src/lib.rs",
+          "label": "lib.rs"
+        }
+      ],
+      "verification": "Linux debug/release builds and Clippy passed locally and in PR #7.",
+      "limitations": "This qualifies the lab toolchain only; crypto, storage and other runtime libraries remain undecided.",
+      "problems": []
+    },
+    {
+      "id": "W02",
+      "title": "Bounded BER / LDAP decoder",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-01",
+        "P01-04"
+      ],
+      "how": "Implemented checked definite BER lengths and integer/tag validation without recursion. Frames are capped at 16 KiB, with attribute count/name and DN bounds applied before accepting requests.",
+      "sources": [
+        {
+          "path": "native/babel-ldap/src/ber.rs",
+          "label": "ber.rs"
+        },
+        {
+          "path": "native/babel-ldap/src/protocol.rs",
+          "label": "protocol.rs"
+        },
+        {
+          "path": "native/babel-ldap/tests/protocol.rs",
+          "label": "protocol.rs"
+        }
+      ],
+      "verification": "Negative tests cover truncation, malformed lengths/IDs/tags, unsupported controls and attribute limits; generated inputs exercise bounded behavior.",
+      "limitations": "Only the declared LDAP subset is decoded; this is not full LDAP or AD conformance.",
+      "problems": []
+    },
+    {
+      "id": "W03",
+      "title": "Read-only RootDSE queries",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-04"
+      ],
+      "how": "Implemented empty-DN base searches for objectClass presence. Explicit attribute projection, *, +, 1.1 and typesOnly select static public metadata. No AD capability OIDs or naming contexts are advertised.",
+      "sources": [
+        {
+          "path": "native/babel-ldap/src/protocol.rs",
+          "label": "protocol.rs"
+        },
+        {
+          "path": "native/babel-ldap/tests/smoke_ldap.py",
+          "label": "smoke_ldap.py"
+        }
+      ],
+      "verification": "The independent ldap3 client reads supportedLDAPVersion and vendor metadata from the running binary.",
+      "limitations": "There are no users, groups, schema, directory state or general searches.",
+      "problems": []
+    },
+    {
+      "id": "W04",
+      "title": "Credential rejection and safe diagnostics",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-05",
+        "P01-09"
+      ],
+      "how": "Only anonymous access to public lab metadata succeeds. Credential/SASL binds fail. Parsed request/debug state retains no bind DN or password, and service diagnostics use static messages.",
+      "sources": [
+        {
+          "path": "native/babel-ldap/src/protocol.rs",
+          "label": "protocol.rs"
+        },
+        {
+          "path": "native/babel-ldap/tests/protocol.rs",
+          "label": "protocol.rs"
+        },
+        {
+          "path": "native/babel-ldap/tests/smoke_ldap.py",
+          "label": "smoke_ldap.py"
+        }
+      ],
+      "verification": "Tests verify credential rejection, no credential echo in debug/response/stdout/stderr, and unsupported search failures.",
+      "limitations": "This is a safeguard, not authentication or password management. There is no TLS; never send real credentials.",
+      "problems": []
+    },
+    {
+      "id": "W05",
+      "title": "TCP framing and session budgets",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-04",
+        "P01-09"
+      ],
+      "how": "Implemented fragmented/coalesced frame reads and a loopback-only, single-active-connection listener. Every read/write uses the remaining five-second total deadline; sessions stop after 32 requests.",
+      "sources": [
+        {
+          "path": "native/babel-ldap/src/server.rs",
+          "label": "server.rs"
+        },
+        {
+          "path": "native/babel-ldap/tests/transport.rs",
+          "label": "transport.rs"
+        }
+      ],
+      "verification": "Socket tests cover idle deadlines, framing, public-interface refusal and request limits. A malformed peer does not kill the process.",
+      "limitations": "The sequential listener is a lab design, not a production availability or throughput claim.",
+      "problems": []
+    },
+    {
+      "id": "W06",
+      "title": "Independent client and packaged-binary checks",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-01",
+        "P01-04"
+      ],
+      "how": "A separate Python ldap3 client launches the Rust process on an ephemeral loopback port. CI tests the release binary, then extracts the internal archive and tests that executable again.",
+      "sources": [
+        {
+          "path": "native/babel-ldap/tests/smoke_ldap.py",
+          "label": "smoke_ldap.py"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        }
+      ],
+      "verification": "Positive RootDSE, credential denial, scope denial, malformed-peer recovery and extracted-binary checks passed.",
+      "limitations": "This is Linux client evidence, not Windows domain join or a deployment qualification.",
+      "problems": []
+    },
+    {
+      "id": "W07",
+      "title": "Property tests and core coverage gate",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-01"
+      ],
+      "how": "Added native negative/integration/property tests and instrumented coverage. The actual process is exercised in addition to direct parser tests; the core gate requires at least 90% lines.",
+      "sources": [
+        {
+          "path": "native/babel-ldap/tests/protocol.rs",
+          "label": "protocol.rs"
+        },
+        {
+          "path": "native/babel-ldap/tests/transport.rs",
+          "label": "transport.rs"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        }
+      ],
+      "verification": "21 Rust integration/property tests passed. Local measured core line coverage exceeded 90%; Python tooling had 34 passing tests and 98% combined coverage.",
+      "limitations": "Core line coverage excludes test/CLI dispatch files. Percentages do not measure coverage of future AD functionality.",
+      "problems": []
+    },
+    {
+      "id": "W08",
+      "title": "Sanitizer fuzz smoke",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-01"
+      ],
+      "how": "Added a separate locked libFuzzer target for decode/respond and frame reading, seeded only with synthetic wire data. The PR budget caps iterations, time, input size and RSS.",
+      "sources": [
+        {
+          "path": "fuzz/Cargo.toml",
+          "label": "Cargo.toml"
+        },
+        {
+          "path": "fuzz/fuzz_targets/ldap_frame.rs",
+          "label": "ldap_frame.rs"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        }
+      ],
+      "verification": "20,000 local address-sanitizer fuzz runs completed without a crash and without changing the lockfiles. Hosted PR #7 fuzz also passed.",
+      "limitations": "A bounded fuzz run is not proof that no vulnerability exists. Longer schedules apply after the workflow reaches main.",
+      "problems": [
+        "I07"
+      ]
+    },
+    {
+      "id": "W09",
+      "title": "Native dependency, license and SBOM checks",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-01"
+      ],
+      "how": "Cargo deny checks advisories, licenses, sources and dependency bans for core and fuzz graphs, including development/build dependencies. Checksum-pinned Syft catalogs Cargo.lock into a CycloneDX inventory.",
+      "sources": [
+        {
+          "path": "deny.toml",
+          "label": "deny.toml"
+        },
+        {
+          "path": "scripts/install_ci_tools.py",
+          "label": "install_ci_tools.py"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        }
+      ],
+      "verification": "Both dependency audits passed; the generated source inventory was checked for proptest and libfuzzer-sys.",
+      "limitations": "The SBOM includes test/fuzz dependencies; it is not a runtime-only or complete OS/stdlib inventory. The project license is still undecided.",
+      "problems": [
+        "I06",
+        "I07",
+        "I08"
+      ]
+    },
+    {
+      "id": "W10",
+      "title": "Required native and repository CI gates",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-01",
+        "P00-08"
+      ],
+      "how": "Added native build/coverage, supply-chain and sanitizer-fuzz jobs behind a reusable fail-closed aggregate. New source scopes must be explicitly registered with checks. Actions/tools/dependencies are pinned or hash-locked.",
+      "sources": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "label": "ci.yml"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        },
+        {
+          "path": "scripts/check_ci_scope.py",
+          "label": "check_ci_scope.py"
+        }
+      ],
+      "verification": "All 11 checks in the main-branch CI run passed at merge commit 3a69a6b, following PR #7.",
+      "limitations": "Checks run, but GitHub merge protection is not enforced on the current private-repository plan. Passing CI does not establish AD compatibility or production readiness.",
+      "problems": [
+        "I01",
+        "I02"
+      ]
+    },
+    {
+      "id": "W11",
+      "title": "Complete phase specifications and traceability",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-08"
+      ],
+      "how": "Created 18 phase designs with 180 phase requirements referencing all 130 global capability IDs. CI checks missing phases, unknown/duplicate IDs, empty acceptance and unassigned capabilities.",
+      "sources": [
+        {
+          "path": "docs/phases/README.md",
+          "label": "README.md"
+        },
+        {
+          "path": "scripts/check_design.py",
+          "label": "check_design.py"
+        },
+        {
+          "path": "tests/test_design.py",
+          "label": "test_design.py"
+        }
+      ],
+      "verification": "The baseline validator and its negative regression cases pass.",
+      "limitations": "A consistent document is not passing product evidence; no phase has been accepted.",
+      "problems": [
+        "I09"
+      ]
+    },
+    {
+      "id": "W12",
+      "title": "Threat model and open decision register",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-02",
+        "P00-03",
+        "P00-07",
+        "P00-09"
+      ],
+      "how": "Documented component authority, identity/state/replication invariants, attack paths and capacity assumptions. Unresolved choices have owner roles and explicit blocking points.",
+      "sources": [
+        {
+          "path": "docs/architecture.md",
+          "label": "architecture.md"
+        },
+        {
+          "path": "docs/threat-model.md",
+          "label": "threat-model.md"
+        },
+        {
+          "path": "docs/decisions.md",
+          "label": "decisions.md"
+        }
+      ],
+      "verification": "Reviewed for internal consistency and linked into phase designs.",
+      "limitations": "Named accountable owners, independent assessment, Windows lab, final storage/key choices and measured capacity remain outstanding.",
+      "problems": [
+        "I03",
+        "I04",
+        "I05"
+      ]
+    },
+    {
+      "id": "W13",
+      "title": "Tested source and lab archive packaging",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10",
+        "P01-01"
+      ],
+      "how": "Source packaging archives the tested commit with deterministic compression and checksum verification. The lab archive is checked after extraction; source release remains license-gated and creates drafts only.",
+      "sources": [
+        {
+          "path": "scripts/package_source.py",
+          "label": "package_source.py"
+        },
+        {
+          "path": "tests/test_delivery.py",
+          "label": "test_delivery.py"
+        },
+        {
+          "path": ".github/workflows/release.yml",
+          "label": "release.yml"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        }
+      ],
+      "verification": "Committed-source exclusion, unsafe-tag/Git-failure tests and internal archive smoke checks passed.",
+      "limitations": "No production installer, signed native product release, directory upgrade or recovery deployment exists.",
+      "problems": [
+        "I03"
+      ]
+    }
+  ],
+  "problems": [
+    {
+      "id": "I01",
+      "title": "GitHub API initially blocked by egress policy",
+      "status": "resolved",
+      "kind": "setup",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P01-01"
+      ],
+      "detail": "Git reads/pushes worked while api.github.com was excluded, so draft PR creation returned Forbidden. The CLI auth error alone did not establish missing credentials.",
+      "resolution": "The owner opened Internet/API access; the PR retry succeeded without asking for a raw token.",
+      "next_action": "Keep API connectivity distinct from Git and credential readiness.",
+      "sources": [],
+      "provenance": "Recorded development-session incident; no public issue was created."
+    },
+    {
+      "id": "I02",
+      "title": "Mandatory merge protection unavailable on current GitHub plan",
+      "status": "open",
+      "kind": "platform",
+      "phases": [
+        0,
+        1,
+        5,
+        10
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P05-09",
+        "P10-09"
+      ],
+      "detail": "GitHub rejected ruleset access for this private repository with HTTP 403 and requested a supported plan or public visibility. Passing CI is not enforced merge protection.",
+      "resolution": "",
+      "next_action": "Owner chooses a supported plan/visibility and configures required checks/reviews. No paid-plan or visibility change has been made.",
+      "sources": [
+        {
+          "path": "docs/ci-cd.md",
+          "label": "CI/CD enforcement boundary"
+        }
+      ],
+      "provenance": "GitHub API observation recorded during pipeline setup; verify again before production release."
+    },
+    {
+      "id": "I03",
+      "title": "Project license and contributor policy not selected",
+      "status": "open",
+      "kind": "decision",
+      "phases": [
+        0,
+        1,
+        5
+      ],
+      "requirements": [
+        "P00-06",
+        "P05-02"
+      ],
+      "detail": "No project LICENSE is selected. Native crates remain unpublished and source-prerelease creation is blocked by the license gate.",
+      "resolution": "",
+      "next_action": "Project owner resolves D-01 before public distribution and external contribution policy acceptance.",
+      "sources": [
+        {
+          "path": "docs/decisions.md",
+          "label": "D-01"
+        }
+      ],
+      "provenance": "Current repository decision register; third-party development license policy does not choose the project license."
+    },
+    {
+      "id": "I04",
+      "title": "Licensed isolated Windows reference lab is missing",
+      "status": "open",
+      "kind": "infrastructure",
+      "phases": [
+        0,
+        1,
+        2
+      ],
+      "requirements": [
+        "P00-05",
+        "P01-06",
+        "P02-10"
+      ],
+      "detail": "Independent Linux LDAP-client evidence exists, but there is no recorded real Windows join/login/GPO conformance result or qualified reference image matrix.",
+      "resolution": "",
+      "next_action": "Provide reproducible isolated Windows/reference hosts and exact supported builds before accepting Windows behavior.",
+      "sources": [
+        {
+          "path": "docs/decisions.md",
+          "label": "D-02 / D-10"
+        },
+        {
+          "path": "docs/phase-01-progress.md",
+          "label": "Phase 1 remaining gates"
+        }
+      ],
+      "provenance": "Explicitly outstanding; no Windows test is marked passed."
+    },
+    {
+      "id": "I05",
+      "title": "Persistent identity, storage and replication decisions remain open",
+      "status": "open",
+      "kind": "design",
+      "phases": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "requirements": [
+        "P00-02",
+        "P00-03",
+        "P01-02",
+        "P01-03"
+      ],
+      "detail": "The lab has no persistent state. SID/GUID/schema/ACL, transaction/journal format, key custody and compatible replication metadata require reviewed designs and failure tests.",
+      "resolution": "",
+      "next_action": "Resolve D-04/D-05/D-06 before valuable credential-bearing writes or fixed recovery formats.",
+      "sources": [
+        {
+          "path": "docs/decisions.md",
+          "label": "Storage and replication decisions"
+        }
+      ],
+      "provenance": "Design blocker, not an implemented storage defect."
+    },
+    {
+      "id": "I06",
+      "title": "Proposed SBOM generator had a yanked locked dependency",
+      "status": "resolved",
+      "kind": "tooling",
+      "phases": [
+        1
+      ],
+      "requirements": [
+        "P01-01"
+      ],
+      "detail": "The proposed cargo-cyclonedx installation reported a yanked transitive XML dependency. That generator was not used for accepted SBOM output.",
+      "resolution": "Removed the unused tool and used checksum-pinned Syft 1.57.2 for Cargo.lock source inventory. Native project/fuzz dependency graphs are audited separately.",
+      "next_action": "Review SBOM tool pins and upstream advisories regularly.",
+      "sources": [
+        {
+          "path": "scripts/install_ci_tools.py",
+          "label": "Verified Syft pin"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "Native supply-chain job"
+        }
+      ],
+      "provenance": "Recorded development-session tool-selection correction; no checksum or advisory bypass was introduced."
+    },
+    {
+      "id": "I07",
+      "title": "Fuzzer license and path dependency failed the initial audit",
+      "status": "resolved",
+      "kind": "tooling",
+      "phases": [
+        1
+      ],
+      "requirements": [
+        "P01-01"
+      ],
+      "detail": "libfuzzer-sys requires NCSA alongside its MIT/Apache choice; the initial allowlist lacked it. The local path dependency also lacked an exact version constraint.",
+      "resolution": "Recorded the development-harness license obligation, enabled development/build license checks and pinned the local path version. Both graphs now pass.",
+      "next_action": "Retain upstream notices; do not confuse this development policy with project-license approval.",
+      "sources": [
+        {
+          "path": "deny.toml",
+          "label": "License/source policy"
+        },
+        {
+          "path": "fuzz/Cargo.toml",
+          "label": "Fuzz manifest"
+        }
+      ],
+      "provenance": "Initial cargo-deny findings and subsequent passing audits."
+    },
+    {
+      "id": "I08",
+      "title": "SBOM cataloger selection used the wrong CLI operation",
+      "status": "resolved",
+      "kind": "tooling",
+      "phases": [
+        1
+      ],
+      "requirements": [
+        "P01-01"
+      ],
+      "detail": "The initial Syft selector treated a cataloger name as a tag and produced no valid report.",
+      "resolution": "Switched to the explicit default-cataloger override and checked that CycloneDX output contains both core-development and fuzz packages.",
+      "next_action": "Validate report contents as well as command success when changing catalog/tool versions.",
+      "sources": [
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "Cargo.lock inventory command"
+        }
+      ],
+      "provenance": "Recorded local validation failure and correction; the failed output was not counted as evidence."
+    },
+    {
+      "id": "I09",
+      "title": "Design checker needed precise empty-acceptance handling",
+      "status": "resolved",
+      "kind": "quality",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-08"
+      ],
+      "detail": "A regression test found that an empty acceptance cell was reported as a missing row instead of a specific empty-cell error.",
+      "resolution": "Adjusted the row parser and added explicit empty-cell validation. The negative test and complete baseline now pass.",
+      "next_action": "Keep negative cases when modifying the document schema.",
+      "sources": [
+        {
+          "path": "scripts/check_design.py",
+          "label": "Design validator"
+        },
+        {
+          "path": "tests/test_design.py",
+          "label": "Negative cases"
+        }
+      ],
+      "provenance": "Recorded implementation-test failure; no product conformance was affected."
+    }
+  ],
+  "focus_phase": 1,
+  "focus_summary": "A bounded RootDSE lab service is working. Identity state, durable storage, authentication and domain services are still ahead."
+}
