@@ -5,13 +5,13 @@ Read this page in your browser using the repository's existing GitHub access. Bo
 
 > Main code and open-PR proposals are reported separately. CI failures remain visible; public deployment still requires successful main CI.
 
-Report source: [6dc9b06](<https://github.com/Ise-Tom/Babel/tree/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4>). Recorded implementation evidence: 2026-11-17, [208d61d](<https://github.com/Ise-Tom/Babel/tree/208d61d0f2bcb25c75d19a6e2ad2a292732e09ef>). These are separate revisions. Rebuilding does not accept requirements or refresh evidence.
+Report source: [58c3668](<https://github.com/Ise-Tom/Babel/tree/58c3668d466b104f7f37e0d1eb63c063124812e8>). Recorded implementation evidence: 2026-11-17, [6dc9b06](<https://github.com/Ise-Tom/Babel/tree/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4>). These are separate revisions. Rebuilding does not accept requirements or refresh evidence.
 
-**18 phases · 180 requirements · 130 features · 0 phases accepted · 27 recorded increments · 4 open problems**
+**18 phases · 180 requirements · 130 features · 0 phases accepted · 31 recorded increments · 3 open problems**
 
 Implemented increments can be narrower than their parent requirement. Acceptance is recorded after an explicit owner review of the stated scope, evidence and limits. Requirement and increment counts can differ between phases and are not effort percentages. Design records and passing CI do not establish AD compatibility or production readiness.
 
-**Current focus:** Phase 01 — Read-only LDAP discovery is implemented. PostgreSQL is selected; durable storage and the Windows lab still require implementation and evidence.
+**Current focus:** Phase 01 — Synthetic PostgreSQL transaction and crash tests pass. Native directory storage, key custody, AD replication and the Windows lab remain unqualified.
 
 [Phase board](#phase-board) · [Implementation journal](#implementation-journal) · [Problems encountered](#problems-encountered) · [Feature catalog](#feature-catalog)
 
@@ -21,17 +21,17 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 | Phase | Status | Accepted requirements | Recorded increments |
 | --- | --- | --- | --- |
-| [00 · Contract, native-core design and laboratory](#phase-00) | In progress | 0/10 | 18 |
-| [01 · Native core and end-to-end development slice](#phase-01) | In progress | 2/10 | 24 |
+| [00 · Contract, native-core design and laboratory](#phase-00) | In progress | 0/10 | 22 |
+| [01 · Native core and end-to-end development slice](#phase-01) | In progress | 2/10 | 27 |
 | [02 · Complete directory and AD interoperability contract](#phase-02) | Planned | 0/10 | 0 |
 | [03 · Multi-site replication, durability and recovery](#phase-03) | Planned | 0/10 | 0 |
 | [04 · Security, capacity and administrator qualification](#phase-04) | Planned | 0/10 | 0 |
-| [05 · First production release and controlled deployment](#phase-05) | In progress | 0/10 | 1 |
+| [05 · First production release and controlled deployment](#phase-05) | In progress | 0/10 | 4 |
 | [06 · Sustained operations and maintenance](#phase-06) | Planned | 0/10 | 0 |
 | [07 · Strong identity and privileged administration](#phase-07) | Planned | 0/10 | 0 |
 | [08 · Posture, certificate/federation services and detection](#phase-08) | Planned | 0/10 | 0 |
 | [09 · Containment, key custody and compromise resilience](#phase-09) | Planned | 0/10 | 0 |
-| [10 · Continuous security assurance and trusted delivery](#phase-10) | Planned | 0/10 | 0 |
+| [10 · Continuous security assurance and trusted delivery](#phase-10) | In progress | 0/10 | 3 |
 | [11 · Endpoint inventory and patch-control foundation](#phase-11) | Planned | 0/10 | 0 |
 | [12 · Controlled patch campaigns and verified installation](#phase-12) | Planned | 0/10 | 0 |
 | [13 · Production patch fleet, compliance and resilience](#phase-13) | Planned | 0/10 | 0 |
@@ -44,219 +44,18 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T00:04:03\+01:00.
+GitHub metadata checked: 2026-11-18T00:05:02\+01:00.
 
-**Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
+**Current main CI: in\_progress.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-### [\#21 · Add PostgreSQL recovery experiments and a solo-maintainer CI workflow](<https://github.com/Ise-Tom/Babel/pull/21>)
-
-**In review · Pending merge · CI: success** · Head 82aa43f
-
-<details>
-<summary>Description, changed files and proposed progress</summary>
-
-**PR description (untrusted text):**
-
-    Babel needs executable PostgreSQL transaction/recovery evidence and development safeguards that its sole maintainer can operate. This PR adds a synthetic state experiment, adapts development approvals to a solo-maintainer profile and records verified platform controls and remaining blockers in the dashboard.
-    
-    The experiment pins the official PostgreSQL 18 image by digest and uses official psql over a container-local Unix socket. Disposable synthetic state, journal, audit intent and idempotency receipts commit together. Tests cover immutable identities, collisions, denial, retries, concurrent commit/rollback order and SIGKILL/restart around commit. Containers have no network, published ports, host binds or privileged mode; resource limits, read-only rootfs, scoped cleanup and error redaction are tested. This is not a production Rust adapter, credential store or AD replication implementation.
-    
-    CI registers the component under default-deny scope checks, adds a required database/coverage job and test-image CycloneDX inventory, and retains strict types, lint, security scanning and pinned image updates. The normal CI gate requires the database job.
-    
-    The solo development ruleset template requires PRs, up-to-date CI gate, resolved conversations and no force-push/deletion/bypass. It sets approvals to zero and disables code-owner, last-push and unattributed-change approval. The owner reviews the diff and CI before merging; no second maintainer or self-approval event is required. The live ruleset and effective main rules now verify the complete solo profile after owner UI changes. The integration update returned HTTP 403; the later owner change is independently read back and I24 is resolved. Planned independent production security qualification remains required.
-    
-    The source-only prerelease preflight checks an existing source-release environment before a write/OIDC job can run. Explicit solo mode requires no reviewer gate, no admin bypass and only v* tag deployment policy; optional team mode requires independent reviewers with self-review prevention. Missing settings fail closed. The environment is currently absent (I22). Existing CI, license, main ancestry, provenance and draft-only prerelease restrictions remain in place. No tag or release is created.
-    
-    Dashboard records W28–W31 include implementation, verification, limitations and immutable evidence. PR proposals remain separate from accepted main totals. I05 remains open for the native adapter/model, recovery/key and AD qualification; I04 remains open for Windows infrastructure. I18 distinguishes API-verified private reporting/Pages controls from owner-confirmed Actions defaults. I23 records the fixed own-actions-only startup failure; official actions retain full SHA pins and scoped token permissions.
-    
-    Validation: the PostgreSQL component passed 22 real database tests at 93% controller coverage. The latest local repository suite passes 100 tests at 98% tooling coverage, including solo/team release policy and preservation of PR/CI boundaries. Ruff, strict mypy, actionlint, Zizmor, design/dashboard validation and local Markdown links pass. Prior component verification also passed 24 browser tests, six build/security-lint tests, Bandit, source archive/checksum, extracted-source secret scan and image SBOM generation. All 13 hosted CI jobs passed for current head 82aa43f71a493482282fbdf5d874795486aefb11: https://github.com/Ise-Tom/Babel/actions/runs/44195445726 . GitHub reports the PR merge state CLEAN with no required review approval.
-    
-    No merge, source release, Pages deployment or cloud-environment publication is performed by this PR. The GitHub progress report may publish PR proposals through its existing trusted-main automation.
-
-**Changed files:**
-
-- .github/CODEOWNERS
-- .github/dependabot.yml
-- .github/workflows/ci.yml
-- .github/workflows/release.yml
-- CONTRIBUTING.md
-- README.md
-- dashboard/progress.json
-- docs/adr/0003-postgresql-directory-state.md
-- docs/adr/0004-synthetic-postgresql-state-experiment.md
-- docs/ci-cd.md
-- docs/decisions.md
-- docs/github-main-ruleset.json
-- docs/github-security-settings.md
-- docs/phase-01-progress.md
-- experiments/postgres\_store/Dockerfile
-- experiments/postgres\_store/experiment.py
-- experiments/postgres\_store/schema.sql
-- experiments/postgres\_store/test\_store.py
-- pyproject.toml
-- scripts/check\_ci\_scope.py
-- scripts/check\_release\_environment.py
-- tests/test\_delivery.py
-- tests/test\_release\_environment.py
-
-#### Proposed W28 · Run real PostgreSQL synthetic transaction and process-crash experiments
-
-**Requirements:** P00-02, P01-02, P01-03
-
-**How it was done:** Added a digest-pinned official PostgreSQL 18 dependency, a bounded synthetic SQL schema and a stdlib Docker/psql controller. State, local journal, audit intent and idempotency commit together under a transactional writer allocator; synthetic UUID/SID identity is immutable. Tests use actual concurrent sessions and SIGKILL/restart. Containers have no network, ports, host binds or privileged mode, with read-only rootfs and scoped cleanup. Added a required runtime CI/coverage job, strict types/lint/security checks and test-image inventory. Process launch/timeout failures are also converted to static diagnostics so command arguments and captured output are not exported.
-
-**Recorded validation:** 22 component tests pass against PostgreSQL/psql 18.7; controller branch-inclusive coverage is 93%. Real cases cover collisions/injection/denial, rollback, ordered concurrent commit/rollback, kill before commit, committed-result recovery and idempotent retry after a discarded reply. Actual container isolation and cleanup are asserted. A CycloneDX test-image inventory was generated locally; 97 repository tests pass with 98% coverage.
-
-**Limits and remaining work:** Proposed for review; hosted verification must pass on the PR head before merge. This is an isolated SQL experiment, not native directory storage, authentication/Windows ACL, real SID allocation, backup/upgrade, physical power-loss proof, credential protection, AD replication or capacity acceptance. The future Rust driver and production packaging remain unselected/unqualified.
-
-**PR-head evidence:** [experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
-
-
-#### Proposed W29 · Verify owner-applied repository protections and security settings
-
-**Requirements:** P00-10, P01-01, P05-09, P10-09
-
-**How it was done:** Read the active main ruleset and effective branch rules, Pages mode/environment and private-reporting status. Recorded the owner’s explicit confirmation of the three Actions defaults separately from API-verifiable controls. No repository setting or remote branch was changed.
-
-**Recorded validation:** The owner-adjusted solo ruleset and effective main rules are API-verified: zero approvals, code-owner/last-push/unattributed-change approval disabled, PR and up-to-date CI required, resolved conversations, no bypass and no force-push/deletion. Pages/private reporting observations remain valid. Actions defaults remain owner-confirmed because their API returns HTTP 403.
-
-**Limits and remaining work:** Team approval is not sustainable for the sole maintainer and is being replaced for development, without claiming independent review. Source-release remains absent \(I22\). Main acceptance totals change after merge, not from PR proposals.
-
-**PR-head evidence:** [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/.github/CODEOWNERS>)
-
-
-#### Proposed W30 · Validate existing source-release protections before draft source prereleases
-
-**Requirements:** P00-10, P05-09, P10-09
-
-**How it was done:** Read-only preflight precedes the contents/OIDC job. Explicit solo mode requires no reviewer gate, disabled admin bypass and only v\* tag deployments. Optional team mode additionally requires eligible independent reviewers and self-review prevention. Missing/inaccessible settings fail before automatic environment creation.
-
-**Recorded validation:** Seven release-policy regression tests pass, including solo/team profiles, protected tag scope, denied access and preservation of mandatory PR/CI boundaries in the ruleset template. The 100-test repository suite passes at 98% coverage; this helper has 100% coverage. Workflow syntax/security checks pass. No hosted release was run.
-
-**Limits and remaining work:** The source-release environment is still absent. The workflow change is proposed for review and has not been executed as hosted release code. It assumes the reviewed release workflow and does not replace owner-controlled release-tag creation or platform protection.
-
-**PR-head evidence:** [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-security-settings.md>)
-
-
-#### Proposed W31 · Adapt development governance to the sole maintainer without bypassing CI
-
-**Requirements:** P00-10, P01-01, P05-09, P10-09
-
-**How it was done:** Changed the main ruleset template to zero approvals with code-owner, last-push and unattributed-change approval disabled. Kept PRs, up-to-date GitHub Actions CI gate, resolved conversations and no force-push/deletion/bypass. Aligned source-only prerelease preflight, owner guidance and contribution policy; CODEOWNERS still records ownership.
-
-**Recorded validation:** 100 repository tests pass with 98% coverage, including solo/team release modes and main ruleset safeguards. Ruff, strict mypy, actionlint, Zizmor and local Markdown links pass. After the integration write was denied HTTP 403, owner UI changes were verified through the full ruleset and effective main rules: all solo settings match and PR/CI/no-bypass protections remain.
-
-**Limits and remaining work:** Implementation is proposed in PR \#21. Live owner-applied solo rules are verified and I24 is resolved. This is owner review plus CI, not independent review; future production security qualification remains required. Source-release is still absent; no release/tag/merge/deployment was triggered.
-
-**PR-head evidence:** [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-main-ruleset.json>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-security-settings.md>) · [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/tests/test_release_environment.py>)
-
-#### Proposed problem update: I02 · Main PR and CI protections are enforced; solo approval adjustment tracked separately
-
-**Proposed status:** resolved
-
-The earlier private-plan/integration administration limitation prevented configuring protection through this integration. The owner applied Protect main ruleset 27498979; effective branch rules and its full configuration are now readable and active.
-
-**Resolution:** Verified main-only scope, no bypass actors, deletion/non-fast-forward rules, one approving/code-owner review, last-push approval, stale-review dismissal, resolved threads and an up-to-date GitHub Actions CI gate \(app 15368\). This is actual platform evidence, not an inference from passing tests.
-
-**Next action:** Keep required PRs, up-to-date CI, resolved conversations and no force-push/deletion/bypass. Remove impossible solo approval gates as tracked in I24. This resolves platform enforcement, not independent production review or product acceptance.
-
-**Provenance:** GitHub API observation recorded during pipeline setup; verify again before production release.
-
-[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/.github/CODEOWNERS>)
-
-#### Proposed problem update: I05 · Synthetic PostgreSQL recovery passes; native adapter and AD state qualification remain
-
-**Proposed status:** open
-
-An isolated PostgreSQL 18.7/official psql experiment now passes synthetic create/rename, identity/collision, transaction/audit/receipt atomicity, idempotency, denial, concurrent ordering and process/container crash recovery tests. It is separate from the LDAP lab and contains no credential-bearing directory or Rust production adapter.
-
-**Resolution:** Still open
-
-**Next action:** Implement and qualify the Rust adapter/full native identity-schema-ACL model, host/disk/backup/upgrade and key custody. Resolve AD conflict/RID/FSMO/restore epochs and GPO/SYSVOL requirements before valuable credentials or writable multi-controller state.
-
-**Provenance:** Design blocker, not an implemented storage defect.
-
-[experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
-
-#### Proposed problem update: I18 · Repository and Pages controls applied; Actions defaults owner-confirmed
-
-**Proposed status:** resolved
-
-The integration still has restricted administration access. The owner applied the repository security controls: main protection, private vulnerability reporting and Pages main-only deployment with admin bypass disabled are verified through APIs.
-
-**Resolution:** The owner explicitly confirmed read-only Actions defaults, disabled Actions approving PRs and approval for all outside collaborators. These are owner-confirmed because the Actions settings API still returns HTTP 403. No private vulnerability report was submitted or falsely marked exercised. The separate missing source-release environment is tracked under I22.
-
-**Next action:** Keep the limited integration permissions and periodically reverify actual state. Configure the protected source-release environment under I22 before source prerelease jobs can run.
-
-**Provenance:** Direct GitHub settings API responses and successful public site/deployment observations on 2026-11-17; these are GitHub permission errors, not automatic approval-review rejections.
-
-[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/.github/CODEOWNERS>) · [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-security-settings.md>)
-
-#### Proposed problem update: I21 · PostgreSQL temporary initialization server looked ready before final startup
-
-**Proposed status:** resolved
-
-The first real container experiment saw pg\_isready succeed against the official image’s temporary initialization server before the final database process was available, so the first query failed.
-
-**Resolution:** Readiness now requires the container’s final postgres PID 1 before the socket probe; startup is bounded and failed initialization removes only the owned container/volumes. The final process/crash suite passes.
-
-**Next action:** Keep the startup barrier while using this pinned image and requalify it on reviewed image changes.
-
-**Provenance:** Observed local real-container failure and subsequent successful 21-test integration run; not a Windows or production failure claim.
-
-[experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
-
-#### Proposed problem update: I22 · Tag-restricted source-release environment is missing
-
-**Proposed status:** open
-
-GET environments/source-release returned HTTP 404. Main and Pages protection do not establish a source-release environment. The solo profile does not require a second maintainer for draft source-only prereleases.
-
-**Resolution:** Still open
-
-**Next action:** Owner creates source-release without required reviewers, disables admin bypass and adds only a custom v\* tag deployment policy; retain owner-controlled tag creation. Run the read-only solo checker after configuration. Review and merge the prepared workflow before relying on hosted enforcement.
-
-**Provenance:** Direct current GitHub metadata and an expected nonzero local preflight result; no environment, tag or release was created.
-
-[scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-security-settings.md>)
-
-#### Proposed problem update: I23 · Own-actions-only policy blocked official pinned GitHub Actions
-
-**Proposed status:** resolved
-
-PR \#21 CI run 44191621036 ended in startup\_failure with zero jobs. GitHub reported that checkout/setup/artifact actions were not allowed because actions had to belong to Ise-Tom. The same policy also blocked automatic dashboard refresh.
-
-**Resolution:** The owner explicitly confirmed allowing GitHub-created actions under the selected non-owner-actions policy, leaving Marketplace creators disabled. Full SHA pins and job-scoped token permissions are retained. The prepared branch and PR are now pushed, and the GitHub dashboard was refreshed directly from trusted main code.
-
-**Next action:** All 13 jobs passed for PR \#21 head 4660fe0 in CI run 44192717123 after the publisher-policy correction. Retain SHA pins and review diff/CI before merge; subsequent changes require fresh CI. No source release or cloud-environment publication was performed.
-
-**Provenance:** Actual public GitHub run annotation and the owner’s explicit settings-change confirmation; no automatic approval-review rejection occurred.
-
-[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-security-settings.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/.github/workflows/ci.yml>) · [.github/workflows/dashboard-publish.yml](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/.github/workflows/dashboard-publish.yml>)
-
-#### Proposed problem update: I24 · Team-only approval switches block the sole maintainer
-
-**Proposed status:** resolved
-
-PR \#21 is authored by the sole repository owner, who cannot self-approve. Team-only code-owner, last-push and unattributed-change approval switches remained enabled after the approval count was set to zero. The integration write was denied HTTP 403.
-
-**Resolution:** Subsequent owner UI changes are API-verified: required approvals zero and all three approval switches false. Effective main rules still require PRs, up-to-date GitHub Actions CI gate and resolved conversations, and block force-push/deletion with no bypass actors. A second maintainer is no longer required for development merges.
-
-**Next action:** Keep these solo development settings and inspect diff/CI before merging. Add independent review explicitly when an actual second maintainer joins; planned production security qualification is not waived.
-
-**Provenance:** Full ruleset 27498979 and effective rules for main read back after owner changes; the failed integration PUT is not claimed as the mechanism.
-
-[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/82aa43f71a493482282fbdf5d874795486aefb11/docs/github-main-ruleset.json>)
-
-
-</details>
+No open pull requests against main were observed.
 
 
 ## Phase 00
 
 **Contract, native-core design and laboratory — In progress**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-00.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-00.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -267,7 +66,7 @@ PR \#21 is authored by the sole repository owner, who cannot self-approve. Team-
 
 The scope exists, but exact client builds and the approved operation matrix are not complete.
 
-**Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [AD-10: Domain/forest functional levels and FSMO role ownership, transfer and failure recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [AD-10: Domain/forest functional levels and FSMO role ownership, transfer and failure recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Reviewed matrix maps every AD requirement to expected positive/negative behavior and an owner; unknown/unsupported operations stay visible.
 
@@ -279,13 +78,11 @@ No implemented increment is recorded for this requirement.
 
 Design invariants are documented; the identity/ACL model is not implemented or accepted.
 
-**Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Design review covers rename, DN collision, ACL inheritance, nested groups, concurrent updates and durable acknowledgment boundaries.
 
-**Pending PR proposals:** [\#21: Add PostgreSQL recovery experiments and a solo-maintainer CI workflow](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
-
-**Implementation explanations:** W12: Threat model and open decision register; W27: Record PostgreSQL selection and a reviewable native state contract. See the [implementation journal](#implementation-journal).
+**Implementation explanations:** W12: Threat model and open decision register; W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments. See the [implementation journal](#implementation-journal).
 
 ### P00-03
 
@@ -293,11 +90,9 @@ Design invariants are documented; the identity/ACL model is not implemented or a
 
 Replication and restore contracts are designed; metadata algorithms and failure evidence remain open.
 
-**Associated features:** [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Worked partition/delete/conflict/rollback examples specify observable outcomes and map to MS-ADTS/MS-DRSR.
-
-**Pending PR proposals:** [\#21: Add PostgreSQL recovery experiments and a solo-maintainer CI workflow](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W12: Threat model and open decision register. See the [implementation journal](#implementation-journal).
 
@@ -307,7 +102,7 @@ Replication and restore contracts are designed; metadata algorithms and failure 
 
 Rust is accepted only for the bounded lab subset; broader crypto/store libraries remain under review.
 
-**Associated features:** [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-08: Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-08: Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** ADR records alternatives, supported platforms, license/CVE maintenance and locked build/fuzz/security jobs; no custom crypto accepted.
 
@@ -319,7 +114,7 @@ Rust is accepted only for the bounded lab subset; broader crypto/store libraries
 
 No licensed isolated Windows reference lab is recorded.
 
-**Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Two fresh deployments run discovery probes, isolate egress, clean up resources and publish exact image/build identifiers.
 
@@ -331,7 +126,7 @@ No licensed isolated Windows reference lab is recorded.
 
 Owner selected Apache-2.0 and DCO 1.1; files and metadata are applied in this PR. Third-party/specification/reference-fixture obligations still require review, so the full requirement is not accepted.
 
-**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Owner decision and dependency obligations recorded before source distribution; missing decisions block release rather than receiving invented terms.
 
@@ -343,7 +138,7 @@ Owner selected Apache-2.0 and DCO 1.1; files and metadata are applied in this PR
 
 Threat model exists; named contacts and the complete operating security process are not established.
 
-**Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-09: Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-09: Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Private report route and backup security contacts exercised; every boundary has misuse cases and review responsibility.
 
@@ -355,7 +150,7 @@ Threat model exists; named contacts and the complete operating security process 
 
 Design traceability tooling is implemented; full compatibility/evidence acceptance is not complete.
 
-**Associated features:** [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Evidence records commit, test/client/spec revision, requirement, outcome and redacted artifacts; skipped/unrun are never passing.
 
@@ -367,7 +162,7 @@ Design traceability tooling is implemented; full compatibility/evidence acceptan
 
 Provisional workloads are specified; no production benchmark has ratified them.
 
-**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Reviewed load model includes mixed successful/denied requests, cold cache, WAN loss/latency, partial outages and hardware costs.
 
@@ -379,13 +174,11 @@ Provisional workloads are specified; no production benchmark has ratified them.
 
 Delivery gates and source packaging exist; real product upgrade/recovery/governance acceptance remains.
 
-**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact.
 
-**Pending PR proposals:** [\#21: Add PostgreSQL recovery experiments and a solo-maintainer CI workflow](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
-
-**Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes. See the [implementation journal](#implementation-journal).
+**Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI. See the [implementation journal](#implementation-journal).
 
 </details>
 
@@ -394,7 +187,7 @@ Delivery gates and source packaging exist; real product upgrade/recovery/governa
 
 **Native core and end-to-end development slice — In progress**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-01.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-01.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -405,15 +198,13 @@ Delivery gates and source packaging exist; real product upgrade/recovery/governa
 
 Current native LDAP component development safeguards accepted by the project owner. Future components and full product qualification remain separate obligations.
 
-**Associated features:** [SEC-08: Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-08: Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** The scope guard is extended in the same reviewed PR; clean Linux build plus malformed-input regression corpus passes.
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-17. Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: development safeguards for the current native LDAP component, not the full server or future components. PR \#16 and its 12-job successful CI run: https://github.com/Ise-Tom/Babel/pull/16 ; https://github.com/Ise-Tom/Babel/actions/runs/44152161324 . Merged main cd6ad149870a05db4ab2a4f7fbca3e4d461af848 also passed all 12 jobs in run 44153995669.
 
-**Pending PR proposals:** [\#21: Add PostgreSQL recovery experiments and a solo-maintainer CI workflow](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
-
-**Implementation explanations:** W01: Native Rust workspace and reproducible builds; W02: Bounded BER / LDAP decoder; W06: Independent client and packaged-binary checks; W07: Property tests and core coverage gate; W08: Sanitizer fuzz smoke; W09: Native dependency, license and SBOM checks; W10: Required native and repository CI gates; W13: Tested source and lab archive packaging; W17: Bounded LDAP RootDSE filter discovery; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes. See the [implementation journal](#implementation-journal).
+**Implementation explanations:** W01: Native Rust workspace and reproducible builds; W02: Bounded BER / LDAP decoder; W06: Independent client and packaged-binary checks; W07: Property tests and core coverage gate; W08: Sanitizer fuzz smoke; W09: Native dependency, license and SBOM checks; W10: Required native and repository CI gates; W13: Tested source and lab archive packaging; W17: Bounded LDAP RootDSE filter discovery; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W29: Verify owner-applied repository protections and security settings; W31: Adapt development governance to the sole maintainer without bypassing CI. See the [implementation journal](#implementation-journal).
 
 ### P01-02
 
@@ -421,13 +212,11 @@ Current native LDAP component development safeguards accepted by the project own
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Property tests preserve IDs on rename and reject collisions, invalid schema writes and unauthorized inherited/nested access.
 
-**Pending PR proposals:** [\#21: Add PostgreSQL recovery experiments and a solo-maintainer CI workflow](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
-
-**Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract. See the [implementation journal](#implementation-journal).
+**Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments. See the [implementation journal](#implementation-journal).
 
 ### P01-03
 
@@ -435,13 +224,11 @@ No implementation or acceptance evidence recorded.
 
 Owner selected PostgreSQL and the local state/journal contract is proposed in ADR 0003. No durable store or credential writes are implemented; version/driver, schema, crash, backup and key-custody qualification remain.
 
-**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Kill/restart at each commit boundary yields either the old or new complete state and never acknowledges an undurable successful write.
 
-**Pending PR proposals:** [\#21: Add PostgreSQL recovery experiments and a solo-maintainer CI workflow](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
-
-**Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract. See the [implementation journal](#implementation-journal).
+**Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments. See the [implementation journal](#implementation-journal).
 
 ### P01-04
 
@@ -449,7 +236,7 @@ Owner selected PostgreSQL and the local state/journal contract is proposed in AD
 
 Read-only RootDSE discovery exists. The development PR extends presence/objectClass equality and boolean filters with strict budgets and Undefined semantics. DNS, real directory queries and Windows discovery evidence remain open.
 
-**Associated features:** [AD-04: LDAPv3/LDAPS, AD schema and controls, paging, referrals, ACL filtering, and global catalog](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [AD-05: AD-integrated DNS, SRV discovery, secure dynamic updates, site/subnet placement and DC locator](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-04: LDAPv3/LDAPS, AD schema and controls, paging, referrals, ACL filtering, and global catalog](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [AD-05: AD-integrated DNS, SRV discovery, secure dynamic updates, site/subnet placement and DC locator](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Real client probes and negative paging/filter/referral tests pass; RootDSE success is not counted as domain join.
 
@@ -461,7 +248,7 @@ Read-only RootDSE discovery exists. The development PR extends presence/objectCl
 
 Credential rejection is implemented; real Kerberos/password/key behavior awaits design and conformance prerequisites.
 
-**Associated features:** [AD-03: Kerberos AS/TGS, service principals, PAC validation, time synchronization, cross-service SSO, constrained delegation, and trust authentication](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [IAM-01: Complete identity and password administration: create/disable/delete/restore accounts, user-driven password change, authorized admin reset, expiry/lockout and fine-grained password policies, with delegated permissions and audit](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-03: Kerberos AS/TGS, service principals, PAC validation, time synchronization, cross-service SSO, constrained delegation, and trust authentication](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [IAM-01: Complete identity and password administration: create/disable/delete/restore accounts, user-driven password change, authorized admin reset, expiry/lockout and fine-grained password policies, with delegated permissions and audit](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Positive/denied bind and AS/TGS flows, replay/expiry/downgrade and password redaction tests pass for declared operations.
 
@@ -473,7 +260,7 @@ Credential rejection is implemented; real Kerberos/password/key behavior awaits 
 
 Windows lab, DNS/authentication and membership implementation are missing.
 
-**Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [AD-08: Required Netlogon, SAMR, LSA, SMB and DCE/RPC behavior for domain membership and administration](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [AD-08: Required Netlogon, SAMR, LSA, SMB and DCE/RPC behavior for domain membership and administration](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** A supported Windows client joins, logs in and rotates its machine password; unsigned/unauthorized membership requests fail.
 
@@ -485,7 +272,7 @@ Windows lab, DNS/authentication and membership implementation are missing.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-06: Group Policy management and application; SYSVOL consistency, logon scripts, security policy, permissions](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-06: Group Policy management and application; SYSVOL consistency, logon scripts, security policy, permissions](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** A Windows client applies and reverts a declared policy; interrupted writes recover without silently serving contradictory versions.
 
@@ -497,7 +284,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [IAM-01: Complete identity and password administration: create/disable/delete/restore accounts, user-driven password change, authorized admin reset, expiry/lockout and fine-grained password policies, with delegated permissions and audit](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [IAM-01: Complete identity and password administration: create/disable/delete/restore accounts, user-driven password change, authorized admin reset, expiry/lockout and fine-grained password policies, with delegated permissions and audit](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Create/disable/reset/group workflows succeed only with correct rights; API and UI denied-operation cases produce matching audit evidence.
 
@@ -509,7 +296,7 @@ No implemented increment is recorded for this requirement.
 
 Lab limits and diagnostics are tested; TLS, Linux service lifecycle and production privileges are not.
 
-**Associated features:** [PLAT-02: Repeatable Linux installation, service supervision, reboot recovery, upgrade and removal that preserves directory data by default](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-04: TLS 1.2 minimum, TLS 1.3 preferred; certificate identity validation and rotation; trust roots managed explicitly](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [PLAT-02: Repeatable Linux installation, service supervision, reboot recovery, upgrade and removal that preserves directory data by default](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-04: TLS 1.2 minimum, TLS 1.3 preferred; certificate identity validation and rotation; trust roots managed explicitly](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Clean install/reboot, invalid DNS/time/certificate and least-privilege file/port tests yield actionable errors without bypassing verification.
 
@@ -521,13 +308,11 @@ Lab limits and diagnostics are tested; TLS, Linux service lifecycle and producti
 
 Project owner accepted the current prototype’s scope inventory and limitation reporting. Authentication, storage, domain join and GPO remain unimplemented and Phase 1 remains in progress.
 
-**Associated features:** [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Each public operation has a tested/unsupported status; lab credentials and incomplete protocol behavior cannot be promoted as a production release.
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-17. Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: documentation, tests and CLI label the current prototype as a loopback-only LDAP discovery lab and disclose missing production/domain functionality. Evidence pinned to merged main: https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phase-01-progress.md ; https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/native/babel-ldap/src/main.rs . This accepts scope reporting, not those missing features or production readiness.
-
-**Pending PR proposals:** [\#21: Add PostgreSQL recovery experiments and a solo-maintainer CI workflow](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W17: Bounded LDAP RootDSE filter discovery; W18: Open-PR-aware private progress reporting; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes. See the [implementation journal](#implementation-journal).
 
@@ -538,7 +323,7 @@ Project owner accepted the current prototype’s scope inventory and limitation 
 
 **Complete directory and AD interoperability contract — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-02.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-02.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -549,7 +334,7 @@ Project owner accepted the current prototype’s scope inventory and limitation 
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Synthetic import/export and reference queries compare IDs, object attributes, ACLs and schema; incompatible operations have explicit failures.
 
@@ -561,7 +346,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [IAM-01: Complete identity and password administration: create/disable/delete/restore accounts, user-driven password change, authorized admin reset, expiry/lockout and fine-grained password policies, with delegated permissions and audit](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-07: Rate limiting resistant to distributed abuse, password policy and breached-password checks without leaking passwords, safe recovery and lockout visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [IAM-01: Complete identity and password administration: create/disable/delete/restore accounts, user-driven password change, authorized admin reset, expiry/lockout and fine-grained password policies, with delegated permissions and audit](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-07: Rate limiting resistant to distributed abuse, password policy and breached-password checks without leaking passwords, safe recovery and lockout visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** User/admin changes, history/lockout/expiry, disable/delete/restore and denied actions pass through every supported protocol/API path.
 
@@ -573,7 +358,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-03: Kerberos AS/TGS, service principals, PAC validation, time synchronization, cross-service SSO, constrained delegation, and trust authentication](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-03: Prefer Kerberos AES; disable DES/RC4 and NTLM by default; legacy exceptions must be scoped, visible, time-limited and audited](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-03: Kerberos AS/TGS, service principals, PAC validation, time synchronization, cross-service SSO, constrained delegation, and trust authentication](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-03: Prefer Kerberos AES; disable DES/RC4 and NTLM by default; legacy exceptions must be scoped, visible, time-limited and audited](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Real client/service AS/TGS and delegation cases pass; replay, wrong key, invalid PAC, expired tickets and weak-encryption downgrade are rejected.
 
@@ -585,7 +370,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-04: LDAPv3/LDAPS, AD schema and controls, paging, referrals, ACL filtering, and global catalog](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-04: LDAPv3/LDAPS, AD schema and controls, paging, referrals, ACL filtering, and global catalog](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** RSAT and LDAP clients agree with the reference for selected controls; unauthorized attributes never appear in search or error output.
 
@@ -597,7 +382,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-05: AD-integrated DNS, SRV discovery, secure dynamic updates, site/subnet placement and DC locator](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-05: AD-integrated DNS, SRV discovery, secure dynamic updates, site/subnet placement and DC locator](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Signed updates, stale records, wrong-site discovery and DNS failure tests produce the declared outcomes on supported clients.
 
@@ -609,7 +394,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-08: Required Netlogon, SAMR, LSA, SMB and DCE/RPC behavior for domain membership and administration](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-02: Secure defaults: LDAP signing/channel binding where supported, encrypted simple binds, SMB signing, signed/sealed Netlogon; no anonymous sensitive reads or SMB1](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-08: Required Netlogon, SAMR, LSA, SMB and DCE/RPC behavior for domain membership and administration](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-02: Secure defaults: LDAP signing/channel binding where supported, encrypted simple binds, SMB signing, signed/sealed Netlogon; no anonymous sensitive reads or SMB1](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Client join/rejoin, secure-channel reset and service-account operations pass; signing/sealing and least-privilege rejection are verified.
 
@@ -621,7 +406,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-06: Group Policy management and application; SYSVOL consistency, logon scripts, security policy, permissions](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-06: Group Policy management and application; SYSVOL consistency, logon scripts, security policy, permissions](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Actual resultant policy and scripts match the reference; filesystem and directory permissions/versions remain reconciled after failures.
 
@@ -633,7 +418,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-10: Domain/forest functional levels and FSMO role ownership, transfer and failure recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-10: Domain/forest functional levels and FSMO role ownership, transfer and failure recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Unsupported levels are rejected; role handoff, failed holder and schema upgrade tests preserve a recoverable authoritative state.
 
@@ -645,7 +430,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-09: Forest/domain trusts, cross-domain authorization, migration and coexistence with existing AD](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-09: Forest/domain trusts, cross-domain authorization, migration and coexistence with existing AD](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Two reference forests exercise permitted/denied cross-domain access, trust removal and a rehearsed migration/recovery path.
 
@@ -657,7 +442,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Every AD contract row has real-client evidence with exact builds/spec revisions and no unexplained failure, skip or unrun acceptance case.
 
@@ -670,7 +455,7 @@ No implemented increment is recorded for this requirement.
 
 **Multi-site replication, durability and recovery — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-03.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-03.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -681,7 +466,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Unknown, revoked and insufficiently privileged replicas cannot read credential changes or alter membership; every enrollment is audited.
 
@@ -693,7 +478,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Duplicate/reordered/interrupted exchanges do not lose acknowledged local transactions or skip unapplied remote changes.
 
@@ -705,7 +490,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Model-based tests cover modify/modify, move/rename, group membership, delete/modify and tombstone/lingering-object conflicts.
 
@@ -717,7 +502,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-10: Domain/forest functional levels and FSMO role ownership, transfer and failure recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-10: Domain/forest functional levels and FSMO role ownership, transfer and failure recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Lose one DC or site, transfer/seize a role through the supported procedure and demonstrate correct client discovery and surviving authentication.
 
@@ -729,7 +514,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-09: Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-09: Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** A partition causes visible stale/unknown warnings with measured convergence; UI/API never claims instant global disable during disconnection.
 
@@ -741,7 +526,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Restore old snapshots with conflicting invocation/progress metadata; reject/quarantine unsafe joins and follow a tested recovery path.
 
@@ -753,7 +538,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-11: Minimize identity data, encrypt backups, document retention/deletion and data residency](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-11: Minimize identity data, encrypt backups, document retention/deletion and data residency](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Recover at full dataset size in an isolated clean environment without the original domain or a sole directory-held recovery key.
 
@@ -765,7 +550,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Fault-drill reports measure DC &lt;=60 s failover and full-domain &lt;=1 h RPO/&lt;=4 h RTO; exceeded targets block qualification.
 
@@ -777,7 +562,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Test invalid/expired certificates, lost issuer and interrupted rotation; preserve intended authentication without accepting compromised old keys indefinitely.
 
@@ -789,7 +574,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Disk-full, queue pressure, clock fault, 24-hour partition/rejoin and process kill have bounded memory/retries and auditable data-loss outcomes.
 
@@ -802,7 +587,7 @@ No implemented increment is recorded for this requirement.
 
 **Security, capacity and administrator qualification — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-04.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-04.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -813,7 +598,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-08: Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-08: Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Report covers protocol, keys, admin UI/API, replication, supply chain and restore; findings have owners, retests and explicit dispositions.
 
@@ -825,7 +610,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-02: Secure defaults: LDAP signing/channel binding where supported, encrypted simple binds, SMB signing, signed/sealed Netlogon; no anonymous sensitive reads or SMB1](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-03: Prefer Kerberos AES; disable DES/RC4 and NTLM by default; legacy exceptions must be scoped, visible, time-limited and audited](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-04: TLS 1.2 minimum, TLS 1.3 preferred; certificate identity validation and rotation; trust roots managed explicitly](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-02: Secure defaults: LDAP signing/channel binding where supported, encrypted simple binds, SMB signing, signed/sealed Netlogon; no anonymous sensitive reads or SMB1](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-03: Prefer Kerberos AES; disable DES/RC4 and NTLM by default; legacy exceptions must be scoped, visible, time-limited and audited](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-04: TLS 1.2 minimum, TLS 1.3 preferred; certificate identity validation and rotation; trust roots managed explicitly](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Invalid TLS, anonymous sensitive reads, unsigned channels and weak crypto fail; exceptions carry scope/expiry/audit and cannot silently become defaults.
 
@@ -837,7 +622,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [AD-03: Kerberos AS/TGS, service principals, PAC validation, time synchronization, cross-service SSO, constrained delegation, and trust authentication](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [AD-04: LDAPv3/LDAPS, AD schema and controls, paging, referrals, ACL filtering, and global catalog](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [AD-03: Kerberos AS/TGS, service principals, PAC validation, time synchronization, cross-service SSO, constrained delegation, and trust authentication](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [AD-04: LDAPv3/LDAPS, AD schema and controls, paging, referrals, ACL filtering, and global catalog](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Publish dataset, hardware, caches, concurrency, rates, percentiles and unexpected errors; each baseline target is met or release-blocking.
 
@@ -849,7 +634,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** 24-hour soak and DC/site failures show bounded queues/storage, no unexplained credential/data corruption and documented degraded behavior.
 
@@ -861,7 +646,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-09: Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-11: Minimize identity data, encrypt backups, document retention/deletion and data residency](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-09: Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-11: Minimize identity data, encrypt backups, document retention/deletion and data residency](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** For each privileged/auth/policy/key operation, expected events and denied cases are present, correlated and redacted; export loss is visible.
 
@@ -873,7 +658,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** At least five admins achieve &gt;=90% unassisted completion per declared journey, including delegation, policy, diagnosis and restore; publish time-on-task.
 
@@ -885,7 +670,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** WCAG 2.2 AA audit and manual assistive-technology journeys pass for the administration surface; unsupported settings are never silently discarded.
 
@@ -897,7 +682,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [IAM-01: Complete identity and password administration: create/disable/delete/restore accounts, user-driven password change, authorized admin reset, expiry/lockout and fine-grained password policies, with delegated permissions and audit](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-05: Web/API admin MFA through phishing-resistant authentication, step-up for privileged actions, scoped sessions/tokens, CSRF protection and reauthentication](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-07: Rate limiting resistant to distributed abuse, password policy and breached-password checks without leaking passwords, safe recovery and lockout visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [IAM-01: Complete identity and password administration: create/disable/delete/restore accounts, user-driven password change, authorized admin reset, expiry/lockout and fine-grained password policies, with delegated permissions and audit](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-05: Web/API admin MFA through phishing-resistant authentication, step-up for privileged actions, scoped sessions/tokens, CSRF protection and reauthentication](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-07: Rate limiting resistant to distributed abuse, password policy and breached-password checks without leaking passwords, safe recovery and lockout visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Role/session expiry, CSRF, unauthorized export/reset, recovery bypass and stale privilege tests preserve authorization and provide safe actionable errors.
 
@@ -909,7 +694,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** ADR records DC/backup/audit capacity, retention, bandwidth and expansion triggers; suggested 4-vCPU/16-GiB sizing is not treated as measured beforehand.
 
@@ -921,7 +706,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Every baseline requirement maps to current passing evidence; outstanding exceptions, unsupported clients and residual risks are explicit and approved before Phase 5.
 
@@ -934,7 +719,7 @@ No implemented increment is recorded for this requirement.
 
 **First production release and controlled deployment — In progress**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-05.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-05.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -945,7 +730,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Package digest, SBOM and provenance resolve to the same source/build identity; rebuilding during production promotion is prohibited.
 
@@ -957,7 +742,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Approved license/obligations and supported-version matrix ship with artifacts; missing notices or unclear redistribution rights block publication.
 
@@ -969,7 +754,7 @@ No implementation or acceptance evidence recorded.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Consumer verification rejects modified bytes, wrong signer, expired/untrusted metadata and replayed unsupported releases.
 
@@ -981,7 +766,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Every Phase 0–4 baseline gate has current passing evidence; skipped client/capacity/security acceptance does not count as a pass.
 
@@ -993,7 +778,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [PLAT-02: Repeatable Linux installation, service supervision, reboot recovery, upgrade and removal that preserves directory data by default](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [PLAT-02: Repeatable Linux installation, service supervision, reboot recovery, upgrade and removal that preserves directory data by default](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Fresh Linux hosts and prior supported versions preserve identities, permissions, keys and policy state; incompatible downgrade is rejected.
 
@@ -1005,7 +790,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [AD-06: Group Policy management and application; SYSVOL consistency, logon scripts, security policy, permissions](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [AD-06: Group Policy management and application; SYSVOL consistency, logon scripts, security policy, permissions](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Domain join/login/password/GPO/replication/restore smoke tests pass before production approval, with synthetic credentials and scoped access.
 
@@ -1017,7 +802,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Canary/DC rollout preserves remaining authentication/DNS service; induced health/convergence failure pauses expansion and alerts the operator.
 
@@ -1029,7 +814,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Runbooks identify irreversible transitions and expected RPO/RTO; exercises recover safely without replaying incompatible schema/key state.
 
@@ -1041,13 +826,11 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** No self-approved high-risk publication or privileged fork runner; platform limitations are disclosed, never treated as enforced protection.
 
-**Pending PR proposals:** [\#21: Add PostgreSQL recovery experiments and a solo-maintainer CI workflow](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
-
-No implemented increment is recorded for this requirement.
+**Implementation explanations:** W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI. See the [implementation journal](#implementation-journal).
 
 ### P05-10
 
@@ -1055,7 +838,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** A new operator verifies/install/updates/restores using shipped docs; unsupported levels/clients and disclosure contacts are explicit.
 
@@ -1068,7 +851,7 @@ No implemented increment is recorded for this requirement.
 
 **Sustained operations and maintenance — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-06.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-06.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -1079,7 +862,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Published matrix identifies release support/EOL and upgrade paths; advisory intake reaches accountable maintainers.
 
@@ -1091,7 +874,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Synthetic fault injection produces timely actionable alerts; cached offline login and missing telemetry do not count as online service success.
 
@@ -1103,7 +886,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Exercises prove private report receipt, severity/impact assessment, patch/mitigation tracking and secure publication without premature sensitive details.
 
@@ -1115,7 +898,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Quarterly full-dataset isolated restores meet &lt;=1 h RPO/&lt;=4 h RTO and include credentials, SYSVOL and recovery-key access.
 
@@ -1127,7 +910,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Certificate/key/legacy-protocol exceptions have owners and expiry; expired/unowned exceptions cannot silently continue.
 
@@ -1139,7 +922,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-11: Minimize identity data, encrypt backups, document retention/deletion and data residency](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-11: Minimize identity data, encrypt backups, document retention/deletion and data residency](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Export is explicitly scoped/redacted and access-audited; credential material, arbitrary user data and complete environments are excluded.
 
@@ -1151,7 +934,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Monthly site-level availability and growth trends include exclusions/outages and remediation; breaches generate owned corrective work.
 
@@ -1163,7 +946,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Daily/periodic scans actually run, stale results alert, signatures stay verified and urgent advisories do not wait for routine schedules.
 
@@ -1175,7 +958,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Separate contacts, signing recovery and backup custody restore operations without a single absent administrator or failed domain provider.
 
@@ -1187,7 +970,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [SEC-11: Minimize identity data, encrypt backups, document retention/deletion and data residency](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>)
+**Associated features:** [SEC-11: Minimize identity data, encrypt backups, document retention/deletion and data residency](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>)
 
 **Acceptance evidence required:** Removal preserves required evidence/backup holds while preventing indefinite unnecessary identity data retention; migrations are auditable.
 
@@ -1200,7 +983,7 @@ No implemented increment is recorded for this requirement.
 
 **Strong identity and privileged administration — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-07.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-07.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -1211,7 +994,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [A-01: WebAuthn/FIDO2 passkeys and hardware security keys for administrator login; multiple authenticators and secure enrollment](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [A-03: Recovery hardened against helpdesk impersonation, SIM swapping and MFA fatigue](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [A-01: WebAuthn/FIDO2 passkeys and hardware security keys for administrator login; multiple authenticators and secure enrollment](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [A-03: Recovery hardened against helpdesk impersonation, SIM swapping and MFA fatigue](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Origin/replay/unauthorized enrollment tests fail; multiple factors, replacement and recovery are audited with no SMS-only Tier 0 bypass.
 
@@ -1223,7 +1006,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [B-01: Just-in-time and just-enough privilege with expiring grants](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [B-01: Just-in-time and just-enough privilege with expiring grants](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Grant expiry remains enforced after worker restart; tests cover nested groups, stale sessions/tickets and delayed replication with declared limits.
 
@@ -1235,7 +1018,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [B-02: Dual approval and separation of duties for Tier 0 membership, trusts, replication rights, backup export and key operations](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [B-02: Dual approval and separation of duties for Tier 0 membership, trusts, replication rights, backup export and key operations](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** UI/API/bulk operations reject self-approval and scope substitution; signed-off target/content changes require reapproval.
 
@@ -1247,7 +1030,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [C-01: Windows LAPS-compatible local administrator password rotation and retrieval](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [C-02: Managed service accounts, including gMSA compatibility where selected](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [C-03: Linux service identities, keytab lifecycle and supported workload identity integrations](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [C-01: Windows LAPS-compatible local administrator password rotation and retrieval](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [C-02: Managed service accounts, including gMSA compatibility where selected](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [C-03: Linux service identities, keytab lifecycle and supported workload identity integrations](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Qualified LAPS/gMSA/keytab retrieval, rotation, offline behavior and denied readers pass; secrets never appear in logs or broad inventory.
 
@@ -1259,7 +1042,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [A-04: Password protection beyond basic policy: locally checked breached/common passwords, contextual exclusions, password history and supported fine-grained policies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [A-05: Adaptive throttling and credential-stuffing/password-spray detection across replicas](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [C-04: Joiner/mover/leaver workflows, ownership and deprovisioning reconciliation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [C-05: Delegated self-service password change/reset, account recovery and group requests](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [A-04: Password protection beyond basic policy: locally checked breached/common passwords, contextual exclusions, password history and supported fine-grained policies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [A-05: Adaptive throttling and credential-stuffing/password-spray detection across replicas](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [C-04: Joiner/mover/leaver workflows, ownership and deprovisioning reconciliation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [C-05: Delegated self-service password change/reset, account recovery and group requests](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Spray, enumeration, recovery impersonation and unauthorized reset/group request tests fail; breach checks do not export raw passwords.
 
@@ -1271,7 +1054,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [B-05: Effective-permission explorer and privilege-path analysis](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [B-06: Periodic access certification, ownership and orphaned-privilege cleanup](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [B-05: Effective-permission explorer and privilege-path analysis](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [B-06: Periodic access certification, ownership and orphaned-privilege cleanup](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Results match actual ACL/trust/nested-group decisions; unauthorized viewers cannot enumerate protected relationships.
 
@@ -1283,7 +1066,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [D-01: GPO version history, diffs, independent approval and staged OU rollout](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [D-02: Effective policy preview, precedence and resultant-policy troubleshooting](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [D-03: Tested hardening templates for Windows and Linux](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [D-04: Policy integrity/drift detection, safe script distribution and privileged policy ownership](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [D-01: GPO version history, diffs, independent approval and staged OU rollout](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [D-02: Effective policy preview, precedence and resultant-policy troubleshooting](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [D-03: Tested hardening templates for Windows and Linux](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [D-04: Policy integrity/drift detection, safe script distribution and privileged policy ownership](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Version/SYSVOL consistency, out-of-band edits and resultant-policy comparisons are validated; revert restores real client behavior.
 
@@ -1295,7 +1078,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [B-03: Privileged access workstations and tiered administration guidance](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [B-04: Emergency break-glass access with separate custody and monitored use](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [B-03: Privileged access workstations and tiered administration guidance](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [B-04: Emergency break-glass access with separate custody and monitored use](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** A rehearsed IdP/provider outage preserves audited emergency access with separate custody and post-use rotation, without permanent hidden bypass.
 
@@ -1307,7 +1090,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [L-02: Policy simulation and explainable access decisions](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [L-03: Safe bulk operations with scope preview, dry run, idempotency and compensating actions](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [L-04: Accessible secure enrollment/recovery and understandable authentication errors](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [L-05: Security exception register and policy-as-code change review](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [L-02: Policy simulation and explainable access decisions](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [L-03: Safe bulk operations with scope preview, dry run, idempotency and compensating actions](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [L-04: Accessible secure enrollment/recovery and understandable authentication errors](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [L-05: Security exception register and policy-as-code change review](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Expired grants/exceptions fail closed; keyboard/screen-reader and policy-simulation journeys include safe bulk-change previews.
 
@@ -1319,7 +1102,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [A-06: Authentication strength policies, session inventory and bounded revocation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [L-06: Operator training, trustworthy runbooks and versioned security baselines](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [A-06: Authentication strength policies, session inventory and bounded revocation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [L-06: Operator training, trustworthy runbooks and versioned security baselines](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Negative/auth-strength/latency/recovery evidence covers selected feature IDs and mixed load; new security service failures cannot silently bypass MFA.
 
@@ -1332,7 +1115,7 @@ No implemented increment is recorded for this requirement.
 
 **Posture, certificate/federation services and detection — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-08.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-08.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -1343,7 +1126,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [A-02: Smart-card/certificate-based domain logon through PKINIT and compatible hardware-backed keys](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [E-04: Certificate enrollment and PKI integration, with any AD CS-compatible role separately qualified](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [A-02: Smart-card/certificate-based domain logon through PKINIT and compatible hardware-backed keys](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [E-04: Certificate enrollment and PKI integration, with any AD CS-compatible role separately qualified](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Real supported clients pass valid mapping/rotation and reject invalid templates, SAN escalation, expired/revoked certificates and weak mappings.
 
@@ -1355,7 +1138,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [C-06: Signed, versioned provisioning integrations such as SCIM and an external secrets manager](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [J-01: OIDC/OAuth2 and SAML federation through separately qualified modules](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [C-06: Signed, versioned provisioning integrations such as SCIM and an external secrets manager](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [J-01: OIDC/OAuth2 and SAML federation through separately qualified modules](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Issuer/audience, nonce/state/PKCE where applicable, malicious attributes, duplicate events and cross-organization mix-ups are tested; unknown claims grant no privilege.
 
@@ -1367,7 +1150,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [D-05: Device posture and conditional-access integrations](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [D-06: Support for endpoint credential protections and application-control baselines](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [J-02: Network access integrations such as RADIUS/EAP-TLS](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [D-05: Device posture and conditional-access integrations](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [D-06: Support for endpoint credential protections and application-control baselines](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [J-02: Network access integrations such as RADIUS/EAP-TLS](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Spoofed/stale/missing posture and provider outage behavior match approved policy; no raw posture flag grants Tier 0 membership.
 
@@ -1379,7 +1162,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [E-05: Certificate/key inventory, expiry forecasting and automated rotation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [E-05: Certificate/key inventory, expiry forecasting and automated rotation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Expiry forecasting, safe overlap, CA/CRL/OCSP failure and renewal tests produce accurate status without disabling verification.
 
@@ -1391,7 +1174,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [G-01: Structured, correlated audit export to SIEM/syslog with externally protected storage](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [G-05: Investigation views: identity timeline, effective permissions and configuration history](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [G-01: Structured, correlated audit export to SIEM/syslog with externally protected storage](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [G-05: Investigation views: identity timeline, effective permissions and configuration history](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Schema/version/provenance, gap detection, redaction and denied-reader tests pass; root-controlled local files are not claimed tamper-proof.
 
@@ -1403,7 +1186,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [G-02: Detection for replication abuse, suspicious DC registration, ACL escalation and privileged group changes](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [G-03: Detection for ticket abuse, password sprays, abnormal service-ticket requests and trust/GPO persistence](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [G-02: Detection for replication abuse, suspicious DC registration, ACL escalation and privileged group changes](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [G-03: Detection for ticket abuse, password sprays, abnormal service-ticket requests and trust/GPO persistence](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Versioned fixtures measure expected alerts and false positives; missing endpoint signals/forged ticket limits are disclosed.
 
@@ -1415,7 +1198,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [G-04: Deception identities and monitored canary credentials](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [G-06: Detection engineering with replayable synthetic event fixtures](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [G-04: Deception identities and monitored canary credentials](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [G-06: Detection engineering with replayable synthetic event fixtures](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Decoys have no real privilege, trigger approved handling and cannot be accidentally promoted into normal production accounts.
 
@@ -1427,7 +1210,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [J-03: Attribute-level privacy, scoped directory search and data-export controls](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [J-04: Retention, deletion and legal-hold policy for identity and audit data](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [J-03: Attribute-level privacy, scoped directory search and data-export controls](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [J-04: Retention, deletion and legal-hold policy for identity and audit data](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** LDAP/UI/API attribute denials, purpose-scoped exports, deletion/hold and residency policy tests pass without breaking required discovery.
 
@@ -1439,7 +1222,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [J-05: Explicit multi-organization/tenant security boundaries](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [J-05: Explicit multi-organization/tenant security boundaries](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Independent deployment/forest boundaries are documented; shared writable DCs are never sold as hostile-tenant isolation based only on UI roles.
 
@@ -1451,7 +1234,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [L-01: Security posture dashboard with actionable, evidence-backed findings](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [L-01: Security posture dashboard with actionable, evidence-backed findings](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Reports show freshness, unsupported/unknown state, rule quality, provider dependencies and mixed-load overhead; a module outage does not stop core domain auth.
 
@@ -1464,7 +1247,7 @@ No implemented increment is recorded for this requirement.
 
 **Containment, key custody and compromise resilience — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-09.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-09.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -1475,7 +1258,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [H-01: Audited response workflows for account/device disable, trust suspension and service-key rotation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [H-01: Audited response workflows for account/device disable, trust suspension and service-key rotation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Disable/quarantine/trust/key actions reject wrong scope, replay, expired approval and unauthorized API calls; execution and cancellation are audited.
 
@@ -1487,7 +1270,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [H-02: Domain-compromise recovery plan covering ticket-signing, machine, service, trust and administrator credentials](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [H-02: Domain-compromise recovery plan covering ticket-signing, machine, service, trust and administrator credentials](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Ticket-signing double rotation, service/machine/trust/admin keys and downstream effects are sequenced and verified in an isolated lab.
 
@@ -1499,7 +1282,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [H-03: Replica quarantine and controlled reintroduction after suspected compromise](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [H-03: Replica quarantine and controlled reintroduction after suspected compromise](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** A compromised/stale replica cannot contaminate clean state; evidence preservation, trust revocation, role recovery and controlled reenrollment are exercised.
 
@@ -1511,7 +1294,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [I-01: Read-only/limited-secret branch controller profiles when explicitly implemented by the native core](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [I-01: Read-only/limited-secret branch controller profiles when explicitly implemented by the native core](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Exact RODC/password-replication semantics, permitted caches, theft blast radius and credential reset behavior pass; writable state is never labeled read-only.
 
@@ -1523,7 +1306,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [F-03: Hardware-backed key custody through HSM/TPM or a supported external KMS](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [F-03: Hardware-backed key custody through HSM/TPM or a supported external KMS](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Supported key operations, latency, outage, backup/custody and provider recovery are tested; unsupported AD verifiers/keys are explicitly excluded.
 
@@ -1535,7 +1318,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [F-01: Reviewed systemd sandboxing, capability reduction and AppArmor/SELinux profiles](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [F-02: Host security posture: supported Secure Boot, measured boot and disk encryption](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [F-05: Hardened Linux storage, syscall and network profiles for optional container packages](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [F-06: Linux host baseline drift and agent/update integrity](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [E-06: Protocol exposure control and network segmentation templates](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [F-01: Reviewed systemd sandboxing, capability reduction and AppArmor/SELinux profiles](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [F-02: Host security posture: supported Secure Boot, measured boot and disk encryption](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [F-05: Hardened Linux storage, syscall and network profiles for optional container packages](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [F-06: Linux host baseline drift and agent/update integrity](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [E-06: Protocol exposure control and network segmentation templates](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Capabilities, systemd sandboxing, LSM policies, RPC ranges and update paths pass functional/denied tests without a privileged-container default.
 
@@ -1547,7 +1330,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [I-02: Immutable/offline encrypted backups with split custody and recovery-key escrow](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [I-05: Recovery environment integrity and safe backup validation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [H-04: Recovery-safe security state restoration](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [I-02: Immutable/offline encrypted backups with split custody and recovery-key escrow](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [I-05: Recovery environment integrity and safe backup validation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [H-04: Recovery-safe security state restoration](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Independent recovery works after directory/provider loss and reconciles revoked identities, key epochs and directory/SYSVOL consistency.
 
@@ -1559,7 +1342,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [I-03: Site isolation, failover and revocation-risk visibility](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [I-04: Security operation budgets and safe degraded modes](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [I-03: Site isolation, failover and revocation-risk visibility](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [I-04: Security operation budgets and safe degraded modes](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** MFA/audit/KMS/CA failures have explicit per-operation behavior; no silent auth bypass, unbounded audit flood or hidden evidence loss occurs.
 
@@ -1571,7 +1354,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [H-05: Tested response playbooks and tabletop exercises](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [H-05: Tested response playbooks and tabletop exercises](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Tabletops plus technical drills record response time, operator mistakes, evidence retained and follow-up fixes.
 
@@ -1583,7 +1366,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [F-04: Resource isolation and DoS controls per service/peer](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [E-01: Compatibility-aware legacy authentication retirement](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [E-02: Kerberos delegation, ticket and principal hardening](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [E-03: Trust quarantine and cross-forest entitlement inspection](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [F-04: Resource isolation and DoS controls per service/peer](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [E-01: Compatibility-aware legacy authentication retirement](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [E-02: Kerberos delegation, ticket and principal hardening](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [E-03: Trust quarantine and cross-forest entitlement inspection](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Noisy response/relay/query workloads cannot exceed approved blast radius or violate authentication SLOs without an explicit failed qualification.
 
@@ -1594,9 +1377,9 @@ No implemented increment is recorded for this requirement.
 
 ## Phase 10
 
-**Continuous security assurance and trusted delivery — Planned**
+**Continuous security assurance and trusted delivery — In progress**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-10.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-10.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -1607,7 +1390,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [K-01: Reproducible packages/images, signed provenance/SBOM and dependency license/CVE inventory](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [K-01: Reproducible packages/images, signed provenance/SBOM and dependency license/CVE inventory](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Independent rebuilds compare bytes or documented nondeterminism; SBOM/provenance/commit/artifact identities align and license notices are reviewed.
 
@@ -1619,7 +1402,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [K-02: Secure update metadata with rollback/freeze protection and key recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [K-02: Secure update metadata with rollback/freeze protection and key recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Expired/version-replayed metadata and malicious mirrors fail verification; signing-key compromise and offline update recovery are rehearsed.
 
@@ -1631,7 +1414,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [K-03: Longer parser/protocol fuzzing, sanitizers, differential and state-machine tests](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [K-03: Longer parser/protocol fuzzing, sanitizers, differential and state-machine tests](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** LDAP/RPC/Kerberos/DNS/policy inputs exercise bounded parsers with sanitizer/property regressions; failures yield minimized tracked cases.
 
@@ -1643,7 +1426,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [K-03: Longer parser/protocol fuzzing, sanitizers, differential and state-machine tests](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [K-03: Longer parser/protocol fuzzing, sanitizers, differential and state-machine tests](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Versioned selected operations compare real outputs/state effects; divergence is triaged, not accepted solely because a second implementation matches.
 
@@ -1655,7 +1438,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [K-04: Property-based checks or formal analysis for bounded high-risk logic](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [K-04: Property-based checks or formal analysis for bounded high-risk logic](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Models for authorization, grant expiry, replication conflict and key transitions state assumptions and find/reject known counterexamples.
 
@@ -1667,7 +1450,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [K-05: Recurring independent pentests, purple-team exercises and a responsibly funded disclosure program](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [K-05: Recurring independent pentests, purple-team exercises and a responsibly funded disclosure program](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Published program scope, safe-harbor/disclosure handling and funded remediation produce retested findings without exposing active secrets.
 
@@ -1679,7 +1462,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [K-06: Hardened release governance and maintainer continuity](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [K-06: Hardened release governance and maintainer continuity](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Loss/compromise of one signer/reviewer cannot silently publish a trusted update; emergency process and audit remain usable.
 
@@ -1691,7 +1474,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [L-01: Security posture dashboard with actionable, evidence-backed findings](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [L-02: Policy simulation and explainable access decisions](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [L-03: Safe bulk operations with scope preview, dry run, idempotency and compensating actions](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [L-04: Accessible secure enrollment/recovery and understandable authentication errors](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [L-05: Security exception register and policy-as-code change review](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [L-06: Operator training, trustworthy runbooks and versioned security baselines](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [L-01: Security posture dashboard with actionable, evidence-backed findings](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [L-02: Policy simulation and explainable access decisions](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [L-03: Safe bulk operations with scope preview, dry run, idempotency and compensating actions](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [L-04: Accessible secure enrollment/recovery and understandable authentication errors](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [L-05: Security exception register and policy-as-code change review](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [L-06: Operator training, trustworthy runbooks and versioned security baselines](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Freshness/uncertainty, safe previews and exception expiry are tested; new operators complete privileged and emergency runbooks without hidden knowledge.
 
@@ -1703,13 +1486,11 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [K-06: Hardened release governance and maintainer continuity](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [K-06: Hardened release governance and maintainer continuity](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Actual required-check/review/ref/environment protections are verified where supported; unavailable private-repo features remain explicit release risks.
 
-**Pending PR proposals:** [\#21: Add PostgreSQL recovery experiments and a solo-maintainer CI workflow](<https://github.com/Ise-Tom/Babel/pull/21>). See [open PR progress](#open-pull-requests).
-
-No implemented increment is recorded for this requirement.
+**Implementation explanations:** W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI. See the [implementation journal](#implementation-journal).
 
 ### P10-10
 
@@ -1717,7 +1498,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [K-05: Recurring independent pentests, purple-team exercises and a responsibly funded disclosure program](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>); [K-04: Property-based checks or formal analysis for bounded high-risk logic](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>)
+**Associated features:** [K-05: Recurring independent pentests, purple-team exercises and a responsibly funded disclosure program](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>); [K-04: Property-based checks or formal analysis for bounded high-risk logic](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Reports include test/model scope, failures, skips, unsupported platforms and residual risks; a green scanner suite is never labeled proof of security.
 
@@ -1730,7 +1511,7 @@ No implemented increment is recorded for this requirement.
 
 **Endpoint inventory and patch-control foundation — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-11.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-11.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -1741,7 +1522,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-03: Windows OS, Linux package/kernel and explicitly selected third-party application patching](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-03: Windows OS, Linux package/kernel and explicitly selected third-party application patching](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Exact Windows editions/builds, Linux releases/architectures and selected third-party products have native-engine feasibility and licensing evidence.
 
@@ -1753,7 +1534,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-14: Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-14: Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Replay/cloned tokens, wrong device identities and revoked certificates fail; enrollment/rotation/rescue are audited without embedded domain-admin secrets.
 
@@ -1765,7 +1546,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-01: Continuous hardware/OS/software inventory and update applicability assessment](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-01: Continuous hardware/OS/software inventory and update applicability assessment](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Compare actual OS/native package tools and reboot state; missing/stale/unknown/unsupported observations remain distinguishable.
 
@@ -1777,7 +1558,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-02: Trusted patch/vulnerability catalog with dependencies, supersedence and known issues](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-02: Trusted patch/vulnerability catalog with dependencies, supersedence and known issues](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Vendor signatures/backports/prerequisites and known-issue fixtures yield correct applicable/not-applicable results beyond version-string matching.
 
@@ -1789,7 +1570,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-04: Dynamic device groups, targeting previews and fixed campaign membership snapshots](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-04: Dynamic device groups, targeting previews and fixed campaign membership snapshots](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Approved device/OU/tag mappings resist spoofed inventory and unauthorized cross-group changes; hostname reuse does not inherit device authority.
 
@@ -1801,7 +1582,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-03: Windows OS, Linux package/kernel and explicitly selected third-party application patching](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-03: Windows OS, Linux package/kernel and explicitly selected third-party application patching](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** WSUS/Intune/native locks and EOL products surface actionable conflicts; the service does not race another manager into unsupported state.
 
@@ -1813,7 +1594,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-14: Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-14: Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** A malicious inventory payload cannot execute a command, read arbitrary files or gain package-install/EDR/support rights.
 
@@ -1825,7 +1606,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-08: Bandwidth-aware content distribution with authenticated site relays and approved offline import](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-08: Bandwidth-aware content distribution with authenticated site relays and approved offline import](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Poisoned cache/metadata, wrong recipient and signature failures are rejected; relay possession of payload never authorizes installation.
 
@@ -1837,7 +1618,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-13: Compliance dashboards, remediation SLAs, exception register and report export](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-13: Compliance dashboards, remediation SLAs, exception register and report export](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Fields/roles/retention are documented; 10k fleet simulation plus representative real endpoints reports freshness, resource and storage overhead.
 
@@ -1849,7 +1630,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Controller/agent restart, certificate expiry and provider outage preserve device identity and show stale state without affecting domain login.
 
@@ -1862,7 +1643,7 @@ No implemented increment is recorded for this requirement.
 
 **Controlled patch campaigns and verified installation — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-12.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-12.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -1873,7 +1654,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-04: Dynamic device groups, targeting previews and fixed campaign membership snapshots](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>); [PATCH-14: Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-04: Dynamic device groups, targeting previews and fixed campaign membership snapshots](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>); [PATCH-14: Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Changing membership/digest/privileged scope requires reapproval; self-approval, cross-group API calls and stale authorization fail.
 
@@ -1885,7 +1666,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-05: Canary/pilot/production rings with configurable dwell, health checks, rollout limits and automatic pause](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-05: Canary/pilot/production rings with configurable dwell, health checks, rollout limits and automatic pause](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Bad patch/health/error-rate fixtures pause later rings; missing report coverage cannot count as promotion success.
 
@@ -1897,7 +1678,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-06: Maintenance windows, deadlines, user notifications, reboot deferral and forced-reboot controls](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-06: Maintenance windows, deadlines, user notifications, reboot deferral and forced-reboot controls](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** DST/time-zone, sleep/offline devices, active sessions, grace/deferral and forced reboot scenarios match explicit approved policy.
 
@@ -1909,7 +1690,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-07: Preflight disk/power/network checks, dependency handling and application/service-aware installation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-07: Preflight disk/power/network checks, dependency handling and application/service-aware installation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Blocked devices are reported separately; competing native transactions and unsupported reboot suppression are not overridden silently.
 
@@ -1921,7 +1702,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-08: Bandwidth-aware content distribution with authenticated site relays and approved offline import](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-08: Bandwidth-aware content distribution with authenticated site relays and approved offline import](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Vendor signatures plus approved digests survive retries/proxies; tamper, replay, incomplete files and quota failures block installation.
 
@@ -1933,7 +1714,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Expired/cancelled jobs cannot run after reconnect; duplicate IDs and lost replies cannot cause repeated install or arbitrary command execution.
 
@@ -1945,7 +1726,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-10: Independent post-install verification of installed version, reboot completion and service health](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-10: Independent post-install verification of installed version, reboot completion and service health](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Native version/state and health checks confirm remediation; exit zero, downloaded content or offline silence alone never counts as verified.
 
@@ -1957,7 +1738,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-11: Safe uninstall/rollback or tested recovery per update class](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-11: Safe uninstall/rollback or tested recovery per update class](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Uninstall works where supported; irreversible kernel/application/state changes follow tested restore/reimage/forward-fix with recorded limitations.
 
@@ -1969,7 +1750,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-12: Emergency remediation and risk-based prioritization](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-12: Emergency remediation and risk-based prioritization](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Known-exploited/exposed asset priority is explainable; override scope, expiry, independent approval and audit prevent unlimited emergency privilege.
 
@@ -1981,7 +1762,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-15: Availability-aware server and domain-controller maintenance](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-15: Availability-aware server and domain-controller maintenance](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** A controller rollout cannot reboot all site DCs together; induced auth/replication health failure pauses and recovers the campaign.
 
@@ -1994,7 +1775,7 @@ No implemented increment is recorded for this requirement.
 
 **Production patch fleet, compliance and resilience — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-13.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-13.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -2005,7 +1786,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-03: Windows OS, Linux package/kernel and explicitly selected third-party application patching](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>); [PATCH-10: Independent post-install verification of installed version, reboot completion and service health](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-03: Windows OS, Linux package/kernel and explicitly selected third-party application patching](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>); [PATCH-10: Independent post-install verification of installed version, reboot completion and service health](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Publish exact platform/device counts and real versus simulated roles; containers/simulators cannot replace native install/reboot evidence.
 
@@ -2017,7 +1798,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-01: Continuous hardware/OS/software inventory and update applicability assessment](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>); [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-01: Continuous hardware/OS/software inventory and update applicability assessment](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>); [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Connected/stale/offline/unsupported categories are explicit; p95 ack and &gt;=99% inventory targets exclude neither unexplained failures nor hidden missing agents.
 
@@ -2029,7 +1810,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** 10k-agent recovery after controller/site outage preserves authorization/cancellation, avoids duplicate installs and publishes convergence and queue metrics.
 
@@ -2041,7 +1822,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-08: Bandwidth-aware content distribution with authenticated site relays and approved offline import](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-08: Bandwidth-aware content distribution with authenticated site relays and approved offline import](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Transfer tests measure cache hits/misses/eviction/retries under configured site limits; control API rate is not reported as distribution throughput.
 
@@ -2053,7 +1834,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-13: Compliance dashboards, remediation SLAs, exception register and report export](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-13: Compliance dashboards, remediation SLAs, exception register and report export](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Missing/stale/offline/unverified/EOL devices cannot appear compliant; risk-based overdue time and exception expiry are reproducible from raw receipts.
 
@@ -2065,7 +1846,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-14: Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-14: Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Role/target/approval/audit behavior agrees across clients; connector outages and duplicate tickets cannot grant new execution rights.
 
@@ -2077,7 +1858,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>); [PATCH-11: Safe uninstall/rollback or tested recovery per update class](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>); [PATCH-11: Safe uninstall/rollback or tested recovery per update class](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Backups, expired certificates, full disks and process failures reconcile endpoint reality before resuming approved campaigns.
 
@@ -2089,7 +1870,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-12: Emergency remediation and risk-based prioritization](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>); [PATCH-14: Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-12: Emergency remediation and risk-based prioritization](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>); [PATCH-14: Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Stop dispatch, revoke/rotate trust, inspect queue/catalog, recover signing/enrollment and reinstall trusted agents through a documented rescue process.
 
@@ -2101,7 +1882,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Supported old/new combinations preserve identity and job semantics; staged signed-agent rollout pauses bad versions and retains recovery.
 
@@ -2113,7 +1894,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-15: Availability-aware server and domain-controller maintenance](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>); [PATCH-13: Compliance dashboards, remediation SLAs, exception register and report export](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>)
+**Associated features:** [PATCH-15: Availability-aware server and domain-controller maintenance](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>); [PATCH-13: Compliance dashboards, remediation SLAs, exception register and report export](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Independent review, resource/storage/retention sizing, failure runbooks and mixed-load no-directory-SLO-regression evidence are approved before production.
 
@@ -2126,7 +1907,7 @@ No implemented increment is recorded for this requirement.
 
 **Remote desktop and terminal access — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-14.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-14.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -2137,7 +1918,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [REMOTE-01: Authenticated desktop and terminal sessions to enrolled, authorized devices](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [REMOTE-01: Authenticated desktop and terminal sessions to enrolled, authorized devices](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Real Windows sessions and Linux headless/X11/Wayland cases have a versioned supported/unsupported matrix and tested maintained protocol engines.
 
@@ -2149,7 +1930,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [REMOTE-03: Separately approved unattended administration](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [REMOTE-05: Secure brokering and prompt revocation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [REMOTE-03: Separately approved unattended administration](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [REMOTE-05: Secure brokering and prompt revocation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Wrong-device, replayed/expired tokens and stolen low-privilege accounts cannot open a session or reuse a privileged endpoint credential.
 
@@ -2161,7 +1942,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [REMOTE-02: Attended support with visible user consent and an immediate disconnect action](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [REMOTE-02: Attended support with visible user consent and an immediate disconnect action](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Denied/expired/misleading requests fail; local user sees operator identity and can terminate a session without a remote approval.
 
@@ -2173,7 +1954,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [REMOTE-03: Separately approved unattended administration](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [REMOTE-03: Separately approved unattended administration](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** No implicit permission from domain membership or patch role; expired device/operator grants fail and administrative access is audited.
 
@@ -2185,7 +1966,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [REMOTE-04: Session control, audit and sensitive-channel separation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [REMOTE-06: Safe operation across OS privileges and session states](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [REMOTE-04: Session control, audit and sensitive-channel separation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [REMOTE-06: Safe operation across OS privileges and session states](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Denied channels cannot be reenabled through protocol/API bypass; locked screens, user switching and OS security prompts remain enforced.
 
@@ -2197,7 +1978,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [REMOTE-05: Secure brokering and prompt revocation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [REMOTE-05: Secure brokering and prompt revocation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Certificate/recipient failures close connections; NAT/proxy and relay compromise tests document who can see session content and protect credential custody.
 
@@ -2209,7 +1990,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [REMOTE-05: Secure brokering and prompt revocation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [REMOTE-05: Secure brokering and prompt revocation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** A connected session loses authority within a configured, tested &lt;=60 s revocation target; offline/broker-failed cases follow explicit safe expiry rules.
 
@@ -2221,7 +2002,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [REMOTE-04: Session control, audit and sensitive-channel separation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [REMOTE-04: Session control, audit and sensitive-channel separation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Notice, policy, access/retention and sensitive-input boundaries are tested; no covert sessions or indiscriminate credential/key logging is allowed.
 
@@ -2233,7 +2014,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [REMOTE-06: Safe operation across OS privileges and session states](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [REMOTE-06: Safe operation across OS privileges and session states](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Session identity and consent are revalidated; no unnoticed takeover, indefinitely cached grant or unintended concurrent control survives switching/restart.
 
@@ -2245,7 +2026,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [REMOTE-01: Authenticated desktop and terminal sessions to enrolled, authorized devices](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [REMOTE-05: Secure brokering and prompt revocation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [REMOTE-01: Authenticated desktop and terminal sessions to enrolled, authorized devices](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [REMOTE-05: Secure brokering and prompt revocation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Published concurrency/bitrate/latency plus compromised-operator/broker rescue tests pass without affecting identity or emergency recovery paths.
 
@@ -2258,7 +2039,7 @@ No implemented increment is recorded for this requirement.
 
 **General server-to-device file delivery — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-15.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-15.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -2269,7 +2050,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [FILE-01: Explicit server-originated uploads to one or many selected endpoints](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [FILE-01: Explicit server-originated uploads to one or many selected endpoints](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Target/digest/path changes require renewed approval; upload-only and cross-group operators cannot gain execution, patch or retrieval rights.
 
@@ -2281,7 +2062,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [FILE-02: Secure staging, integrity and recipient verification](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [FILE-02: Secure staging, integrity and recipient verification](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Wrong sender/device, tampered metadata, unauthenticated hash substitution and untrusted TLS are rejected; staged confidential files are access-restricted.
 
@@ -2293,7 +2074,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [FILE-03: Destination and privilege restrictions](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [FILE-03: Destination and privilege restrictions](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Real Windows reparse and Linux symlink/rename race tests cannot escape allowed directories or overwrite privileged startup/system files.
 
@@ -2305,7 +2086,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [FILE-03: Destination and privilege restrictions](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [FILE-03: Destination and privilege restrictions](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Default deny for privileged locations; approved overwrite preserves declared permissions and cannot convert a data upload into executable persistence.
 
@@ -2317,7 +2098,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Corrupt/reordered/replayed chunks, offset overflow, connection loss and retries cannot finalize incorrect or unauthorized content.
 
@@ -2329,7 +2110,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Partial files are never treated as delivered; unsupported atomic behavior is visible and staged fallback is tested with interrupted finalization.
 
@@ -2341,7 +2122,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Full disk, expired/cancelled jobs and abandoned staged data remain bounded; reconnect revalidates authority before continuing.
 
@@ -2353,7 +2134,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [FILE-05: Content policy, separate execution and audit](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [FILE-05: Content policy, separate execution and audit](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Type/size/scanning failures block according to policy; detection limits are documented and uploads cannot silently launch installers/scripts.
 
@@ -2365,7 +2146,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [FILE-05: Content policy, separate execution and audit](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [FILE-05: Content policy, separate execution and audit](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Operator/device/path/digest/outcome are auditable without raw contents; uploading never grants access to user files or unsolicited endpoint surveillance.
 
@@ -2377,7 +2158,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Concurrent representative real filesystem transfers survive agent/controller restarts and malicious paths without directory SLO regression.
 
@@ -2390,7 +2171,7 @@ No implemented increment is recorded for this requirement.
 
 **Native endpoint detection and response — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-16.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-16.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -2401,7 +2182,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [EDR-01: Dedicated installed sensor/agent module with secure enrollment and update lifecycle](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [EDR-01: Dedicated installed sensor/agent module with secure enrollment and update lifecycle](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Per-device identity/revocation, staged signed updates and authorized rescue/uninstall pass; module rights are isolated from support and patch executors.
 
@@ -2413,7 +2194,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [EDR-02: OS-specific endpoint telemetry](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [EDR-02: OS-specific endpoint telemetry](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Process lineage/hashes, network, file and selected persistence/security events match fixture ground truth; unavailable sources/blind spots are explicit.
 
@@ -2425,7 +2206,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [EDR-02: OS-specific endpoint telemetry](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [EDR-08: Offline operation and resilience under telemetry/provider outages](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [EDR-02: OS-specific endpoint telemetry](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [EDR-08: Offline operation and resilience under telemetry/provider outages](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** PID reuse, clock changes, reconnect duplicates, reordered events and buffer overflow cannot silently corrupt identity or claim complete healthy telemetry.
 
@@ -2437,7 +2218,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [EDR-03: Behavioral detection, indicator matching and versioned rules](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [EDR-03: Behavioral detection, indicator matching and versioned rules](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Labeled malicious/benign synthetic scenarios measure precision/recall and alert delay; costly/untrusted rules cannot exhaust endpoint resources.
 
@@ -2449,7 +2230,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [EDR-04: Investigation and privacy-scoped evidence collection](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [EDR-04: Investigation and privacy-scoped evidence collection](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Case/timeline/collection actions require scope and audit; evidence hashes/provenance/retention and denied-reader tests pass without blanket memory/credential extraction.
 
@@ -2461,7 +2242,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [EDR-05: Authorized response: stop/quarantine malicious processes/files and isolate a device](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [EDR-05: Authorized response: stop/quarantine malicious processes/files and isolate a device](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Wrong process generation, expired/replayed jobs, protected system targets and unauthorized analysts are rejected; quarantine limitations are documented.
 
@@ -2473,7 +2254,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [EDR-05: Authorized response: stop/quarantine malicious processes/files and isolate a device](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [EDR-07: SIEM/SOAR integration and safe automated response](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [EDR-05: Authorized response: stop/quarantine malicious processes/files and isolate a device](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [EDR-07: SIEM/SOAR integration and safe automated response](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Narrow authenticated rescue paths survive isolation; two-person/mass-action limits and false-positive tests prevent fleet/DC lockout; release-from-isolation is rehearsed.
 
@@ -2485,7 +2266,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [EDR-08: Offline operation and resilience under telemetry/provider outages](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [EDR-08: Offline operation and resilience under telemetry/provider outages](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Disk/memory quotas, encryption/access controls, sequence gaps and reconnect backpressure preserve visibility; outages do not stall domain login or fill disks indefinitely.
 
@@ -2497,7 +2278,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [EDR-06: Tamper resistance and trustworthy sensor health](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [EDR-06: Tamper resistance and trustworthy sensor health](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Stopped/stale sensors, changed policy and signer failure alert with provenance; root/kernel control is not claimed containable by local tamper protection.
 
@@ -2509,7 +2290,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [EDR-03: Behavioral detection, indicator matching and versioned rules](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [EDR-07: SIEM/SOAR integration and safe automated response](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [EDR-03: Behavioral detection, indicator matching and versioned rules](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [EDR-07: SIEM/SOAR integration and safe automated response](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Real endpoint performance, false positives/negatives, benign safety and SIEM/SOAR connector replay/authorization tests pass before enforcement is enabled.
 
@@ -2522,7 +2303,7 @@ No implemented increment is recorded for this requirement.
 
 **Joint fleet qualification and endpoint service release — Planned**
 
-[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/phases/phase-17.md>)
+[Canonical design and dependencies](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/phases/phase-17.md>)
 
 <details>
 <summary>10 requirements, associated features and evidence</summary>
@@ -2533,7 +2314,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-03: Windows OS, Linux package/kernel and explicitly selected third-party application patching](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>); [REMOTE-01: Authenticated desktop and terminal sessions to enrolled, authorized devices](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [EDR-02: OS-specific endpoint telemetry](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [PATCH-03: Windows OS, Linux package/kernel and explicitly selected third-party application patching](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>); [REMOTE-01: Authenticated desktop and terminal sessions to enrolled, authorized devices](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [EDR-02: OS-specific endpoint telemetry](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Reports identify real versus simulated endpoints/sessions, platform counts, traffic mix and exact build/rule versions; all individual contracts remain satisfied.
 
@@ -2545,7 +2326,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [REMOTE-01: Authenticated desktop and terminal sessions to enrolled, authorized devices](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [EDR-08: Offline operation and resilience under telemetry/provider outages](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [REMOTE-01: Authenticated desktop and terminal sessions to enrolled, authorized devices](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [EDR-08: Offline operation and resilience under telemetry/provider outages](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** 50 desktop/100 terminal/250 transfer and EDR steady/burst profiles publish CPU/RAM/disk/IOPS/network/retention sizing, cost and endpoint overhead.
 
@@ -2557,7 +2338,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-15: Availability-aware server and domain-controller maintenance](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>); [EDR-08: Offline operation and resilience under telemetry/provider outages](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [PATCH-15: Availability-aware server and domain-controller maintenance](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>); [EDR-08: Offline operation and resilience under telemetry/provider outages](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Telemetry floods, relay misses, large transfers and reconnect storms cannot starve core directory services within approved resource isolation limits.
 
@@ -2569,7 +2350,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>); [EDR-08: Offline operation and resilience under telemetry/provider outages](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>); [EDR-08: Offline operation and resilience under telemetry/provider outages](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** 24-hour partition, clock/DNS faults, full disks, expired issuers and 10k reconnect preserve authorization, bounded queues and truthful unknown state.
 
@@ -2581,7 +2362,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>); [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [REMOTE-05: Secure brokering and prompt revocation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [EDR-05: Authorized response: stop/quarantine malicious processes/files and isolate a device](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>); [FILE-04: Resumable, bandwidth-limited transfer with accurate receipts](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [REMOTE-05: Secure brokering and prompt revocation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [EDR-05: Authorized response: stop/quarantine malicious processes/files and isolate a device](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Actual endpoint patch/file/isolation/session states are verified before replay; duplicate, cancelled and expired jobs cannot gain fresh authority.
 
@@ -2593,7 +2374,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [REMOTE-03: Separately approved unattended administration](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [FILE-01: Explicit server-originated uploads to one or many selected endpoints](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [EDR-01: Dedicated installed sensor/agent module with secure enrollment and update lifecycle](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [REMOTE-03: Separately approved unattended administration](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [FILE-01: Explicit server-originated uploads to one or many selected endpoints](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [EDR-01: Dedicated installed sensor/agent module with secure enrollment and update lifecycle](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Support/upload/patch/EDR roles cannot exchange execution authority; external review includes enrollment, brokers, privileged executors, signing and recovery.
 
@@ -2605,7 +2386,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-14: Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>); [EDR-07: SIEM/SOAR integration and safe automated response](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [PATCH-14: Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>); [EDR-07: SIEM/SOAR integration and safe automated response](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Stop dispatch, revoke/rotate identities and rules, inspect queues and reenroll through an independent rescue path; offline stop limits and irreversible actions are explicit.
 
@@ -2617,7 +2398,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [REMOTE-02: Attended support with visible user consent and an immediate disconnect action](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [REMOTE-04: Session control, audit and sensitive-channel separation](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [FILE-05: Content policy, separate execution and audit](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [EDR-04: Investigation and privacy-scoped evidence collection](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [REMOTE-02: Attended support with visible user consent and an immediate disconnect action](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [REMOTE-04: Session control, audit and sensitive-channel separation](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [FILE-05: Content policy, separate execution and audit](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [EDR-04: Investigation and privacy-scoped evidence collection](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Notice/consent/recording/evidence retention and accessible triage/patch/support journeys pass; missing data cannot appear as healthy/compliant.
 
@@ -2629,7 +2410,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>); [EDR-01: Dedicated installed sensor/agent module with secure enrollment and update lifecycle](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>); [EDR-01: Dedicated installed sensor/agent module with secure enrollment and update lifecycle](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Signed artifacts, SBOM/provenance, staged agent upgrades/version skew and supported Linux/Windows packages pass with defined rollback/forward-recovery.
 
@@ -2641,7 +2422,7 @@ No implemented increment is recorded for this requirement.
 
 No implementation or acceptance evidence recorded.
 
-**Associated features:** [PATCH-13: Compliance dashboards, remediation SLAs, exception register and report export](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>); [REMOTE-01: Authenticated desktop and terminal sessions to enrolled, authorized devices](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [FILE-01: Explicit server-originated uploads to one or many selected endpoints](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>); [EDR-03: Behavioral detection, indicator matching and versioned rules](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>)
+**Associated features:** [PATCH-13: Compliance dashboards, remediation SLAs, exception register and report export](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>); [REMOTE-01: Authenticated desktop and terminal sessions to enrolled, authorized devices](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [FILE-01: Explicit server-originated uploads to one or many selected endpoints](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>); [EDR-03: Behavioral detection, indicator matching and versioned rules](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** All PATCH/REMOTE/FILE/EDR and selected security gates have current evidence, operator/support owners and known limits; no unrun acceptance is labeled production ready.
 
@@ -3083,6 +2864,70 @@ No implemented increment is recorded for this requirement.
 
 **Source evidence:** [docs/adr/0003-postgresql-directory-state.md](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/docs/adr/0003-postgresql-directory-state.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/docs/decisions.md>) · [docs/architecture.md](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/docs/architecture.md>) · [docs/native-core-plan.md](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/docs/native-core-plan.md>)
 
+### W28 · Run real PostgreSQL synthetic transaction and process-crash experiments
+
+**Implemented increment**
+
+**Requirements:** P00-02, P01-02, P01-03
+
+**How it was done:** Added a digest-pinned official PostgreSQL 18 dependency, a bounded synthetic SQL schema and a stdlib Docker/psql controller. State, local journal, audit intent and idempotency commit together under a transactional writer allocator; synthetic UUID/SID identity is immutable. Tests use actual concurrent sessions and SIGKILL/restart. Containers have no network, ports, host binds or privileged mode, with read-only rootfs and scoped cleanup. Added a required runtime CI/coverage job, strict types/lint/security checks and test-image inventory. Process launch/timeout failures are also converted to static diagnostics so command arguments and captured output are not exported.
+
+**Recorded validation:** 22 component tests pass against PostgreSQL/psql 18.7; controller branch-inclusive coverage is 93%. Real cases cover collisions/injection/denial, rollback, ordered concurrent commit/rollback, kill before commit, committed-result recovery and idempotent retry after a discarded reply. Actual container isolation and cleanup are asserted. A CycloneDX test-image inventory was generated locally; 97 repository tests pass with 98% coverage.
+
+**Limits and remaining work:** Proposed for review; hosted verification must pass on the PR head before merge. This is an isolated SQL experiment, not native directory storage, authentication/Windows ACL, real SID allocation, backup/upgrade, physical power-loss proof, credential protection, AD replication or capacity acceptance. The future Rust driver and production packaging remain unselected/unqualified.
+
+**Problems:** I05, I21, I23
+
+**Source evidence:** [experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/4d00412af3e1528758c605b16c1e5dd2c5281cfd/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/4d00412af3e1528758c605b16c1e5dd2c5281cfd/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/4d00412af3e1528758c605b16c1e5dd2c5281cfd/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/4d00412af3e1528758c605b16c1e5dd2c5281cfd/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/4d00412af3e1528758c605b16c1e5dd2c5281cfd/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/4d00412af3e1528758c605b16c1e5dd2c5281cfd/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
+
+### W29 · Verify owner-applied repository protections and security settings
+
+**Design recorded**
+
+**Requirements:** P00-10, P01-01, P05-09, P10-09
+
+**How it was done:** Read the active main ruleset and effective branch rules, Pages mode/environment and private-reporting status. Recorded the owner’s explicit confirmation of the three Actions defaults separately from API-verifiable controls. No repository setting or remote branch was changed.
+
+**Recorded validation:** The owner-adjusted solo ruleset and effective main rules are API-verified: zero approvals, code-owner/last-push/unattributed-change approval disabled, PR and up-to-date CI required, resolved conversations, no bypass and no force-push/deletion. Pages/private reporting observations remain valid. Actions defaults remain owner-confirmed because their API returns HTTP 403.
+
+**Limits and remaining work:** Team approval is not sustainable for the sole maintainer and is being replaced for development, without claiming independent review. Source-release remains absent \(I22\). Main acceptance totals change after merge, not from PR proposals.
+
+**Problems:** I02, I18, I24
+
+**Source evidence:** [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/.github/CODEOWNERS>)
+
+### W30 · Validate existing source-release protections before draft source prereleases
+
+**Implemented increment**
+
+**Requirements:** P00-10, P05-09, P10-09
+
+**How it was done:** Read-only preflight precedes the contents/OIDC job. Explicit solo mode requires no reviewer gate, disabled admin bypass and only v\* tag deployments. Optional team mode additionally requires eligible independent reviewers and self-review prevention. Missing/inaccessible settings fail before automatic environment creation.
+
+**Recorded validation:** Seven release-policy regression tests pass, including solo/team profiles, protected tag scope, denied access and preservation of mandatory PR/CI boundaries in the ruleset template. The 100-test repository suite passes at 98% coverage; this helper has 100% coverage. Workflow syntax/security checks pass. No hosted release was run.
+
+**Limits and remaining work:** The source-release environment is still absent. The workflow change is proposed for review and has not been executed as hosted release code. It assumes the reviewed release workflow and does not replace owner-controlled release-tag creation or platform protection.
+
+**Problems:** I22
+
+**Source evidence:** [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/docs/github-security-settings.md>)
+
+### W31 · Adapt development governance to the sole maintainer without bypassing CI
+
+**Implemented increment**
+
+**Requirements:** P00-10, P01-01, P05-09, P10-09
+
+**How it was done:** Changed the main ruleset template to zero approvals with code-owner, last-push and unattributed-change approval disabled. Kept PRs, up-to-date GitHub Actions CI gate, resolved conversations and no force-push/deletion/bypass. Aligned source-only prerelease preflight, owner guidance and contribution policy; CODEOWNERS still records ownership.
+
+**Recorded validation:** 100 repository tests pass with 98% coverage, including solo/team release modes and main ruleset safeguards. Ruff, strict mypy, actionlint, Zizmor and local Markdown links pass. After the integration write was denied HTTP 403, owner UI changes were verified through the full ruleset and effective main rules: all solo settings match and PR/CI/no-bypass protections remain.
+
+**Limits and remaining work:** Implementation is proposed in PR \#21. Live owner-applied solo rules are verified and I24 is resolved. This is owner review plus CI, not independent review; future production security qualification remains required. Source-release is still absent; no release/tag/merge/deployment was triggered.
+
+**Problems:** I24, I22
+
+**Source evidence:** [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/docs/github-main-ruleset.json>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/docs/github-security-settings.md>) · [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/tests/test_release_environment.py>)
+
 ## Problems encountered
 
 ### I01 · GitHub API initially blocked by egress policy
@@ -3099,19 +2944,19 @@ Git reads/pushes worked while api.github.com was excluded, so draft PR creation 
 
 
 
-### I02 · Merge protection administration is unavailable to the integration
+### I02 · Main PR and CI protections are enforced; solo approval adjustment tracked separately
 
-**Open** · Phases 00, 01, 05, 10
+**Resolved** · Phases 00, 01, 05, 10
 
-GitHub rejected ruleset access for this private repository with HTTP 403 and requested a supported plan or public visibility. Passing CI is not enforced merge protection.
+The earlier private-plan/integration administration limitation prevented configuring protection through this integration. The owner applied Protect main ruleset 27498979; effective branch rules and its full configuration are now readable and active.
 
-**Resolution:** Still open
+**Resolution:** Verified main-only scope, no bypass actors, deletion/non-fast-forward rules, one approving/code-owner review, last-push approval, stale-review dismissal, resolved threads and an up-to-date GitHub Actions CI gate \(app 15368\). This is actual platform evidence, not an inference from passing tests.
 
-**Next action:** Owner imports docs/github-main-ruleset.json, enables required review/CI gate and verifies enforcement. Public ruleset listing is empty; legacy branch protection GET returns HTTP 403, so no enforced protection is claimed.
+**Next action:** Keep required PRs, up-to-date CI, resolved conversations and no force-push/deletion/bypass. Remove impossible solo approval gates as tracked in I24. This resolves platform enforcement, not independent production review or product acceptance.
 
 **Provenance:** GitHub API observation recorded during pipeline setup; verify again before production release.
 
-[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/9700ddc9a28f62a9204bafc49e0f67390ed0036e/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/9700ddc9a28f62a9204bafc49e0f67390ed0036e/docs/github-main-ruleset.json>)
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/.github/CODEOWNERS>)
 
 ### I03 · Project license and contributor policy not selected
 
@@ -3141,19 +2986,19 @@ The owner has no lab host and explicitly requested a definition only. A two-netw
 
 [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/scripts/check_ci_scope.py>)
 
-### I05 · PostgreSQL selected; durable-state and AD replication qualification remain
+### I05 · Synthetic PostgreSQL recovery passes; native adapter and AD state qualification remain
 
 **Open** · Phases 00, 01, 02, 03
 
-The owner accepted PostgreSQL as the initial backend. ADR 0003 proposes identity/ACL ownership, independent per-DC stores and atomic state/journal ordering. No storage implementation, crash evidence, credential key-custody choice, AD conflict/RID/FSMO qualification or GPO/SYSVOL transport is accepted.
+An isolated PostgreSQL 18.7/official psql experiment now passes synthetic create/rename, identity/collision, transaction/audit/receipt atomicity, idempotency, denial, concurrent ordering and process/container crash recovery tests. It is separate from the LDAP lab and contains no credential-bearing directory or Rust production adapter.
 
 **Resolution:** Still open
 
-**Next action:** Implement the synthetic local-store experiment with reviewed PostgreSQL version/driver and same-PR runtime CI. Qualify crash/locking/recovery and keys; resolve D-05/D-06 before credential-bearing or multi-controller writes.
+**Next action:** Implement and qualify the Rust adapter/full native identity-schema-ACL model, host/disk/backup/upgrade and key custody. Resolve AD conflict/RID/FSMO/restore epochs and GPO/SYSVOL requirements before valuable credentials or writable multi-controller state.
 
 **Provenance:** Design blocker, not an implemented storage defect.
 
-[docs/adr/0003-postgresql-directory-state.md](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/docs/adr/0003-postgresql-directory-state.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/docs/decisions.md>) · [docs/architecture.md](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/docs/architecture.md>) · [docs/native-core-plan.md](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/docs/native-core-plan.md>)
+[experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
 
 ### I06 · Proposed SBOM generator had a yanked locked dependency
 
@@ -3323,19 +3168,19 @@ PR \#17 run 44154241268 passed typecheck but failed dashboard lint with TypeErro
 
 [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/9700ddc9a28f62a9204bafc49e0f67390ed0036e/dashboard/package.json>) · [.github/dependabot.yml](<https://github.com/Ise-Tom/Babel/blob/9700ddc9a28f62a9204bafc49e0f67390ed0036e/.github/dependabot.yml>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/9700ddc9a28f62a9204bafc49e0f67390ed0036e/dashboard/lint.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/9700ddc9a28f62a9204bafc49e0f67390ed0036e/dashboard/tests/lint.test.mjs>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/9700ddc9a28f62a9204bafc49e0f67390ed0036e/docs/github-security-settings.md>)
 
-### I18 · Repository security administration remains blocked; Pages settings are verified
+### I18 · Repository and Pages controls applied; Actions defaults owner-confirmed
 
-**Open** · Phases 00, 01
+**Resolved** · Phases 00, 01
 
-Pages now reports build\_type=workflow and https\_enforced=true, and its environment remains main-only. Private vulnerability reporting is still disabled, ruleset listing empty and legacy protection/Actions defaults cannot be inspected. The integration cannot apply admin settings \(HTTP 403\). The deployment’s unnecessary write is tracked separately as I20.
+The integration still has restricted administration access. The owner applied the repository security controls: main protection, private vulnerability reporting and Pages main-only deployment with admin bypass disabled are verified through APIs.
 
-**Resolution:** Still open
+**Resolution:** The owner explicitly confirmed read-only Actions defaults, disabled Actions approving PRs and approval for all outside collaborators. These are owner-confirmed because the Actions settings API still returns HTTP 403. No private vulnerability report was submitted or falsely marked exercised. The separate missing source-release environment is tracked under I22.
 
-**Next action:** Owner imports the supplied main ruleset, enables private reporting and verifies Actions/environment controls using docs/github-security-settings.md. Merge the read-only Pages fix and verify a successful deployment; no broader credential or paid service is requested.
+**Next action:** Keep the limited integration permissions and periodically reverify actual state. Configure the protected source-release environment under I22 before source prerelease jobs can run.
 
 **Provenance:** Direct GitHub settings API responses and successful public site/deployment observations on 2026-11-17; these are GitHub permission errors, not automatic approval-review rejections.
 
-[.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/.github/workflows/dashboard-pages.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/docs/github-security-settings.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/docs/project-dashboard.md>)
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/.github/CODEOWNERS>) · [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/docs/github-security-settings.md>)
 
 ### I19 · Hosted hardening run caught unregistered ruleset data and viewport overflow
 
@@ -3365,145 +3210,201 @@ After PR \#17 merged, main CI passed all 12 jobs and artifact verification passe
 
 [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/.github/workflows/dashboard-pages.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/docs/github-security-settings.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/b58df33f10f80688bfeaf55e44d08d52156e7608/docs/project-dashboard.md>)
 
+### I21 · PostgreSQL temporary initialization server looked ready before final startup
+
+**Resolved** · Phases 00, 01
+
+The first real container experiment saw pg\_isready succeed against the official image’s temporary initialization server before the final database process was available, so the first query failed.
+
+**Resolution:** Readiness now requires the container’s final postgres PID 1 before the socket probe; startup is bounded and failed initialization removes only the owned container/volumes. The final process/crash suite passes.
+
+**Next action:** Keep the startup barrier while using this pinned image and requalify it on reviewed image changes.
+
+**Provenance:** Observed local real-container failure and subsequent successful 21-test integration run; not a Windows or production failure claim.
+
+[experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/7cb02d8bec6b9eae84f8550c90a2670b1fb17710/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
+
+### I22 · Tag-restricted source-release environment is missing
+
+**Open** · Phases 00, 05, 10
+
+GET environments/source-release returned HTTP 404. Main and Pages protection do not establish a source-release environment. The solo profile does not require a second maintainer for draft source-only prereleases.
+
+**Resolution:** Still open
+
+**Next action:** Owner creates source-release without required reviewers, disables admin bypass and adds only a custom v\* tag deployment policy; retain owner-controlled tag creation. Run the read-only solo checker after configuration. Review and merge the prepared workflow before relying on hosted enforcement.
+
+**Provenance:** Direct current GitHub metadata and an expected nonzero local preflight result; no environment, tag or release was created.
+
+[scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/docs/github-security-settings.md>)
+
+### I23 · Own-actions-only policy blocked official pinned GitHub Actions
+
+**Resolved** · Phases 00, 01, 05
+
+PR \#21 CI run 44191621036 ended in startup\_failure with zero jobs. GitHub reported that checkout/setup/artifact actions were not allowed because actions had to belong to Ise-Tom. The same policy also blocked automatic dashboard refresh.
+
+**Resolution:** The owner explicitly confirmed allowing GitHub-created actions under the selected non-owner-actions policy, leaving Marketplace creators disabled. Full SHA pins and job-scoped token permissions are retained. The prepared branch and PR are now pushed, and the GitHub dashboard was refreshed directly from trusted main code.
+
+**Next action:** All 13 jobs passed for PR \#21 head 4660fe0 in CI run 44192717123 after the publisher-policy correction. Retain SHA pins and review diff/CI before merge; subsequent changes require fresh CI. No source release or cloud-environment publication was performed.
+
+**Provenance:** Actual public GitHub run annotation and the owner’s explicit settings-change confirmation; no automatic approval-review rejection occurred.
+
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/efff796a0768b168636598cdefb0dd157297157d/docs/github-security-settings.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/efff796a0768b168636598cdefb0dd157297157d/.github/workflows/ci.yml>) · [.github/workflows/dashboard-publish.yml](<https://github.com/Ise-Tom/Babel/blob/efff796a0768b168636598cdefb0dd157297157d/.github/workflows/dashboard-publish.yml>)
+
+### I24 · Team-only approval switches block the sole maintainer
+
+**Resolved** · Phases 00, 01, 05, 10
+
+PR \#21 is authored by the sole repository owner, who cannot self-approve. Team-only code-owner, last-push and unattributed-change approval switches remained enabled after the approval count was set to zero. The integration write was denied HTTP 403.
+
+**Resolution:** Subsequent owner UI changes are API-verified: required approvals zero and all three approval switches false. Effective main rules still require PRs, up-to-date GitHub Actions CI gate and resolved conversations, and block force-push/deletion with no bypass actors. A second maintainer is no longer required for development merges.
+
+**Next action:** Keep these solo development settings and inspect diff/CI before merging. Add independent review explicitly when an actual second maintainer joins; planned production security qualification is not waived.
+
+**Provenance:** Full ruleset 27498979 and effective rules for main read back after owner changes; the failed integration PUT is not claimed as the mechanism.
+
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/911ef20b425782e9cbd5d7797ecfa41fbac6578a/docs/github-main-ruleset.json>)
+
 ## Feature catalog
 
 | Feature | Capability | Acceptance evidence |
 | --- | --- | --- |
-| [PLAT-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency | Clean Linux host provisions a domain; Windows client joins, authenticates and applies GPO; admin API/UI operate with no Windows server present |
-| [PLAT-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Repeatable Linux installation, service supervision, reboot recovery, upgrade and removal that preserves directory data by default | Fresh-host install, reboot and interrupted-upgrade tests; documented service ordering, DNS/time/firewall prerequisites and explicit data-deletion procedure |
-| [PLAT-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Linux host hardening and persistent data integrity | Verified service identities, minimum required privileges, secret/data file permissions, applicable AppArmor/SELinux policy, filesystem ACL/xattr preservation and backup/restore tests |
-| [AD-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore | Import/export and object/ACL comparison against an isolated Windows AD reference domain; denied-operation cases |
-| [AD-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect | Disposable Windows 11 and Windows Server 2022/2025 clients; exact editions/builds pinned in a compatibility matrix |
-| [AD-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Kerberos AS/TGS, service principals, PAC validation, time synchronization, cross-service SSO, constrained delegation, and trust authentication | Positive/negative Windows and Linux client tests, ticket expiry/replay and delegation abuse cases |
-| [AD-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | LDAPv3/LDAPS, AD schema and controls, paging, referrals, ACL filtering, and global catalog | Windows RSAT and standard LDAP clients; paging/filter conformance, unauthorized attributes excluded |
-| [AD-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | AD-integrated DNS, SRV discovery, secure dynamic updates, site/subnet placement and DC locator | Discovery, stale records, DNS failover, and unsigned-update rejection |
-| [AD-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Group Policy management and application; SYSVOL consistency, logon scripts, security policy, permissions | Real Windows client resultant policy, policy version conflict, script distribution and failover tests; document supported replication mechanism |
-| [AD-07](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery | Partition/rejoin, concurrent writes, lingering objects, rollback protection and disaster recovery |
-| [AD-08](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Required Netlogon, SAMR, LSA, SMB and DCE/RPC behavior for domain membership and administration | Supported Microsoft protocol test cases plus real-client workflows; signed/sealed secure channels |
-| [AD-09](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Forest/domain trusts, cross-domain authorization, migration and coexistence with existing AD | Two disposable forests, trust creation/removal, SID filtering, selective authentication and migration rollback |
-| [AD-10](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Domain/forest functional levels and FSMO role ownership, transfer and failure recovery | Explicit supported level matrix, role transfer/seizure, schema and functional-level upgrade tests |
-| [IAM-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Complete identity and password administration: create/disable/delete/restore accounts, user-driven password change, authorized admin reset, expiry/lockout and fine-grained password policies, with delegated permissions and audit | UI/API and supported client tests for allowed and denied operations, policy enforcement, account enumeration resistance, password redaction and post-reset authentication |
-| [OPS-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Backup/restore, upgrades, rotation, audit export, health and capacity visibility | Repeated restore drills, interrupted upgrade, disk-full and certificate-expiry tests |
-| [UX-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Accessible web administration and documented automation API/CLI | Tested admin journeys, WCAG 2.2 AA audit and API authorization matrix |
-| [SEC-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account | Threat model, privilege matrix, denied-operation integration tests |
-| [SEC-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Secure defaults: LDAP signing/channel binding where supported, encrypted simple binds, SMB signing, signed/sealed Netlogon; no anonymous sensitive reads or SMB1 | Protocol downgrade and anonymous access tests with pinned clients |
-| [SEC-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Prefer Kerberos AES; disable DES/RC4 and NTLM by default; legacy exceptions must be scoped, visible, time-limited and audited | Kerberos encryption negotiation, NTLM relay/downgrade tests and documented compatibility impact |
-| [SEC-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | TLS 1.2 minimum, TLS 1.3 preferred; certificate identity validation and rotation; trust roots managed explicitly | Invalid/expired certificate rejection and live rotation tests; no verification bypass |
-| [SEC-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Web/API admin MFA through phishing-resistant authentication, step-up for privileged actions, scoped sessions/tokens, CSRF protection and reauthentication | Browser/API tests for session expiry/revocation, cross-site attacks, role escalation |
-| [SEC-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning | Crypto design review, secret/log scan, rotation and backup recovery drills |
-| [SEC-07](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Rate limiting resistant to distributed abuse, password policy and breached-password checks without leaking passwords, safe recovery and lockout visibility | Spray, brute-force, denial-of-service and recovery abuse tests |
-| [SEC-08](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion | Parser fuzzing, adversarial query tests and memory/CPU ceilings |
-| [SEC-09](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets | Audit completeness, redaction and external collector outage tests |
-| [SEC-10](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore | Packaging review, dependency/secret scans, artifact verification and restore exercise |
-| [SEC-11](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/requirements.md>) | Minimize identity data, encrypt backups, document retention/deletion and data residency | Privacy review, retention/restore tests and synthetic-only CI fixtures |
-| [A-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | WebAuthn/FIDO2 passkeys and hardware security keys for administrator login; multiple authenticators and secure enrollment | Reject origin/RP mismatch and replay; audited enrollment, replacement and revocation; keep usable accessible recovery |
-| [A-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Smart-card/certificate-based domain logon through PKINIT and compatible hardware-backed keys | Real supported Windows/Linux client logon, certificate mapping, revocation, expiry and downgrade tests; a web passkey is not automatically a Kerberos credential |
-| [A-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Recovery hardened against helpdesk impersonation, SIM swapping and MFA fatigue | No security questions or SMS-only privileged recovery; dual review for Tier 0, notifications and synthetic social-engineering exercises |
-| [A-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Password protection beyond basic policy: locally checked breached/common passwords, contextual exclusions, password history and supported fine-grained policies | No raw passwords or unsalted password hashes sent externally; test supported protocol reset/change paths and directory ACLs; avoid routine forced expiry absent a requirement or compromise |
-| [A-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Adaptive throttling and credential-stuffing/password-spray detection across replicas | Bound attacker-induced lockout and distributed attempts; test NAT/shared networks, emergency access and behavior during collector/WAN failure |
-| [A-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Authentication strength policies, session inventory and bounded revocation | Distinguish phishing-resistant, certificate and password-only authentication; test web logout, API revocation and ticket lifetimes separately; document where legacy protocols cannot enforce MFA |
-| [B-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Just-in-time and just-enough privilege with expiring grants | Enforce expiration even when workflow workers fail; test nested membership, tickets with cached privileges, replication delays and denied access after expiry |
-| [B-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Dual approval and separation of duties for Tier 0 membership, trusts, replication rights, backup export and key operations | Approver cannot approve their own change or bypass through API/bulk import; audit request, approval, execution and cancellation |
-| [B-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Privileged access workstations and tiered administration guidance | Publish tested workstation/server management baselines and safe delegation; directory administrators do not use privileged credentials on lower-trust endpoints |
-| [B-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Emergency break-glass access with separate custody and monitored use | Rehearse access without the normal IdP/MFA provider, alert every use, rotate afterward and protect against emergency-account lockout or silent persistence |
-| [B-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Effective-permission explorer and privilege-path analysis | Explain ACL inheritance, nested groups, delegation, SID history and trust boundaries; validate against actual access decisions and redact data from unauthorized viewers |
-| [B-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Periodic access certification, ownership and orphaned-privilege cleanup | Review privileged/service/stale accounts with accountable owners; preview removals and preserve recovery paths; do not automatically delete based on last-login alone |
-| [C-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Windows LAPS-compatible local administrator password rotation and retrieval | Qualify the exact client/schema/encryption profile; tightly restrict password reads, audit retrieval, rotate after use and test offline endpoints |
-| [C-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Managed service accounts, including gMSA compatibility where selected | Validate supported KDS/key derivation and authorized password retrieval, rollover and real Windows services; never emulate compatibility by exposing shared plaintext secrets |
-| [C-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Linux service identities, keytab lifecycle and supported workload identity integrations | Scoped principals, minimal keytab readers, short lifetimes where supported, automated rotation and revocation; no long-lived administrator credentials in workloads |
-| [C-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Joiner/mover/leaver workflows, ownership and deprovisioning reconciliation | Preview group/ACL changes, require approval for sensitive roles, disable access through each integrated system and report failures; measure ticket/session revocation limits |
-| [C-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Delegated self-service password change/reset, account recovery and group requests | Validate identity proof, factor replacement and approval boundaries; no account enumeration, unaudited helpdesk impersonation or permanent recovery bypass |
-| [C-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Signed, versioned provisioning integrations such as SCIM and an external secrets manager | Treat external sources as scoped authorities; test replay, duplicate events, malicious attributes, tenant mix-ups and outages; do not store arbitrary application secrets in directory attributes |
-| [D-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | GPO version history, diffs, independent approval and staged OU rollout | Test both directory and SYSVOL versions/ACLs, conflict resolution and a rollback that actually restores client behavior; audit all management paths |
-| [D-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Effective policy preview, precedence and resultant-policy troubleshooting | Model security filtering, inheritance, enforced/block settings and WMI filters; compare predictions with real Windows resultant policy and expose unsupported settings |
-| [D-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Tested hardening templates for Windows and Linux | Cover supported firewall, audit, authentication and host protections; Linux policy delivery needs an explicit supported agent/configuration integration rather than assuming Windows GPO applies |
-| [D-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Policy integrity/drift detection, safe script distribution and privileged policy ownership | Detect out-of-band SYSVOL edits and dangerous scripts; verify applicable signatures and permissions without inventing incompatible GPO wire formats |
-| [D-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Device posture and conditional-access integrations | Qualified endpoint attestation, encryption/patch posture and device identity; define freshness, spoof resistance and fail behavior; posture claims alone must not grant Tier 0 access |
-| [D-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Support for endpoint credential protections and application-control baselines | Test compatible Credential Guard, protected-user, LSA protection and application-control profiles; endpoint edition/features determine availability, and enforcement is not performed by the DC alone |
-| [E-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Compatibility-aware legacy authentication retirement | Discover NTLM/RC4/unsigned dependencies, offer a migration report and enforce expiring scoped exceptions; first-release secure defaults stay in force |
-| [E-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Kerberos delegation, ticket and principal hardening | Detect unsafe unconstrained/resource-based delegation, SPN conflicts, weak service secrets and excessive ticket lifetimes; test constrained delegation and protected accounts on real clients |
-| [E-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Trust quarantine and cross-forest entitlement inspection | Validate SID filtering, selective authentication, name suffix routing and SID-history migration boundaries; require approval and audit trust changes |
-| [E-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Certificate enrollment and PKI integration, with any AD CS-compatible role separately qualified | Test template/enrollment ACLs, identity mapping, SAN constraints, approval, issuance/revocation and renewal; protect CA keys separately and reject escalation-prone configurations |
-| [E-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Certificate/key inventory, expiry forecasting and automated rotation | Exercise TLS, PKINIT, service and trust material separately; support safe overlap, CRL/OCSP outages and core/provider-specific lifecycle constraints |
-| [E-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Protocol exposure control and network segmentation templates | Enumerate actual DNS/LDAP/Kerberos/SMB/RPC and replication flows, narrow dynamic RPC ranges where supported, test firewall changes and preserve diagnostic access |
-| [F-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Reviewed systemd sandboxing, capability reduction and AppArmor/SELinux profiles | Test per-role requirements, upgrades and restore; document any privileged native-core/OS operations instead of promising all services run unprivileged |
-| [F-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Host security posture: supported Secure Boot, measured boot and disk encryption | Document provisioning and recovery-key custody; boot attestation must be verified externally; disk encryption does not protect a running compromised DC |
-| [F-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Hardware-backed key custody through HSM/TPM or a supported external KMS | Qualify each key type and key-provider API; do not claim AD password verifiers or every Kerberos key can be moved into an HSM; test latency, outage and recovery |
-| [F-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Resource isolation and DoS controls per service/peer | Exercise expensive LDAP searches, nested groups, parser inputs, connection exhaustion, audit floods and replication queues under limits without starving legitimate login |
-| [F-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Hardened Linux storage, syscall and network profiles for optional container packages | Validate ACL/xattrs, persistent state, time/DNS, service discovery and restore; no unreviewed privileged-container default; VM/bare-metal hosting stays supported |
-| [F-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Linux host baseline drift and agent/update integrity | Detect changed service units, executable/config permissions and obsolete kernels/packages; verify updates and rehearse service continuity during host maintenance |
-| [G-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Structured, correlated audit export to SIEM/syslog with externally protected storage | Version schemas, synchronize time, track gaps, redact credentials and enforce export RBAC; an append-only local file is not tamper-proof against root |
-| [G-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Detection for replication abuse, suspicious DC registration, ACL escalation and privileged group changes | Labeled authorized lab scenarios, expected alerts and false-positive measurements; some credential theft leaves no definitive directory-only signal |
-| [G-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Detection for ticket abuse, password sprays, abnormal service-ticket requests and trust/GPO persistence | Correlate KDC, directory and endpoint signals; do not promise reliable golden/silver-ticket detection solely from server logs |
-| [G-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Deception identities and monitored canary credentials | Isolate synthetic decoys with no real privileges, prohibit use in normal workflows and test safe high-confidence alert handling |
-| [G-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Investigation views: identity timeline, effective permissions and configuration history | Preserve provenance and access controls; reproducible evidence export, chain of custody and bounded retention; do not expose password hashes/tickets in UI |
-| [G-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Detection engineering with replayable synthetic event fixtures | Version rules, test sensitivity/precision, alert latency and collector failure; publish thresholds and capacity overhead at the 10k-identity target |
-| [H-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Audited response workflows for account/device disable, trust suspension and service-key rotation | Scope, preview, approval, idempotency and a rescue path; automated detections cannot globally lock out a domain without a separate safety decision |
-| [H-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Domain-compromise recovery plan covering ticket-signing, machine, service, trust and administrator credentials | Sequence native-core/provider-specific rotations, including safe double rotation of Kerberos signing keys; prove clean restores and ticket invalidation within documented limits |
-| [H-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Replica quarantine and controlled reintroduction after suspected compromise | Protect evidence, revoke replication trust safely, avoid contaminating clean replicas and test topology/role recovery; partitioning alone does not remove stolen credentials |
-| [H-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Recovery-safe security state restoration | Reconcile revoked identities, changed privileges, deleted objects and key epochs after restoring older backups; prevent silently reactivating known-compromised access |
-| [H-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Tested response playbooks and tabletop exercises | Include lost MFA provider, stolen backup, compromised maintainer, ransomware and malicious insider; track response time, operator mistakes and retained evidence |
-| [I-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Read-only/limited-secret branch controller profiles when explicitly implemented by the native core | Qualify exact RODC/password replication policy semantics, cached-secret restrictions, theft impact and credential reset procedure; never market a writable replica as read-only |
-| [I-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Immutable/offline encrypted backups with split custody and recovery-key escrow | Separate backup administration, restoration quorum where appropriate, retention verification and regular clean-room restores without depending on the failed domain |
-| [I-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Site isolation, failover and revocation-risk visibility | Surface stale replication, stale policy and uncertain revocation; test WAN partitions and clock/DNS faults without claiming global immediate consistency |
-| [I-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Security operation budgets and safe degraded modes | Define authentication, MFA, KMS, CA and audit failure behavior separately; backpressure noisy services, alert on queue loss and never silently bypass admin MFA |
-| [I-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Recovery environment integrity and safe backup validation | Scan and validate restore media, signed tooling and host images; rehearse total loss and schema incompatibility; ordinary VM snapshot rollback is not assumed safe for a DC |
-| [J-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | OIDC/OAuth2 and SAML federation through separately qualified modules | Validate issuer/audience, redirect URI, nonce/state/PKCE, signing keys, claim minimization, logout and key rollover; modern SSO does not replace AD protocols |
-| [J-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Network access integrations such as RADIUS/EAP-TLS | Qualify identity/certificate mapping, mutual authentication and revocation behavior; avoid insecure password fallback and document external network-device dependencies |
-| [J-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Attribute-level privacy, scoped directory search and data-export controls | Denied attribute/search tests across LDAP and UI/API, purpose-scoped access and export audit; avoid breaking required AD discovery semantics |
-| [J-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Retention, deletion and legal-hold policy for identity and audit data | Reconcile tombstones/backups/security investigations and residency obligations; no claim of GDPR or other regulatory certification from feature availability |
-| [J-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Explicit multi-organization/tenant security boundaries | Prefer independent domains/forests or deployments for hostile tenants; a shared writable DC and UI RBAC do not create hard tenant isolation; independently assess any shared architecture |
-| [K-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Reproducible packages/images, signed provenance/SBOM and dependency license/CVE inventory | Independently rebuild, compare artifacts and verify expected signer/workflow identities; document unreproducible parts and dependency exception expiry |
-| [K-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Secure update metadata with rollback/freeze protection and key recovery | Verify signatures, version/expiry and release channel; rehearse signing-key compromise, offline updates and supported emergency rollback without bypassing checks |
-| [K-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Longer parser/protocol fuzzing, sanitizers, differential and state-machine tests | Synthetic isolated workloads for LDAP/RPC/Kerberos/DNS and policy handling; compare observable semantics with a licensed AD lab and retain minimized regression cases |
-| [K-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Property-based checks or formal analysis for bounded high-risk logic | Prioritize authorization, grant expiry, replication conflict handling and key transitions; publish model assumptions rather than claiming a formally secure whole server |
-| [K-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Recurring independent pentests, purple-team exercises and a responsibly funded disclosure program | Public scope/safe-harbor terms, private intake and supported-version response; remediate findings with regression tests and publish appropriate summaries |
-| [K-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Hardened release governance and maintainer continuity | Two-person sensitive release review, scoped OIDC, protected builders/refs, signer rotation and tested maintainer-loss recovery; use no privileged fork runners |
-| [L-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Security posture dashboard with actionable, evidence-backed findings | Show observation time, affected identities/hosts, severity rationale and safe remediation; never present missing telemetry as healthy |
-| [L-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Policy simulation and explainable access decisions | Preview bulk ACL/GPO/role changes against representative identities and devices; show stale/unknown data and compare predictions with actual enforcement |
-| [L-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Safe bulk operations with scope preview, dry run, idempotency and compensating actions | Independent approval for mass privileged changes; test partial failure and rollback limits; no plaintext credential exports |
-| [L-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Accessible secure enrollment/recovery and understandable authentication errors | Keyboard/screen-reader tests and usability studies include recovery and approvals; messages help legitimate users without revealing account existence or secrets |
-| [L-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Security exception register and policy-as-code change review | Every exception has owner, justification, scope, expiry and audit; reject stale exceptions, detect out-of-band drift and protect policy signing/approval keys |
-| [L-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/security-roadmap.md>) | Operator training, trustworthy runbooks and versioned security baselines | Rehearse common and emergency tasks with new administrators; publish prerequisite/compatibility warnings and measure unassisted completion and recovery success |
-| [PATCH-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Continuous hardware/OS/software inventory and update applicability assessment | Compare installed versions, missing updates, reboot state, device identity and observation timestamps with native tools; distinguish fresh, stale, unknown and unsupported devices |
-| [PATCH-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Trusted patch/vulnerability catalog with dependencies, supersedence and known issues | Reproduce applicable/not-applicable decisions, including vendor backports; correlate vendor severity, CVEs and known-exploited data without treating version-string matches as proof of vulnerability |
-| [PATCH-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Windows OS, Linux package/kernel and explicitly selected third-party application patching | Use supported Windows Update APIs and supported distribution package managers such as APT/DNF; test vendor prerequisites, licenses, conflicts and package signatures; GPO update settings alone are insufficient |
-| [PATCH-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Dynamic device groups, targeting previews and fixed campaign membership snapshots | Scope by approved inventory/domain/OU/tag criteria; show sample devices, exclusions and counts; audit later membership changes and prevent silent expansion of an approved rollout |
-| [PATCH-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Canary/pilot/production rings with configurable dwell, health checks, rollout limits and automatic pause | Inject a bad update or failed health check; later rings halt at the approved threshold; low report coverage cannot count as successful promotion |
-| [PATCH-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Maintenance windows, deadlines, user notifications, reboot deferral and forced-reboot controls | Test time zones/DST, sleeping devices, user sessions, grace periods, blackout windows and missed windows; unsupported reboot suppression must be surfaced rather than silently overridden |
-| [PATCH-07](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Preflight disk/power/network checks, dependency handling and application/service-aware installation | Test low disk, pending reboot, conflicting package transaction, required services, application health and interrupted install; mark blocked devices separately from failed ones |
-| [PATCH-08](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Bandwidth-aware content distribution with authenticated site relays and approved offline import | Verify vendor signatures plus approved content digests, resume interrupted transfers, deduplicate/cache payloads and apply per-site/concurrency limits; a relay may serve content but cannot authorize deployment |
-| [PATCH-09](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Durable campaign orchestration and disconnected endpoint recovery | Idempotent job identifiers, bounded retries/backoff, resume after agent/controller restart, cancel/expiry checks before execution and reconciliation after lost acknowledgments; no unbounded queued command execution |
-| [PATCH-10](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Independent post-install verification of installed version, reboot completion and service health | Separate downloaded, installed, reboot-pending, verified, failed, paused and unknown states; a zero exit code or missing device report is not proof of remediation |
-| [PATCH-11](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Safe uninstall/rollback or tested recovery per update class | Advertise rollback only where the vendor supports it; demonstrate restore/reimage/forward-fix for irreversible changes; preserve operator instructions and abort criteria before rollout |
-| [PATCH-12](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Emergency remediation and risk-based prioritization | Prioritize exploited/exposed assets with transparent evidence; exceptional maintenance/approval overrides need explicit scope, independent approval, expiry and immutable audit export |
-| [PATCH-13](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Compliance dashboards, remediation SLAs, exception register and report export | Show coverage denominator, overdue/stale/offline devices, unsupported/EOL products and expiring exceptions; track time-to-remediate by risk; do not report unknown endpoints as compliant |
-| [PATCH-14](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history | Separate catalog approval, targeting, execution, exception and reporting rights; test unauthorized cross-group actions, approver self-approval, API bypass and scoped automation credentials |
-| [PATCH-15](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/patch-management-roadmap.md>) | Availability-aware server and domain-controller maintenance | Serialize DC maintenance by site/failure domain, preserve DNS/KDC/replication quorum where applicable, respect service topology and recovery checks; a workstation policy must never reboot every DC together |
-| [REMOTE-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Authenticated desktop and terminal sessions to enrolled, authorized devices | Real Windows/Linux session tests including headless Linux, NAT/proxy/relay paths and explicit unsupported configurations; choose maintained protocols/components rather than inventing a remote-control protocol |
-| [REMOTE-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Attended support with visible user consent and an immediate disconnect action | Reject denied/expired consent and misleading session requests; show operator identity and active session; no covert access mode |
-| [REMOTE-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Separately approved unattended administration | Explicit device policy, scoped operator rights, time-bounded grants, admin MFA/step-up and maintenance restrictions; no unattended access inferred from domain membership |
-| [REMOTE-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Session control, audit and sensitive-channel separation | Record actor/device, approvals, start/end and actions available to the operator; independently authorize elevation, clipboard, transfer and recording; test clipboard/drive redirection restrictions |
-| [REMOTE-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Secure brokering and prompt revocation | Per-session authorization, authenticated encrypted transport and device verification; no domain-admin credentials in the agent; bounded disconnect after revocation and defined behavior during broker/identity-provider failure |
-| [REMOTE-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Safe operation across OS privileges and session states | Test lock screen, user switching, terminal privilege escalation, reconnect and concurrent operators; honor OS security boundaries and document elevation requirements; no bypass of OS credential protection |
-| [FILE-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Explicit server-originated uploads to one or many selected endpoints | Preview exact recipients, content digest, size, expiry and destination; approve bulk/sensitive delivery and prevent recipient expansion after approval |
-| [FILE-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Secure staging, integrity and recipient verification | Authenticate uploader/source/device, encrypt in transit and protect staged content at rest; verify hashes against authenticated metadata, not an attacker-supplied hash alone |
-| [FILE-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Destination and privilege restrictions | Per-role/device allowed paths, canonicalization, symlink/race and traversal defenses, disk quota, ownership/mode preservation rules and explicit overwrite policy; prohibit silent writes into privileged startup/system locations |
-| [FILE-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Resumable, bandwidth-limited transfer with accurate receipts | Test interruptions, duplicate requests, stale jobs, full disks and agent restarts; stage then atomically finalize where supported; report partial/expired/failed/verified states and clean up abandoned content |
-| [FILE-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Content policy, separate execution and audit | Apply approved type/size/malware policies without promising scanners detect every threat; uploaded files are not automatically executed; record who sent what to which device and destination, without exposing confidential file contents in logs |
-| [EDR-01](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Dedicated installed sensor/agent module with secure enrollment and update lifecycle | Signed/verifiable packages and policy, mutual authentication, per-device identity/revocation, staged updates and rescue/uninstall flow; module isolation from remote support and patch execution |
-| [EDR-02](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | OS-specific endpoint telemetry | Qualified process lineage, executable hashes/signatures, network connections, file and relevant persistence/security events using supported APIs; document blind spots, event loss and OS/privilege prerequisites |
-| [EDR-03](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Behavioral detection, indicator matching and versioned rules | Labeled synthetic scenarios, expected detections, measured false positives/negatives and tuning/exclusion audit; verify rules and bound their CPU/memory cost; no claim of universal malware detection |
-| [EDR-04](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Investigation and privacy-scoped evidence collection | Process/device timeline, alert correlation and case workflow; approved minimal evidence capture with provenance, hashes, access controls and retention; no indiscriminate memory, credential or user-file collection |
-| [EDR-05](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Authorized response: stop/quarantine malicious processes/files and isolate a device | Separate response RBAC, approvals and bounded automation; preserve narrow authenticated management/recovery paths, define reboot persistence and test release from isolation; protect DC/service topology from fleet-wide lockout |
-| [EDR-06](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Tamper resistance and trustworthy sensor health | Detect stopped/stale sensors, policy/signature changes and telemetry gaps; audit exceptions and uninstall; qualify protections per OS and acknowledge a compromised kernel/root can defeat local evidence |
-| [EDR-07](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | SIEM/SOAR integration and safe automated response | Authenticated scoped connectors, deduplicated alerts, expiring/idempotent actions and auditable decisions; false detections must not autonomously disable the whole domain or isolate the whole fleet |
-| [EDR-08](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/endpoint-operations-roadmap.md>) | Offline operation and resilience under telemetry/provider outages | Bounded encrypted event buffering, trusted cached rules, freshness/loss indicators and controlled reconnect; avoid login disruption, disk exhaustion and treating missing events as a healthy device |
+| [PLAT-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency | Clean Linux host provisions a domain; Windows client joins, authenticates and applies GPO; admin API/UI operate with no Windows server present |
+| [PLAT-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Repeatable Linux installation, service supervision, reboot recovery, upgrade and removal that preserves directory data by default | Fresh-host install, reboot and interrupted-upgrade tests; documented service ordering, DNS/time/firewall prerequisites and explicit data-deletion procedure |
+| [PLAT-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Linux host hardening and persistent data integrity | Verified service identities, minimum required privileges, secret/data file permissions, applicable AppArmor/SELinux policy, filesystem ACL/xattr preservation and backup/restore tests |
+| [AD-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore | Import/export and object/ACL comparison against an isolated Windows AD reference domain; denied-operation cases |
+| [AD-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect | Disposable Windows 11 and Windows Server 2022/2025 clients; exact editions/builds pinned in a compatibility matrix |
+| [AD-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Kerberos AS/TGS, service principals, PAC validation, time synchronization, cross-service SSO, constrained delegation, and trust authentication | Positive/negative Windows and Linux client tests, ticket expiry/replay and delegation abuse cases |
+| [AD-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | LDAPv3/LDAPS, AD schema and controls, paging, referrals, ACL filtering, and global catalog | Windows RSAT and standard LDAP clients; paging/filter conformance, unauthorized attributes excluded |
+| [AD-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | AD-integrated DNS, SRV discovery, secure dynamic updates, site/subnet placement and DC locator | Discovery, stale records, DNS failover, and unsigned-update rejection |
+| [AD-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Group Policy management and application; SYSVOL consistency, logon scripts, security policy, permissions | Real Windows client resultant policy, policy version conflict, script distribution and failover tests; document supported replication mechanism |
+| [AD-07](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery | Partition/rejoin, concurrent writes, lingering objects, rollback protection and disaster recovery |
+| [AD-08](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Required Netlogon, SAMR, LSA, SMB and DCE/RPC behavior for domain membership and administration | Supported Microsoft protocol test cases plus real-client workflows; signed/sealed secure channels |
+| [AD-09](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Forest/domain trusts, cross-domain authorization, migration and coexistence with existing AD | Two disposable forests, trust creation/removal, SID filtering, selective authentication and migration rollback |
+| [AD-10](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Domain/forest functional levels and FSMO role ownership, transfer and failure recovery | Explicit supported level matrix, role transfer/seizure, schema and functional-level upgrade tests |
+| [IAM-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Complete identity and password administration: create/disable/delete/restore accounts, user-driven password change, authorized admin reset, expiry/lockout and fine-grained password policies, with delegated permissions and audit | UI/API and supported client tests for allowed and denied operations, policy enforcement, account enumeration resistance, password redaction and post-reset authentication |
+| [OPS-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Backup/restore, upgrades, rotation, audit export, health and capacity visibility | Repeated restore drills, interrupted upgrade, disk-full and certificate-expiry tests |
+| [UX-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Accessible web administration and documented automation API/CLI | Tested admin journeys, WCAG 2.2 AA audit and API authorization matrix |
+| [SEC-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account | Threat model, privilege matrix, denied-operation integration tests |
+| [SEC-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Secure defaults: LDAP signing/channel binding where supported, encrypted simple binds, SMB signing, signed/sealed Netlogon; no anonymous sensitive reads or SMB1 | Protocol downgrade and anonymous access tests with pinned clients |
+| [SEC-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Prefer Kerberos AES; disable DES/RC4 and NTLM by default; legacy exceptions must be scoped, visible, time-limited and audited | Kerberos encryption negotiation, NTLM relay/downgrade tests and documented compatibility impact |
+| [SEC-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | TLS 1.2 minimum, TLS 1.3 preferred; certificate identity validation and rotation; trust roots managed explicitly | Invalid/expired certificate rejection and live rotation tests; no verification bypass |
+| [SEC-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Web/API admin MFA through phishing-resistant authentication, step-up for privileged actions, scoped sessions/tokens, CSRF protection and reauthentication | Browser/API tests for session expiry/revocation, cross-site attacks, role escalation |
+| [SEC-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning | Crypto design review, secret/log scan, rotation and backup recovery drills |
+| [SEC-07](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Rate limiting resistant to distributed abuse, password policy and breached-password checks without leaking passwords, safe recovery and lockout visibility | Spray, brute-force, denial-of-service and recovery abuse tests |
+| [SEC-08](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion | Parser fuzzing, adversarial query tests and memory/CPU ceilings |
+| [SEC-09](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets | Audit completeness, redaction and external collector outage tests |
+| [SEC-10](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore | Packaging review, dependency/secret scans, artifact verification and restore exercise |
+| [SEC-11](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/requirements.md>) | Minimize identity data, encrypt backups, document retention/deletion and data residency | Privacy review, retention/restore tests and synthetic-only CI fixtures |
+| [A-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | WebAuthn/FIDO2 passkeys and hardware security keys for administrator login; multiple authenticators and secure enrollment | Reject origin/RP mismatch and replay; audited enrollment, replacement and revocation; keep usable accessible recovery |
+| [A-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Smart-card/certificate-based domain logon through PKINIT and compatible hardware-backed keys | Real supported Windows/Linux client logon, certificate mapping, revocation, expiry and downgrade tests; a web passkey is not automatically a Kerberos credential |
+| [A-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Recovery hardened against helpdesk impersonation, SIM swapping and MFA fatigue | No security questions or SMS-only privileged recovery; dual review for Tier 0, notifications and synthetic social-engineering exercises |
+| [A-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Password protection beyond basic policy: locally checked breached/common passwords, contextual exclusions, password history and supported fine-grained policies | No raw passwords or unsalted password hashes sent externally; test supported protocol reset/change paths and directory ACLs; avoid routine forced expiry absent a requirement or compromise |
+| [A-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Adaptive throttling and credential-stuffing/password-spray detection across replicas | Bound attacker-induced lockout and distributed attempts; test NAT/shared networks, emergency access and behavior during collector/WAN failure |
+| [A-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Authentication strength policies, session inventory and bounded revocation | Distinguish phishing-resistant, certificate and password-only authentication; test web logout, API revocation and ticket lifetimes separately; document where legacy protocols cannot enforce MFA |
+| [B-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Just-in-time and just-enough privilege with expiring grants | Enforce expiration even when workflow workers fail; test nested membership, tickets with cached privileges, replication delays and denied access after expiry |
+| [B-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Dual approval and separation of duties for Tier 0 membership, trusts, replication rights, backup export and key operations | Approver cannot approve their own change or bypass through API/bulk import; audit request, approval, execution and cancellation |
+| [B-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Privileged access workstations and tiered administration guidance | Publish tested workstation/server management baselines and safe delegation; directory administrators do not use privileged credentials on lower-trust endpoints |
+| [B-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Emergency break-glass access with separate custody and monitored use | Rehearse access without the normal IdP/MFA provider, alert every use, rotate afterward and protect against emergency-account lockout or silent persistence |
+| [B-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Effective-permission explorer and privilege-path analysis | Explain ACL inheritance, nested groups, delegation, SID history and trust boundaries; validate against actual access decisions and redact data from unauthorized viewers |
+| [B-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Periodic access certification, ownership and orphaned-privilege cleanup | Review privileged/service/stale accounts with accountable owners; preview removals and preserve recovery paths; do not automatically delete based on last-login alone |
+| [C-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Windows LAPS-compatible local administrator password rotation and retrieval | Qualify the exact client/schema/encryption profile; tightly restrict password reads, audit retrieval, rotate after use and test offline endpoints |
+| [C-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Managed service accounts, including gMSA compatibility where selected | Validate supported KDS/key derivation and authorized password retrieval, rollover and real Windows services; never emulate compatibility by exposing shared plaintext secrets |
+| [C-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Linux service identities, keytab lifecycle and supported workload identity integrations | Scoped principals, minimal keytab readers, short lifetimes where supported, automated rotation and revocation; no long-lived administrator credentials in workloads |
+| [C-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Joiner/mover/leaver workflows, ownership and deprovisioning reconciliation | Preview group/ACL changes, require approval for sensitive roles, disable access through each integrated system and report failures; measure ticket/session revocation limits |
+| [C-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Delegated self-service password change/reset, account recovery and group requests | Validate identity proof, factor replacement and approval boundaries; no account enumeration, unaudited helpdesk impersonation or permanent recovery bypass |
+| [C-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Signed, versioned provisioning integrations such as SCIM and an external secrets manager | Treat external sources as scoped authorities; test replay, duplicate events, malicious attributes, tenant mix-ups and outages; do not store arbitrary application secrets in directory attributes |
+| [D-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | GPO version history, diffs, independent approval and staged OU rollout | Test both directory and SYSVOL versions/ACLs, conflict resolution and a rollback that actually restores client behavior; audit all management paths |
+| [D-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Effective policy preview, precedence and resultant-policy troubleshooting | Model security filtering, inheritance, enforced/block settings and WMI filters; compare predictions with real Windows resultant policy and expose unsupported settings |
+| [D-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Tested hardening templates for Windows and Linux | Cover supported firewall, audit, authentication and host protections; Linux policy delivery needs an explicit supported agent/configuration integration rather than assuming Windows GPO applies |
+| [D-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Policy integrity/drift detection, safe script distribution and privileged policy ownership | Detect out-of-band SYSVOL edits and dangerous scripts; verify applicable signatures and permissions without inventing incompatible GPO wire formats |
+| [D-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Device posture and conditional-access integrations | Qualified endpoint attestation, encryption/patch posture and device identity; define freshness, spoof resistance and fail behavior; posture claims alone must not grant Tier 0 access |
+| [D-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Support for endpoint credential protections and application-control baselines | Test compatible Credential Guard, protected-user, LSA protection and application-control profiles; endpoint edition/features determine availability, and enforcement is not performed by the DC alone |
+| [E-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Compatibility-aware legacy authentication retirement | Discover NTLM/RC4/unsigned dependencies, offer a migration report and enforce expiring scoped exceptions; first-release secure defaults stay in force |
+| [E-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Kerberos delegation, ticket and principal hardening | Detect unsafe unconstrained/resource-based delegation, SPN conflicts, weak service secrets and excessive ticket lifetimes; test constrained delegation and protected accounts on real clients |
+| [E-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Trust quarantine and cross-forest entitlement inspection | Validate SID filtering, selective authentication, name suffix routing and SID-history migration boundaries; require approval and audit trust changes |
+| [E-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Certificate enrollment and PKI integration, with any AD CS-compatible role separately qualified | Test template/enrollment ACLs, identity mapping, SAN constraints, approval, issuance/revocation and renewal; protect CA keys separately and reject escalation-prone configurations |
+| [E-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Certificate/key inventory, expiry forecasting and automated rotation | Exercise TLS, PKINIT, service and trust material separately; support safe overlap, CRL/OCSP outages and core/provider-specific lifecycle constraints |
+| [E-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Protocol exposure control and network segmentation templates | Enumerate actual DNS/LDAP/Kerberos/SMB/RPC and replication flows, narrow dynamic RPC ranges where supported, test firewall changes and preserve diagnostic access |
+| [F-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Reviewed systemd sandboxing, capability reduction and AppArmor/SELinux profiles | Test per-role requirements, upgrades and restore; document any privileged native-core/OS operations instead of promising all services run unprivileged |
+| [F-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Host security posture: supported Secure Boot, measured boot and disk encryption | Document provisioning and recovery-key custody; boot attestation must be verified externally; disk encryption does not protect a running compromised DC |
+| [F-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Hardware-backed key custody through HSM/TPM or a supported external KMS | Qualify each key type and key-provider API; do not claim AD password verifiers or every Kerberos key can be moved into an HSM; test latency, outage and recovery |
+| [F-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Resource isolation and DoS controls per service/peer | Exercise expensive LDAP searches, nested groups, parser inputs, connection exhaustion, audit floods and replication queues under limits without starving legitimate login |
+| [F-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Hardened Linux storage, syscall and network profiles for optional container packages | Validate ACL/xattrs, persistent state, time/DNS, service discovery and restore; no unreviewed privileged-container default; VM/bare-metal hosting stays supported |
+| [F-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Linux host baseline drift and agent/update integrity | Detect changed service units, executable/config permissions and obsolete kernels/packages; verify updates and rehearse service continuity during host maintenance |
+| [G-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Structured, correlated audit export to SIEM/syslog with externally protected storage | Version schemas, synchronize time, track gaps, redact credentials and enforce export RBAC; an append-only local file is not tamper-proof against root |
+| [G-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Detection for replication abuse, suspicious DC registration, ACL escalation and privileged group changes | Labeled authorized lab scenarios, expected alerts and false-positive measurements; some credential theft leaves no definitive directory-only signal |
+| [G-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Detection for ticket abuse, password sprays, abnormal service-ticket requests and trust/GPO persistence | Correlate KDC, directory and endpoint signals; do not promise reliable golden/silver-ticket detection solely from server logs |
+| [G-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Deception identities and monitored canary credentials | Isolate synthetic decoys with no real privileges, prohibit use in normal workflows and test safe high-confidence alert handling |
+| [G-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Investigation views: identity timeline, effective permissions and configuration history | Preserve provenance and access controls; reproducible evidence export, chain of custody and bounded retention; do not expose password hashes/tickets in UI |
+| [G-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Detection engineering with replayable synthetic event fixtures | Version rules, test sensitivity/precision, alert latency and collector failure; publish thresholds and capacity overhead at the 10k-identity target |
+| [H-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Audited response workflows for account/device disable, trust suspension and service-key rotation | Scope, preview, approval, idempotency and a rescue path; automated detections cannot globally lock out a domain without a separate safety decision |
+| [H-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Domain-compromise recovery plan covering ticket-signing, machine, service, trust and administrator credentials | Sequence native-core/provider-specific rotations, including safe double rotation of Kerberos signing keys; prove clean restores and ticket invalidation within documented limits |
+| [H-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Replica quarantine and controlled reintroduction after suspected compromise | Protect evidence, revoke replication trust safely, avoid contaminating clean replicas and test topology/role recovery; partitioning alone does not remove stolen credentials |
+| [H-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Recovery-safe security state restoration | Reconcile revoked identities, changed privileges, deleted objects and key epochs after restoring older backups; prevent silently reactivating known-compromised access |
+| [H-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Tested response playbooks and tabletop exercises | Include lost MFA provider, stolen backup, compromised maintainer, ransomware and malicious insider; track response time, operator mistakes and retained evidence |
+| [I-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Read-only/limited-secret branch controller profiles when explicitly implemented by the native core | Qualify exact RODC/password replication policy semantics, cached-secret restrictions, theft impact and credential reset procedure; never market a writable replica as read-only |
+| [I-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Immutable/offline encrypted backups with split custody and recovery-key escrow | Separate backup administration, restoration quorum where appropriate, retention verification and regular clean-room restores without depending on the failed domain |
+| [I-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Site isolation, failover and revocation-risk visibility | Surface stale replication, stale policy and uncertain revocation; test WAN partitions and clock/DNS faults without claiming global immediate consistency |
+| [I-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Security operation budgets and safe degraded modes | Define authentication, MFA, KMS, CA and audit failure behavior separately; backpressure noisy services, alert on queue loss and never silently bypass admin MFA |
+| [I-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Recovery environment integrity and safe backup validation | Scan and validate restore media, signed tooling and host images; rehearse total loss and schema incompatibility; ordinary VM snapshot rollback is not assumed safe for a DC |
+| [J-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | OIDC/OAuth2 and SAML federation through separately qualified modules | Validate issuer/audience, redirect URI, nonce/state/PKCE, signing keys, claim minimization, logout and key rollover; modern SSO does not replace AD protocols |
+| [J-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Network access integrations such as RADIUS/EAP-TLS | Qualify identity/certificate mapping, mutual authentication and revocation behavior; avoid insecure password fallback and document external network-device dependencies |
+| [J-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Attribute-level privacy, scoped directory search and data-export controls | Denied attribute/search tests across LDAP and UI/API, purpose-scoped access and export audit; avoid breaking required AD discovery semantics |
+| [J-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Retention, deletion and legal-hold policy for identity and audit data | Reconcile tombstones/backups/security investigations and residency obligations; no claim of GDPR or other regulatory certification from feature availability |
+| [J-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Explicit multi-organization/tenant security boundaries | Prefer independent domains/forests or deployments for hostile tenants; a shared writable DC and UI RBAC do not create hard tenant isolation; independently assess any shared architecture |
+| [K-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Reproducible packages/images, signed provenance/SBOM and dependency license/CVE inventory | Independently rebuild, compare artifacts and verify expected signer/workflow identities; document unreproducible parts and dependency exception expiry |
+| [K-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Secure update metadata with rollback/freeze protection and key recovery | Verify signatures, version/expiry and release channel; rehearse signing-key compromise, offline updates and supported emergency rollback without bypassing checks |
+| [K-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Longer parser/protocol fuzzing, sanitizers, differential and state-machine tests | Synthetic isolated workloads for LDAP/RPC/Kerberos/DNS and policy handling; compare observable semantics with a licensed AD lab and retain minimized regression cases |
+| [K-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Property-based checks or formal analysis for bounded high-risk logic | Prioritize authorization, grant expiry, replication conflict handling and key transitions; publish model assumptions rather than claiming a formally secure whole server |
+| [K-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Recurring independent pentests, purple-team exercises and a responsibly funded disclosure program | Public scope/safe-harbor terms, private intake and supported-version response; remediate findings with regression tests and publish appropriate summaries |
+| [K-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Hardened release governance and maintainer continuity | Two-person sensitive release review, scoped OIDC, protected builders/refs, signer rotation and tested maintainer-loss recovery; use no privileged fork runners |
+| [L-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Security posture dashboard with actionable, evidence-backed findings | Show observation time, affected identities/hosts, severity rationale and safe remediation; never present missing telemetry as healthy |
+| [L-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Policy simulation and explainable access decisions | Preview bulk ACL/GPO/role changes against representative identities and devices; show stale/unknown data and compare predictions with actual enforcement |
+| [L-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Safe bulk operations with scope preview, dry run, idempotency and compensating actions | Independent approval for mass privileged changes; test partial failure and rollback limits; no plaintext credential exports |
+| [L-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Accessible secure enrollment/recovery and understandable authentication errors | Keyboard/screen-reader tests and usability studies include recovery and approvals; messages help legitimate users without revealing account existence or secrets |
+| [L-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Security exception register and policy-as-code change review | Every exception has owner, justification, scope, expiry and audit; reject stale exceptions, detect out-of-band drift and protect policy signing/approval keys |
+| [L-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/security-roadmap.md>) | Operator training, trustworthy runbooks and versioned security baselines | Rehearse common and emergency tasks with new administrators; publish prerequisite/compatibility warnings and measure unassisted completion and recovery success |
+| [PATCH-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Continuous hardware/OS/software inventory and update applicability assessment | Compare installed versions, missing updates, reboot state, device identity and observation timestamps with native tools; distinguish fresh, stale, unknown and unsupported devices |
+| [PATCH-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Trusted patch/vulnerability catalog with dependencies, supersedence and known issues | Reproduce applicable/not-applicable decisions, including vendor backports; correlate vendor severity, CVEs and known-exploited data without treating version-string matches as proof of vulnerability |
+| [PATCH-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Windows OS, Linux package/kernel and explicitly selected third-party application patching | Use supported Windows Update APIs and supported distribution package managers such as APT/DNF; test vendor prerequisites, licenses, conflicts and package signatures; GPO update settings alone are insufficient |
+| [PATCH-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Dynamic device groups, targeting previews and fixed campaign membership snapshots | Scope by approved inventory/domain/OU/tag criteria; show sample devices, exclusions and counts; audit later membership changes and prevent silent expansion of an approved rollout |
+| [PATCH-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Canary/pilot/production rings with configurable dwell, health checks, rollout limits and automatic pause | Inject a bad update or failed health check; later rings halt at the approved threshold; low report coverage cannot count as successful promotion |
+| [PATCH-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Maintenance windows, deadlines, user notifications, reboot deferral and forced-reboot controls | Test time zones/DST, sleeping devices, user sessions, grace periods, blackout windows and missed windows; unsupported reboot suppression must be surfaced rather than silently overridden |
+| [PATCH-07](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Preflight disk/power/network checks, dependency handling and application/service-aware installation | Test low disk, pending reboot, conflicting package transaction, required services, application health and interrupted install; mark blocked devices separately from failed ones |
+| [PATCH-08](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Bandwidth-aware content distribution with authenticated site relays and approved offline import | Verify vendor signatures plus approved content digests, resume interrupted transfers, deduplicate/cache payloads and apply per-site/concurrency limits; a relay may serve content but cannot authorize deployment |
+| [PATCH-09](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Durable campaign orchestration and disconnected endpoint recovery | Idempotent job identifiers, bounded retries/backoff, resume after agent/controller restart, cancel/expiry checks before execution and reconciliation after lost acknowledgments; no unbounded queued command execution |
+| [PATCH-10](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Independent post-install verification of installed version, reboot completion and service health | Separate downloaded, installed, reboot-pending, verified, failed, paused and unknown states; a zero exit code or missing device report is not proof of remediation |
+| [PATCH-11](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Safe uninstall/rollback or tested recovery per update class | Advertise rollback only where the vendor supports it; demonstrate restore/reimage/forward-fix for irreversible changes; preserve operator instructions and abort criteria before rollout |
+| [PATCH-12](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Emergency remediation and risk-based prioritization | Prioritize exploited/exposed assets with transparent evidence; exceptional maintenance/approval overrides need explicit scope, independent approval, expiry and immutable audit export |
+| [PATCH-13](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Compliance dashboards, remediation SLAs, exception register and report export | Show coverage denominator, overdue/stale/offline devices, unsupported/EOL products and expiring exceptions; track time-to-remediate by risk; do not report unknown endpoints as compliant |
+| [PATCH-14](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Delegated patch administration, API/CLI, change-ticket integration and auditable campaign history | Separate catalog approval, targeting, execution, exception and reporting rights; test unauthorized cross-group actions, approver self-approval, API bypass and scoped automation credentials |
+| [PATCH-15](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/patch-management-roadmap.md>) | Availability-aware server and domain-controller maintenance | Serialize DC maintenance by site/failure domain, preserve DNS/KDC/replication quorum where applicable, respect service topology and recovery checks; a workstation policy must never reboot every DC together |
+| [REMOTE-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Authenticated desktop and terminal sessions to enrolled, authorized devices | Real Windows/Linux session tests including headless Linux, NAT/proxy/relay paths and explicit unsupported configurations; choose maintained protocols/components rather than inventing a remote-control protocol |
+| [REMOTE-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Attended support with visible user consent and an immediate disconnect action | Reject denied/expired consent and misleading session requests; show operator identity and active session; no covert access mode |
+| [REMOTE-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Separately approved unattended administration | Explicit device policy, scoped operator rights, time-bounded grants, admin MFA/step-up and maintenance restrictions; no unattended access inferred from domain membership |
+| [REMOTE-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Session control, audit and sensitive-channel separation | Record actor/device, approvals, start/end and actions available to the operator; independently authorize elevation, clipboard, transfer and recording; test clipboard/drive redirection restrictions |
+| [REMOTE-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Secure brokering and prompt revocation | Per-session authorization, authenticated encrypted transport and device verification; no domain-admin credentials in the agent; bounded disconnect after revocation and defined behavior during broker/identity-provider failure |
+| [REMOTE-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Safe operation across OS privileges and session states | Test lock screen, user switching, terminal privilege escalation, reconnect and concurrent operators; honor OS security boundaries and document elevation requirements; no bypass of OS credential protection |
+| [FILE-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Explicit server-originated uploads to one or many selected endpoints | Preview exact recipients, content digest, size, expiry and destination; approve bulk/sensitive delivery and prevent recipient expansion after approval |
+| [FILE-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Secure staging, integrity and recipient verification | Authenticate uploader/source/device, encrypt in transit and protect staged content at rest; verify hashes against authenticated metadata, not an attacker-supplied hash alone |
+| [FILE-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Destination and privilege restrictions | Per-role/device allowed paths, canonicalization, symlink/race and traversal defenses, disk quota, ownership/mode preservation rules and explicit overwrite policy; prohibit silent writes into privileged startup/system locations |
+| [FILE-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Resumable, bandwidth-limited transfer with accurate receipts | Test interruptions, duplicate requests, stale jobs, full disks and agent restarts; stage then atomically finalize where supported; report partial/expired/failed/verified states and clean up abandoned content |
+| [FILE-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Content policy, separate execution and audit | Apply approved type/size/malware policies without promising scanners detect every threat; uploaded files are not automatically executed; record who sent what to which device and destination, without exposing confidential file contents in logs |
+| [EDR-01](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Dedicated installed sensor/agent module with secure enrollment and update lifecycle | Signed/verifiable packages and policy, mutual authentication, per-device identity/revocation, staged updates and rescue/uninstall flow; module isolation from remote support and patch execution |
+| [EDR-02](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | OS-specific endpoint telemetry | Qualified process lineage, executable hashes/signatures, network connections, file and relevant persistence/security events using supported APIs; document blind spots, event loss and OS/privilege prerequisites |
+| [EDR-03](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Behavioral detection, indicator matching and versioned rules | Labeled synthetic scenarios, expected detections, measured false positives/negatives and tuning/exclusion audit; verify rules and bound their CPU/memory cost; no claim of universal malware detection |
+| [EDR-04](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Investigation and privacy-scoped evidence collection | Process/device timeline, alert correlation and case workflow; approved minimal evidence capture with provenance, hashes, access controls and retention; no indiscriminate memory, credential or user-file collection |
+| [EDR-05](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Authorized response: stop/quarantine malicious processes/files and isolate a device | Separate response RBAC, approvals and bounded automation; preserve narrow authenticated management/recovery paths, define reboot persistence and test release from isolation; protect DC/service topology from fleet-wide lockout |
+| [EDR-06](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Tamper resistance and trustworthy sensor health | Detect stopped/stale sensors, policy/signature changes and telemetry gaps; audit exceptions and uninstall; qualify protections per OS and acknowledge a compromised kernel/root can defeat local evidence |
+| [EDR-07](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | SIEM/SOAR integration and safe automated response | Authenticated scoped connectors, deduplicated alerts, expiring/idempotent actions and auditable decisions; false detections must not autonomously disable the whole domain or isolate the whole fleet |
+| [EDR-08](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/endpoint-operations-roadmap.md>) | Offline operation and resilience under telemetry/provider outages | Bounded encrypted event buffering, trusted cached rules, freshness/loss indicators and controlled reconnect; avoid login disruption, disk exhaustion and treating missing events as a healthy device |
 
 ## Recorded CI observation
 
-[Evidence snapshot CI](<https://github.com/Ise-Tom/Babel/actions/runs/44179292379>): passed, 12 passing checks when checked. Verified main snapshot: PR \#17 is merged and all 12 main CI jobs passed. Pages has Actions publishing and HTTPS enabled, but deployment 44179766192 failed on an unnecessary settings write; the last successful public site remains available. This PR proposes the read-only deployment fix and the owner-selected license/backend and lab definition.
+[Evidence snapshot CI](<https://github.com/Ise-Tom/Babel/actions/runs/44183204392>): passed, 12 passing checks when checked. Verified published main snapshot: PR \#20 is merged, all 12 main CI jobs and Pages deployment 44183656847 succeeded. Main protection, private reporting and Pages restrictions are API-verified; Actions defaults are owner-confirmed. New PostgreSQL/release-preflight work is proposed in the development PR, separately from main totals; hosted checks report the current PR head.
 
-[Dashboard maintenance and interactive build guide](<https://github.com/Ise-Tom/Babel/blob/6dc9b06cdf0fc571033c4113a3bcbd508d605dd4/docs/project-dashboard.md>)
+[Dashboard maintenance and interactive build guide](<https://github.com/Ise-Tom/Babel/blob/58c3668d466b104f7f37e0d1eb63c063124812e8/docs/project-dashboard.md>)
 
 Generated from reviewed repository facts. This report does not query live CI in the browser. Edit the source facts through a PR; the dashboard-live branch is owned by automation.
