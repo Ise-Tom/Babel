@@ -1,0 +1,19 @@
+[package]
+name = "babel-ldap-fuzz"
+version = "0.0.0"
+edition = "2024"
+publish = false
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "=0.4.13"
+babel-ldap = { path = "../native/babel-ldap", version = "=0.1.0" }
+
+[[bin]]
+name = "ldap_frame"
+path = "fuzz_targets/ldap_frame.rs"
+test = false
+doc = false
+bench = false

@@ -2,29 +2,92 @@
 
 ## What runs today
 
-[CI](../.github/workflows/ci.yml) runs on pull requests, main pushes, manual
-invocation and a weekly schedule. It checks local Markdown file links, tests
-the link checker and release policy, validates Actions workflows with pinned
-actionlint, and scans full available Git history with pinned Gitleaks. Fork PRs
-receive no secrets and no write token. Checkout credentials are not persisted;
-there is no `pull_request_target` or execution of PR code on privileged runners.
-Jobs use GitHub-hosted Ubuntu 24.04, read-only permissions and bounded timeouts.
-PR runs cancel superseded runs; a release waits for its own CI invocation.
+[CI](../.github/workflows/ci.yml) runs on pull requests, main pushes, merge queue
+checks, manual invocation, reusable calls and daily scheduled security rechecks.
+There are no path filters that can omit a required job. All runners are ephemeral
+GitHub-hosted Ubuntu 24.04; jobs have timeouts and read-only repository tokens.
+Fork PRs receive no secrets; no `pull_request_target` or privileged self-hosted
+runner executes contributor code. Checkout credentials are not persisted. PR
+runs cancel superseded runs; releases wait for their own full CI invocation.
 
-The tool installer supports Linux x86-64 only and verifies fixed SHA-256
-archive digests before extracting only the expected executable. Tool upgrades
-must review upstream release notes/checksums and update the version plus digest
-in [the installer](../scripts/install_ci_tools.py). Dependabot proposes weekly
-GitHub Action updates; it does not update these binary pins. Review these pins
-monthly and promptly for security advisories. SHA pinning is immutability, not
-a guarantee that an old version remains safe.
+| Job | Executable gate |
+| --- | --- |
+| Repository checks | Reject unsupported source/build trees and symlinks, all 18 phase specifications and requirement traceability, local Markdown links, Ruff formatting/lint, strict mypy, source-archive smoke test and checksum verification |
+| Tests (3.12), Tests (3.13) | Existing utility/integrity tests plus source-packaging and CI-scope regression tests; minimum 90% combined statement/branch coverage of callable script code |
+| Static security and dependency audit | Bandit on all shipped Python tools, offline Zizmor workflow-security checks, strict pip-audit of the complete locked CI dependency graph; known advisories block regardless of severity |
+| Workflow lint | actionlint, including shell analysis when provided by the runner |
+| Secret scan | Redacted Gitleaks scan of full available Git history and checked-out files |
+| Native LDAP lab | Pinned Rust build/format/Clippy, property/transport tests and independent ldap3 process smoke, >=90% instrumented core line coverage, address-sanitizer fuzz, Cargo.lock advisory/license/source audit and CycloneDX inventory |
+| CI gate | Always-run aggregate; any failed, skipped or cancelled prerequisite blocks success |
 
-No application build, SAST/dependency scan, SBOM, image scan, Windows integration,
-load test, or production deployment currently exists. Add them with the first
-corresponding source/packaging rather than installing a meaningless language
-pipeline into an empty repository. The [roadmap](roadmap.md) makes these release
-prerequisites. Markdown links inside fenced examples, external URLs and heading
-anchors are outside the current link check's coverage.
+Security/coverage evidence is uploaded with 14-day retention, including a
+CycloneDX SBOM with the **CI tooling dependency inventory**. It is not an
+application SBOM or proof of license compliance. Audit failures and advisory
+service failures are not converted into success. Daily schedules apply once
+merged onto the default branch; GitHub can suspend schedules on inactive repos,
+so maintainers must monitor actual runs.
+
+`requirements-ci.in` pins direct Python tools; `requirements-ci.txt` locks their
+transitive dependencies with hashes. Installation passes both files with
+`--require-hashes`, so divergent direct pins fail instead of running old tools.
+Dependabot checks GitHub Actions and Python requirements weekly. When refreshing
+the lock with `uv pip compile --generate-hashes --universal --python-version 3.12
+requirements-ci.in -o requirements-ci.txt`, review the entire diff and run all
+checks; rehashing an unexpected artifact is not a verification fix. Pin the
+chosen lock-generator version in the update process before automating refreshes.
+
+The [binary installer](../scripts/install_ci_tools.py) separately pins Gitleaks, actionlint
+and Syft HTTPS archives and their SHA-256 digests. It extracts only the
+expected executable after verification and installs via a unique temporary
+file. Review upstream checksums/notes monthly and promptly for advisories;
+Dependabot does not update these binary pins. Workflow actions are SHA-pinned.
+Zizmor runs offline for deterministic, no-token PR analysis; online-only action
+advisory checks are outside its coverage. Documented low-severity syntax
+exception retains the caller-commit `./` reusable-workflow reference because
+the pinned actionlint does not yet support Zizmor's suggested `$/` syntax.
+Bandit has scoped suppressions for reviewed fixed-argv Git subprocess calls,
+HTTPS-only downloads and the subprocess imports; there is no global security
+rule disable list. Tests are functional fixtures, not shipped executable code,
+and are linted/tested but excluded from Bandit's production-tool scan.
+
+The design integrity check rejects missing phase specs, duplicate/unknown IDs,
+empty acceptance rows and global requirements not assigned to any phase. It is
+a document-consistency gate, not proof of protocol/security correctness. See the
+[validation plan](validation-plan.md) for product evidence still required.
+
+The [scope guard](../scripts/check_ci_scope.py) deliberately supports this
+repository's docs, workflow definitions, Python tooling and the explicitly
+registered native/babel-ldap plus fuzz components. Unregistered native components
+and other-language files still fail. New application
+source/manifests, Dockerfiles or scripts in another language fail until the
+contributor adds locked build/lint/type/unit/integration/security/dependency
+and packaging checks and updates the reviewed policy. This detects unfamiliar
+trees; it cannot infer whether Python placed under `scripts/` is really a new
+application or defend against a maintainer weakening the guard. Review is still
+required for workflow/policy changes.
+
+The native lab now has executable build, independent RootDSE-client, fuzz,
+coverage and supply-chain gates; see [Phase 1 progress](phase-01-progress.md).
+There is still no full domain/client integration, load/soak,
+independent security assessment or production deployment to exercise. Add
+these with the corresponding implementation and trusted lab infrastructure;
+they remain production blockers in the [roadmap](roadmap.md). Code coverage
+excludes CLI entry-point dispatch; CLI scope/docs/packaging receive workflow
+smoke tests, and packaging also has committed-source integration tests.
+Markdown links inside fences, external URLs and anchors are not checked.
+
+## Required merge gate and current platform limitation
+
+Configure **CI gate** as a required status check with a PR/review ruleset, and
+require independent review of workflow/policy changes. A successful job is not
+itself enforced merge protection. During this change GitHub reported this
+repository as private and rejected ruleset access with HTTP 403, requesting a
+plan upgrade or a public repository. No visibility or paid-plan changes were
+made. Until the owner chooses a supported option, maintainers must enforce the
+same policy manually; a repository administrator can merge a failing PR.
+CodeQL/dependency-review features requiring unavailable private-repository
+entitlements are not substituted with always-green jobs: the open-source
+Bandit/Zizmor/pip-audit checks above run without those entitlements.
 
 ## Source prereleases
 
@@ -59,8 +122,8 @@ on this pipeline; GitHub plan/visibility can limit features:
 1. Protect main with a ruleset: PRs required, at least one independent maintainer
    approval, stale approvals dismissed, review of latest push, conversation
    resolution, no force-push/deletion and no ordinary bypass. Require status
-   checks **Repository checks** and **Secret scan**, selecting the actual GitHub
-   Actions checks after the first successful run.
+   check **CI gate**, selecting the actual GitHub Actions check after the first
+   successful run. This requires an eligible repository plan/visibility.
 2. Restrict Actions to approved actions, require full commit SHA pins where
    supported, set default workflow token to read-only, and disable Actions
    creating/approving PRs. Use ephemeral hosted runners for untrusted PRs.
@@ -85,8 +148,9 @@ on this pipeline; GitHub plan/visibility can limit features:
    restrict who can modify workflows and audit permission changes. Treat public
    logs as public: never print directory secrets or production fixtures.
 
-Remote settings and hosted Actions execution have not been verified by local
-validation. Existing Git read access is independent of GitHub API permissions.
+The original PR had successful hosted CI runs. The expanded workflow requires
+its own hosted validation; report the actual PR run results separately. Other
+protection/environment settings have not been established by these files.
 
 ## Future deployment boundary
 
@@ -107,11 +171,41 @@ upgrade and restore jobs on the qualified Linux baseline, plus Windows client
 join/login/GPO tests against those Linux-hosted controllers. Keep Windows AD
 reference-domain tests separate from the standalone Linux-only server test so
 an accidental Windows Server runtime dependency is detected. Ubuntu workflow
-runners currently validate repository tooling only; they do not prove Babel
-can yet be hosted on Linux. Additional distributions/architectures and container
+runners now validate repository tooling and a loopback LDAP lab; that does not
+qualify full Linux domain-controller hosting. Additional distributions/architectures and container
 images need dedicated validation before being advertised as supported.
 
 Every future deploy must name an immutable artifact, snapshot/backup and schema
 migration prerequisites, readiness checks, rollback limits, abort conditions
 and operator ownership. Identity infrastructure cannot be deployed safely with
 a generic SSH copy/restart workflow.
+
+## Native lab CI boundary
+
+The reusable native workflow is a required prerequisite of `CI gate`, including
+source-prerelease reuse. It pins Rust 1.100.0, nightly-2026-11-17, cargo-llvm-cov
+0.9.1, cargo-deny 0.21.0 and cargo-fuzz 0.13.2; installs use official toolchain
+verification or checksum-verified/locked registry artifacts. Review these pins
+for compiler/tool advisories; Dependabot covers both Cargo manifests/locks but
+does not update toolchain or installed CLI pins automatically. No untrusted
+build cache, fork secret or privileged runner is introduced.
+
+Core coverage is >=90% lines, excluding test/CLI-dispatch files; the actual
+instrumented service is exercised by the independent client. The PR fuzzer runs
+up to 20k iterations/20 seconds with 16-KiB input/512-MiB RSS bounds; schedules use
+200k iterations/120 seconds. Both decode/respond and transport framing are fuzzed.
+Crashes retain synthetic reproductions; no production credentials enter corpora.
+
+Cargo audit/license/source policy includes development/build dependencies for the
+core and fuzz graphs. MIT/Apache/NCSA cover current development dependencies;
+NCSA is required by the libFuzzer harness. Only unpublished private workspace
+license checks are exempt while D-01 remains open; all public product/registry
+releases stay blocked. Duplicate versions are warnings, while unknown/yanked or
+advised dependencies, unapproved licenses/sources and wildcard dependencies fail.
+Native SBOM is a source Cargo.lock inventory including test/fuzz dependencies,
+not a claim those dependencies are present in the zero-runtime-dependency lab
+binary or that all product licensing decisions have been approved.
+
+The lab-binary tar/checksum is an internal 14-day CI artifact, not a production
+release/installer. No native source change completes Phase 1 as a whole. Windows
+join/authentication, storage/ACL, DNS, TLS and GPO remain explicit future gates.

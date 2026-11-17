@@ -1,8 +1,8 @@
 # Babel
 
 Babel aims to be an open source Active Directory replacement with a clearer,
-safer administration experience. **This repository is a planning and delivery
-foundation; no directory server or production-ready identity service exists yet.**
+safer administration experience. **An experimental Rust LDAP RootDSE lab slice is implemented. No domain
+controller or production-ready identity service exists yet.**
 
 The first production release must be **hosted on Linux servers**, providing
 Windows domain compatibility for **10,000 identities across three sites**.
@@ -14,33 +14,53 @@ targets, not measured capabilities.
 The core product includes identity and password lifecycle management, users and
 groups, delegated permissions, Windows domain join, Kerberos/LDAP, DNS, Group
 Policy (GPO/SYSVOL), trusts, replication, backup and recovery, plus a web UI and
-automation API/CLI. Advanced security capabilities extend this core product.
+automation API/CLI. Babel will build its own native AD-compatible core, with
+reviewed libraries and a protocol conformance harness; Samba AD DC will not be a
+required production runtime. Advanced security capabilities extend this core product.
 
+- [Phase 1 implementation progress and native commands](docs/phase-01-progress.md)
 - [Product, security, and capacity requirements](docs/requirements.md)
+- [Complete phase designs and acceptance specifications](docs/phases/README.md)
+- [Verification plan](docs/validation-plan.md) and [open design decisions](docs/decisions.md)
 - [Threat model](docs/threat-model.md) and [extended security roadmap](docs/security-roadmap.md)
 - [Delivery roadmap and release gates](docs/roadmap.md)
 - [Later endpoint patch management](docs/patch-management-roadmap.md)
 - [Final remote access, file delivery and EDR phases](docs/endpoint-operations-roadmap.md)
-- [Architecture decisions](docs/architecture.md)
+- [Architecture decisions](docs/architecture.md) and [native-core implementation plan](docs/native-core-plan.md)
 - [CI/CD operation and repository settings](docs/ci-cd.md)
 - [Contributing](CONTRIBUTING.md) and [security reporting](SECURITY.md)
 
 ## Validate the repository
 
-Python 3.12+ and Linux x86-64 are sufficient for the current checks:
+Python 3.12 or 3.13 and Linux x86-64 are the tested repository-tooling targets.
+This does not select the future server implementation language.
 
 ```sh
-python3 scripts/check_docs.py
-python3 -m unittest discover -s tests -v
-python3 scripts/install_ci_tools.py --directory /tmp/babel-ci-tools
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install --require-hashes -r requirements-ci.txt -r requirements-ci.in
+python scripts/check_ci_scope.py
+python scripts/check_design.py
+python scripts/check_docs.py
+ruff format --check scripts tests
+ruff check scripts tests
+mypy
+coverage run -m unittest discover -s tests -v
+coverage report
+bandit -c pyproject.toml -r scripts
+zizmor --offline --strict-collection .github/workflows
+pip-audit --strict --disable-pip --require-hashes -r requirements-ci.txt
+python scripts/install_ci_tools.py --directory /tmp/babel-ci-tools
 /tmp/babel-ci-tools/actionlint
 /tmp/babel-ci-tools/gitleaks git --redact --no-banner .
+/tmp/babel-ci-tools/gitleaks dir --redact --no-banner .
 ```
 
-Tool archives are version-pinned and checked against SHA-256 digests recorded
-from the publishers' release checksums. No application build, integration suite,
-or deployable artifact is claimed by these checks. See the roadmap for the
-checks that must be added alongside implementation.
+CI also tests deterministic source packaging and retains coverage, security
+reports and a CycloneDX inventory of **CI dependencies**, not a future server
+SBOM. New source trees/manifests fail the scope check until their executable
+gates are added. Source packaging is not an application build or deployment.
+See [CI/CD operation](docs/ci-cd.md) for remaining product and GitHub-plan gates.
 
 ## License
 

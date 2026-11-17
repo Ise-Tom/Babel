@@ -19,3 +19,7 @@ Before public previews, appoint at least two security contacts, test the private
 reporting route, define embargo and coordinated disclosure rules, and publish a
 version support policy. Critical exploited issues require immediate triage and
 credential/key rotation guidance, not only a code patch.
+
+The [native-system threat model](docs/threat-model.md) and
+[phase verification plan](docs/validation-plan.md) define planned security evidence.
+Their existence is not an audit result or supported-version announcement.

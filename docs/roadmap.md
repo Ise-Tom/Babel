@@ -1,100 +1,88 @@
-# Roadmap and exit gates
+# Native Babel delivery roadmap
 
-Estimates require a staffed team and the Phase 0 spike; no delivery dates or
-production claims are implied. Work is sequenced by dependencies, with full AD
-replacement in the first production release. Security and ergonomics are
-continuous workstreams, not final-stage add-ons.
+Design baseline, not implementation status. Babel builds its own AD-compatible
+core on Linux. The first production release includes identity/password management,
+domain join, LDAP/GC, Kerberos/PAC, DNS, SMB/RPC/Netlogon, GPO/SYSVOL, trusts,
+functional levels and recoverable multi-site replication. No Samba runtime is
+required. Reviewed libraries remain allowed; no custom cryptography is planned.
 
-All Babel production services must be hosted on Linux. Windows environments
-provide clients and AD interoperability references, not a required production
-host. PLAT-01–PLAT-03 in the [requirements](requirements.md) are release gates.
+Every phase now has a complete [design/requirements specification](phases/README.md).
+All 180 phase requirements refine and trace the 130 existing global capability
+IDs. Existing CI now also checks the bounded Rust LDAP lab slice; full domain and
+endpoint acceptance remains outstanding. See [progress](phase-01-progress.md). Dates, staffing, cost and
+production readiness require the decisions and evidence listed below.
 
-| Phase | Deliverables | Exit gate / evidence |
+| Phase | Design, scope and requirements | Delivery boundary |
 | --- | --- | --- |
-| 0 — Contract and feasibility | Inventory AD-01–AD-10 and integration expectations; qualify Linux distribution/kernel/backend baseline; select license, maintainers and disclosure channel; compare Samba-based core with greenfield; define Windows test licenses and infrastructure budget | Approved compatibility matrix, ADRs, legal distribution review, Linux-hosted domain-join/GPO/trust spike, test runner isolation design |
-| 1 — Reproducible vertical slice | Disposable Linux domain/DC, one Windows client, domain join/login, basic user/group CRUD via delegated API/UI; Linux packaging, systemd startup and observability | Pinned dependencies, unit/build/type checks, negative RBAC tests, clean Linux install/reboot and real-client join/login/policy smoke tests, SBOM/package vulnerability scan and parser-fuzz smoke checks |
-| 2 — Full protocol scope | Forest/domain semantics, LDAP/GC, Kerberos, DNS, SMB/RPC/Netlogon, GPO/SYSVOL, schema and functional levels, trust/migration | AD-01–AD-10 conformance matrix with real Windows clients and an isolated AD reference; documented failures block production |
-| 3 — Multi-site and operations | Six DCs/three sites, partition/conflict handling, safe upgrades, restore, key/certificate rotation, external audit | Fault injection, 24-hour partition/rejoin, isolated domain restore, one-node/site loss, upgrade/rollback evidence and no lost acknowledged data within stated model |
-| 4 — Security, capacity and usability qualification | Full threat review, independent assessment, 10k dataset load/soak, delegated admin journeys and accessibility | All SEC/OPS/UX gates; 24-hour mixed-load soak, SLO report, five-admin usability study, no unresolved critical/high security findings without explicit security-owner disposition |
-| 5 — Production candidate and release | Signed/verifiable versioned packages/images, compatibility guide, support policy, migration rehearsal and operator runbooks | All prior gates approved, rollback/restore rehearsal, two-maintainer release review, license compliance and immutable artifacts promoted by digest |
-| 6 — Sustainable operations | Supported update channels, upstream CVE intake, quarterly restore drills, regression matrix and documented deprecation | Published response/support policy, continuous conformance and capacity regression evidence |
-| 7 — Strong identity and privileged operations | Passwordless admin access, hardened recovery, expiring privileged grants, managed credentials and GPO governance | Selected wave 7 items in the extended security catalog have compatibility, abuse, recovery and authorization evidence |
-| 8 — Posture and detection | Entitlement review, endpoint posture, certificate/federation integrations and SIEM detection | Qualified client/integration matrix, measured detection quality, privacy review and capacity impact |
-| 9 — Containment and resilience | Supported branch-controller isolation, hardware key custody, controlled incident response and compromise recovery | Backend feasibility, key/provider outage tests, partition and clean-room recovery drills |
-| 10 — Continuous security assurance | Reproducible delivery, extended protocol verification, independent assessments and security usability | Reviewed evidence for selected assurance features, recurring regression and response exercises |
-| 11 — Endpoint inventory and patch feasibility | Linux-hosted patch control plane, secure Windows/Linux agents, software/update inventory and trusted applicability catalog | Qualified OS/product support matrix, native updater proof, secure enrollment and isolated lab evidence |
-| 12 — Controlled endpoint patch deployment | Approved campaigns, canary rings, maintenance/reboot windows, site caching, verified install and supported recovery | PATCH-01–PATCH-15 functional/security coverage, offline resume, bad-patch pause and denied-operation tests |
-| 13 — Fleet-scale patch management | 10,000 managed devices across three sites, risk-based remediation, compliance reporting and resilient orchestration | Measured fleet/resource/bandwidth results, no directory SLO regression, independent security review and compromise/recovery drill |
-| 14 — Remote device access | Windows/Linux remote desktop and terminal support through a Linux-hosted broker; attended consent and separately approved unattended access | REMOTE-01–REMOTE-06 OS/session, MFA, authorization, consent and revocation tests |
-| 15 — General server-to-device file delivery | Authorized uploads, bulk targeting, protected destinations, resumable transfers and verified receipts | FILE-01–FILE-05 integrity, permission/path safety, interruption and no-automatic-execution tests |
-| 16 — Native endpoint detection and response | Dedicated endpoint agent/module, OS telemetry, behavioral detection, investigation and authorized process/file/device containment | EDR-01–EDR-08 sensor qualification, labeled detection quality, privacy and safe-response evidence |
-| 17 — Fleet endpoint operations qualification | Remote support, file delivery and EDR alongside patch management at 10,000 devices/three sites | Joint resource/bandwidth/retention benchmarks, independent assessment, compromised-agent/controller recovery and no directory SLO regression |
+| 00 | [Contract, native-core design and laboratory — P00-01 through P00-10](phases/phase-00.md) | First production core contract |
+| 01 | [Native core and end-to-end development slice — P01-01 through P01-10](phases/phase-01.md) | First production core contract |
+| 02 | [Complete directory and AD interoperability contract — P02-01 through P02-10](phases/phase-02.md) | First production core contract |
+| 03 | [Multi-site replication, durability and recovery — P03-01 through P03-10](phases/phase-03.md) | First production core contract |
+| 04 | [Security, capacity and administrator qualification — P04-01 through P04-10](phases/phase-04.md) | First production core contract |
+| 05 | [First production release and controlled deployment — P05-01 through P05-10](phases/phase-05.md) | First production core contract |
+| 06 | [Sustained operations and maintenance — P06-01 through P06-10](phases/phase-06.md) | Ongoing operations / advanced security |
+| 07 | [Strong identity and privileged administration — P07-01 through P07-10](phases/phase-07.md) | Ongoing operations / advanced security |
+| 08 | [Posture, certificate/federation services and detection — P08-01 through P08-10](phases/phase-08.md) | Ongoing operations / advanced security |
+| 09 | [Containment, key custody and compromise resilience — P09-01 through P09-10](phases/phase-09.md) | Ongoing operations / advanced security |
+| 10 | [Continuous security assurance and trusted delivery — P10-01 through P10-10](phases/phase-10.md) | Ongoing operations / advanced security |
+| 11 | [Endpoint inventory and patch-control foundation — P11-01 through P11-10](phases/phase-11.md) | Later endpoint services with separate release gates |
+| 12 | [Controlled patch campaigns and verified installation — P12-01 through P12-10](phases/phase-12.md) | Later endpoint services with separate release gates |
+| 13 | [Production patch fleet, compliance and resilience — P13-01 through P13-10](phases/phase-13.md) | Later endpoint services with separate release gates |
+| 14 | [Remote desktop and terminal access — P14-01 through P14-10](phases/phase-14.md) | Later endpoint services with separate release gates |
+| 15 | [General server-to-device file delivery — P15-01 through P15-10](phases/phase-15.md) | Later endpoint services with separate release gates |
+| 16 | [Native endpoint detection and response — P16-01 through P16-10](phases/phase-16.md) | Later endpoint services with separate release gates |
+| 17 | [Joint fleet qualification and endpoint service release — P17-01 through P17-10](phases/phase-17.md) | Later endpoint services with separate release gates |
 
-## Extended security capability backlog
+## Delivery and dependency rules
 
-The [extended security roadmap](security-roadmap.md) details 69 proposed
-capabilities, including implementation prerequisites and acceptance constraints.
-Waves 7–10 are sequencing proposals, not a reason to defer first-release security
-or a feature already selected in the AD compatibility contract. Core password
-and identity management (IAM-01), GPO and domain services remain first-production
-requirements. No new application/security tests exist until implemented; add
-feature-specific security, interoperability, recovery and capacity checks with
-each capability.
+Phases 0–5 are mandatory before the first production identity release. A partial
+native LDAP/Kerberos or single-controller preview is not a narrower production
+product. Phases 6–10 maintain and expand assurance; continuous operating duties
+remain active after their initial readiness gate and do not require waiting a
+calendar quarter to start independent design work. Phases 11–17 expand endpoint
+management/security after the core is qualified, without replacing identity scope.
 
-## Later endpoint patch management
+Each detailed phase declares entry dependencies, interfaces/state, trust/failure
+boundaries, provisional capacity targets and testable requirements. Independent
+research/lab work may overlap. Never bypass a prerequisite for production writes,
+credential storage, trusted execution or release approval. Advanced features
+selected in the first-production compatibility profile move into the Phase 5
+release gate; a later phase number does not excuse delaying baseline security.
 
-Phases 11–13 add [Tanium-like endpoint patch management](patch-management-roadmap.md)
-as a Linux-hosted module for Windows and Linux devices. This includes real
-patch deployment and verified remediation, not just inventory or GPO update
-settings. The detailed plan defines 15 acceptance requirements, agent trust
-boundaries, operational recovery, capacity targets and the additional CI/CD
-tests required with implementation. It is a later product expansion; secure
-maintenance and updates of Babel itself remain first-release requirements.
+## Capacity and acceptance
 
-## Final endpoint operations and EDR expansion
+The core target remains 10k users, 10k computers, 2k groups and three sites/six
+DCs. The later fleet target is 10k enrolled devices with separately qualified
+remote-session, transfer and telemetry concurrency. Hardware figures and new
+concurrency/event profiles are proposed engineering targets, not achieved claims.
+Ratify them with evidence/ADRs before a feature release; do not silently lower a
+target after tests fail. All supported OS/protocol/functional-level matrices must
+be explicit. Every OS cannot be inferred from a portable server language.
 
-Phases 14–17 add [remote access, general file uploads and native EDR](endpoint-operations-roadmap.md)
-after patch management. Management services remain Linux-hosted, with installed
-Windows/Linux endpoint agents or isolated modules. The plan specifies attended
-and unattended remote support, separate transfer/execution permissions, native
-endpoint sensors, behavioral detection and controlled containment. It defines
-19 acceptance requirements and OS-specific validation, privacy, agent-security
-and fleet-capacity gates. These capabilities extend the product after the core
-directory release; no implementation or operating capacity is claimed yet.
+Every phase exits with requirement-level evidence following the
+[validation plan](validation-plan.md). Failures, unknown state, skipped/unrun
+cases and simulator-only results stay visible. [Open decisions](decisions.md)
+identify the owner and blocked capability for licensing, toolchain/storage,
+replication/GPO, supported clients, privacy and infrastructure. Named owners and
+paid resources are not invented by this plan.
 
-## Pipeline expansion alongside implementation
+## Capability contracts and shared design
 
-The present CI does not pretend to run unimplemented application tests. Expand
-it at each phase using these mandatory gates:
+- [Core/security/capacity requirements](requirements.md) remain the normative baseline.
+- [System design](architecture.md) defines component authority, state and failure contracts.
+- [Native-core milestones](native-core-plan.md) map the first implementation dependencies.
+- [Threat model](threat-model.md) drives negative and abuse tests.
+- [Advanced security catalog](security-roadmap.md) preserves all 69 capability IDs.
+- [Patch contract](patch-management-roadmap.md) preserves PATCH-01–PATCH-15.
+- [Remote/file/EDR contract](endpoint-operations-roadmap.md) preserves all 19 endpoint IDs.
+- [CI/CD operation](ci-cd.md) distinguishes current executable checks from future product gates.
 
-- Every pull request: locked build, formatter/linter/type checks, unit and
-  authorization tests, license/dependency/SAST scans, parser fuzz smoke runs,
-  workflow lint and secret scan. Security findings need triage, not blanket ignores.
-- Main integration: reproducible packages, SBOM, vulnerability scan, ephemeral
-  service tests on the qualified Linux baseline, including install/reboot and
-  data permissions; approved changes run Windows domain join, policy and
-  trust tests against disposable reference domains. Publish exact test counts.
-- Nightly: broader supported-client matrix, longer fuzzing, multi-site faults,
-  replication/restore and dependency security rechecks. Scheduled jobs must
-  actually be provisioned before claiming this coverage.
-- Release candidate: all full-scope protocol, security, capacity and usability
-  reports measured on Linux server hosts; artifact signing/provenance, fresh install, upgrade, rollback and
-  restore checks. A single green unit suite is insufficient.
-- Deployment: promote the exact scanned/attested image digest to an isolated
-  staging domain, run join/login/policy/replication checks, then require a
-  protected production environment and a tested migration plan. Domain schema
-  and key changes may require restore/forward fix; do not assume image rollback
-  restores directory state. Use a planned DC rollout with abort criteria.
+## First implementation work
 
-## Work to open first
-
-1. Approve compatibility/integration inventory and license (owner/security lead).
-2. Select protocol core through the Phase 0 spike (protocol maintainer).
-3. Provision licensed Windows reference images and isolated trusted CI runners
-   (infrastructure maintainer); do not expose these runners to fork PR code.
-4. Choose implementation toolchain and add real build/test/dependency gates
-   (application maintainers).
-5. Define schemas for role delegation, audit events and health status, then
-   prototype the domain setup and helpdesk journeys (security + UX maintainers).
-
-The roadmap is committed documentation, not remotely created GitHub issues.
+Assign Phase 0 design/security ownership, choose the license/support profile and
+fund a reproducible isolated reference lab. Review the native toolchain and
+identity/storage/replication ADRs. Introduce only the first bounded native
+parser/core slice with matching locked build/property/fuzz/security/packaging
+jobs, then extend the scope guard in that same reviewed change. Grow read-only
+discovery before persistent credentials, membership and policy behavior. No
+placeholder server or always-green future job satisfies a phase requirement.

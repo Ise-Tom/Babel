@@ -1,16 +1,18 @@
-# Extended security roadmap
+# Advanced security capability contract
 
-This is a proposed backlog for a Linux-hosted, fully capable AD-like server,
-not a list of implemented protections. Core identity/password management,
-Windows domain membership, GPO/SYSVOL, trusts, replication and recovery remain
-in the first production contract. [SEC-01–SEC-11](requirements.md), Linux host
-hardening and the [threat model](threat-model.md) are first-release gates;
-placing enhancements here does not postpone those requirements.
+This catalog preserves 69 advanced capability requirements across 12 security
+areas. The complete native-core design and delivery requirements now live in
+[Phases 7–10](phases/README.md); the shared [architecture](architecture.md),
+[threat model](threat-model.md) and [validation plan](validation-plan.md) apply.
+Catalog IDs remain stable and every ID is assigned to detailed phases. None of
+these design requirements is claimed implemented or assessed.
 
-This catalog broadens coverage across identity, endpoints, administration,
-protocols, operations and software delivery. It is not an exhaustive guarantee
-against future threats. Review it against backend capabilities, user needs,
-incident lessons and current standards at every release-planning cycle.
+Core identity/password management, GPO/domain services and SEC-01–SEC-11 remain
+first-production requirements. Moving a capability into an advanced phase does
+not postpone baseline protection or a feature chosen for the first-production
+profile. Native implementation owns conformance, privilege/key/replication
+safety and ongoing maintenance. Reviewed libraries/providers are permitted, with
+explicit key/OS limitations and no Samba runtime assumptions.
 
 ## Sequencing and ownership
 
@@ -18,7 +20,7 @@ incident lessons and current standards at every release-planning cycle.
 | --- | --- | --- |
 | 7 — Strong identity and privileged operations | Passwordless administration, safe recovery, privileged access workflows, managed credentials and policy governance | Baseline MFA/RBAC/audit and full AD interoperability already working; credential lifecycle, abuse and negative-authorization suites pass |
 | 8 — Posture and detection | Access reviews, entitlement graph, device posture integrations, certificate services, federation and detection engineering | Authoritative identity/device data, audited APIs and a licensed client matrix; real-client compatibility, detection quality and privacy reports |
-| 9 — Containment and resilience | Isolated branch identities, stronger key custody, incident automation and recovery under compromise | Qualified backend/key provider and reliable backup/replication; partition, compromise simulation and recovery drills pass |
+| 9 — Containment and resilience | Isolated branch identities, stronger key custody, incident automation and recovery under compromise | Qualified native core/key provider and reliable backup/replication; partition, compromise simulation and recovery drills pass |
 | 10 — Continuous assurance | Supply-chain maturity, extended verification, secure administration baselines and independent assessments | Maintained threat model, reproducible lab and release evidence; ongoing regression reports and vulnerability response exercises |
 
 Wave numbers align with the [main roadmap](roadmap.md); independent items may
@@ -28,7 +30,7 @@ of its default wave here. Optional modules must remain disabled until configured
 and qualified; installing a feature must not weaken domain security by default.
 
 For each selected item, create a tracked issue with a named owner, threat and
-asset, backend/version prerequisites, supported clients, secure defaults,
+asset, core/provider/version prerequisites, supported clients, secure defaults,
 privacy impact, abuse tests, measured operating cost, migration/rollback limits,
 and operator documentation. Proposed ownership: identity/protocol maintainers
 for A/C/E; security and UX maintainers for B/D; platform maintainers for F/I;
@@ -88,16 +90,16 @@ staff, not claims that such teams already exist.
 | E-02 | Kerberos delegation, ticket and principal hardening | Detect unsafe unconstrained/resource-based delegation, SPN conflicts, weak service secrets and excessive ticket lifetimes; test constrained delegation and protected accounts on real clients |
 | E-03 | Trust quarantine and cross-forest entitlement inspection | Validate SID filtering, selective authentication, name suffix routing and SID-history migration boundaries; require approval and audit trust changes |
 | E-04 | Certificate enrollment and PKI integration, with any AD CS-compatible role separately qualified | Test template/enrollment ACLs, identity mapping, SAN constraints, approval, issuance/revocation and renewal; protect CA keys separately and reject escalation-prone configurations |
-| E-05 | Certificate/key inventory, expiry forecasting and automated rotation | Exercise TLS, PKINIT, service and trust material separately; support safe overlap, CRL/OCSP outages and backend-specific lifecycle constraints |
+| E-05 | Certificate/key inventory, expiry forecasting and automated rotation | Exercise TLS, PKINIT, service and trust material separately; support safe overlap, CRL/OCSP outages and core/provider-specific lifecycle constraints |
 | E-06 | Protocol exposure control and network segmentation templates | Enumerate actual DNS/LDAP/Kerberos/SMB/RPC and replication flows, narrow dynamic RPC ranges where supported, test firewall changes and preserve diagnostic access |
 
 ## F. Linux platform and runtime protection — waves 7–9
 
 | ID | Capability | Acceptance / constraints |
 | --- | --- | --- |
-| F-01 | Reviewed systemd sandboxing, capability reduction and AppArmor/SELinux profiles | Test per-role requirements, upgrades and restore; document any privileged Samba/backend operations instead of promising all services run unprivileged |
+| F-01 | Reviewed systemd sandboxing, capability reduction and AppArmor/SELinux profiles | Test per-role requirements, upgrades and restore; document any privileged native-core/OS operations instead of promising all services run unprivileged |
 | F-02 | Host security posture: supported Secure Boot, measured boot and disk encryption | Document provisioning and recovery-key custody; boot attestation must be verified externally; disk encryption does not protect a running compromised DC |
-| F-03 | Hardware-backed key custody through HSM/TPM or a supported external KMS | Qualify each key type and backend API; do not claim AD password verifiers or every Kerberos key can be moved into an HSM; test latency, outage and recovery |
+| F-03 | Hardware-backed key custody through HSM/TPM or a supported external KMS | Qualify each key type and key-provider API; do not claim AD password verifiers or every Kerberos key can be moved into an HSM; test latency, outage and recovery |
 | F-04 | Resource isolation and DoS controls per service/peer | Exercise expensive LDAP searches, nested groups, parser inputs, connection exhaustion, audit floods and replication queues under limits without starving legitimate login |
 | F-05 | Hardened Linux storage, syscall and network profiles for optional container packages | Validate ACL/xattrs, persistent state, time/DNS, service discovery and restore; no unreviewed privileged-container default; VM/bare-metal hosting stays supported |
 | F-06 | Linux host baseline drift and agent/update integrity | Detect changed service units, executable/config permissions and obsolete kernels/packages; verify updates and rehearse service continuity during host maintenance |
@@ -118,7 +120,7 @@ staff, not claims that such teams already exist.
 | ID | Capability | Acceptance / constraints |
 | --- | --- | --- |
 | H-01 | Audited response workflows for account/device disable, trust suspension and service-key rotation | Scope, preview, approval, idempotency and a rescue path; automated detections cannot globally lock out a domain without a separate safety decision |
-| H-02 | Domain-compromise recovery plan covering ticket-signing, machine, service, trust and administrator credentials | Sequence backend-specific rotations, including safe double rotation of Kerberos signing keys; prove clean restores and ticket invalidation within documented limits |
+| H-02 | Domain-compromise recovery plan covering ticket-signing, machine, service, trust and administrator credentials | Sequence native-core/provider-specific rotations, including safe double rotation of Kerberos signing keys; prove clean restores and ticket invalidation within documented limits |
 | H-03 | Replica quarantine and controlled reintroduction after suspected compromise | Protect evidence, revoke replication trust safely, avoid contaminating clean replicas and test topology/role recovery; partitioning alone does not remove stolen credentials |
 | H-04 | Recovery-safe security state restoration | Reconcile revoked identities, changed privileges, deleted objects and key epochs after restoring older backups; prevent silently reactivating known-compromised access |
 | H-05 | Tested response playbooks and tabletop exercises | Include lost MFA provider, stolen backup, compromised maintainer, ransomware and malicious insider; track response time, operator mistakes and retained evidence |
@@ -127,7 +129,7 @@ staff, not claims that such teams already exist.
 
 | ID | Capability | Acceptance / constraints |
 | --- | --- | --- |
-| I-01 | Read-only/limited-secret branch controller profiles where the backend supports them | Qualify exact RODC/password replication policy semantics, cached-secret restrictions, theft impact and credential reset procedure; never market a writable replica as read-only |
+| I-01 | Read-only/limited-secret branch controller profiles when explicitly implemented by the native core | Qualify exact RODC/password replication policy semantics, cached-secret restrictions, theft impact and credential reset procedure; never market a writable replica as read-only |
 | I-02 | Immutable/offline encrypted backups with split custody and recovery-key escrow | Separate backup administration, restoration quorum where appropriate, retention verification and regular clean-room restores without depending on the failed domain |
 | I-03 | Site isolation, failover and revocation-risk visibility | Surface stale replication, stale policy and uncertain revocation; test WAN partitions and clock/DNS faults without claiming global immediate consistency |
 | I-04 | Security operation budgets and safe degraded modes | Define authentication, MFA, KMS, CA and audit failure behavior separately; backpressure noisy services, alert on queue loss and never silently bypass admin MFA |
