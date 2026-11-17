@@ -17,9 +17,10 @@ test('overview has all phases and accurately reports no accepted phase', async (
   await expect(page.getByRole('heading', { name: 'Roadmap & implementation' })).toBeVisible();
   await expect(page.locator('.phase-card')).toHaveCount(18);
   await expect(page.locator('.stat').first()).toContainText('0 accepted');
-  await expect(page.locator('footer')).toContainText('PRs 4–7 were merged');
+  const facts = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  await expect(page.locator('footer')).toContainText(facts.snapshot.note);
   await expect(page.locator('footer')).toContainText('no live GitHub');
-  await expect(page.locator('.stats')).toContainText('13');
+  await expect(page.locator('.stat').nth(2).locator('strong')).toHaveText(String(facts.workItems.length));
   await page.screenshot({ path: resolve('..', `reports/dashboard-${info.project.name}.png`), fullPage: false });
   expect(errors).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
@@ -96,9 +97,10 @@ test('journal separates open and resolved issues and links to parent requirement
   else await page.getByRole('button', { name: /Implementation & issues/ }).click();
   await expect(page.getByRole('heading', { name: 'Evidence, decisions & lessons' })).toBeVisible();
   await page.getByRole('button', { name: 'Resolved', exact: true }).click();
-  await expect(page.locator('.issue-card')).toHaveCount(5);
+  const facts = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  await expect(page.locator('.issue-card')).toHaveCount(facts.problems.filter(problem => problem.status === 'resolved').length);
   await page.getByRole('button', { name: 'Open', exact: true }).click();
-  await expect(page.locator('.issue-card')).toHaveCount(4);
+  await expect(page.locator('.issue-card')).toHaveCount(facts.problems.filter(problem => problem.status === 'open').length);
   await page.locator('.work-card').first().locator(':scope > summary').click();
   await page.locator('.work-card').first().getByRole('button', { name: 'P01-01' }).click();
   await expect(page.getByTestId('P01-01')).toHaveAttribute('open', '');
