@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T22:03:09\+01:00.
+GitHub metadata checked: 2026-11-17T22:15:25\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#17 · Bump typescript from 6.0.3 to 7.0.2 in /dashboard](<https://github.com/Ise-Tom/Babel/pull/17>)
 
-**In review · Pending merge · CI: failure** · Head a55e089
+**In review · Pending merge · CI: in\_progress** · Head 4ef5b4d
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -116,34 +116,147 @@ GitHub metadata checked: 2026-11-17T22:03:09\+01:00.
 
 **Changed files:**
 
-- dashboard/package-lock.json
-- dashboard/package.json
+- .github/CODEOWNERS
+- .github/dependabot.yml
+- .github/workflows/dashboard-pages.yml
+- .github/workflows/dashboard-publish.yml
+- .github/workflows/dashboard.yml
+- README.md
+- SECURITY.md
+- dashboard/build.mjs
+- dashboard/progress.json
+- dashboard/src/index.html
+- dashboard/src/main.ts
+- dashboard/tests/build.test.mjs
+- dashboard/tests/dashboard.spec.ts
+- docs/architecture.md
+- docs/ci-cd.md
+- docs/github-main-ruleset.json
+- docs/github-security-settings.md
+- docs/phases/README.md
+- docs/project-dashboard.md
+- docs/validation-plan.md
+- scripts/check\_design.py
+- scripts/check\_pages\_source.py
+- scripts/collect\_pr\_progress.py
+- scripts/publish\_dashboard.py
+- scripts/render\_dashboard.py
+- scripts/verify\_pages\_artifact.py
+- tests/test\_dashboard.py
+- tests/test\_dashboard\_delivery.py
+- tests/test\_design.py
+- tests/test\_pages\_artifact.py
+- tests/test\_pages\_deployment.py
+- tests/test\_pr\_progress.py
 
-#### Proposed W19 · Remove unpatched vulnerable tooling dependency path
+#### Proposed W22 · Keep the tested compiler API instead of silently weakening security lint
 
 **Requirements:** P00-10, P01-01
 
-**How it was done:** Removed TypeScript-ESLint and its picomatch path. Retained supported ESLint 10 / TypeScript 6, strict compiler checks and explicit-any AST checks; runs DOM/eval rules on compiler-erased JavaScript without bundling, minification or execution.
+**How it was done:** Reproduced TypeScript 7.0.2 passing typecheck but crashing lint because ScriptTarget.Latest is absent. Restored TypeScript 6.0.3 and its locked tooling graph, retained AST/DOM/eval checks and deferred automatic major compiler proposals until the security-policy API is explicitly migrated. PR \#17 now carries this correction instead of an unsupported upgrade.
 
-**Recorded validation:** Locked clean install; npm audit reports zero vulnerabilities. Six build/lint tests include typed HTML sinks, eval, explicit-any declarations/casts and safe text rendering; strict typecheck and lint pass.
+**Recorded validation:** Strict compiler checks, ESLint, six build/security-lint fixtures, 24 desktop/mobile browser tests and npm audit all pass locally; audit reports zero vulnerabilities. Hosted full CI is rerun for the corrected PR head.
 
-**Limits and remaining work:** This replaces recommended TypeScript style rules with documented compiler/security policies; it does not claim rule-for-rule style equivalence. Main remains red until this dependency fix is merged.
+**Limits and remaining work:** TypeScript 7 is deliberately not adopted. Migration to its different unstable APIs needs a separate qualified change; a passing compiler CLI alone does not establish equivalent security lint.
 
-**PR-head evidence:** [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/a55e089721000e756470989fc8b675ef1ceba3b5/dashboard/package.json>) · [dashboard/package-lock.json](<https://github.com/Ise-Tom/Babel/blob/a55e089721000e756470989fc8b675ef1ceba3b5/dashboard/package-lock.json>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/a55e089721000e756470989fc8b675ef1ceba3b5/dashboard/lint.mjs>) · [dashboard/eslint.config.mjs](<https://github.com/Ise-Tom/Babel/blob/a55e089721000e756470989fc8b675ef1ceba3b5/dashboard/eslint.config.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/a55e089721000e756470989fc8b675ef1ceba3b5/dashboard/tests/lint.test.mjs>)
+**PR-head evidence:** [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/package.json>) · [.github/dependabot.yml](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/dependabot.yml>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/lint.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/tests/lint.test.mjs>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>)
 
-#### Proposed problem update: I13 · Main CI rejected newly vulnerable picomatch tooling graph
+
+#### Proposed W23 · Verify Pages archives and minimize privileged deployment operations
+
+**Requirements:** P00-10, P01-01, P01-10
+
+**How it was done:** Read-only preflight validates exact main CI, immutable artifact ID, size and SHA-256 digest. A bounded verifier rejects extra/traversing/symlink files and weak browser policy, then packages only HTML/.nojekyll. The separate Pages/OIDC job has no checkout or project-code execution, attempts Actions-only/HTTPS configuration and rechecks main before deployment. Added no-referrer policy, blocked images, CODEOWNERS, a main ruleset template and verified owner settings.
+
+**Recorded validation:** 86 Python tests pass with 98% tooling coverage. Negative archive/CSP tests, actual standalone archive verification, strict types/lint, actionlint, Zizmor, six build/lint fixtures and 24 browser tests pass locally. Live current site returned HTTP 200; Pages API confirms HTTPS and environment main-only deployment policy.
+
+**Limits and remaining work:** These stronger deployment changes await PR merge and a successful main workflow run. The integration cannot mutate admin settings \(HTTP 403\). The job-token Pages configuration step must succeed and read back correctly; no success is claimed in advance. Required review, private vulnerability reporting and other owner settings remain explicit actions. GitHub Pages does not support arbitrary security response headers.
+
+**PR-head evidence:** [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/workflows/dashboard-pages.yml>) · [.github/workflows/dashboard.yml](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/workflows/dashboard.yml>) · [scripts/check\_pages\_source.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/scripts/check_pages_source.py>) · [scripts/verify\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/scripts/verify_pages_artifact.py>) · [tests/test\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/tests/test_pages_artifact.py>) · [tests/test\_pages\_deployment.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/tests/test_pages_deployment.py>) · [dashboard/build.mjs](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/build.mjs>) · [dashboard/src/index.html](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/src/index.html>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/CODEOWNERS>)
+
+#### Proposed problem update: I02 · Merge protection administration is unavailable to the integration
+
+**Proposed status:** open
+
+GitHub rejected ruleset access for this private repository with HTTP 403 and requested a supported plan or public visibility. Passing CI is not enforced merge protection.
+
+**Resolution:** Still open
+
+**Next action:** Owner imports docs/github-main-ruleset.json, enables required review/CI gate and verifies enforcement. Public ruleset listing is empty; legacy branch protection GET returns HTTP 403, so no enforced protection is claimed.
+
+**Provenance:** GitHub API observation recorded during pipeline setup; verify again before production release.
+
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-main-ruleset.json>)
+
+#### Proposed problem update: I10 · Dashboard access and Pages activation remain unavailable
 
 **Proposed status:** resolved
 
-Main run 44142657828 failed npm audit for GHSA-fc5q-39xc-vjpf. The advisory affects picomatch through 4.0.7 and no patched version was published when checked.
+The app ran inside the cloud workspace, but no user-accessible preview route was established. GitHub returned HTTP 403 for Pages activation; the repository still reports Pages disabled.
 
-**Resolution:** The development PR removes the vulnerable dependency path while retaining supported compiler/ESLint versions and tested DOM/eval/explicit-any checks. Its local audit is clean; main awaits merge.
+**Resolution:** The owner enabled Pages and applied public visibility. Deployment run 44175624652 succeeded for main 824d5760f4f95abb341f625b6ff37ab60dbd5d1f; https://ise-tom.github.io/Babel/ returned HTTP 200 with HTTPS/HSTS. This resolves user access through public hosting, without claiming cloud localhost forwarding works.
 
-**Next action:** Keep all-severity audit enforcement and validate the replacement graph in hosted CI.
+**Next action:** Keep CI-gated deployment, apply the proposed artifact hardening and use the stable HTTPS URL.
 
 **Provenance:** Recorded development-session evidence and repository/CI observations; no separate public issue was created.
 
-[dashboard/package-lock.json](<https://github.com/Ise-Tom/Babel/blob/a55e089721000e756470989fc8b675ef1ceba3b5/dashboard/package-lock.json>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/a55e089721000e756470989fc8b675ef1ceba3b5/dashboard/lint.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/a55e089721000e756470989fc8b675ef1ceba3b5/dashboard/tests/lint.test.mjs>)
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>)
+
+#### Proposed problem update: I15 · GitHub Actions jobs blocked before startup by account billing
+
+**Proposed status:** resolved
+
+All jobs in PR \#18 CI run 44156039039 have zero executed steps. GitHub annotation: The job was not started because recent account payments have failed or your spending limit needs to be increased. Automatic dashboard refresh jobs are affected too.
+
+**Resolution:** After the owner made Babel public, main CI run 44175150495 executed all 12 jobs successfully. The earlier account-capacity block no longer prevents this verified public run.
+
+**Next action:** Monitor actual CI results; public standard runners do not authorize paid capacity or make all platform limits disappear.
+
+**Provenance:** Observed GitHub run 44156039039, check run 134296912744 annotation; no pipeline commands ran.
+
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>)
+
+#### Proposed problem update: I16 · GitHub integration cannot apply the authorized public visibility setting
+
+**Proposed status:** resolved
+
+The project owner explicitly requested public visibility. PATCH /repos/Ise-Tom/Babel with private=false returned HTTP 403, Resource not accessible by integration, despite repository metadata showing admin=true. The repository remained private on readback.
+
+**Resolution:** The owner applied public visibility and merged PR \#18. GitHub now reports private=false and visibility=public, and the public-compatible dashboard publisher succeeds. The integration itself still lacks administration permissions.
+
+**Next action:** Keep visibility changes explicit owner decisions and track remaining settings permissions separately under I18.
+
+**Provenance:** Direct GitHub API response in the authorized visibility-change task on 2026-11-17; no automatic approval-review rejection occurred and no visibility setting was applied.
+
+[docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>)
+
+#### Proposed problem update: I17 · TypeScript 7 removed the compiler API used by security lint
+
+**Proposed status:** resolved
+
+PR \#17 run 44154241268 passed typecheck but failed dashboard lint with TypeError reading ScriptTarget.Latest. Local reproduction confirmed the major version no longer exposes the JavaScript compiler API; alternate APIs are unstable and require migration.
+
+**Resolution:** The corrected PR retains TypeScript 6.0.3 and the existing AST/DOM/eval protections, with compatible updates still enabled and automatic compiler majors deferred. Local build, lint, browser and audit checks pass.
+
+**Next action:** Verify corrected PR CI. Migrate the policy explicitly before upgrading the compiler major; retain malformed-input and security regressions.
+
+**Provenance:** Observed failed hosted job 134361914270 and local reproduction of the same failure; no check was skipped.
+
+[dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/package.json>) · [.github/dependabot.yml](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/dependabot.yml>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/lint.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/tests/lint.test.mjs>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>)
+
+#### Proposed problem update: I18 · GitHub denies repository security and Pages settings writes to the integration
+
+**Proposed status:** open
+
+Pages configuration PUT, environment PUT, private vulnerability reporting enablement and ruleset creation all returned HTTP 403 Resource not accessible by integration. Pages is live with HTTPS, but its observed build type remains legacy; private reporting is disabled, ruleset listing empty and legacy protection/Actions defaults cannot be inspected.
+
+**Resolution:** Still open
+
+**Next action:** Owner applies docs/github-security-settings.md and imports the supplied main ruleset. The revised deployment tries Actions-only/HTTPS with its legitimate Pages-scoped job token and fails if enforcement/readback is denied. Verify actual settings after application; no paid service or broader credential is requested.
+
+**Provenance:** Direct GitHub settings API responses and successful public site/deployment observations on 2026-11-17; these are GitHub permission errors, not automatic approval-review rejections.
+
+[.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/workflows/dashboard-pages.yml>) · [.github/workflows/dashboard.yml](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/workflows/dashboard.yml>) · [scripts/check\_pages\_source.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/scripts/check_pages_source.py>) · [scripts/verify\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/scripts/verify_pages_artifact.py>) · [tests/test\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/tests/test_pages_artifact.py>) · [tests/test\_pages\_deployment.py](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/tests/test_pages_deployment.py>) · [dashboard/build.mjs](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/build.mjs>) · [dashboard/src/index.html](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/dashboard/src/index.html>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/4ef5b4da9f11461635848669a110d73c58741bad/.github/CODEOWNERS>)
 
 
 </details>
@@ -415,6 +528,8 @@ Project owner accepted the current prototype’s scope inventory and limitation 
 **Acceptance evidence required:** Each public operation has a tested/unsupported status; lab credentials and incomplete protocol behavior cannot be promoted as a production release.
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-17. Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: documentation, tests and CLI label the current prototype as a loopback-only LDAP discovery lab and disclose missing production/domain functionality. Evidence pinned to merged main: https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phase-01-progress.md ; https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/native/babel-ldap/src/main.rs . This accepts scope reporting, not those missing features or production readiness.
+
+**Pending PR proposals:** [\#17: Bump typescript from 6.0.3 to 7.0.2 in /dashboard](<https://github.com/Ise-Tom/Babel/pull/17>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W17: Bounded LDAP RootDSE filter discovery; W18: Open-PR-aware private progress reporting; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition. See the [implementation journal](#implementation-journal).
 
@@ -931,6 +1046,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/824d5760f4f95abb341f625b6ff37ab60dbd5d1f/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/824d5760f4f95abb341f625b6ff37ab60dbd5d1f/docs/requirements.md>)
 
 **Acceptance evidence required:** No self-approved high-risk publication or privileged fork runner; platform limitations are disclosed, never treated as enforced protection.
+
+**Pending PR proposals:** [\#17: Bump typescript from 6.0.3 to 7.0.2 in /dashboard](<https://github.com/Ise-Tom/Babel/pull/17>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1591,6 +1708,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [K-06: Hardened release governance and maintainer continuity](<https://github.com/Ise-Tom/Babel/blob/824d5760f4f95abb341f625b6ff37ab60dbd5d1f/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Actual required-check/review/ref/environment protections are verified where supported; unavailable private-repo features remain explicit release risks.
+
+**Pending PR proposals:** [\#17: Bump typescript from 6.0.3 to 7.0.2 in /dashboard](<https://github.com/Ise-Tom/Babel/pull/17>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
