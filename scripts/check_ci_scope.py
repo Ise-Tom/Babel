@@ -30,6 +30,13 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
         path = Path(name)
         allowed = (
             name in ROOT_FILES
+            or name
+            in {
+                "experiments/postgres_store/Dockerfile",
+                "experiments/postgres_store/experiment.py",
+                "experiments/postgres_store/schema.sql",
+                "experiments/postgres_store/test_store.py",
+            }
             or (
                 path.parts[0] == "dashboard"
                 and (

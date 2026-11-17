@@ -39,6 +39,8 @@ class ComponentScope(unittest.TestCase):
                     ".github/workflows/ci.yml",
                     "requirements-ci.txt",
                     "lab/windows-reference.toml",
+                    "experiments/postgres_store/schema.sql",
+                    "experiments/postgres_store/experiment.py",
                 ],
             ),
             [],
@@ -96,6 +98,8 @@ class ComponentScope(unittest.TestCase):
             "Dockerfile",
             "docs/package.json",
             "lab/unreviewed.toml",
+            "experiments/postgres_store/unreviewed.sql",
+            "experiments/unreviewed/experiment.py",
             "scripts/run.sh",
         ]
         self.assertEqual(len(scope.check(ROOT, names)), len(names))

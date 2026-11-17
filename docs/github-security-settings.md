@@ -1,20 +1,43 @@
 # GitHub hosting and repository security
 
-The dashboard is live at **https://ise-tom.github.io/Babel/**. On 17 November
-2026, public visibility, HTTPS enforcement, the main-only Pages environment
-branch policy and a successful deployment were verified through GitHub APIs.
-The site returned HTTP 200 and GitHub’s HSTS header. PRs #18 and #17 are merged;
-all 12 jobs of main CI run 44179292379 passed for commit `208d61d`.
-The first hardened deployment (44179766192) verified the archive successfully but
-failed on an unnecessary Pages administration write. This PR removes that write
-while retaining fail-closed readback of the correct settings. The last successful
-site deployment remains available; no new deployment success is claimed yet.
+The dashboard is live at **https://ise-tom.github.io/Babel/**. The successful
+Pages deployment for main `6dc9b06` is run 44183656847. Public visibility,
+Actions-only Pages publishing, HTTPS, the main-only Pages environment and disabled
+Pages admin bypass are verified through GitHub APIs.
 
-The chat integration cannot administer these settings: Pages updates, environment
-updates, private vulnerability reporting and ruleset creation returned HTTP 403,
-“Resource not accessible by integration”. Repository metadata showing `admin=true`
-does not grant the integration those API permissions. No owner token is requested.
-The changes in PR #17 harden workflows; they do not prove owner settings are applied.
+On 17 November 2026 the owner applied `Protect main` (27498979), initially
+with team-only review requirements. The owner is the sole maintainer, so the
+current development policy is **PR required, zero external approvals**, with
+up-to-date **CI gate** (GitHub Actions app 15368), resolved conversations,
+no bypass actors and no force pushes/deletion. CODEOWNERS records ownership;
+it does not require an unavailable second reviewer. This is not independent review.
+
+The committed template implements that solo policy. Live API readback now verifies
+approval count zero and all three approval switches disabled. Effective main rules
+retain PRs, required up-to-date CI, resolved conversations, force-push/deletion
+protection and no bypass actors. The integration's update attempt received HTTP
+403; the subsequent owner UI change is verified rather than attributed to that
+failed write. Private vulnerability reporting is enabled; a submitted private
+report has not been exercised.
+
+The owner also confirmed read-only Actions defaults, disabled Actions PR approval
+and approval for all outside collaborators. Those three observations are explicitly
+**owner-confirmed**, because the integration still receives HTTP 403 when reading
+the Actions administration endpoints. No broader token is requested.
+
+The owner also corrected an own-actions-only restriction after run 44191621036
+failed before starting any job. Under Actions → General, select **Allow Ise-Tom,
+and select non-Ise-Tom, actions and reusable workflows**, then **Allow actions
+created by GitHub**; leave Marketplace creators disabled. The owner confirmed this
+change. The workflows retain their full commit SHA pins, including the inspected
+nested official actions. Allowing the GitHub publisher does not widen job-token
+permissions or permit arbitrary Marketplace actions. Own-actions-only mode blocks
+`actions/checkout`, setup, artifact and Pages actions even when commit-pinned.
+
+The remaining release blocker is concrete: `source-release` returned HTTP 404.
+The proposed preflight refuses a missing/inadequately protected release
+environment before the normal workflow can automatically create one. No release
+or repository setting has been changed by this development work.
 
 ## Apply owner settings
 
@@ -28,43 +51,50 @@ The changes in PR #17 harden workflows; they do not prove owner settings are app
    If either setting is wrong, apply these UI settings and retry. A failed read
    or incorrect setting stops deployment rather than silently bypassing it.
 2. **[Rules → Rulesets](https://github.com/Ise-Tom/Babel/settings/rules):** import
-   [Protect main](github-main-ruleset.json), inspect it and activate it. It requires
-   PRs, an owner review, approval of the last push, dismissal of stale approvals,
-   resolved review threads and the GitHub Actions **CI gate** on an up-to-date
-   branch. It blocks force pushes/deletion and grants no bypass actors.
-   [CODEOWNERS](../.github/CODEOWNERS) names the actual repository owner; it only
-   enforces review after the rule is active. A contributor cannot approve their
-   own PR; add another trusted maintainer before needing self-authored changes
-   reviewed. The ruleset list was empty; legacy branch protection could not be
-   inspected, so enforcement is not claimed.
+   [Protect main](github-main-ruleset.json), inspect it and activate it. For the
+   solo profile, set required approvals to **0** and disable code-owner review,
+   approval of the last push and extra approval for unattributed changes. Keep
+   PRs, resolved conversations, the up-to-date GitHub Actions **CI gate**, no bypass
+   actors and force-push/deletion protection. The owner reviews the diff and CI,
+   then uses the normal merge button; GitHub does not permit self-approval.
+   [CODEOWNERS](../.github/CODEOWNERS) remains an ownership record. When a second
+   trusted maintainer actually joins, explicitly adopt an independent-review
+   policy rather than requiring an unavailable reviewer now. Legacy branch
+   protection administration cannot be read; no additional legacy protection is claimed.
 3. **[Actions → General](https://github.com/Ise-Tom/Babel/settings/actions):** use
    read-only default workflow permissions; disable Actions approving/creating
    PRs. Require approval for all outside collaborators before running their fork
    PR workflows. Do not send write tokens or secrets to fork PRs. Restrict allowed
    actions to reviewed publishers and full commit SHAs where the setting is
    available. Current workflows pin external actions and grant write/OIDC only
-   to the dedicated report, Pages or source-release jobs. These repository-wide
-   defaults could not be inspected through the integration.
+   to the dedicated report, Pages or source-release jobs. These defaults are owner-confirmed; they still cannot be inspected through
+   the integration.
 4. **[Code security](https://github.com/Ise-Tom/Babel/settings/security_analysis):**
-   enable private vulnerability reporting (observed disabled), dependency alerts
+   keep private vulnerability reporting enabled (verified), dependency alerts
    and security updates, secret scanning and push protection where included for
    this public repository. Do not enable a paid service without a separate owner
    decision. Exercise the private report route before claiming it works; do not
    post real vulnerabilities or credentials in public issues.
 5. **[Environments](https://github.com/Ise-Tom/Babel/settings/environments):** keep
    `github-pages` restricted to the `main` branch, with no deployment secrets;
-   disable admin bypass where supported. Its observed policy permits only main
-   but still allows admin bypass. Create `source-release` with a trusted reviewer,
-   prevent self-review and restrict it to authorized `v*` tags. That release
-   environment was absent. The workflow still requires a license, successful CI,
-   a main-ancestor commit and draft-only prereleases; public visibility does not
-   make Babel ready for production. Apache-2.0 and DCO are now selected; third-party
-   and reference/specification obligations remain separate review gates.
+   disable admin bypass where supported. Its policy is verified as main-only with
+   admin bypass disabled. For **draft source-only prereleases**, create
+   `source-release` with **no required reviewers**, admin bypass disabled and a
+   custom deployment policy allowing only **tags** matching `v*` (not branches).
+   The environment is still absent at the latest check. A read-only preflight
+   verifies these settings before the write job; missing settings block release.
+   CI, license, main ancestry, provenance and draft/prerelease restrictions still
+   apply. No tag or release is created by this change. A future team may switch
+   the checker to `--mode team` and configure independent reviewers/self-review
+   prevention together. Planned independent production security qualification
+   remains required; the solo development profile does not provide it.
 
 After applying settings, verify their actual state in GitHub, rerun current CI
-and dispatch **Publish interactive dashboard** on main. The owner merged PR #17;
-this follow-up still needs review, passing CI and merge before a new deployment
-can demonstrate the corrected path.
+and dispatch **Publish interactive dashboard** on main. The owner merged PR #20 and its read-only Pages fix deployed successfully.
+The new storage/release-preflight work is proposed for review and requires merge
+and verification before becoming active. Restrict
+release-tag creation to authorized maintainers as well: an environment check in
+the reviewed workflow is not protection against arbitrary rewritten tag workflows.
 
 ## Controls in the revised workflow
 
