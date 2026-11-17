@@ -83,6 +83,8 @@ test('search, requirement filter, empty state and reset work together', async ({
   const accepted = steps.filter(item => item.status === 'accepted').length;
   if (accepted) await expect(page.locator('.requirement')).toHaveCount(accepted);
   else await expect(page.getByRole('heading', { name: 'No matches' })).toBeVisible();
+  await page.getByRole('searchbox').fill('missing-requirement-fixture');
+  await expect(page.getByRole('heading', { name: 'No matches' })).toBeVisible();
   await page.getByRole('button', { name: 'Clear filters' }).click();
   await expect(page.locator('.requirement')).toHaveCount(steps.length);
 });
