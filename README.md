@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T22:19:33\+01:00.
+GitHub metadata checked: 2026-11-17T22:21:50\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#17 · Harden public dashboard deployment and retain compatible security lint](<https://github.com/Ise-Tom/Babel/pull/17>)
 
-**In review · Pending merge · CI: in\_progress** · Head 90a2c60
+**In review · Pending merge · CI: success** · Head 90a2c60
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -78,38 +78,23 @@ GitHub metadata checked: 2026-11-17T22:19:33\+01:00.
 - .github/CODEOWNERS
 - .github/dependabot.yml
 - .github/workflows/dashboard-pages.yml
-- .github/workflows/dashboard-publish.yml
 - .github/workflows/dashboard.yml
 - README.md
-- SECURITY.md
 - dashboard/build.mjs
 - dashboard/progress.json
 - dashboard/src/index.html
-- dashboard/src/main.ts
 - dashboard/src/style.css
 - dashboard/tests/build.test.mjs
-- dashboard/tests/dashboard.spec.ts
-- docs/architecture.md
 - docs/ci-cd.md
 - docs/github-main-ruleset.json
 - docs/github-security-settings.md
-- docs/phases/README.md
 - docs/project-dashboard.md
-- docs/validation-plan.md
 - scripts/check\_ci\_scope.py
-- scripts/check\_design.py
 - scripts/check\_pages\_source.py
-- scripts/collect\_pr\_progress.py
-- scripts/publish\_dashboard.py
-- scripts/render\_dashboard.py
 - scripts/verify\_pages\_artifact.py
-- tests/test\_dashboard.py
-- tests/test\_dashboard\_delivery.py
 - tests/test\_delivery.py
-- tests/test\_design.py
 - tests/test\_pages\_artifact.py
 - tests/test\_pages\_deployment.py
-- tests/test\_pr\_progress.py
 
 #### Proposed W22 · Keep the tested compiler API instead of silently weakening security lint
 
