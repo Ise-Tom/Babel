@@ -35,6 +35,7 @@ function readState(): State {
 let state = readState();
 let issueStatus: 'all' | 'open' | 'resolved' = 'all';
 function navigate(change: Partial<State>, push = true): void {
+  const pageChanged = (change.view !== undefined && change.view !== state.view) || (change.phase !== undefined && change.phase !== state.phase);
   state = { ...state, step: null, ...change };
   const params = new URLSearchParams();
   if (state.view === 'phase' && state.phase !== null) params.set('phase', String(state.phase));
@@ -44,6 +45,10 @@ function navigate(change: Partial<State>, push = true): void {
   if (state.step) params.set('step', state.step);
   history[push ? 'pushState' : 'replaceState'](null, '', `#${params.toString()}`);
   render();
+  if (pageChanged) {
+    if (!state.step) window.scrollTo({ top: 0, behavior: 'auto' });
+    get('content').focus({ preventScroll: true });
+  }
 }
 function openStep(id: string): void {
   const phase = board.phases.find(item => item.steps.some(step => step.id === id));
@@ -80,14 +85,14 @@ function sources(items: Source[]): HTMLElement {
   return row;
 }
 function workCard(item: Work): HTMLElement {
-  const card = el('article', 'work-card');
-  const head = el('div', 'card-heading'); head.append(el('h4', '', `${item.id} · ${item.title}`), badge('implemented', item.kind === 'design' ? 'Design recorded' : undefined));
+  const card = el('details', 'work-card');
+  const head = el('summary', 'card-heading'); head.append(el('h4', '', `${item.id} · ${item.title}`), badge('implemented', item.kind === 'design' ? 'Design recorded' : undefined));
   card.append(head, el('div', 'section-label', 'HOW IT WAS DONE'), el('p', '', item.how), el('div', 'section-label', 'RECORDED VALIDATION'), el('p', '', item.verification), el('div', 'limitation', item.limitations), sources(item.sources));
   return card;
 }
 function issueCard(item: Problem): HTMLElement {
-  const card = el('article', `issue-card ${item.status}`);
-  const head = el('div', 'card-heading'); head.append(el('h4', '', `${item.id} · ${item.title}`), badge(item.status));
+  const card = el('details', `issue-card ${item.status}`);
+  const head = el('summary', 'card-heading'); head.append(el('h4', '', `${item.id} · ${item.title}`), badge(item.status));
   card.append(head, el('p', '', item.detail));
   if (item.resolution) card.append(el('div', 'section-label', 'RESOLUTION'), el('p', '', item.resolution));
   card.append(el('div', 'section-label', item.status === 'open' ? 'NEXT ACTION' : 'FOLLOW-UP'), el('p', '', item.next_action), el('p', 'provenance', item.provenance), sources(item.sources));
@@ -117,10 +122,10 @@ function empty(text: string): HTMLElement {
   const result = el('div', 'empty'); result.append(el('h3', '', 'No matches'), el('p', '', text), reset()); return result;
 }
 function overview(): HTMLElement {
-  const result = el('div'); result.append(header('PROJECT OVERVIEW', 'Roadmap & implementation', 'From a native directory core to endpoint operations. Explore the requirements, the evidence behind each increment, and the work still ahead.'), stats(), notice());
+  const result = el('div', 'overview-page'); result.append(header('PROJECT OVERVIEW', 'Roadmap & implementation', 'Choose a phase. Open only the steps and evidence you need.'), stats());
   const focus = el('section', 'focus'); const focusText = el('div');
   const focusPhase = board.phases.find(phase => phase.id === board.focusPhase);
-  focusText.append(el('div', 'eyebrow', 'CURRENT DEVELOPMENT FOCUS'), el('h2', '', `${String(board.focusPhase).padStart(2, '0')} / ${focusPhase?.title ?? 'Development'}`), el('p', '', board.focusSummary));
+  focusText.append(el('div', 'eyebrow', 'CURRENT FOCUS'), el('h2', '', `${String(board.focusPhase).padStart(2, '0')} / ${focusPhase?.title ?? 'Development'}`), el('p', '', board.focusSummary));
   focus.append(focusText, button(`Review Phase ${String(board.focusPhase).padStart(2, '0')} →`, 'button primary', () => navigate({ view: 'phase', phase: board.focusPhase, q: '', status: 'all' }))); result.append(focus);
   const visible = board.phases.filter(phase => filtered(phase).length > 0);
   const heading = el('div', 'list-heading'); heading.append(el('h2', '', 'The delivery plan'), el('span', 'muted', `${visible.length} of ${board.phases.length} phases · ${board.phases.reduce((sum, phase) => sum + phase.steps.length, 0)} requirements`)); result.append(heading);
@@ -131,10 +136,12 @@ function overview(): HTMLElement {
     const top = el('div', 'card-heading'); top.append(el('span', 'phase-number', String(phase.id).padStart(2, '0')), badge(phase.status));
     const accepted = phase.steps.filter(step => step.status === 'accepted').length;
     const increments = board.workItems.filter(item => item.requirements.some(id => phase.steps.some(step => step.id === id))).length;
-    card.append(top, el('h3', '', phase.title), el('p', 'phase-caption', `${accepted}/${phase.steps.length} requirements accepted · ${increments} recorded increments`));
+    card.append(top, el('h3', '', phase.title), el('p', 'phase-caption', `${accepted}/${phase.steps.length} accepted · ${increments} increments`));
     const progress = el('progress'); progress.max = phase.steps.length; progress.value = accepted; progress.setAttribute('aria-label', `Phase ${phase.id}: ${accepted} of ${phase.steps.length} requirements accepted`); card.append(progress);
     if (state.q || state.status !== 'all') card.append(el('span', 'match-count', `${filtered(phase).length} matching requirements`));
-    card.append(button('Review phase →', 'phase-open', () => navigate({ view: 'phase', phase: phase.id }))); grid.append(card);
+    const open = button('Review phase →', 'phase-open', () => navigate({ view: 'phase', phase: phase.id }));
+    open.setAttribute('aria-label', `Open phase ${String(phase.id).padStart(2, '0')}: ${phase.title}`);
+    card.append(open); grid.append(card);
   }
   result.append(grid); return result;
 }
@@ -152,11 +159,11 @@ function requirement(step: Step): HTMLDetailsElement {
   detail.append(body); return detail;
 }
 function phaseView(phase: Phase): HTMLElement {
-  const result = el('div'); result.append(header(`PHASE ${String(phase.id).padStart(2, '0')} / ${phase.id <= 5 ? 'CORE PLATFORM' : phase.id <= 10 ? 'SECURITY & OPERATIONS' : 'ENDPOINT SERVICES'}`, phase.title, phase.sections['Scope and entry'] ?? ''));
+  const result = el('div'); result.append(header(`PHASE ${String(phase.id).padStart(2, '0')} / ${phase.id <= 5 ? 'CORE PLATFORM' : phase.id <= 10 ? 'SECURITY & OPERATIONS' : 'ENDPOINT SERVICES'}`, phase.title, 'Open a substep to inspect its features, work and problems.'));
   const meta = el('div', 'phase-meta'); meta.append(badge(phase.status), el('span', 'muted', `${phase.steps.filter(s => s.status === 'accepted').length} of ${phase.steps.length} requirements accepted`), link('Canonical specification →', phase.url, 'text-link')); result.append(meta, notice());
   const architecture = el('details', 'design-notes'); const summary = el('summary', '', 'Design, dependencies & operational constraints'); architecture.append(summary);
   const notes = el('div', 'notes-body');
-  for (const name of ['Design and interfaces', 'Data and lifecycle', 'Security and failure handling', 'Capacity and operations', 'Dependencies and traceability']) {
+  for (const name of ['Scope and entry', 'Design and interfaces', 'Data and lifecycle', 'Security and failure handling', 'Capacity and operations', 'Dependencies and traceability']) {
     notes.append(el('h3', '', name), el('p', '', phase.sections[name] ?? ''));
   }
   notes.append(el('p', 'muted', `Accountable roles: ${phase.owner}`)); architecture.append(notes); result.append(architecture);
@@ -202,14 +209,6 @@ function logView(): HTMLElement {
   return result;
 }
 function renderNav(): void {
-  const nav = get('phase-nav'); nav.replaceChildren();
-  for (const phase of board.phases) {
-    if ([0, 7, 11].includes(phase.id)) nav.append(el('div', 'nav-group', phase.id === 0 ? 'FOUNDATION' : phase.id === 7 ? 'ADVANCED SECURITY' : 'ENDPOINT OPERATIONS'));
-    const item = button('', `phase-nav-item ${phase.status}`, () => navigate({ view: 'phase', phase: phase.id }));
-    item.setAttribute('aria-label', `Phase ${String(phase.id).padStart(2, '0')}: ${phase.title}`);
-    if (state.view === 'phase' && state.phase === phase.id) item.setAttribute('aria-current', 'page');
-    item.append(el('span', 'nav-number', String(phase.id).padStart(2, '0')), el('span', 'nav-title', phase.title), el('span', `nav-dot ${phase.status}`)); nav.append(item);
-  }
   for (const [id, view] of [['overview-tab', 'overview'], ['log-tab', 'log']]) {
     const tab = get(id ?? ''); if (state.view === view) tab.setAttribute('aria-current', 'page'); else tab.removeAttribute('aria-current');
   }

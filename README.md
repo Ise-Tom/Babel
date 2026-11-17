@@ -32,10 +32,16 @@ required production runtime. Advanced security capabilities extend this core pro
 
 ## Project progress dashboard
 
-**[Open the permanent dashboard in GitHub](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md)**
-— uses the repository's existing access controls. The initial page is a development
-preview; after this PR is merged, successful main-branch CI updates the same URL.
-No download is needed. Expand phases to read substeps, features and evidence.
+The preferred interface is a compact, searchable phase board: select a phase,
+then open the substeps, implementation evidence and problems you need. The
+interactive build has a public GitHub Pages deployment workflow. An owner must
+enable **Settings → Pages → Source → GitHub Actions** once; successful main CI
+then updates the same web address automatically. See the
+[hosting setup](docs/project-dashboard.md#activate-public-web-hosting-once).
+
+The **[private GitHub fallback report](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md)**
+uses the repository's existing access controls and updates after successful
+main-branch CI. It remains available while interactive hosting is configured.
 
 The [dashboard guide](docs/project-dashboard.md) explains how to build/open the
 portable phase board, inspect implementation evidence and maintain progress facts.
@@ -51,7 +57,8 @@ npm run preview
 ```
 
 The build also produces a self-contained `dashboard/dist/index.html`, available
-as the **dashboard-standalone** CI artifact. No public hosting is configured.
+as the **dashboard-standalone** CI artifact. The Pages job publishes only this
+tested build; repository visibility stays private.
 
 ## Validate the repository
 

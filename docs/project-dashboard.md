@@ -6,6 +6,54 @@ change passwords, deploy patches or operate endpoints. Viewing needs no API toke
 evidence links open the repository normally. The automated publisher uses its
 GitHub Actions job token, and the private GitHub view uses your existing login.
 
+## Interactive interface
+
+The preferred interface is the compact interactive board: all 18 phases fit in
+the tested 1440×1000 desktop viewport, with one phase picker and searchable cards.
+Choose a phase, then a substep; implementation explanations and problem histories
+open individually. Design and acceptance details remain available on demand.
+Cards can be opened anywhere, keyboard focus moves to the selected page, and
+mobile layouts use two columns plus the direct phase picker.
+
+The interactive build is a single static HTML file. Public static hosting has
+been approved for the dashboard; the repository remains private. The Pages
+workflow below publishes only the tested HTML build. The GitHub-rendered report
+is a fallback for repository browsing, not the preferred dashboard interface.
+
+## Activate public web hosting once
+
+1. Merge the dashboard hosting PR after its required CI checks pass.
+2. An owner opens [Settings → Pages](https://github.com/Ise-Tom/Babel/settings/pages)
+   and selects **Build and deployment → Source → GitHub Actions**. Keep repository
+   visibility private. GitHub's hosting action cannot enable Pages with the default
+   job token; this integration also gets HTTP 403 for Pages administration.
+3. Successful main CI automatically starts **Publish interactive dashboard**. If
+   it ran before Pages was enabled, run that publishing workflow manually on main.
+   It reuses successful CI for the exact revision, so no manual rebuild/upload is needed.
+4. Open the **github-pages** environment/deployment URL shown by that workflow and
+   bookmark it. A subsequent successful main CI replaces the dashboard at that URL.
+
+This is a one-time owner setting. The
+[official hosting action](https://github.com/actions/configure-pages/blob/45bfe0192ca1faeb007ade9deae92b16b8254a0d/action.yml)
+documents the additional permissions needed to enable a site. No owner PAT is
+requested or stored. If the account cannot host Pages for a private repository,
+choose another static host; do not make the source repository public as a workaround.
+The site is not live until a Pages deployment succeeds.
+
+The [workflow](../.github/workflows/dashboard-pages.yml) verifies the successful
+main CI run and its unexpired standalone artifact before granting a separate
+deployment job Pages/OIDC permissions. That job does not check out the source
+repository. It downloads only the verified artifact and refuses files other than
+a regular, bounded `index.html` with the dashboard CSP. Only that HTML and a
+`.nojekyll` marker are published. Source archives, reports and credentials are
+excluded. Failed/foreign/PR/tag/scheduled CI and outdated main revisions cannot
+publish; manual retries are restricted to main with matching successful CI.
+The previous deployed site remains available if verification or deployment fails.
+
+The page is public, including its engineering facts. GitHub source links still
+require repository access. Progress remains reviewed source data, not inferred
+completion; reload the stable web address to see a newly deployed snapshot.
+
 ## Permanent view without downloads
 
 **[Open the GitHub dashboard](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md).**
