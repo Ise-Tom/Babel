@@ -1,0 +1,7 @@
+Babel
+Copyright 2026 Babel contributors
+
+Licensed under the Apache License, Version 2.0.
+Third-party components retain their own copyrights and license terms.
+Dependency inventories are produced by CI; preserve upstream notices when
+redistributing third-party components.

@@ -84,16 +84,17 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Enforce Actions-only publishing and HTTPS on the existing site
+      - name: Require Actions-only publishing and HTTPS on the existing site
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api --method PUT repos/Ise-Tom/Babel/pages -f build_type=workflow -F https_enforced=true \
-            --jq '{build_type, https_enforced}'
           gh api repos/Ise-Tom/Babel/pages \
             --jq '.build_type == "workflow" and .https_enforced == true' > "$RUNNER_TEMP/pages-policy"
           read -r VERIFIED < "$RUNNER_TEMP/pages-policy"
-          test "$VERIFIED" = true
+          if test "$VERIFIED" != true; then
+            echo '::error::Pages requires Source: GitHub Actions and Enforce HTTPS in repository Settings > Pages.'
+            exit 1
+          fi
       - name: Read existing site configuration
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
       - name: Refuse a stale deployment if main changed after verification

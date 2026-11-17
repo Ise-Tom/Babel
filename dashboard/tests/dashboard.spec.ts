@@ -65,7 +65,11 @@ test('implemented work explains how, validation, limitations and encountered pro
   await page.screenshot({ path: resolve('..', `reports/dashboard-phase-${info.project.name}.png`) });
   await expect(step.locator('.work-card').first().locator('.source-links a').first()).toHaveAttribute('href', /\/blob\/3a69a6b/);
   const other = page.getByTestId('P01-02'); await other.locator(':scope > summary').click();
-  await expect(other).toContainText('No implemented increment');
+  const facts = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  const associated = facts.workItems.filter(item => item.requirements.includes('P01-02'));
+  await expect(other.locator('.work-card')).toHaveCount(associated.length);
+  if (!associated.length) await expect(other).toContainText('No implemented increment');
+  if (associated.some(item => item.kind === 'design')) await expect(other).toContainText('Design recorded');
 });
 
 test('search, requirement filter, empty state and reset work together', async ({ page }) => {

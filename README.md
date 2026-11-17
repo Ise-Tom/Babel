@@ -28,6 +28,8 @@ required production runtime. Advanced security capabilities extend this core pro
 - [Final remote access, file delivery and EDR phases](docs/endpoint-operations-roadmap.md)
 - [Architecture decisions](docs/architecture.md) and [native-core implementation plan](docs/native-core-plan.md)
 - [CI/CD operation and repository settings](docs/ci-cd.md)
+- [PostgreSQL storage decision](docs/adr/0003-postgresql-directory-state.md)
+- [Unprovisioned Windows reference lab](docs/windows-reference-lab.md)
 - [Contributing](CONTRIBUTING.md) and [security reporting](SECURITY.md)
 
 ## Project progress dashboard
@@ -97,7 +99,9 @@ See [CI/CD operation](docs/ci-cd.md) for remaining product and GitHub-plan gates
 
 ## License
 
-Open source distribution is the goal, but a license has not yet been selected
-by the owner. Until a LICENSE is adopted, normal copyright restrictions apply;
-this project must not claim to grant open source reuse rights. License selection
-and dependency compatibility are release blockers.
+Babel is licensed under [Apache-2.0](LICENSE). External contributions use the
+[Developer Certificate of Origin 1.1](DCO), as explained in
+[Contributing](CONTRIBUTING.md). Protocol/specification and reference-fixture
+rights are reviewed separately under [D-01](docs/decisions.md). Third-party
+components retain their own licenses. Product release qualification remains
+separate from the project’s source license.

@@ -61,6 +61,10 @@ class DashboardModel(unittest.TestCase):
         self.assertEqual(data["phases"][1]["steps"][-1]["status"], "planned")
 
     def test_acceptance_requires_review_and_implemented_explanation(self):
+        # Keep the missing-explanation fixture independent of new design/work records.
+        self.progress["work_items"] = [
+            item for item in self.progress["work_items"] if "P01-02" not in item["requirements"]
+        ]
         self.progress["requirements"]["P01-02"] = {"status": "accepted"}
         with self.assertRaisesRegex(ValueError, "object required"):
             self.model()

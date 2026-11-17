@@ -2,3 +2,6 @@
 members = ["native/babel-ldap"]
 exclude = ["fuzz"]
 resolver = "2"
+
+[workspace.package]
+license = "Apache-2.0"

@@ -3,8 +3,12 @@
 The dashboard is live at **https://ise-tom.github.io/Babel/**. On 17 November
 2026, public visibility, HTTPS enforcement, the main-only Pages environment
 branch policy and a successful deployment were verified through GitHub APIs.
-The site returned HTTP 200 and GitHub’s HSTS header. PR #18 is merged and all
-12 jobs of main CI run 44175150495 passed.
+The site returned HTTP 200 and GitHub’s HSTS header. PRs #18 and #17 are merged;
+all 12 jobs of main CI run 44179292379 passed for commit `208d61d`.
+The first hardened deployment (44179766192) verified the archive successfully but
+failed on an unnecessary Pages administration write. This PR removes that write
+while retaining fail-closed readback of the correct settings. The last successful
+site deployment remains available; no new deployment success is claimed yet.
 
 The chat integration cannot administer these settings: Pages updates, environment
 updates, private vulnerability reporting and ruleset creation returned HTTP 403,
@@ -16,11 +20,13 @@ The changes in PR #17 harden workflows; they do not prove owner settings are app
 
 1. **[Pages](https://github.com/Ise-Tom/Babel/settings/pages):** select **Source:
    GitHub Actions** and keep **Enforce HTTPS** checked. The observed source was
-   still legacy branch publishing from `main` `/`; this can compete with the
-   tested dashboard deployment and should be changed. The revised deployment
-   first attempts and verifies Actions-only mode/HTTPS with its existing
-   `pages: write` job token. If GitHub denies that request, apply these UI settings
-   and retry; failure is kept visible rather than silently bypassed.
+   legacy branch publishing from `main` `/` during the earlier setup. It is now
+   verified as `workflow` with HTTPS enabled. The prior deployment still attempted
+   an unnecessary settings write and failed with HTTP 403; the fix verifies the
+   settings without requesting administration access. The revised deployment
+   reads and requires those settings; it never requests administration writes.
+   If either setting is wrong, apply these UI settings and retry. A failed read
+   or incorrect setting stops deployment rather than silently bypassing it.
 2. **[Rules → Rulesets](https://github.com/Ise-Tom/Babel/settings/rules):** import
    [Protect main](github-main-ruleset.json), inspect it and activate it. It requires
    PRs, an owner review, approval of the last push, dismissal of stale approvals,
@@ -52,11 +58,13 @@ The changes in PR #17 harden workflows; they do not prove owner settings are app
    prevent self-review and restrict it to authorized `v*` tags. That release
    environment was absent. The workflow still requires a license, successful CI,
    a main-ancestor commit and draft-only prereleases; public visibility does not
-   make Babel ready for production or resolve the open license decision.
+   make Babel ready for production. Apache-2.0 and DCO are now selected; third-party
+   and reference/specification obligations remain separate review gates.
 
 After applying settings, verify their actual state in GitHub, rerun current CI
-and dispatch **Publish interactive dashboard** on main. Merge PR #17 only after
-its full CI passes and its workflow/policy changes have been independently reviewed.
+and dispatch **Publish interactive dashboard** on main. The owner merged PR #17;
+this follow-up still needs review, passing CI and merge before a new deployment
+can demonstrate the corrected path.
 
 ## Controls in the revised workflow
 
@@ -67,8 +75,8 @@ path traversal, symlinks, oversized content and weak browser policies fail.
 CI checks that the built dashboard satisfies the same deployment verifier.
 
 Only verified HTML and `.nojekyll` enter the Pages artifact. The privileged Pages
-job has no source checkout or project code execution. It configures the existing
-site with its narrow Pages permission, rechecks main immediately before deployment
+job has no source checkout or project code execution. It verifies the existing
+site settings without administration writes, rechecks main immediately before deployment
 and uses pinned official hosting actions. Verification/publication failures retain
 the previous site. The revision recheck reduces stale deployment races; it is not
 an atomic lock on GitHub branch updates.

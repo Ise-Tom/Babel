@@ -63,6 +63,8 @@ checks; protocol/security scenarios matter beyond percentages. Fuzzing uses
 synthetic corpus only, with a short PR budget and a longer scheduled budget;
 passing it does not prove absence of parser vulnerabilities.
 
-D-01/D-02/D-04/D-05/D-06 and the Windows lab remain open where specified in the
+Apache-2.0/DCO and the PostgreSQL backend family are now owner-selected;
+D-01 obligations, D-02 platform qualification, D-04 durability/key custody,
+D-05/D-06 replication/policy and the Windows lab remain open where specified in the
 [decision register](decisions.md). No identity/key/storage format, release
 license, Windows conformance result or production hardware capacity is invented.

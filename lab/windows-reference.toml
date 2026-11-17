@@ -1,0 +1,99 @@
+schema_version = 1
+status = "definition_only"
+provider = "unselected"
+
+[safety]
+production_bridge = false
+default_route = false
+external_dns = false
+automatic_image_downloads = false
+credentials = "generated_per_run"
+evidence = "synthetic_redacted_only"
+
+[[networks]]
+id = "reference"
+cidr = "192.0.2.0/24"
+domain = "reference.example.test"
+
+[[networks]]
+id = "babel"
+cidr = "198.51.100.0/24"
+domain = "babel.example.test"
+
+[[machines]]
+id = "reference-dc"
+role = "windows_reference_dc"
+network = "reference"
+cpus = 4
+memory_mib = 8192
+disk_gib = 80
+image_id = ""
+image_sha256 = ""
+build = ""
+edition = ""
+image_license_accepted = false
+
+[[machines]]
+id = "reference-client"
+role = "windows_client"
+network = "reference"
+cpus = 4
+memory_mib = 8192
+disk_gib = 96
+image_id = ""
+image_sha256 = ""
+build = ""
+edition = ""
+image_license_accepted = false
+
+[[machines]]
+id = "reference-probe"
+role = "linux_probe"
+network = "reference"
+cpus = 1
+memory_mib = 1024
+disk_gib = 16
+image_id = ""
+image_sha256 = ""
+build = ""
+edition = ""
+image_license_accepted = false
+
+[[machines]]
+id = "babel-dc"
+role = "babel_linux_dc"
+network = "babel"
+cpus = 2
+memory_mib = 4096
+disk_gib = 40
+image_id = ""
+image_sha256 = ""
+build = ""
+edition = ""
+image_license_accepted = false
+
+[[machines]]
+id = "babel-client"
+role = "windows_client"
+network = "babel"
+cpus = 4
+memory_mib = 8192
+disk_gib = 96
+image_id = ""
+image_sha256 = ""
+build = ""
+edition = ""
+image_license_accepted = false
+
+[[machines]]
+id = "babel-probe"
+role = "linux_probe"
+network = "babel"
+cpus = 1
+memory_mib = 1024
+disk_gib = 16
+image_id = ""
+image_sha256 = ""
+build = ""
+edition = ""
+image_license_accepted = false

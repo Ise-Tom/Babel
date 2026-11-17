@@ -10,8 +10,9 @@ Use Rust 1.100.0 (edition 2024), pinned in `rust-toolchain.toml`, for the native
 core's first bounded BER/LDAP implementation. It permits explicit checked byte
 parsing and ownership with `unsafe` forbidden in this crate. No runtime crate
 dependencies, TLS, cryptography or persistent data are introduced. The crate is
-`publish = false`; project license selection and product release remain blocked
-by D-01. Rust/std and development dependencies still have third-party obligations.
+`publish = false`; Apache-2.0 and DCO 1.1 are now owner-selected. D-01 still
+tracks third-party/specification rights and product release remains separately
+gated. Rust/std and development dependencies still have third-party obligations.
 
 Use exact, locked proptest development dependencies for generated invariants,
 pinned libFuzzer tooling/nightly for parser fuzzing, and an independent ldap3
@@ -53,8 +54,10 @@ See [Phase 1 progress](../phase-01-progress.md) for actual checks and command
 reproduction. Unit/negative/property, framing/deadline, independent-client,
 coverage and sanitizer-fuzz jobs must pass before this source scope is admitted.
 Cargo lock checks, dependency/license/source audit and native CycloneDX reports
-cover both the core and fuzz graphs. Private unpublished workspace-license
-exemption is explicit; it cannot authorize registry/public product distribution.
+cover both the core and fuzz graphs. The former unpublished workspace-license
+exemption is disabled after the Apache-2.0
+selection. All packages are audited; registry publication and product release
+remain separately gated.
 
 This is partial P01-01/P01-04/P01-09/P01-10 evidence. Stable identity/schema/ACL,
 durable storage, DNS, authentication/key lifecycle, Windows membership and

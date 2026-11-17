@@ -6,8 +6,8 @@ include-dev = true
 include-build = true
 allow = ["MIT", "Apache-2.0", "NCSA"]
 # NCSA covers the libFuzzer development harness; retain upstream notices.
-# Babel is unpublished while the owner selects a license; no registry publication.
-private = { ignore = true }
+# Babel is Apache-2.0; audit unpublished workspace packages as well.
+private = { ignore = false }
 
 [bans]
 multiple-versions = "warn"
