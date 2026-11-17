@@ -16,8 +16,8 @@ explanations and the issue journal. Use the browser's Find command to search.
 The standalone HTML provides the richer interactive filters/export interface.
 
 The initial report is labeled **development preview**. After the dashboard PR
-is merged, the existing CI workflow updates the report automatically on pushes
-to main, after every required quality/security job succeeds. Manual CI runs on
+is merged, a separate publishing workflow updates the report automatically on pushes
+to main, after the full CI workflow succeeds. Manual CI runs on
 main can also refresh it. Failed CI leaves the previous report available.
 Progress explanations still need reviewed source changes; publishing does not
 infer acceptance from green checks or rewrite the evidence snapshot date.
@@ -38,7 +38,7 @@ python scripts/render_dashboard.py --revision <full-source-commit> --preview
 The [publisher](../scripts/publish_dashboard.py) uses the runner's GitHub CLI and
 job token to update only `dashboard-live`. Pull requests, forks, tags and scheduled
 runs do not publish. If a repository policy denies the job write access, its error
-appears in CI; the previous report remains available. The publisher never bypasses
+appears in the publishing workflow; the previous report remains available. The publisher never bypasses
 that policy. This route uses GitHub's Markdown rendering, not GitHub Pages; the
 current integration cannot configure Pages (HTTP 403). A separately hosted full
 interactive UI remains a hosting/access-control decision.

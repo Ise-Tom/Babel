@@ -237,13 +237,15 @@ Chromium viewport checks do not establish a complete WCAG or real-device audit.
 Progress facts are a dated, source-controlled snapshot; a fresh build does not
 silently refresh old evidence or mark planned work accepted.
 
-After the full `CI gate` passes on a push/manual run on main, a separate trusted
-job publishes the GitHub-rendered report to the automation-owned `dashboard-live`
+After the full CI workflow succeeds on a push/manual run on main, a separate
+publishing workflow updates the GitHub-rendered report on the automation-owned `dashboard-live`
 branch. That job alone receives `contents: write`; it uses structured API requests,
 requires the repository to remain private, and can update only the report branch
 through the publisher's fixed destination. It skips outdated main revisions,
 uses fast-forward updates, and refuses to overwrite unexpected files. PRs, forks,
-tags, failed gates and scheduled runs cannot publish. Publication failure appears
-in the workflow and leaves the prior report available. The stable report URL
+tags, failed CI and scheduled runs cannot publish. The workflow-run job checks
+the triggering repository, branch, event and successful conclusion before checking
+out its exact source SHA. This keeps PR/reusable release checks read-only. Publication failure appears
+in the publishing workflow and leaves the prior report available. The stable report URL
 does not expire with the 14-day downloadable artifacts. Detailed progress facts
 still require review; automatic publication is not automatic acceptance.

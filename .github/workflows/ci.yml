@@ -176,15 +176,3 @@ jobs:
               sys.exit('Required CI jobs did not succeed: ' + ', '.join(failures))
           print('All required CI jobs succeeded')
           PYTHON
-
-  publish-dashboard:
-    name: Publish private progress report
-    needs: gate
-    if: >-
-      github.repository == 'Ise-Tom/Babel' &&
-      github.ref == 'refs/heads/main' &&
-      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-    # Trusted main only, after all quality gates; the report branch never triggers CI.
-    uses: ./.github/workflows/dashboard-publish.yml # zizmor: ignore[self-repository]
-    permissions:
-      contents: write
