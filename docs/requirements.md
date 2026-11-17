@@ -7,6 +7,14 @@ Delivery milestones do not reduce that production scope. Every requirement must
 have an owner, automated evidence where feasible, and a documented exception
 process before a release candidate. Track implementation with requirement IDs.
 
+## Native implementation boundary
+
+Babel owns its native AD-compatible directory/domain core; it must not require
+Samba AD DC, its database or its administration tools in production. Reuse of
+reviewed libraries is permitted. The [native-core plan](native-core-plan.md)
+defines model/protocol/conformance milestones; no native behavior is currently
+implemented. This direction does not relax any AD, security or capacity gate.
+
 ## Linux server hosting
 
 Linux is the required production host platform for every Babel server component:
@@ -138,7 +146,7 @@ instead of silently discarding them. CLI/API operations need equivalent RBAC.
 Use these as normative inputs, checking the current revisions during Phase 0:
 
 - [Microsoft Open Specifications](https://learn.microsoft.com/en-us/openspecs/): MS-ADTS, MS-DRSR, MS-KILE, MS-PAC, MS-NRPC, MS-GPOL, MS-SMB2 and MS-DNSP.
-- [Samba AD DC documentation](https://www.samba.org/samba/docs/): assess supported functional levels, trust and SYSVOL limitations against the exact version selected.
+- [Samba AD DC documentation](https://www.samba.org/samba/docs/): optional secondary interoperability comparison; not the production backend or the sole conformance oracle.
 - [Kerberos RFC 4120](https://www.rfc-editor.org/rfc/rfc4120) and [LDAP RFC 4511](https://www.rfc-editor.org/rfc/rfc4511).
 - [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/) for administration UI/API, plus a domain-specific protocol threat model.
 - [NIST digital identity guidance](https://pages.nist.gov/800-63-4/) for authentication policy; do not claim certification from using this reference.

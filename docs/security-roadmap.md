@@ -95,7 +95,7 @@ staff, not claims that such teams already exist.
 
 | ID | Capability | Acceptance / constraints |
 | --- | --- | --- |
-| F-01 | Reviewed systemd sandboxing, capability reduction and AppArmor/SELinux profiles | Test per-role requirements, upgrades and restore; document any privileged Samba/backend operations instead of promising all services run unprivileged |
+| F-01 | Reviewed systemd sandboxing, capability reduction and AppArmor/SELinux profiles | Test per-role requirements, upgrades and restore; document any privileged native-core/OS operations instead of promising all services run unprivileged |
 | F-02 | Host security posture: supported Secure Boot, measured boot and disk encryption | Document provisioning and recovery-key custody; boot attestation must be verified externally; disk encryption does not protect a running compromised DC |
 | F-03 | Hardware-backed key custody through HSM/TPM or a supported external KMS | Qualify each key type and backend API; do not claim AD password verifiers or every Kerberos key can be moved into an HSM; test latency, outage and recovery |
 | F-04 | Resource isolation and DoS controls per service/peer | Exercise expensive LDAP searches, nested groups, parser inputs, connection exhaustion, audit floods and replication queues under limits without starving legitimate login |

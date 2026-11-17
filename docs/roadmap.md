@@ -5,14 +5,19 @@ production claims are implied. Work is sequenced by dependencies, with full AD
 replacement in the first production release. Security and ergonomics are
 continuous workstreams, not final-stage add-ons.
 
+Babel will own a native AD-compatible core. Samba AD DC is not a required runtime
+or migration stepping stone. The [native-core plan](native-core-plan.md)
+subdivides Phases 0–1 into N-00–N-06 with explicit protocol/model/test dependencies;
+reviewed libraries remain permitted and cryptography will not be reinvented.
+
 All Babel production services must be hosted on Linux. Windows environments
 provide clients and AD interoperability references, not a required production
 host. PLAT-01–PLAT-03 in the [requirements](requirements.md) are release gates.
 
 | Phase | Deliverables | Exit gate / evidence |
 | --- | --- | --- |
-| 0 — Contract and feasibility | Inventory AD-01–AD-10 and integration expectations; qualify Linux distribution/kernel/backend baseline; select license, maintainers and disclosure channel; compare Samba-based core with greenfield; define Windows test licenses and infrastructure budget | Approved compatibility matrix, ADRs, legal distribution review, Linux-hosted domain-join/GPO/trust spike, test runner isolation design |
-| 1 — Reproducible vertical slice | Disposable Linux domain/DC, one Windows client, domain join/login, basic user/group CRUD via delegated API/UI; Linux packaging, systemd startup and observability | Pinned dependencies, unit/build/type checks, negative RBAC tests, clean Linux install/reboot and real-client join/login/policy smoke tests, SBOM/package vulnerability scan and parser-fuzz smoke checks |
+| 0 — Contract and feasibility | Inventory AD-01–AD-10 and integration expectations; qualify the Linux baseline; select license, maintainers and disclosure channel; establish native identity/storage/replication design and conformance harness; define Windows test licenses and infrastructure budget | Approved operation/client compatibility matrix, native-core/toolchain/storage ADRs, legal review, disposable Windows reference lab and test-runner isolation; N-00/N-01 gates |
+| 1 — Reproducible vertical slice | Native core milestones N-02–N-06: durable identity/ACL model, read-only discovery/LDAP subset, authentication and authorized writes, Windows membership, initial GPO/SYSVOL and delegated UI/API; Linux packaging and observability | All N-02–N-06 dependency gates; locked build, negative ACL/parser/fuzz tests, clean Linux install/reboot, real Windows join/login/password/policy tests, SBOM and vulnerability scans; previews explicitly limited |
 | 2 — Full protocol scope | Forest/domain semantics, LDAP/GC, Kerberos, DNS, SMB/RPC/Netlogon, GPO/SYSVOL, schema and functional levels, trust/migration | AD-01–AD-10 conformance matrix with real Windows clients and an isolated AD reference; documented failures block production |
 | 3 — Multi-site and operations | Six DCs/three sites, partition/conflict handling, safe upgrades, restore, key/certificate rotation, external audit | Fault injection, 24-hour partition/rejoin, isolated domain restore, one-node/site loss, upgrade/rollback evidence and no lost acknowledged data within stated model |
 | 4 — Security, capacity and usability qualification | Full threat review, independent assessment, 10k dataset load/soak, delegated admin journeys and accessibility | All SEC/OPS/UX gates; 24-hour mixed-load soak, SLO report, five-admin usability study, no unresolved critical/high security findings without explicit security-owner disposition |
@@ -89,7 +94,8 @@ it at each phase using these mandatory gates:
 ## Work to open first
 
 1. Approve compatibility/integration inventory and license (owner/security lead).
-2. Select protocol core through the Phase 0 spike (protocol maintainer).
+2. Specify the native identity/storage/replication model and implement the
+   N-00/N-01 conformance/toolchain foundation (protocol/storage maintainers).
 3. Provision licensed Windows reference images and isolated trusted CI runners
    (infrastructure maintainer); do not expose these runners to fork PR code.
 4. Choose implementation toolchain and add real build/test/dependency gates

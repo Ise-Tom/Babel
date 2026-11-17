@@ -14,14 +14,16 @@ targets, not measured capabilities.
 The core product includes identity and password lifecycle management, users and
 groups, delegated permissions, Windows domain join, Kerberos/LDAP, DNS, Group
 Policy (GPO/SYSVOL), trusts, replication, backup and recovery, plus a web UI and
-automation API/CLI. Advanced security capabilities extend this core product.
+automation API/CLI. Babel will build its own native AD-compatible core, with
+reviewed libraries and a protocol conformance harness; Samba AD DC will not be a
+required production runtime. Advanced security capabilities extend this core product.
 
 - [Product, security, and capacity requirements](docs/requirements.md)
 - [Threat model](docs/threat-model.md) and [extended security roadmap](docs/security-roadmap.md)
 - [Delivery roadmap and release gates](docs/roadmap.md)
 - [Later endpoint patch management](docs/patch-management-roadmap.md)
 - [Final remote access, file delivery and EDR phases](docs/endpoint-operations-roadmap.md)
-- [Architecture decisions](docs/architecture.md)
+- [Architecture decisions](docs/architecture.md) and [native-core implementation plan](docs/native-core-plan.md)
 - [CI/CD operation and repository settings](docs/ci-cd.md)
 - [Contributing](CONTRIBUTING.md) and [security reporting](SECURITY.md)
 

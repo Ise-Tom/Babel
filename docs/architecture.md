@@ -1,50 +1,47 @@
 # Architecture decisions
 
-## ADR-0001: Product boundary and protocol core (proposed)
+## ADR-0001: Native AD-compatible protocol core (accepted direction)
 
-Goal: full AD replacement, with Windows compatibility included in the first
-production acceptance contract. Target: 10,000 identities / three sites.
-All production server roles must run on Linux, with no Windows Server runtime
-required for a standalone Babel domain. Windows is a client/interoperability
-target; existing Windows AD servers may participate in migration or coexistence.
+Owner decision: build Babel's own directory/domain core rather than wrapping
+Samba AD DC. The [native-core implementation plan](native-core-plan.md) defines
+the reuse boundary, dependency-ordered milestones, storage/replication decisions
+and executable acceptance gates. Samba is not a required production runtime,
+bundled domain controller, administrative tool or persistent-data dependency.
 
-Recommendation to validate: use a maintained AD-compatible protocol core such
-as Samba AD DC, and concentrate Babel's differentiation in safe administration,
-installation, observability, recovery and automation. Reusing a backend does
-not establish conformance: verify the pinned version against AD-01–AD-10,
-especially functional levels, trusts, multi-site behavior, SYSVOL and GPO tools.
-A backend gap is a scope/delivery decision, not permission to omit a requirement.
+Goal: full AD replacement with the first production release, at 10,000 identities
+across three sites. All server roles run on Linux with no Windows Server runtime
+required for a standalone domain. Windows remains a client/reference target;
+existing AD may participate in qualified trust/migration/coexistence scenarios.
 
-Compare this with a new protocol core through a time-boxed interoperability
-spike hosted on Linux. Building a new LDAP/Kerberos stack alone does not provide Windows AD
-semantics; replication, PAC, Netlogon, DNS, SMB/RPC and policy delivery must all
-work. Evaluate memory safety, fuzzability, security history, upgrade support,
-licensing, dependency activity, packaging and test infrastructure. Do not commit
-to a new server implementation before this evidence exists.
+Own the identity/authorization, protocol integration, storage and replication
+semantics. Reuse reviewed cryptographic/TLS, storage and protocol libraries where
+appropriate; a native core is not an instruction to invent cryptography. Match
+published specifications and real-client behavior. The project now owns the
+complete conformance and security-maintenance burden for its native integration.
 
-Proposed boundaries:
+Service boundaries:
 
-1. Protocol/data plane: domain authentication, directory, DNS, replication and
-   policy delivery; remains available if Babel's admin control plane is down.
-2. Administration plane: accessible web UI, versioned API, delegated operations,
-   auditable jobs and explicit high-risk action confirmation. No browser-to-DC
-   privileged credential exposure; backend service identity is least privilege.
-3. Operations plane: health, upgrades, encrypted backup, restore and audit export.
-   Do not store recovery keys solely in the directory they recover.
+1. Native protocol/data plane: directory/authentication, DNS, replication and
+   GPO delivery, with sole authority over security-state mutations.
+2. Administration plane: web UI and versioned delegated API/CLI, using authorized
+   core operations rather than raw-store or replication-secret access.
+3. Operations plane: health, upgrade, audit and encrypted backup/recovery; recovery
+   keys must not exist solely inside the directory they recover.
+4. Later endpoint plane: patch, support, file-transfer and EDR services with
+   separate authorization and credentials; outages do not stop authentication.
 
-No language, database, container strategy, or frontend framework is chosen yet.
-Choose after the spike; add their locked build/test/security pipelines with the
-first implementation. Do not infer a required Kubernetes cluster from this plan.
-The proposed first hosting baseline is Ubuntu Server 24.04 LTS x86-64 with
-systemd-managed services on VMs or physical servers, subject to Phase 0
-qualification. Containers are a separate packaging decision. Backend selection
-must satisfy PLAT-01–PLAT-03 as well as the Windows protocol contract.
+No production language, database or container strategy is selected yet. The
+first toolchain ADR must add matching CI before source is accepted. The proposed
+host baseline remains Ubuntu Server 24.04 LTS x86-64 with systemd on VMs/physical
+servers; qualify exact versions. PLAT-01–PLAT-03 and the full AD contract remain
+release gates. Kubernetes is not required. N-00–N-06 are development milestones,
+not promises that full domain compatibility can be implemented in one step.
 
 ## ADR-0002: Licensing and project governance (open, release-blocking)
 
-The owner must choose a project license and contributor policy. If Samba or
-other copyleft software is incorporated or distributed, evaluate actual linking,
-derivation and packaging obligations before choosing compatible terms. SPDX
+The owner must choose a project license and contributor policy. Review the
+actual linking, derivation and packaging obligations of all reused dependencies
+and the terms of protocol specifications/reference material before distribution. SPDX
 identifiers, dependency licenses, source offers where required, notices and
 redistribution rights must be checked before distribution. No license is
 invented for the owner by the CI bootstrap. At least two maintainers/security
@@ -60,27 +57,16 @@ blocked by the roadmap's full compatibility and security gates.
 
 ## ADR-0004: Portability and implementation languages (proposed)
 
-Recommend evaluating Samba AD DC on the Linux server baseline before considering
-a new AD core. Cross-platform **client** compatibility follows protocols and
-validated OS behavior, not the programming language used by the server. The
-Windows/Linux contract is mandatory; qualify macOS and other clients separately.
-No stack can promise compatibility with every OS or every protocol version.
+Cross-platform client behavior follows protocols and validated OS behavior, not
+just the server language. The Windows/Linux contract is mandatory; qualify
+macOS/other clients separately. Running server roles on Windows/macOS too would
+be a separate host-portability scope. The accepted host contract remains Linux.
 
-A portable administration API/UI and versioned backend adapter can isolate
-Babel's management features from Samba-specific integration. Directory writes
-must still use supported backend mechanisms and preserve its authorization,
-schema and replication semantics; an adapter is not a license to bypass them.
-A second protocol core is justified only by demonstrated requirements the
-qualified backend cannot meet and a separately funded conformance/security plan.
-
-Evaluate Go for management services and portable agents, TypeScript for the web
-interface, and Rust for new low-level agent/sensor components when needed.
-Python remains suitable for tooling and potentially administration/orchestration;
-10,000 identities alone does not make it unsuitable. Choose by component needs,
-team expertise, security review and measurements, keeping the language count
-small. This CI's Python tooling is not a decision to build the server in Python.
-
-Running all server roles on Windows/macOS as well as Linux would be a new host
-portability scope, not a consequence of cross-compiling an API. The current
-contract remains Linux-hosted; endpoint agents/sensors require separate OS APIs,
-packaging, signing and real-client tests even with Go/Rust shared code.
+Evaluate Rust for the memory-safe native protocol/storage integration core, Go
+for management services and portable agents, and TypeScript for a future web UI.
+Prefer a small initial language set and require a language/toolchain ADR before
+source is added. Python remains suitable for tooling/test orchestration and
+possibly management functions; this repository's Python CI helpers do not select
+the product language. Reviewed libraries still need integration, fuzz and abuse
+tests regardless of language. OS-specific agent/sensor components require native
+API, packaging/signing and real-device validation even with shared Go/Rust code.

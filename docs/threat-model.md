@@ -12,7 +12,7 @@ Boundaries include untrusted domain clients -> protocol listeners; browser ->
 admin API -> directory; DC -> DC over WAN; agent -> update service; backup ->
 restore domain; fork PR -> CI runner; release workflow -> artifact consumer.
 
-Trust the selected OS, reviewed protocol backend and administrator-controlled
+Trust the selected OS, reviewed native-core components/libraries and administrator-controlled
 root keys only to the stated level. Writable DC compromise gives domain-wide
 credentials and authority. Isolate test domains from the host and corporate
 networks. Production identity data is prohibited in public CI.
@@ -32,9 +32,12 @@ networks. Production identity data is prohibited in public CI.
 Review protocol downgrade behavior, account recovery and lockout abuse, password
 reset versus key rotation semantics, constrained/resource-based delegation,
 trust SID filtering, GPO script execution, certificate enrollment/PKINIT and
-schema extensions. Assess backend CVE response and cryptographic policy before
-choosing it. Do not implement custom cryptography or parsers merely to avoid an
-existing backend's licensing obligations.
+schema extensions. For the [native core](native-core-plan.md), review identity/ACL
+semantics, parser bounds, credential formats, durable acknowledgments, replication
+metadata and restore/upgrade transitions before storing valuable credentials.
+Reuse reviewed cryptography and assess library CVE response. Babel owns parser/
+state-machine correctness and integrated protocol security; memory safety alone
+does not prevent authorization or replication flaws.
 
 Bind management only to an explicitly configured trusted network until secured.
 Enumerate ports by the selected implementation, including dynamic RPC ranges;
