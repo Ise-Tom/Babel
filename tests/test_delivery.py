@@ -35,6 +35,7 @@ class ComponentScope(unittest.TestCase):
                     "scripts/tool.py",
                     "tests/test_tool.py",
                     "docs/a.md",
+                    "docs/github-main-ruleset.json",
                     ".github/workflows/ci.yml",
                     "requirements-ci.txt",
                 ],
@@ -102,6 +103,18 @@ class ComponentScope(unittest.TestCase):
             root = Path(directory)
             (root / "README.md").symlink_to(ROOT / "README.md")
             self.assertEqual(len(scope.check(root, ["README.md"])), 1)
+
+    def test_only_the_named_ruleset_is_supported_and_invalid_json_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "docs").mkdir()
+            path = root / "docs/github-main-ruleset.json"
+            for contents in ("invalid", "[]"):
+                path.write_text(contents)
+                self.assertTrue(scope.check(root, ["docs/github-main-ruleset.json"]))
+            path.write_text("{}")
+            self.assertEqual(scope.check(root, ["docs/github-main-ruleset.json"]), [])
+            self.assertTrue(scope.check(root, ["docs/other-ruleset.json"]))
 
 
 class SourcePackaging(unittest.TestCase):

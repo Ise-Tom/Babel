@@ -1520,5 +1520,5 @@
     }
   ],
   "focus_phase": 1,
-  "focus_summary": "The read-only RootDSE lab and bounded boolean/objectClass filters are merged. The public dashboard is live. PR #17 proposes deployment hardening and retains the tested compiler API; durable identities, DNS, authentication, domain join and GPO remain future work."
+  "focus_summary": "Read-only LDAP discovery is implemented. PR #17 hardens public hosting. Storage, DNS, authentication, domain join and GPO remain outstanding."
 }
