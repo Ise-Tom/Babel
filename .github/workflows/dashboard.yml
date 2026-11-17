@@ -44,6 +44,10 @@ jobs:
         run: npx --no-install playwright install --with-deps chromium
       - name: Desktop/mobile flows, offline use, injection and accessibility
         run: npm run test:e2e
+      - name: Render permanent GitHub report for review
+        env:
+          SOURCE_REVISION: ${{ github.sha }}
+        run: python3 ../scripts/render_dashboard.py --revision "$SOURCE_REVISION"
       - name: Preserve standalone HTML
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
@@ -61,4 +65,5 @@ jobs:
             dashboard/test-results/
             reports/dashboard-*.png
             reports/dashboard-*.json
+            reports/dashboard.md
           retention-days: 14

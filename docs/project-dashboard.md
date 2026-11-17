@@ -2,8 +2,46 @@
 
 A read-only engineering dashboard for all 18 phases and 180 requirements. It is
 separate from the future product administration UI: it cannot create accounts,
-change passwords, deploy patches or operate endpoints. No live GitHub API or
-authentication token is needed; evidence links open the repository normally.
+change passwords, deploy patches or operate endpoints. Viewing needs no API token;
+evidence links open the repository normally. The automated publisher uses its
+GitHub Actions job token, and the private GitHub view uses your existing login.
+
+## Permanent view without downloads
+
+**[Open the GitHub dashboard](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md).**
+Bookmark this URL. It uses the private repository's existing GitHub permissions;
+no new hosting account, token, public site or plan upgrade is needed. The page
+shows a phase board, expandable substeps, feature definitions, implementation
+explanations and the issue journal. Use the browser's Find command to search.
+The standalone HTML provides the richer interactive filters/export interface.
+
+The initial report is labeled **development preview**. After the dashboard PR
+is merged, the existing CI workflow updates the report automatically on pushes
+to main, after every required quality/security job succeeds. Manual CI runs on
+main can also refresh it. Failed CI leaves the previous report available.
+Progress explanations still need reviewed source changes; publishing does not
+infer acceptance from green checks or rewrite the evidence snapshot date.
+
+The automation-owned `dashboard-live` branch contains only a generated README;
+it cannot trigger a main-branch build loop. Source facts remain on main. The
+publisher has write permission only in the trusted post-gate job, checks that
+the repository is private, skips outdated main revisions, and uses fast-forward
+updates. It refuses to replace a branch containing unexpected files. Do not
+edit that generated branch manually. Repository visibility is never changed.
+
+For maintainers, render a review copy without publishing:
+
+```sh
+python scripts/render_dashboard.py --revision <full-source-commit> --preview
+```
+
+The [publisher](../scripts/publish_dashboard.py) uses the runner's GitHub CLI and
+job token to update only `dashboard-live`. Pull requests, forks, tags and scheduled
+runs do not publish. If a repository policy denies the job write access, its error
+appears in CI; the previous report remains available. The publisher never bypasses
+that policy. This route uses GitHub's Markdown rendering, not GitHub Pages; the
+current integration cannot configure Pages (HTTP 403). A separately hosted full
+interactive UI remains a hosting/access-control decision.
 
 ## What it shows
 

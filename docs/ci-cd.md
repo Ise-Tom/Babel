@@ -217,8 +217,8 @@ The read-only [dashboard](project-dashboard.md) has its own required reusable CI
 job. Node 24.22.1 and exact npm development dependencies are integrity-locked;
 installation scripts are disabled. Browser installation uses the pinned
 Playwright package's supported route with normal artifact/TLS verification.
-There is no runtime CDN, backend API, external telemetry, browser token or
-privileged publishing step. CI does not deploy GitHub Pages or change visibility.
+There is no runtime CDN, backend API, external telemetry or browser token. The
+verification job is read-only. CI does not deploy GitHub Pages or change visibility.
 
 Python validates facts/source paths/feature mappings and prevents accepted status
 without review evidence; TypeScript uses text-only DOM operations for document
@@ -236,3 +236,14 @@ build/test tooling, not a deployed AD product. Automated accessibility and
 Chromium viewport checks do not establish a complete WCAG or real-device audit.
 Progress facts are a dated, source-controlled snapshot; a fresh build does not
 silently refresh old evidence or mark planned work accepted.
+
+After the full `CI gate` passes on a push/manual run on main, a separate trusted
+job publishes the GitHub-rendered report to the automation-owned `dashboard-live`
+branch. That job alone receives `contents: write`; it uses structured API requests,
+requires the repository to remain private, and can update only the report branch
+through the publisher's fixed destination. It skips outdated main revisions,
+uses fast-forward updates, and refuses to overwrite unexpected files. PRs, forks,
+tags, failed gates and scheduled runs cannot publish. Publication failure appears
+in the workflow and leaves the prior report available. The stable report URL
+does not expire with the 14-day downloadable artifacts. Detailed progress facts
+still require review; automatic publication is not automatic acceptance.

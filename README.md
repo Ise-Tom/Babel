@@ -32,6 +32,11 @@ required production runtime. Advanced security capabilities extend this core pro
 
 ## Project progress dashboard
 
+**[Open the permanent dashboard in GitHub](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md)**
+— uses the repository's existing access controls. The initial page is a development
+preview; after this PR is merged, successful main-branch CI updates the same URL.
+No download is needed. Expand phases to read substeps, features and evidence.
+
 The [dashboard guide](docs/project-dashboard.md) explains how to build/open the
 portable phase board, inspect implementation evidence and maintain progress facts.
 It covers all 18 phases, 180 substeps, feature associations, completed increments
