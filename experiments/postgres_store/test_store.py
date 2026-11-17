@@ -8,12 +8,13 @@ import unittest
 import uuid
 from dataclasses import replace
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from experiments.postgres_store.experiment import (
     MUTATE,
     Mutation,
     PostgresLab,
+    Session,
     SqlRejected,
     locked_image,
 )
@@ -268,6 +269,21 @@ class ControllerSafety(unittest.TestCase):
             ):
                 self.lab.query("SELECT 1;")
             self.assertNotIn("private details", str(error.exception))
+
+    def test_process_timeouts_and_launch_failures_do_not_export_arguments_or_output(self):
+        for failure in (
+            OSError("private details"),
+            subprocess.TimeoutExpired(["docker", "private details"], 1, output="private details"),
+        ):
+            with patch("experiments.postgres_store.experiment.subprocess.run", side_effect=failure):
+                with self.assertRaises(RuntimeError) as result:
+                    self.lab.docker(["inspect", "private details"])
+                self.assertNotIn("private details", str(result.exception))
+        process = Mock()
+        process.communicate.side_effect = subprocess.TimeoutExpired(["private details"], 1)
+        with self.assertRaises(RuntimeError) as result:
+            self.lab.finish(Session("fixture", process))
+        self.assertNotIn("private details", str(result.exception))
 
     def test_missing_pinned_image_stops_before_container_creation(self):
         result = subprocess.CompletedProcess([], 1, stdout="", stderr="")

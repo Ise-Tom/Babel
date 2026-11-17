@@ -79,16 +79,19 @@ class PostgresLab:
         environment: dict[str, str] | None = None,
         timeout: int = 30,
     ) -> subprocess.CompletedProcess[str]:
-        # Fixed Docker command, argv only, never a shell.
-        return subprocess.run(  # nosec B603, B607
-            ["docker", *args],
-            input=data,
-            capture_output=True,
-            text=True,
-            env=environment,
-            timeout=timeout,
-            check=False,
-        )
+        try:
+            # Fixed Docker command, argv only, never a shell.
+            return subprocess.run(  # nosec B603, B607
+                ["docker", *args],
+                input=data,
+                capture_output=True,
+                text=True,
+                env=environment,
+                timeout=timeout,
+                check=False,
+            )
+        except (OSError, subprocess.TimeoutExpired):
+            raise RuntimeError("Isolated container command unavailable or timed out") from None
 
     def owned(self) -> str:
         if not re.fullmatch(r"[a-f0-9]{64}", self.container):
@@ -266,10 +269,17 @@ class PostgresLab:
         raise RuntimeError("Experiment transaction barrier timed out")
 
     def finish(self, session: Session, *, commit: bool = True) -> None:
-        session.process.communicate("COMMIT;\n" if commit else "ROLLBACK;\n", timeout=10)
+        self.drain(session, "COMMIT;\n" if commit else "ROLLBACK;\n")
         self.sessions.remove(session)
         if session.process.returncode:
             raise RuntimeError("Experiment transaction did not complete")
+
+    @staticmethod
+    def drain(session: Session, data: str | None = None) -> None:
+        try:
+            session.process.communicate(data, timeout=10)
+        except subprocess.TimeoutExpired:
+            raise RuntimeError("Experiment session timed out; diagnostics not exported") from None
 
     def crash_restart(self) -> None:
         for args in (["kill", "--signal", "KILL", self.owned()], ["start", self.owned()]):
@@ -283,7 +293,7 @@ class PostgresLab:
                 raise RuntimeError("Experiment cleanup failed")
             self.container = ""
         for session in self.sessions:
-            session.process.communicate(timeout=10)
+            self.drain(session)
         self.sessions.clear()
 
     def __exit__(
