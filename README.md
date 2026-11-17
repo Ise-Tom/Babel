@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T22:44:51\+01:00.
+GitHub metadata checked: 2026-11-17T22:45:15\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#20 · Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>)
 
-**Draft · Pending merge · CI: success** · Head 19ac9a2
+**In review · Pending merge · CI: success** · Head 19ac9a2
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -66,7 +66,7 @@ GitHub metadata checked: 2026-11-17T22:44:51\+01:00.
     
     Progress facts include W24–W27, resolved I03 and deployment incident I20, and exact remaining I02/I04/I05/I18 gates. No additional phase/requirement acceptance is inferred. Repository security administration still requires the owner’s settings access; no token or paid plan is requested.
     
-    Validation: 93 Python tests and 98% tooling coverage (lab validator 100%); strict types/lint, documentation/design/scope checks, actionlint, Zizmor, Cargo dependency/license/source/advisory audits for both core/fuzz graphs, dashboard build/security-lint fixtures and npm audit (zero vulnerabilities). Final-data browser checks and full hosted CI follow on this PR. No native protocol behavior changed.
+    Validation: 93 Python tests and 98% tooling coverage (lab validator 100%); strict types/lint, documentation/design/scope checks, actionlint, Zizmor, Cargo dependency/license/source/advisory audits for both core/fuzz graphs, dashboard build/security-lint fixtures and npm audit (zero vulnerabilities). All 24 final-data desktop/mobile browser tests pass. All 12 hosted CI jobs passed for head 19ac9a2c58d0ea473532eedf65b1789f55c43370: https://github.com/Ise-Tom/Babel/actions/runs/44182459109 . Actual Pages deployment still needs merge and a successful main run. No native protocol behavior changed.
 
 **Changed files:**
 
