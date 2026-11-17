@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's substeps to read its
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T20:04:48\+01:00.
+GitHub metadata checked: 2026-11-17T20:05:49\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#17 · Bump typescript from 6.0.3 to 7.0.2 in /dashboard](<https://github.com/Ise-Tom/Babel/pull/17>)
 
-**In review · Pending merge · CI: in\_progress** · Head a55e089
+**In review · Pending merge · CI: failure** · Head a55e089
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
