@@ -44,11 +44,185 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T22:32:36\+01:00.
+GitHub metadata checked: 2026-11-17T22:40:14\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#20 · Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>)
+
+**Draft · Pending merge · CI: in\_progress** · Head 2cb330c
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    The dashboard’s open blockers mixed unresolved owner choices with missing execution evidence. The owner has now selected Apache-2.0 + DCO, a definition-only Windows lab and PostgreSQL as the first backend. This PR records and applies those decisions without claiming Windows, durability or AD replication tests have run.
+    
+    - Apply full Apache-2.0/DCO texts, notices, contribution policy and consistent Cargo/npm license metadata; audit unpublished Rust packages instead of exempting them. I03’s license/contributor-policy selection is resolved; remaining rights review stays explicit in D-01.
+    - Add an isolated two-network/six-machine Windows reference lab definition, a stdlib configuration validator and negative tests in CI. Image completeness intentionally fails for placeholders. No host/image provisioning, terms acceptance or purchases occur; I04 remains open.
+    - Record PostgreSQL in ADR 0003 with Babel-owned IDs/ACL/schema/replication, independent per-DC stores, atomic journal/audit/idempotency and a local ordering/recovery qualification plan. Only the backend family is approved; I05’s remaining implementation/key/AD replication gates stay open.
+    - Fix the deployment failure after PR #17: remove the unconditional Pages administration PUT and retain fail-closed readback of Actions-only mode and HTTPS. Those settings are already correct; run 44179766192 failed only on the unnecessary denied write. The next actual deployment must still be verified after merge.
+    
+    Progress facts include W24–W27, resolved I03 and deployment incident I20, and exact remaining I02/I04/I05/I18 gates. No additional phase/requirement acceptance is inferred. Repository security administration still requires the owner’s settings access; no token or paid plan is requested.
+    
+    Validation: 93 Python tests and 98% tooling coverage (lab validator 100%); strict types/lint, documentation/design/scope checks, actionlint, Zizmor, Cargo dependency/license/source/advisory audits for both core/fuzz graphs, dashboard build/security-lint fixtures and npm audit (zero vulnerabilities). Final-data browser checks and full hosted CI follow on this PR. No native protocol behavior changed.
+
+**Changed files:**
+
+- .github/workflows/ci.yml
+- .github/workflows/dashboard-pages.yml
+- CONTRIBUTING.md
+- Cargo.toml
+- DCO
+- LICENSE
+- NOTICE
+- README.md
+- dashboard/package-lock.json
+- dashboard/package.json
+- dashboard/progress.json
+- deny.toml
+- docs/adr/0001-native-ldap-lab.md
+- docs/adr/0003-postgresql-directory-state.md
+- docs/architecture.md
+- docs/ci-cd.md
+- docs/decisions.md
+- docs/github-security-settings.md
+- docs/native-core-plan.md
+- docs/phase-01-progress.md
+- docs/project-dashboard.md
+- docs/windows-reference-lab.md
+- fuzz/Cargo.toml
+- lab/windows-reference.toml
+- native/babel-ldap/Cargo.toml
+- scripts/check\_ci\_scope.py
+- scripts/check\_lab\_definition.py
+- tests/test\_delivery.py
+- tests/test\_lab\_definition.py
+
+#### Proposed W24 · Verify correct Pages settings without administration writes
+
+**Requirements:** P00-10, P01-01, P01-10
+
+**How it was done:** Removed the unconditional Pages PUT that failed with HTTP 403 even when Source/HTTPS were correct. The job now reads and requires Actions-only publishing and HTTPS, with an actionable failure if either is wrong. Digest, archive, current-main and privileged-job boundaries are unchanged.
+
+**Recorded validation:** Observed failure run 44179766192: read-only artifact verification succeeded and the administration PUT failed. Live API confirms workflow publishing/HTTPS; corrected read-only predicate returns true locally. Workflow lint and Zizmor pass; actual new deployment still requires merge.
+
+**Limits and remaining work:** The patch does not grant repository administration access or claim a deployment already succeeded. Missing/insecure settings and failed reads still block publication.
+
+**PR-head evidence:** [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/.github/workflows/dashboard-pages.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/github-security-settings.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/project-dashboard.md>)
+
+
+#### Proposed W25 · Apply owner-selected Apache-2.0 license and DCO contribution terms
+
+**Requirements:** P00-06, P05-02
+
+**How it was done:** Copied the full Apache-2.0 and DCO 1.1 texts from their official publishers; added project notices, incoming contribution policy and consistent Cargo/npm SPDX metadata. Disabled the unpublished-package license-audit exemption. No contributor signature is fabricated.
+
+**Recorded validation:** Core and fuzz Cargo dependency/license/source/advisory audits pass with private-package ignore=false; Cargo metadata resolves the project license. TypeScript lint/build/security fixtures and npm audit pass with zero vulnerabilities. The owner’s explicit choice is recorded in D-01.
+
+**Limits and remaining work:** DCO sign-off review is a maintainer responsibility, not an invented automated check. Third-party/specification/reference-fixture rights and production qualification remain open; publish=false remains in Rust manifests.
+
+**PR-head evidence:** [LICENSE](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/LICENSE>) · [DCO](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/DCO>) · [NOTICE](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/NOTICE>) · [CONTRIBUTING.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/CONTRIBUTING.md>) · [Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/Cargo.toml>) · [native/babel-ldap/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/native/babel-ldap/Cargo.toml>) · [fuzz/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/fuzz/Cargo.toml>) · [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/dashboard/package.json>) · [deny.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/deny.toml>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/decisions.md>)
+
+
+#### Proposed W26 · Prepare an isolated Windows reference lab definition without provisioning
+
+**Requirements:** P00-05, P01-06
+
+**How it was done:** Defined two isolated .test networks and six scoped reference/Babel/client/probe machines with bounded resources, no bridge/routes/external DNS/downloads, fresh credentials and blank image metadata. Added a stdlib-only validator and same-PR configuration CI, with denied-safety/topology/resource/image tests and a provisioning/teardown/evidence contract.
+
+**Recorded validation:** 93 Python tests pass with 98% tooling coverage; the lab validator has 100% measured line/branch coverage. The committed definition validates; require-images rejects the missing image placeholders. No KVM device or qualified Windows host exists in this worker.
+
+**Limits and remaining work:** This is configuration preparation only. No images downloaded, terms accepted, VMs created, infrastructure purchased or Windows operations tested. I04 remains open; exact client builds and two clean real lab runs are required.
+
+**PR-head evidence:** [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/scripts/check_ci_scope.py>)
+
+
+#### Proposed W27 · Record PostgreSQL selection and a reviewable native state contract
+
+**Requirements:** P00-02, P00-04, P01-02, P01-03
+
+**How it was done:** Recorded the owner’s explicit PostgreSQL choice. ADR 0003 assigns identity/schema/ACL/replication semantics to Babel, independent local stores per DC, a proposed atomic journal/audit/idempotency transaction and ordered writer allocation. It explains why ordinary SQL sequence allocation can lose changes below a replicated watermark and specifies kill/retry/recovery qualification.
+
+**Recorded validation:** Design is linked to D-04/D-05/D-06 and existing Phase 1/3 requirements. Documentation links and phase/model validation pass. Backend-family selection is approved; schema/driver/runtime and durability claims are not marked tested.
+
+**Limits and remaining work:** No database is installed or implemented by this ADR. Key custody, crash/index/locking evidence, AD conflict/RID/FSMO and GPO/SYSVOL contracts remain separate gates. A future backend migration still needs data/recovery/conformance qualification.
+
+**PR-head evidence:** [docs/adr/0003-postgresql-directory-state.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/adr/0003-postgresql-directory-state.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/decisions.md>) · [docs/architecture.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/architecture.md>) · [docs/native-core-plan.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/native-core-plan.md>)
+
+#### Proposed problem update: I03 · Project license and contributor policy not selected
+
+**Proposed status:** resolved
+
+No project LICENSE is selected. Native crates remain unpublished and source-prerelease creation is blocked by the license gate.
+
+**Resolution:** The project owner explicitly selected Apache-2.0 plus DCO in this conversation on 2026-11-17. The full license/DCO texts, contribution policy, notices and package SPDX metadata are applied; unpublished Rust packages are now included in the license audit. This resolves selection, not all third-party or specification rights reviews.
+
+**Next action:** Merge the reviewed terms and retain upstream notices; maintainers verify external contribution sign-offs and complete the remaining D-01 rights review before corresponding distribution.
+
+**Provenance:** Current repository decision register; third-party development license policy does not choose the project license.
+
+[LICENSE](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/LICENSE>) · [DCO](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/DCO>) · [NOTICE](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/NOTICE>) · [CONTRIBUTING.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/CONTRIBUTING.md>) · [Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/Cargo.toml>) · [native/babel-ldap/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/native/babel-ldap/Cargo.toml>) · [fuzz/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/fuzz/Cargo.toml>) · [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/dashboard/package.json>) · [deny.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/deny.toml>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/decisions.md>)
+
+#### Proposed problem update: I04 · Windows lab definition prepared; host and real-client evidence are missing
+
+**Proposed status:** open
+
+The owner has no lab host and explicitly requested a definition only. A two-network/six-machine profile and fail-closed configuration validator are prepared. No images, licenses, VMs or Windows join/login/GPO results have been supplied.
+
+**Resolution:** Still open
+
+**Next action:** Select a host/provider, approved exact images and rights; implement reviewed provisioning/teardown and complete two fresh lab runs before Windows conformance acceptance.
+
+**Provenance:** Explicitly outstanding; no Windows test is marked passed.
+
+[lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/scripts/check_ci_scope.py>)
+
+#### Proposed problem update: I05 · PostgreSQL selected; durable-state and AD replication qualification remain
+
+**Proposed status:** open
+
+The owner accepted PostgreSQL as the initial backend. ADR 0003 proposes identity/ACL ownership, independent per-DC stores and atomic state/journal ordering. No storage implementation, crash evidence, credential key-custody choice, AD conflict/RID/FSMO qualification or GPO/SYSVOL transport is accepted.
+
+**Resolution:** Still open
+
+**Next action:** Implement the synthetic local-store experiment with reviewed PostgreSQL version/driver and same-PR runtime CI. Qualify crash/locking/recovery and keys; resolve D-05/D-06 before credential-bearing or multi-controller writes.
+
+**Provenance:** Design blocker, not an implemented storage defect.
+
+[docs/adr/0003-postgresql-directory-state.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/adr/0003-postgresql-directory-state.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/decisions.md>) · [docs/architecture.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/architecture.md>) · [docs/native-core-plan.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/native-core-plan.md>)
+
+#### Proposed problem update: I18 · Repository security administration remains blocked; Pages settings are verified
+
+**Proposed status:** open
+
+Pages now reports build\_type=workflow and https\_enforced=true, and its environment remains main-only. Private vulnerability reporting is still disabled, ruleset listing empty and legacy protection/Actions defaults cannot be inspected. The integration cannot apply admin settings \(HTTP 403\). The deployment’s unnecessary write is tracked separately as I20.
+
+**Resolution:** Still open
+
+**Next action:** Owner imports the supplied main ruleset, enables private reporting and verifies Actions/environment controls using docs/github-security-settings.md. Merge the read-only Pages fix and verify a successful deployment; no broader credential or paid service is requested.
+
+**Provenance:** Direct GitHub settings API responses and successful public site/deployment observations on 2026-11-17; these are GitHub permission errors, not automatic approval-review rejections.
+
+[.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/.github/workflows/dashboard-pages.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/github-security-settings.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/project-dashboard.md>)
+
+#### Proposed problem update: I20 · Pages deployment attempted an unnecessary denied administration write
+
+**Proposed status:** resolved
+
+After PR \#17 merged, main CI passed all 12 jobs and artifact verification passed, but Pages run 44179766192 failed on unconditional PUT /pages. Live settings were already Actions-only with HTTPS; the job token could not administer them.
+
+**Resolution:** The follow-up removes the PUT and retains a fail-closed GET/readback check. Correct existing settings no longer require administration access; insecure settings or failed reads still stop deployment.
+
+**Next action:** Review/merge the patch and verify the next main Pages deployment; keep owner-only repository security controls explicit under I02/I18.
+
+**Provenance:** Observed complete hosted failure logs and current API state on 2026-11-17; this is a GitHub permission rejection, not automatic approval review.
+
+[.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/.github/workflows/dashboard-pages.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/github-security-settings.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/2cb330c786fe2deaa16e358dffb698adb3f49445/docs/project-dashboard.md>)
+
+
+</details>
 
 
 ## Phase 00
@@ -82,6 +256,8 @@ Design invariants are documented; the identity/ACL model is not implemented or a
 
 **Acceptance evidence required:** Design review covers rename, DN collision, ACL inheritance, nested groups, concurrent updates and durable acknowledgment boundaries.
 
+**Pending PR proposals:** [\#20: Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W12: Threat model and open decision register. See the [implementation journal](#implementation-journal).
 
 ### P00-03
@@ -93,6 +269,8 @@ Replication and restore contracts are designed; metadata algorithms and failure 
 **Associated features:** [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/a3e030ae2589e496ed572814214c0d390be642dc/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/a3e030ae2589e496ed572814214c0d390be642dc/docs/requirements.md>)
 
 **Acceptance evidence required:** Worked partition/delete/conflict/rollback examples specify observable outcomes and map to MS-ADTS/MS-DRSR.
+
+**Pending PR proposals:** [\#20: Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W12: Threat model and open decision register. See the [implementation journal](#implementation-journal).
 
@@ -106,6 +284,8 @@ Rust is accepted only for the bounded lab subset; broader crypto/store libraries
 
 **Acceptance evidence required:** ADR records alternatives, supported platforms, license/CVE maintenance and locked build/fuzz/security jobs; no custom crypto accepted.
 
+**Pending PR proposals:** [\#20: Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W01: Native Rust workspace and reproducible builds. See the [implementation journal](#implementation-journal).
 
 ### P00-05
@@ -118,6 +298,8 @@ No licensed isolated Windows reference lab is recorded.
 
 **Acceptance evidence required:** Two fresh deployments run discovery probes, isolate egress, clean up resources and publish exact image/build identifiers.
 
+**Pending PR proposals:** [\#20: Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P00-06
@@ -129,6 +311,8 @@ Owner license/contributor decision is required before distribution.
 **Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/a3e030ae2589e496ed572814214c0d390be642dc/docs/requirements.md>)
 
 **Acceptance evidence required:** Owner decision and dependency obligations recorded before source distribution; missing decisions block release rather than receiving invented terms.
+
+**Pending PR proposals:** [\#20: Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -178,6 +362,8 @@ Delivery gates and source packaging exist; real product upgrade/recovery/governa
 
 **Acceptance evidence required:** Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact.
 
+**Pending PR proposals:** [\#20: Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations. See the [implementation journal](#implementation-journal).
 
 </details>
@@ -204,6 +390,8 @@ Current native LDAP component development safeguards accepted by the project own
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-17. Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: development safeguards for the current native LDAP component, not the full server or future components. PR \#16 and its 12-job successful CI run: https://github.com/Ise-Tom/Babel/pull/16 ; https://github.com/Ise-Tom/Babel/actions/runs/44152161324 . Merged main cd6ad149870a05db4ab2a4f7fbca3e4d461af848 also passed all 12 jobs in run 44153995669.
 
+**Pending PR proposals:** [\#20: Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W01: Native Rust workspace and reproducible builds; W02: Bounded BER / LDAP decoder; W06: Independent client and packaged-binary checks; W07: Property tests and core coverage gate; W08: Sanitizer fuzz smoke; W09: Native dependency, license and SBOM checks; W10: Required native and repository CI gates; W13: Tested source and lab archive packaging; W17: Bounded LDAP RootDSE filter discovery; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations. See the [implementation journal](#implementation-journal).
 
 ### P01-02
@@ -216,6 +404,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Property tests preserve IDs on rename and reject collisions, invalid schema writes and unauthorized inherited/nested access.
 
+**Pending PR proposals:** [\#20: Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P01-03
@@ -227,6 +417,8 @@ Storage/identity/replication decisions must precede durable credential state.
 **Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/a3e030ae2589e496ed572814214c0d390be642dc/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/a3e030ae2589e496ed572814214c0d390be642dc/docs/requirements.md>)
 
 **Acceptance evidence required:** Kill/restart at each commit boundary yields either the old or new complete state and never acknowledges an undurable successful write.
+
+**Pending PR proposals:** [\#20: Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -263,6 +455,8 @@ Windows lab, DNS/authentication and membership implementation are missing.
 **Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect](<https://github.com/Ise-Tom/Babel/blob/a3e030ae2589e496ed572814214c0d390be642dc/docs/requirements.md>); [AD-08: Required Netlogon, SAMR, LSA, SMB and DCE/RPC behavior for domain membership and administration](<https://github.com/Ise-Tom/Babel/blob/a3e030ae2589e496ed572814214c0d390be642dc/docs/requirements.md>)
 
 **Acceptance evidence required:** A supported Windows client joins, logs in and rotates its machine password; unsigned/unauthorized membership requests fail.
+
+**Pending PR proposals:** [\#20: Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -313,6 +507,8 @@ Project owner accepted the current prototype’s scope inventory and limitation 
 **Acceptance evidence required:** Each public operation has a tested/unsupported status; lab credentials and incomplete protocol behavior cannot be promoted as a production release.
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-17. Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: documentation, tests and CLI label the current prototype as a loopback-only LDAP discovery lab and disclose missing production/domain functionality. Evidence pinned to merged main: https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phase-01-progress.md ; https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/native/babel-ldap/src/main.rs . This accepts scope reporting, not those missing features or production readiness.
+
+**Pending PR proposals:** [\#20: Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W17: Bounded LDAP RootDSE filter discovery; W18: Open-PR-aware private progress reporting; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W23: Verify Pages archives and minimize privileged deployment operations. See the [implementation journal](#implementation-journal).
 
@@ -445,6 +641,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/a3e030ae2589e496ed572814214c0d390be642dc/docs/requirements.md>); [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect](<https://github.com/Ise-Tom/Babel/blob/a3e030ae2589e496ed572814214c0d390be642dc/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/a3e030ae2589e496ed572814214c0d390be642dc/docs/requirements.md>)
 
 **Acceptance evidence required:** Every AD contract row has real-client evidence with exact builds/spec revisions and no unexplained failure, skip or unrun acceptance case.
+
+**Pending PR proposals:** [\#20: Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -745,6 +943,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/a3e030ae2589e496ed572814214c0d390be642dc/docs/requirements.md>)
 
 **Acceptance evidence required:** Approved license/obligations and supported-version matrix ship with artifacts; missing notices or unclear redistribution rights block publication.
+
+**Pending PR proposals:** [\#20: Resolve foundation choices and fix Pages deployment verification](<https://github.com/Ise-Tom/Babel/pull/20>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
