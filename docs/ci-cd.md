@@ -318,3 +318,15 @@ and self-review prevention. Missing/inaccessible settings fail before the normal
 workflow could automatically create an unprotected environment. This assumes the
 reviewed release workflow; owner-controlled release tag creation and the platform
 environment remain necessary against unauthorized workflow/tag changes.
+
+## Phase 0 compatibility and evidence integrity
+
+The repository check runs `scripts/check_conformance.py` against the two explicitly
+registered `lab/*.json` files. It enforces versioned scenarios, canonical requirement
+references, positive/negative expectations, exact contract digest and honest outcome
+accounting. Executed observations require exact client/image/source identity,
+retained bounded artifact hashes and full declared comparison coverage for a pass.
+All current 60 scenarios remain unrun. `--require-ready` intentionally fails on
+current metadata; no empty Windows job is added to imply a lab exists. Regression
+tests use explicitly synthetic temporary fixtures, never published product results.
+See [Phase 0 progress](phase-00-progress.md) for the schema, limitations and gaps.

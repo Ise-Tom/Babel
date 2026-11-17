@@ -1,7 +1,9 @@
 # Phase 00 — Contract, native-core design and laboratory
 
 Status: specified; product acceptance not demonstrated.
-Owner roles: product/security/protocol leads; named accountable owners must be assigned before execution.
+Owner roles: Ise-Tom is the current accountable development owner (product/security/protocol); independent production review and backup incident coverage remain unassigned.
+
+See [current Phase 0 work and remaining evidence](../phase-00-progress.md).
 
 ## Scope and entry
 

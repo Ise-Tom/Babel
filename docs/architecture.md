@@ -18,7 +18,9 @@ conformance burden even when libraries are reused.
 
 Server baseline: Linux x86-64, initially Ubuntu Server 24.04 LTS with systemd on
 VMs/physical hosts; exact packages/kernel must be qualified. Windows/Linux clients
-and agents have separate support matrices. Windows reference servers exist only
+and agents have separate support matrices. The owner-selected initial domain/forest
+functional level is 2016, with explicit Windows, Linux and macOS identity clients
+in the [Phase 0 matrix](phase-00-progress.md); exact builds remain unqualified. Windows reference servers exist only
 in licensed isolated test/coexistence scenarios. No Windows Server runtime,
 Kubernetes cluster, all-OS server hosting or universal client compatibility is
 implicitly required. ARM64/macOS/mobile extensions need separate qualification.

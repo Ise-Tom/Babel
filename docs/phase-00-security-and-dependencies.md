@@ -1,0 +1,69 @@
+# Phase 0 security ownership and dependency qualification
+
+Status: proposed process with explicit gaps, not an assessment or support promise.
+Current accountable development owner is **Ise-Tom**, the repository owner. The solo
+PR policy requires owner diff review plus CI; it does not claim independent review.
+No additional maintainer, security mailbox or private report exercise is invented.
+
+## Boundary ownership and misuse evidence
+
+| Boundary / Tier 0 exposure | Current accountable owner | Required misuse/failure evidence |
+| --- | --- | --- |
+| Client → LDAP/KDC/DNS/SMB/RPC/core; directory identities/ACLs | Ise-Tom; protocol/security role | T-01–T-05: malformed budgets, downgrade/replay, wrong ACL and unauthorized policy publication |
+| API/browser → core; delegated and recovery authority | Ise-Tom; management/security role | T-06/T-11: CSRF, scope substitution, stale grants, reset/enrollment abuse and denied actions |
+| Core → PostgreSQL/key custody; verifiers/journal/audit | Ise-Tom; storage/security role | T-02/T-03/T-09/T-20: auth/write race, credential leak, missing keys and no false success on disk/audit failure |
+| DC → peer/restore; replica keys, RID and invocation identity | Ise-Tom; replication/recovery role | T-08/T-09: forged replication, partition/reorder, stale restore, lingering objects and key-rotation recovery |
+| Source/dependency → build/update consumer; signing authority | Ise-Tom; release role | T-10: pinned inputs, least privilege, failed provenance, replay and unauthorized ref changes |
+| Future IdP/CA/device/relay/agent services | Ise-Tom; module ownership until assigned | T-07/T-12–T-19: external issuer/SSRF, enrollment replay, unsafe dispatch/upload, consent and telemetry gaps |
+
+Threat IDs refer to the [shared threat register](threat-model.md). Record exposure,
+asset, actor/precondition, misuse scenario, mitigation, executable test and residual
+risk per implementation. An unimplemented boundary is not considered secured.
+Directory administrators do not automatically control backup custody, release
+signing or fleet response authority. The current single maintainer is a project
+bus-factor risk, not a production separation-of-duty implementation.
+
+## Vulnerability intake and incident exercise
+
+GitHub private reporting is enabled, but no submission/response drill has occurred.
+Before accepting a preview as supported: verify owner access, submit a benign
+clearly labeled **synthetic** private drill, confirm receipt privately, check access
+and notification behavior, close the drill and record only redacted metadata.
+Do not create public vulnerability examples or send private reports without an
+explicit owner-authorized drill. No test message was sent by this work.
+
+Assign and exercise a real backup security contact before claiming P00-07 complete;
+a GitHub username alone does not prove availability or a private channel. The
+proposed two-working-day acknowledgment/seven-day update targets in [SECURITY.md](../SECURITY.md)
+are not active SLAs. Record time/owner/escalation, safe reproduction, severity,
+affected commits, containment, fix/retest, coordinated disclosure and advisory.
+A suspected domain compromise requires clean recovery and credential/key rotation;
+a code patch alone is insufficient. Independent production assessment and response
+coverage remain gates even though daily development uses solo approvals.
+
+## Dependency and rights register
+
+| Component | Current decision / alternatives | Qualification required before broader use |
+| --- | --- | --- |
+| Native toolchain/parser | Rust 1.100.0 and existing locked bounded LDAP parser lab; memory safety does not remove logic/DoS risk | Existing Clippy/property/fuzz/coverage/audit jobs qualify only the lab subset; review target OS and unsafe dependencies on expansion |
+| TLS | Not selected for production; evaluate maintained Rustls/provider integration against supported client policy and platform/key custody | Exact versions/features/licenses, TLS/channel-binding/expiry/downgrade and provider-failure tests; no custom cryptography |
+| Kerberos/PAC | Production library/backend not selected; compare maintained library bindings versus a reviewed memory-safe implementation boundary | AES, PAC, replay/delegation/PKINIT scope, dependency lifetime/FFI safety and real Windows/Linux/macOS conformance; do not infer AD support from MIT Kerberos alone |
+| PostgreSQL | Owner selected backend family; PostgreSQL 18.7/official psql synthetic local experiment exists | Rust driver/version and transaction/cancellation/parameterization/error semantics, host/disk/backup/upgrade and credential key custody remain open |
+| DNS/SMB/RPC | Production parsers/transports not selected; reuse reviewed libraries where suitable without requiring Samba | Exact supported operation/encoding/signing/sealing matrix, adversarial bounds, licenses and fuzz/reference evidence |
+| Python / TypeScript | Current test/report tooling and dashboard, not native domain-server language | Hash-locked/pinned dependencies and current CI; tool/compiler changes must preserve security checks |
+| Platform agents | Separate later Linux/macOS/Windows qualification | Updater/sensor/driver/consent/signing/privacy requirements; no generic privileged shell as policy engine |
+
+Every dependency decision records upstream/source and immutable version/digest,
+license/notice and redistribution/linking obligations, advisory status/date,
+maintenance/EOL/support policy, transitive features, unsafe/FFI/crypto/provider
+surface, alternatives and a removal/upgrade plan. A green current advisory scan
+is time-bound evidence, not a lifetime security guarantee. Existing SBOM/license
+jobs cover their registered scope only.
+
+The project license is Apache-2.0 with DCO, as selected by the owner. The protocol
+matrix lists public reference locations **without copying specification text**;
+revision pins and specification-use rights are pending. Consult actual terms for
+each selected Microsoft/RFC reference, redistributed fixtures, SDK/library and
+Windows image. This document is not a legal clearance or permission to redistribute
+licensed VM images. Keep public evidence synthetic and retain notices; do not
+import another directory server's code/database as the native implementation.

@@ -39,6 +39,7 @@ jobs:
       - name: Design traceability and documentation links
         run: |
           python scripts/check_design.py
+          python scripts/check_conformance.py
           python scripts/check_lab_definition.py
           python scripts/build_dashboard.py --check
           python scripts/check_docs.py

@@ -83,7 +83,12 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
             }
             or (path.parts[0] == "docs" and path.suffix == ".md")
             or name == "docs/github-main-ruleset.json"
-            or name == "lab/windows-reference.toml"
+            or name
+            in {
+                "lab/windows-reference.toml",
+                "lab/compatibility.json",
+                "lab/conformance-evidence.json",
+            }
             or (path.parts[0] in {"scripts", "tests"} and path.suffix == ".py")
             or (path.parts[0] == ".github" and path.suffix in {".yml", ".yaml", ".md"})
             or name == ".github/CODEOWNERS"

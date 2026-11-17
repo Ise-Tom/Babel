@@ -8,6 +8,10 @@ it cannot prove protocol correctness, security or feasibility.
 
 ## Evidence contract
 
+The [versioned compatibility/evidence implementation](phase-00-progress.md) now
+validates the Phase 0 inventory in CI. All 60 declared scenarios are unrun;
+`--require-ready` intentionally fails. Structural integrity is not conformance.
+
 Each acceptance record contains requirement ID, scenario/test version, source
 commit, artifact/tool/client/spec versions, dataset/host topology, expected/actual
 result, outcome, time, retained redacted artifacts, accountable reviewer and
