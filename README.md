@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's substeps to read its
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T19:51:19\+01:00.
+GitHub metadata checked: 2026-11-17T19:55:38\+01:00.
 
 **Current main CI: failure.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#16 · Continue Phase 1 LDAP discovery and track PR progress on the dashboard](<https://github.com/Ise-Tom/Babel/pull/16>)
 
-**Draft · Pending merge · CI: in\_progress** · Head 2fd18b4
+**Draft · Pending merge · CI: success** · Head 2fd18b4
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -65,11 +65,11 @@ GitHub metadata checked: 2026-11-17T19:51:19\+01:00.
     - Backfill already merged dashboard/report/UI work in progress facts, and record the new native increment, validation, limitations and incidents in this PR. Future development PRs carry these facts alongside their code.
     - Fix the existing main npm-audit failure for GHSA-fc5q-39xc-vjpf. No patched picomatch version was published when checked; remove the vulnerable TypeScript-ESLint dependency path while retaining supported ESLint 10/TypeScript 6. Strict compiler checks, explicit-any AST policy and DOM/eval lint on compiler-erased JavaScript remain. Security fixtures cover typed/cast HTML sinks and eval. No audit exception or severity relaxation is introduced; recommended TypeScript style rules are not claimed equivalent.
     
-    Validation: 28 Rust tests, independent LDAP client checks, 94.49% core line coverage (filter module 100%), and 20,000 sanitizer-fuzz iterations without a crash. 74 Python tests with 98% tooling coverage, six build/lint security tests, strict types/lint, workflow analysis and a clean npm audit. GitHub's actual Markdown renderer kept hostile PR-description markup inert. Desktop/mobile browser checks passed; final hosted CI will be linked here.
+    Validation: 28 Rust tests, independent LDAP client checks, 94.49% core line coverage (filter module 100%), and 20,000 sanitizer-fuzz iterations without a crash. 74 Python tests with 98% tooling coverage, six build/lint security tests, strict types/lint, workflow analysis and a clean npm audit. GitHub's actual Markdown renderer kept hostile PR-description markup inert. Desktop/mobile browser checks passed; [all 12 hosted CI checks passed](https://github.com/Ise-Tom/Babel/actions/runs/44152161324), including 22 desktop/mobile browser checks and the clean dependency audit.
     
     This remains a loopback, synthetic/public-data lab. General directory/schema matching, DNS, durable identity/ACL state, authentication, Windows membership and GPO remain outside this increment. Phase 1 is not accepted. New reporting code reads PR JSON but never executes PR source with its publishing token. The public Pages gate still requires successful main CI.
     
-    The stable [private GitHub dashboard](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md) will be refreshed during this PR with the actual proposed work, problems, validation and CI status. It will clearly mark the proposal pending merge. Automatic PR synchronization activates after this PR is merged.
+    The stable [private GitHub dashboard](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md) has been refreshed and read back from GitHub. It includes this PR’s six proposed progress records (including backfilled merged dashboard work), problem updates, source evidence and CI status, clearly marked pending merge. Main totals remain separate and its existing CI audit failure stays visible until the fix is merged. Automatic PR synchronization activates after this PR is merged.
 
 **Changed files:**
 
