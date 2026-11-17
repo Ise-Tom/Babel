@@ -44,11 +44,113 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T22:23:47\+01:00.
+GitHub metadata checked: 2026-11-17T22:24:31\+01:00.
 
 **Current main CI: in\_progress.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#19 · Bump actions/upload-artifact from 6.0.0 to 7.0.2](<https://github.com/Ise-Tom/Babel/pull/19>)
+
+**In review · Pending merge · CI: in\_progress** · Head 9eab1c3
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    Bumps [actions/upload-artifact](https://github.com/actions/upload-artifact) from 6.0.0 to 7.0.2.
+    <details>
+    <summary>Release notes</summary>
+    <p><em>Sourced from <a href="https://github.com/actions/upload-artifact/releases">actions/upload-artifact's releases</a>.</em></p>
+    <blockquote>
+    <h2>v7.0.2</h2>
+    <h2>What's Changed</h2>
+    <ul>
+    <li>Improves artifact download retries when the service returns HTTP 429 (rate limiting), including honoring valid Retry-After headers.</li>
+    <li>Updates <code>@​actions/artifact</code> to v6.3.1.</li>
+    </ul>
+    <h2>New Contributors</h2>
+    <ul>
+    <li><a href="https://github.com/tunc-d"><code>@​tunc-d</code></a> made their first contribution in <a href="https://redirect.github.com/actions/upload-artifact/pull/821">actions/upload-artifact#821</a></li>
+    </ul>
+    <p><strong>Full Changelog</strong>: <a href="https://github.com/actions/upload-artifact/compare/v7.0.1...v7.0.2">https://github.com/actions/upload-artifact/compare/v7.0.1...v7.0.2</a></p>
+    <h2>v7.0.1</h2>
+    <h2>What's Changed</h2>
+    <ul>
+    <li>Update the readme with direct upload details by <a href="https://github.com/danwkennedy"><code>@​danwkennedy</code></a> in <a href="https://redirect.github.com/actions/upload-artifact/pull/795">actions/upload-artifact#795</a></li>
+    <li>Readme: bump all the example versions to v7 by <a href="https://github.com/danwkennedy"><code>@​danwkennedy</code></a> in <a href="https://redirect.github.com/actions/upload-artifact/pull/796">actions/upload-artifact#796</a></li>
+    <li>Include changes in typespec/ts-http-runtime 0.3.5 by <a href="https://github.com/yacaovsnc"><code>@​yacaovsnc</code></a> in <a href="https://redirect.github.com/actions/upload-artifact/pull/797">actions/upload-artifact#797</a></li>
+    </ul>
+    <p><strong>Full Changelog</strong>: <a href="https://github.com/actions/upload-artifact/compare/v7...v7.0.1">https://github.com/actions/upload-artifact/compare/v7...v7.0.1</a></p>
+    <h2>v7.0.0</h2>
+    <h2>v7 What's new</h2>
+    <h3>Direct Uploads</h3>
+    <p>Adds support for uploading single files directly (unzipped). Callers can set the new <code>archive</code> parameter to <code>false</code> to skip zipping the file during upload. Right now, we only support single files. The action will fail if the glob passed resolves to multiple files. The <code>name</code> parameter is also ignored with this setting. Instead, the name of the artifact will be the name of the uploaded file.</p>
+    <h3>ESM</h3>
+    <p>To support new versions of the <code>@actions/*</code> packages, we've upgraded the package to ESM.</p>
+    <h2>What's Changed</h2>
+    <ul>
+    <li>Add proxy integration test by <a href="https://github.com/Link"><code>@​Link</code></a>- in <a href="https://redirect.github.com/actions/upload-artifact/pull/754">actions/upload-artifact#754</a></li>
+    <li>Upgrade the module to ESM and bump dependencies by <a href="https://github.com/danwkennedy"><code>@​danwkennedy</code></a> in <a href="https://redirect.github.com/actions/upload-artifact/pull/762">actions/upload-artifact#762</a></li>
+    <li>Support direct file uploads by <a href="https://github.com/danwkennedy"><code>@​danwkennedy</code></a> in <a href="https://redirect.github.com/actions/upload-artifact/pull/764">actions/upload-artifact#764</a></li>
+    </ul>
+    <h2>New Contributors</h2>
+    <ul>
+    <li><a href="https://github.com/Link"><code>@​Link</code></a>- made their first contribution in <a href="https://redirect.github.com/actions/upload-artifact/pull/754">actions/upload-artifact#754</a></li>
+    </ul>
+    <p><strong>Full Changelog</strong>: <a href="https://github.com/actions/upload-artifact/compare/v6...v7.0.0">https://github.com/actions/upload-artifact/compare/v6...v7.0.0</a></p>
+    </blockquote>
+    </details>
+    <details>
+    <summary>Commits</summary>
+    <ul>
+    <li><a href="https://github.com/actions/upload-artifact/commit/cf430e030ddbb5b0abf93d22962f4752f3646cd9"><code>cf430e0</code></a> Merge pull request <a href="https://redirect.github.com/actions/upload-artifact/issues/822">#822</a> from actions/tunc-d-prepare-upload-v7-0-2</li>
+    <li><a href="https://github.com/actions/upload-artifact/commit/c2acdedd35a8824a1552c7137f8c18288c3ea469"><code>c2acded</code></a> chore: prepare v7.0.2 release</li>
+    <li><a href="https://github.com/actions/upload-artifact/commit/4687c1bbaa0a58abb517d90b4bbade6754c80c1a"><code>4687c1b</code></a> Merge pull request <a href="https://redirect.github.com/actions/upload-artifact/issues/821">#821</a> from actions/tunc-d-upload-artifact-package-bump</li>
+    <li><a href="https://github.com/actions/upload-artifact/commit/8cbe1bebdb858105d8fdd88f81404d4de4595719"><code>8cbe1be</code></a> Bump <code>@​actions/artifact</code> to 6.3.1</li>
+    <li><a href="https://github.com/actions/upload-artifact/commit/043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"><code>043fb46</code></a> Merge pull request <a href="https://redirect.github.com/actions/upload-artifact/issues/797">#797</a> from actions/yacaovsnc/update-dependency</li>
+    <li><a href="https://github.com/actions/upload-artifact/commit/634250c1388765ea7ed0f053e636f1f399000b94"><code>634250c</code></a> Include changes in typespec/ts-http-runtime 0.3.5</li>
+    <li><a href="https://github.com/actions/upload-artifact/commit/e454baaac2be505c9450e11b8f3215c6fc023ce8"><code>e454baa</code></a> Readme: bump all the example versions to v7 (<a href="https://redirect.github.com/actions/upload-artifact/issues/796">#796</a>)</li>
+    <li><a href="https://github.com/actions/upload-artifact/commit/74fad66b98a6d799dc004d3353ccd0e6f6b2530e"><code>74fad66</code></a> Update the readme with direct upload details (<a href="https://redirect.github.com/actions/upload-artifact/issues/795">#795</a>)</li>
+    <li><a href="https://github.com/actions/upload-artifact/commit/bbbca2ddaa5d8feaa63e36b76fdaad77386f024f"><code>bbbca2d</code></a> Support direct file uploads (<a href="https://redirect.github.com/actions/upload-artifact/issues/764">#764</a>)</li>
+    <li><a href="https://github.com/actions/upload-artifact/commit/589182c5a4cec8920b8c1bce3e2fab1c97a02296"><code>589182c</code></a> Upgrade the module to ESM and bump dependencies (<a href="https://redirect.github.com/actions/upload-artifact/issues/762">#762</a>)</li>
+    <li>Additional commits viewable in <a href="https://github.com/actions/upload-artifact/compare/v6...cf430e030ddbb5b0abf93d22962f4752f3646cd9">compare view</a></li>
+    </ul>
+    </details>
+    <br />
+    
+    
+    [![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=actions/upload-artifact&package-manager=github_actions&previous-version=6.0.0&new-version=7.0.2)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)
+    
+    Dependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.
+    
+    [//]: # (dependabot-automerge-start)
+    [//]: # (dependabot-automerge-end)
+    
+    ---
+    
+    <details>
+    <summary>Dependabot commands and options</summary>
+    <br />
+    
+    You can trigger Dependabot actions by commenting on this PR:
+    - `@dependabot rebase` will rebase this PR
+    - `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it
+    - `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency
+    - `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)
+    - `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)
+    - `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)
+    
+    
+    </details>
+
+**Changed files:**
+
+- .github/workflows/dashboard.yml
+
+No structured work increment delta was imported; inspect the description/files.
+
+
+</details>
 
 
 ## Phase 00
