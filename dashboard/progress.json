@@ -112,8 +112,13 @@
       "note": "Delivery gates and source packaging exist; real product upgrade/recovery/governance acceptance remains."
     },
     "P01-01": {
-      "status": "in_progress",
-      "note": "The lab component has executable checks; future native components need their own gates and review."
+      "status": "accepted",
+      "note": "Current native LDAP component development safeguards accepted by the project owner. Future components and full product qualification remain separate obligations.",
+      "acceptance": {
+        "reviewer": "Project owner (explicit approval in this conversation)",
+        "date": "2026-11-17",
+        "evidence": "Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: development safeguards for the current native LDAP component, not the full server or future components. PR #16 and its 12-job successful CI run: https://github.com/Ise-Tom/Babel/pull/16 ; https://github.com/Ise-Tom/Babel/actions/runs/44152161324 . Merged main cd6ad149870a05db4ab2a4f7fbca3e4d461af848 also passed all 12 jobs in run 44153995669."
+      }
     },
     "P01-03": {
       "status": "blocked",
@@ -136,8 +141,13 @@
       "note": "Lab limits and diagnostics are tested; TLS, Linux service lifecycle and production privileges are not."
     },
     "P01-10": {
-      "status": "in_progress",
-      "note": "The current subset is documented; the full phase is not accepted."
+      "status": "accepted",
+      "note": "Project owner accepted the current prototype’s scope inventory and limitation reporting. Authentication, storage, domain join and GPO remain unimplemented and Phase 1 remains in progress.",
+      "acceptance": {
+        "reviewer": "Project owner (explicit approval in this conversation)",
+        "date": "2026-11-17",
+        "evidence": "Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: documentation, tests and CLI label the current prototype as a loopback-only LDAP discovery lab and disclose missing production/domain functionality. Evidence pinned to merged main: https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phase-01-progress.md ; https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/native/babel-ldap/src/main.rs . This accepts scope reporting, not those missing features or production readiness."
+      }
     }
   },
   "phase_acceptance": {},
@@ -743,9 +753,9 @@
         "P01-01",
         "P01-10"
       ],
-      "how": "Removed the enforced ten-item sequential quota, retaining unique phase-owned IDs, nonempty requirements/evidence and feature traceability. Renamed broad dashboard substeps to requirements. Documented concrete owner review questions and separate requirement/phase acceptance. Existing scope and stable IDs are preserved.",
+      "how": "Removed the enforced ten-item sequential quota, retaining unique phase-owned IDs, nonempty requirements/evidence and feature traceability. Renamed broad dashboard substeps to requirements. Documented concrete owner review questions and separate requirement/phase acceptance. Existing scope and stable IDs are preserved. The project owner explicitly approved P01-01 and P01-10 for their stated current-component scopes; reviewer/date/evidence records are stored on both requirements.",
       "verification": "78 Python tests pass with 98% tooling coverage. Strict types, lint, documentation checks, six build/security-lint tests and 24 desktop/mobile browser tests pass. Synthetic 3/13-item phases exercise rendering, counts and expand-all; model/design fixtures allow unequal counts and noncontiguous IDs. Hosted run 44156039039 did not start: GitHub reported failed recent payments or an insufficient spending limit; this is not a hosted test result.",
-      "limitations": "The current baseline still contains 180 requirements. Changing task counts does not estimate effort or accept work. Two current-component acceptance questions have been submitted to the owner; no affirmative answers have been recorded. Full AD functionality and phase acceptance remain outstanding.",
+      "limitations": "Two scoped requirements (P01-01 and P01-10) are accepted by explicit owner answers on 2026-11-17. These approval records are proposed in PR #18 until merge; the main baseline count updates after merge. The current baseline retains 180 requirements, and full AD functionality and Phase 1 acceptance remain outstanding. Future components must satisfy their own safeguards.",
       "source_revision": "fbf7cbd89be80e0f18f2464296deb4ad08383ca3",
       "sources": [
         {
@@ -1160,8 +1170,8 @@
         "P01-10"
       ],
       "detail": "The design validator forced exactly ten sequential requirements per phase, while the report called those broad contracts substeps. Zero recorded acceptances made implemented increments hard to distinguish from owner-reviewed scope.",
-      "resolution": "Removed the fixed quota, clarified requirement/increment labels, and documented asking the owner scoped evidence-based questions before recording acceptance. Regression tests cover unequal phase sizes; statuses are unchanged while answers are pending.",
-      "next_action": "Record explicit owner answers with reviewer/date/evidence. Decompose future work according to scope and dependencies while preserving requirement coverage.",
+      "resolution": "Removed the fixed quota, clarified requirement/increment labels and documented scoped owner acceptance questions. The owner answered “Accept this scope” for P01-01 and P01-10; both carry reviewer/date/evidence records. Unequal-size regression tests pass. Phase acceptance remains outstanding.",
+      "next_action": "Merge the reviewed acceptance records after required checks can run; continue decomposing future work according to scope and dependencies while preserving requirement coverage.",
       "source_revision": "fbf7cbd89be80e0f18f2464296deb4ad08383ca3",
       "sources": [
         {
