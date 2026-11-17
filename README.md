@@ -44,40 +44,48 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T20:14:59\+01:00.
+GitHub metadata checked: 2026-11-17T20:34:23\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-### [\#18 · Clarify owner acceptance and allow phase-specific requirement counts](<https://github.com/Ise-Tom/Babel/pull/18>)
+### [\#18 · Support public-repository CI and reviewed progress tracking](<https://github.com/Ise-Tom/Babel/pull/18>)
 
-**Draft · Pending merge · CI: unknown** · Head 2972851
+**Draft · Pending merge · CI: failure** · Head 43aeb44
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
 
 **PR description (untrusted text):**
 
-    The dashboard called broad requirements “substeps”, and design validation forced exactly ten sequential items per phase. This removes the fixed quota, clarifies requirement versus implementation-increment labels, and documents asking the project owner scoped acceptance questions with evidence and limits before recording approval. Existing requirements and stable IDs are preserved; no acceptance is inferred from silence or passing CI.
+    Babel’s dashboard publisher and PR collector rejected public repositories, preventing the requested move from private Actions quotas to standard public-repository runners. They now support either explicit Babel visibility while preserving the fixed repository identity, default-branch-only execution, current-main checks, bounded PR data, metadata-only fork handling and fast-forward README-only publication. Publishing workflows never change visibility or purchase capacity.
     
-    Progress facts include this change as W20, the resolved reporting issue I14, and the verified merged PR #16 snapshot (12 successful main CI jobs). The private GitHub report shows this PR’s proposed progress separately until merge.
+    The owner explicitly authorized public visibility. GitHub rejected the integration’s `private=false` request with HTTP 403 (Resource not accessible by integration), and readback still reports private. An owner must apply Settings → General → Danger Zone → Change repository visibility → Change to public, then rerun this PR’s latest CI. The dashboard records the permission blocker as I16 and the existing Actions billing blocker as I15. A redacted Gitleaks scan of fetched branch history found no leaks; this is not a product-security or licensing certification.
     
-    Validation: 78 Python tests, 98% tooling coverage, strict Python/TypeScript checks, lint and documentation checks, six build/security-lint tests, and 24 desktop/mobile browser tests. Synthetic unequal phase sizes and noncontiguous IDs exercise validation, rendering, filtering and expand-all. No product protocol behavior changed.
+    Progress reporting also removes the artificial ten-item sequential quota, distinguishes requirements from development increments and records the owner’s explicit scoped acceptance of P01-01 and P01-10 with reviewer/date/evidence. Existing scope and stable IDs are preserved; Phase 1 remains in progress. W20/W21 and the issue journal explain the changes, validation and limits. The main dashboard count changes after merge; open PR proposals are shown separately.
     
-    The project owner explicitly accepted P01-01 (current LDAP development safeguards) and P01-10 (current prototype scope and limitation reporting). Both now carry dated reviewer/evidence records. Phase 1 remains in progress. These reviewed records update the main dashboard count after merge.
-    
-    Hosted validation is blocked: run 44156039039 executed zero steps because GitHub reported recent account payments failed or the spending limit needs increasing. Local verification passed; required hosted checks still need rerunning after account capacity is restored. The dashboard records this as I15.
+    Validation: 80 Python tests and 98% tooling coverage, strict Python types/lint, documentation links, actionlint and Zizmor passed locally. The preceding dashboard changes also passed six build/security-lint tests and 24 desktop/mobile browser tests, including unequal phase sizes. Hosted validation has not executed because of the account billing/spending-limit block; rerun all required checks after visibility/capacity is fixed. No product protocol behavior changed.
 
 **Changed files:**
 
+- .github/workflows/dashboard-publish.yml
+- README.md
+- SECURITY.md
 - dashboard/progress.json
 - dashboard/src/main.ts
 - dashboard/tests/dashboard.spec.ts
+- docs/architecture.md
+- docs/ci-cd.md
 - docs/phases/README.md
 - docs/project-dashboard.md
+- docs/validation-plan.md
 - scripts/check\_design.py
+- scripts/collect\_pr\_progress.py
+- scripts/publish\_dashboard.py
 - scripts/render\_dashboard.py
 - tests/test\_dashboard.py
+- tests/test\_dashboard\_delivery.py
 - tests/test\_design.py
+- tests/test\_pr\_progress.py
 
 #### Proposed W19 · Remove unpatched vulnerable tooling dependency path
 
@@ -89,7 +97,7 @@ GitHub metadata checked: 2026-11-17T20:14:59\+01:00.
 
 **Limits and remaining work:** This replaces recommended TypeScript style rules with documented compiler/security policies; it does not claim rule-for-rule style equivalence. PR \#16 is merged; main run 44153995669 passed all 12 jobs.
 
-**PR-head evidence:** [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/package.json>) · [dashboard/package-lock.json](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/package-lock.json>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/lint.mjs>) · [dashboard/eslint.config.mjs](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/eslint.config.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/tests/lint.test.mjs>)
+**PR-head evidence:** [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/dashboard/package.json>) · [dashboard/package-lock.json](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/dashboard/package-lock.json>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/dashboard/lint.mjs>) · [dashboard/eslint.config.mjs](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/dashboard/eslint.config.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/dashboard/tests/lint.test.mjs>)
 
 
 #### Proposed W20 · Scope-based phase sizes and explicit owner acceptance reviews
@@ -102,7 +110,20 @@ GitHub metadata checked: 2026-11-17T20:14:59\+01:00.
 
 **Limits and remaining work:** Two scoped requirements \(P01-01 and P01-10\) are accepted by explicit owner answers on 2026-11-17. These approval records are proposed in PR \#18 until merge; the main baseline count updates after merge. The current baseline retains 180 requirements, and full AD functionality and Phase 1 acceptance remain outstanding. Future components must satisfy their own safeguards.
 
-**PR-head evidence:** [scripts/check\_design.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/scripts/check_design.py>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/scripts/render_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/tests/dashboard.spec.ts>) · [tests/test\_design.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/tests/test_design.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/tests/test_dashboard.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/docs/project-dashboard.md>)
+**PR-head evidence:** [scripts/check\_design.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/scripts/check_design.py>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/scripts/render_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/dashboard/tests/dashboard.spec.ts>) · [tests/test\_design.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/tests/test_design.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/tests/test_dashboard.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/docs/project-dashboard.md>)
+
+
+#### Proposed W21 · Support public repository dashboard publication and prepare visibility transition
+
+**Requirements:** P00-10, P01-01, P01-10
+
+**How it was done:** Publisher and PR collector accept either explicit Babel visibility and reject other repository identities or unknown visibility. Retained default-branch-only publication, current-main revision checks, bounded data-only PR imports, metadata-only fork reporting and fast-forward README-only updates. Renamed the publishing workflow and corrected private-only documentation.
+
+**Recorded validation:** 80 Python tests pass with 98% tooling coverage; strict types, lint, documentation links, actionlint and Zizmor pass. Tests cover public/private publication, unknown visibility, unrelated destinations and public fork metadata isolation. Gitleaks scanned fetched branch history with redacted output and found no leaks.
+
+**Limits and remaining work:** Owner explicitly authorized public visibility, but GitHub rejected the integration’s private=false request with HTTP 403. The repository remains private and hosted CI is still blocked by billing. This PR must merge before default-branch publication supports public visibility. No license was invented and no paid capacity was purchased.
+
+**PR-head evidence:** [scripts/publish\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/scripts/publish_dashboard.py>) · [scripts/collect\_pr\_progress.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/scripts/collect_pr_progress.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/tests/test_dashboard_delivery.py>) · [tests/test\_pr\_progress.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/tests/test_pr_progress.py>) · [.github/workflows/dashboard-publish.yml](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/.github/workflows/dashboard-publish.yml>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/docs/project-dashboard.md>)
 
 #### Proposed problem update: I13 · Main CI rejected newly vulnerable picomatch tooling graph
 
@@ -116,7 +137,7 @@ Main run 44142657828 failed npm audit for GHSA-fc5q-39xc-vjpf. The advisory affe
 
 **Provenance:** Recorded development-session evidence and repository/CI observations; no separate public issue was created.
 
-[dashboard/package-lock.json](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/package-lock.json>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/lint.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/tests/lint.test.mjs>)
+[dashboard/package-lock.json](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/dashboard/package-lock.json>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/dashboard/lint.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/dashboard/tests/lint.test.mjs>)
 
 #### Proposed problem update: I14 · Fixed requirement quotas and ambiguous substep acceptance labels
 
@@ -130,7 +151,7 @@ The design validator forced exactly ten sequential requirements per phase, while
 
 **Provenance:** Project owner requested acceptance questions and said substep counts need not be linear; no separate GitHub issue was created.
 
-[scripts/check\_design.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/scripts/check_design.py>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/scripts/render_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/dashboard/tests/dashboard.spec.ts>) · [tests/test\_design.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/tests/test_design.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/tests/test_dashboard.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/docs/project-dashboard.md>)
+[scripts/check\_design.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/scripts/check_design.py>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/scripts/render_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/dashboard/tests/dashboard.spec.ts>) · [tests/test\_design.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/tests/test_design.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/tests/test_dashboard.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/docs/project-dashboard.md>)
 
 #### Proposed problem update: I15 · GitHub Actions jobs blocked before startup by account billing
 
@@ -144,7 +165,21 @@ All jobs in PR \#18 CI run 44156039039 have zero executed steps. GitHub annotati
 
 **Provenance:** Observed GitHub run 44156039039, check run 134296912744 annotation; no pipeline commands ran.
 
-[.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/.github/workflows/ci.yml>) · [.github/workflows/dashboard-publish.yml](<https://github.com/Ise-Tom/Babel/blob/29728510eb78f065221d3d2cf62dfd3be7775a4a/.github/workflows/dashboard-publish.yml>)
+[.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/.github/workflows/ci.yml>) · [.github/workflows/dashboard-publish.yml](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/.github/workflows/dashboard-publish.yml>)
+
+#### Proposed problem update: I16 · GitHub integration cannot apply the authorized public visibility setting
+
+**Proposed status:** open
+
+The project owner explicitly requested public visibility. PATCH /repos/Ise-Tom/Babel with private=false returned HTTP 403, Resource not accessible by integration, despite repository metadata showing admin=true. The repository remained private on readback.
+
+**Resolution:** Still open
+
+**Next action:** Owner uses repository Settings → General → Danger Zone → Change repository visibility → Change to public. Rerun latest PR \#18 CI and merge the public-compatible publisher after required checks pass. Verify actual Actions capacity; a remaining account-wide billing restriction requires account attention.
+
+**Provenance:** Direct GitHub API response in the authorized visibility-change task on 2026-11-17; no automatic approval-review rejection occurred and no visibility setting was applied.
+
+[scripts/publish\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/scripts/publish_dashboard.py>) · [scripts/collect\_pr\_progress.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/scripts/collect_pr_progress.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/tests/test_dashboard_delivery.py>) · [tests/test\_pr\_progress.py](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/tests/test_pr_progress.py>) · [.github/workflows/dashboard-publish.yml](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/.github/workflows/dashboard-publish.yml>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/43aeb440a9ab969f85da052e220ace40fe659daf/docs/project-dashboard.md>)
 
 
 </details>
@@ -353,7 +388,7 @@ Delivery gates and source packaging exist; real product upgrade/recovery/governa
 
 **Acceptance evidence required:** Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact.
 
-**Pending PR proposals:** [\#18: Clarify owner acceptance and allow phase-specific requirement counts](<https://github.com/Ise-Tom/Babel/pull/18>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#18: Support public-repository CI and reviewed progress tracking](<https://github.com/Ise-Tom/Babel/pull/18>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path. See the [implementation journal](#implementation-journal).
 
@@ -379,7 +414,7 @@ The lab component has executable checks; future native components need their own
 
 **Acceptance evidence required:** The scope guard is extended in the same reviewed PR; clean Linux build plus malformed-input regression corpus passes.
 
-**Pending PR proposals:** [\#18: Clarify owner acceptance and allow phase-specific requirement counts](<https://github.com/Ise-Tom/Babel/pull/18>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#18: Support public-repository CI and reviewed progress tracking](<https://github.com/Ise-Tom/Babel/pull/18>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W01: Native Rust workspace and reproducible builds; W02: Bounded BER / LDAP decoder; W06: Independent client and packaged-binary checks; W07: Property tests and core coverage gate; W08: Sanitizer fuzz smoke; W09: Native dependency, license and SBOM checks; W10: Required native and repository CI gates; W13: Tested source and lab archive packaging; W17: Bounded LDAP RootDSE filter discovery; W19: Remove unpatched vulnerable tooling dependency path. See the [implementation journal](#implementation-journal).
 
@@ -489,7 +524,7 @@ The current subset is documented; the full phase is not accepted.
 
 **Acceptance evidence required:** Each public operation has a tested/unsupported status; lab credentials and incomplete protocol behavior cannot be promoted as a production release.
 
-**Pending PR proposals:** [\#18: Clarify owner acceptance and allow phase-specific requirement counts](<https://github.com/Ise-Tom/Babel/pull/18>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#18: Support public-repository CI and reviewed progress tracking](<https://github.com/Ise-Tom/Babel/pull/18>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W17: Bounded LDAP RootDSE filter discovery; W18: Open-PR-aware private progress reporting. See the [implementation journal](#implementation-journal).
 
