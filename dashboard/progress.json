@@ -1189,7 +1189,8 @@
       ],
       "problems": [
         "I05",
-        "I21"
+        "I21",
+        "I23"
       ]
     },
     {
@@ -2048,6 +2049,41 @@
         }
       ],
       "provenance": "Direct current GitHub metadata and an expected nonzero local preflight result; no environment, tag or release was created."
+    },
+    {
+      "id": "I23",
+      "title": "Own-actions-only policy blocked official pinned GitHub Actions",
+      "status": "resolved",
+      "kind": "platform-configuration",
+      "phases": [
+        0,
+        1,
+        5
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P05-09"
+      ],
+      "detail": "PR #21 CI run 44191621036 ended in startup_failure with zero jobs. GitHub reported that checkout/setup/artifact actions were not allowed because actions had to belong to Ise-Tom. The same policy also blocked automatic dashboard refresh.",
+      "resolution": "The owner explicitly confirmed allowing GitHub-created actions under the selected non-owner-actions policy, leaving Marketplace creators disabled. Full SHA pins and job-scoped token permissions are retained. The prepared branch and PR are now pushed, and the GitHub dashboard was refreshed directly from trusted main code.",
+      "next_action": "Verify the corrected PR CI run and retain independent review before merge; no Pages deployment, source release or cloud-environment publication is performed by this PR.",
+      "source_revision": "efff796a0768b168636598cdefb0dd157297157d",
+      "sources": [
+        {
+          "path": "docs/github-security-settings.md",
+          "label": "Correct Actions publisher policy"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "label": "Pinned official CI actions"
+        },
+        {
+          "path": ".github/workflows/dashboard-publish.yml",
+          "label": "Trusted-main dashboard publication"
+        }
+      ],
+      "provenance": "Actual public GitHub run annotation and the owner’s explicit settings-change confirmation; no automatic approval-review rejection occurred."
     }
   ],
   "focus_phase": 1,
