@@ -238,7 +238,13 @@ def build(root: Path, revision: str) -> dict[str, Any]:
             set(strings(problem.get("requirements"), "problem requirements")) <= ids,
             "Unknown problem requirement",
         )
-        problem["sources"] = sources(root, problem.get("sources"), evidence_revision)
+        source_revision = problem.get("source_revision", evidence_revision)
+        require(
+            isinstance(source_revision, str)
+            and bool(re.fullmatch(r"[a-f0-9]{40}", source_revision)),
+            "Invalid problem source revision",
+        )
+        problem["sources"] = sources(root, problem.get("sources"), source_revision)
     work_ids: set[str] = set()
     for index, raw in enumerate(work):
         item = record(raw, "work")
@@ -256,7 +262,13 @@ def build(root: Path, revision: str) -> dict[str, Any]:
             set(strings(item.get("problems"), "work problems")) <= problem_ids,
             "Unknown work problem",
         )
-        item["sources"] = sources(root, item.get("sources"), evidence_revision)
+        source_revision = item.get("source_revision", evidence_revision)
+        require(
+            isinstance(source_revision, str)
+            and bool(re.fullmatch(r"[a-f0-9]{40}", source_revision)),
+            "Invalid work source revision",
+        )
+        item["sources"] = sources(root, item.get("sources"), source_revision)
         require(bool(item["sources"]), "Implemented work requires source evidence")
     for phase in phases:
         for step in phase["steps"]:

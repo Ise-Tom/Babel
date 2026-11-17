@@ -39,6 +39,7 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
                         "dashboard/eslint.config.mjs",
                         "dashboard/playwright.config.ts",
                         "dashboard/build.mjs",
+                        "dashboard/lint.mjs",
                         "dashboard/build.d.mts",
                         "dashboard/progress.json",
                         "dashboard/associations.json",

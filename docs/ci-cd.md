@@ -235,21 +235,39 @@ The standalone HTML and browser/security evidence are retained for 14 days.
 report/test tool failures remain failures. The npm CycloneDX report inventories
 build/test tooling, not a deployed AD product. Automated accessibility and
 Chromium viewport checks do not establish a complete WCAG or real-device audit.
+
+The tooling graph deliberately excludes TypeScript-ESLint's glob dependency path
+after GHSA-fc5q-39xc-vjpf affected all published picomatch versions through 4.0.7.
+ESLint 10 and TypeScript 6 remain supported and pinned; audit severity checks are
+unchanged. The compiler checks strict types/unused declarations, and a small
+compiler-AST policy rejects explicit `any` before erasure. ESLint/DOM-security
+rules inspect compiler-erased JavaScript with no bundling, minification or code
+execution; diagnostics for this view use `.ts.lint.js` virtual paths. Separate
+fixtures prove unsafe HTML writes, type-cast HTML sinks, eval and explicit any
+still fail. This replaces TypeScript-ESLint recommended-style rules rather than
+claiming every former style rule is equivalent. Node type definitions remain on
+the tested Node 24 major; major runtime/type upgrades require coordinated review.
 Progress facts are a dated, source-controlled snapshot; a fresh build does not
 silently refresh old evidence or mark planned work accepted.
 
-After the full CI workflow succeeds on a push/manual run on main, a separate
-publishing workflow updates the GitHub-rendered report on the automation-owned `dashboard-live`
-branch. That job alone receives `contents: write`; it uses structured API requests,
-requires the repository to remain private, and can update only the report branch
-through the publisher's fixed destination. It skips outdated main revisions,
-uses fast-forward updates, and refuses to overwrite unexpected files. PRs, forks,
-tags, failed CI and scheduled runs cannot publish. The workflow-run job checks
-the triggering repository, branch, event and successful conclusion before checking
-out its exact source SHA. This keeps PR/reusable release checks read-only. Publication failure appears
-in the publishing workflow and leaves the prior report available. The stable report URL
-does not expire with the 14-day downloadable artifacts. Detailed progress facts
-still require review; automatic publication is not automatic acceptance.
+The separate private-report workflow executes only the default branch at its
+immutable GitHub context SHA, never a PR head. It can refresh when PR CI is
+requested/running/completed (including failure), when main CI changes state, or on
+a manual main dispatch. It records current main CI health (including failures),
+then reads bounded PR metadata/progress JSON through read-only APIs.
+Proposals and proposed problem resolutions remain separate from main totals and
+acceptance. Fork structured facts are not imported, malformed data is noted, and
+private overlays never enter public HTML artifacts. A closed PR is removed on the
+next CI/manual refresh rather than through a live browser subscription.
+
+That publisher alone receives `contents: write` plus PR/Actions read permissions.
+It requires a private repository, writes only the automation-owned `dashboard-live`
+branch through its fixed destination, skips outdated main revisions, uses
+fast-forward updates and refuses unexpected files. PR/reusable release checks
+remain read-only. Publication failure retains the previous report. The stable
+URL does not expire with downloadable artifacts. Every development PR carries
+its implementation facts and immutable source revisions alongside its code;
+automatic publication remains distinct from reviewed acceptance.
 
 Public static hosting has been approved for the interactive dashboard. The Pages
 workflow accepts only successful CI for current main from this repository. A
