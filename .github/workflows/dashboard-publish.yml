@@ -1,4 +1,4 @@
-name: Update private dashboard
+name: Update GitHub dashboard
 
 on:
   # Execute only default-branch code; PR heads are read through the API as data.
@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: private-dashboard-publish
+  group: github-dashboard-publish
   cancel-in-progress: false
 
 jobs:

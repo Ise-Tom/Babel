@@ -11,7 +11,7 @@ from urllib.parse import quote
 from zoneinfo import ZoneInfo
 
 from build_dashboard import REPO, require, strings, text
-from publish_dashboard import Api, api
+from publish_dashboard import Api, api, check_repository
 
 MAX_PROGRESS_BYTES = 512 * 1024
 
@@ -119,7 +119,7 @@ def collect(
     tracked: set[str] | None = None,
 ) -> None:
     repository = request("GET", "", None)
-    require(repository.get("private") is True, "PR details may only enter the private report")
+    check_repository(repository)
     revision = model["buildRevision"]
     require(bool(re.fullmatch(r"[a-f0-9]{40}", revision)), "Invalid report revision")
     require(request("GET", "branches/main", None)["commit"]["sha"] == revision, "Outdated main")

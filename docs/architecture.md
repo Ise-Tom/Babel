@@ -149,5 +149,5 @@ full native conformance contract. Later modules have independent release gates.
 Existing source prereleases remain license-gated planning/tooling artifacts.
 Product releases need verified immutable artifacts, SBOM/provenance, independent
 security review, supported protected release/merge configuration and rehearsed
-staging/restore. The current private-repository plan limitation is explicit in
-[CI/CD](ci-cd.md); passing CI is not itself enforced merge governance.
+staging/restore. Repository visibility, platform capacity and verified protection settings are
+tracked in [CI/CD](ci-cd.md); passing CI is not itself enforced merge governance.

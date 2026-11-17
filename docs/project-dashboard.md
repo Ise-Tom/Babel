@@ -4,7 +4,29 @@ A read-only engineering dashboard for all 18 phases and 180 requirements. It is
 separate from the future product administration UI: it cannot create accounts,
 change passwords, deploy patches or operate endpoints. Viewing needs no API token;
 evidence links open the repository normally. The automated publisher uses its
-GitHub Actions job token, and the private GitHub view uses your existing login.
+GitHub Actions job token. The GitHub report follows repository visibility and
+supports both public and private Babel repositories.
+
+## Public repository transition
+
+On 17 November 2026 the project owner explicitly requested public visibility.
+The integration’s `PATCH /repos/Ise-Tom/Babel` request with `private=false`
+returned HTTP 403, “Resource not accessible by integration”. The repository
+remained private when checked; no paid capacity was purchased. The compatible
+publisher changes are proposed in PR #18 and must be merged before the default
+branch can publish reports for a public repository.
+
+An owner can apply the authorized setting at
+[Settings → General](https://github.com/Ise-Tom/Babel/settings): **Danger Zone →
+Change repository visibility → Change to public**. Then rerun PR #18’s CI for its
+latest commit. A billing annotation before any job starts is not a test failure
+and must not be bypassed with a successful check. Confirm the actual run passes;
+a remaining account-wide billing restriction still needs account attention.
+
+The fetched branch history, including the generated report branch, was scanned
+with Gitleaks using redacted output; no leaks were detected. This is a secret
+pattern scan, not certification of the project’s product security or licensing.
+The license decision remains open; public visibility grants no invented license.
 
 ## Interactive interface
 
@@ -16,7 +38,7 @@ Cards can be opened anywhere, keyboard focus moves to the selected page, and
 mobile layouts use two columns plus the direct phase picker.
 
 The interactive build is a single static HTML file. Public static hosting has
-been approved for the dashboard; the repository remains private. The Pages
+been approved for the dashboard; repository visibility is an owner setting. The Pages
 workflow below publishes only the tested HTML build. The GitHub-rendered report
 is a fallback for repository browsing, not the preferred dashboard interface.
 
@@ -24,9 +46,10 @@ is a fallback for repository browsing, not the preferred dashboard interface.
 
 1. Merge the dashboard hosting PR after its required CI checks pass.
 2. An owner opens [Settings → Pages](https://github.com/Ise-Tom/Babel/settings/pages)
-   and selects **Build and deployment → Source → GitHub Actions**. Keep repository
-   visibility private. GitHub's hosting action cannot enable Pages with the default
-   job token; this integration also gets HTTP 403 for Pages administration.
+   and selects **Build and deployment → Source → GitHub Actions**. Repository
+   visibility is a separate owner decision. GitHub’s hosting action cannot enable
+   Pages with the default job token; the integration’s last attempt also received
+   HTTP 403 for Pages administration.
 3. Successful main CI automatically starts **Publish interactive dashboard**. If
    it ran before Pages was enabled, run that publishing workflow manually on main.
    It reuses successful CI for the exact revision, so no manual rebuild/upload is needed.
@@ -36,8 +59,8 @@ is a fallback for repository browsing, not the preferred dashboard interface.
 This is a one-time owner setting. The
 [official hosting action](https://github.com/actions/configure-pages/blob/45bfe0192ca1faeb007ade9deae92b16b8254a0d/action.yml)
 documents the additional permissions needed to enable a site. No owner PAT is
-requested or stored. If the account cannot host Pages for a private repository,
-choose another static host; do not make the source repository public as a workaround.
+requested or stored. Public repository visibility was explicitly authorized by
+the owner; publishing workflows never change visibility or purchase a paid plan.
 The site is not live until a Pages deployment succeeds.
 
 The [workflow](../.github/workflows/dashboard-pages.yml) verifies the successful
@@ -50,20 +73,21 @@ excluded. Failed/foreign/PR/tag/scheduled CI and outdated main revisions cannot
 publish; manual retries are restricted to main with matching successful CI.
 The previous deployed site remains available if verification or deployment fails.
 
-The page is public, including its engineering facts. GitHub source links still
-require repository access. Progress remains reviewed source data, not inferred
+The Pages site is public, including its engineering facts. Source links follow
+repository access controls. Progress remains reviewed source data, not inferred
 completion; reload the stable web address to see a newly deployed snapshot.
 
 ## Permanent view without downloads
 
 **[Open the GitHub dashboard](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md).**
-Bookmark this URL. It uses the private repository's existing GitHub permissions;
-no new hosting account, token, public site or plan upgrade is needed. The page
+Bookmark this URL. It follows the repository’s existing GitHub permissions and
+is publicly readable when Babel is public. No separate hosting account is needed.
+The page
 shows a phase board, expandable requirements, feature definitions, implementation
 explanations and the issue journal. Use the browser's Find command to search.
 The standalone HTML provides the richer interactive filters/export interface.
 
-The private report also shows open PR descriptions, files, draft/review and CI
+The GitHub report also shows open PR descriptions, files, draft/review and CI
 state, and proposed work/problem updates from each PR's `dashboard/progress.json`.
 Those entries link to immutable PR-head evidence and to affected requirements. They
 are shown separately from the checked main revision: an implemented increment
@@ -76,11 +100,14 @@ produces an explicit note instead of fabricated completion.
 PR CI requested/in-progress/completed events refresh the report, including failed
 PR checks; main CI state changes and a manual main dispatch can refresh it too.
 The publisher executes only default-branch code and records current main CI health,
-including failures. This private report is not a deployment or release gate; public
+including failures. This GitHub report is not a deployment or release gate; public
 Pages still requires successful main CI. A PR closed without another CI event is removed on
 the next refresh; it is not a live browser feed. Metadata records its check time.
 Listings are bounded to 50 PRs/100 files per PR and flag truncation. This overlay
-is private-report-only: public HTML/Pages artifacts never fetch private PR bodies.
+is GitHub-report-only: standalone HTML/Pages artifacts never fetch PR bodies.
+The report supports public and private Babel repositories. It checks repository
+identity and explicit visibility, and refuses unrelated destinations. Public PR
+metadata is rendered as untrusted text; fork source is never executed or imported.
 
 Development previews are labeled explicitly. After the PR tracking change is
 merged, the separate publishing workflow includes proposals automatically.
@@ -91,8 +118,8 @@ infer acceptance from green checks or rewrite the evidence snapshot date.
 The automation-owned `dashboard-live` branch contains only a generated README;
 it cannot trigger a main-branch build loop. Source facts remain on main. The
 publisher has write permission only in the trusted post-gate job, checks that
-the repository is private, skips outdated main revisions, and uses fast-forward
-updates. It refuses to replace a branch containing unexpected files. Do not
+the destination is exactly Babel with explicit visibility, skips outdated main
+revisions, and uses fast-forward updates. It refuses to replace a branch containing unexpected files. Do not
 edit that generated branch manually. Repository visibility is never changed.
 
 For maintainers, render a review copy without publishing:

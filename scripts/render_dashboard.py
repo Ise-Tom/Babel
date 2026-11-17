@@ -1,4 +1,4 @@
-"""Render the validated progress model as a private, browser-readable GitHub report."""
+"""Render the validated progress model as a browser-readable GitHub report."""
 
 import argparse
 import html
@@ -370,4 +370,4 @@ if __name__ == "__main__":
     args.output.write_text(
         render(build(ROOT, args.revision), preview=args.preview), encoding="utf-8"
     )
-    print(f"Rendered private dashboard: {args.output}")
+    print(f"Rendered GitHub dashboard: {args.output}")

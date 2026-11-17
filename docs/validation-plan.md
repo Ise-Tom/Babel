@@ -60,8 +60,9 @@ Windows/Linux VMs and per-run synthetic credentials with deterministic cleanup.
 Nightly fuzz/multi-site/scale runs and release assessments require real allocated
 resources; record provisioning failures as failures, not skips. Restrict release
 OIDC/ref/environment identities and verify actual required-check/review controls
-where supported. The current private-repository plan limitation remains a D-10
-owner blocker, not permission to silently buy a plan or publish the repository.
+where supported. The owner explicitly authorized public repository visibility; required-check and
+review enforcement must still be verified. Paid capacity and infrastructure remain
+D-10 owner decisions, not automatically authorized by a visibility change.
 
 Before a phase/module production gate, every phase requirement and linked global
 requirement must have current passing evidence or an explicitly reviewed scope
