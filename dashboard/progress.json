@@ -1205,7 +1205,7 @@
         "P10-09"
       ],
       "how": "Read the active main ruleset and effective branch rules, Pages mode/environment and private-reporting status. Recorded the owner’s explicit confirmation of the three Actions defaults separately from API-verifiable controls. No repository setting or remote branch was changed.",
-      "verification": "The initial team ruleset was API-verified with CI, review and force-push/deletion protection. The current sole maintainer requested a solo development profile; the latest readback has approval count zero but three approval switches still enabled (I24). Pages/private reporting observations remain valid. Actions defaults are owner-confirmed because their API returns HTTP 403.",
+      "verification": "The owner-adjusted solo ruleset and effective main rules are API-verified: zero approvals, code-owner/last-push/unattributed-change approval disabled, PR and up-to-date CI required, resolved conversations, no bypass and no force-push/deletion. Pages/private reporting observations remain valid. Actions defaults remain owner-confirmed because their API returns HTTP 403.",
       "limitations": "Team approval is not sustainable for the sole maintainer and is being replaced for development, without claiming independent review. Source-release remains absent (I22). Main acceptance totals change after merge, not from PR proposals.",
       "source_revision": "911ef20b425782e9cbd5d7797ecfa41fbac6578a",
       "sources": [
@@ -1276,8 +1276,8 @@
         "P10-09"
       ],
       "how": "Changed the main ruleset template to zero approvals with code-owner, last-push and unattributed-change approval disabled. Kept PRs, up-to-date GitHub Actions CI gate, resolved conversations and no force-push/deletion/bypass. Aligned source-only prerelease preflight, owner guidance and contribution policy; CODEOWNERS still records ownership.",
-      "verification": "100 repository tests pass with 98% coverage, including solo/team release modes and main ruleset safeguards. Ruff, strict mypy, actionlint, Zizmor and local Markdown links pass. The integration settings write was denied HTTP 403; the latest live rule is only partially adjusted and PR #21 remains blocked.",
-      "limitations": "Implementation is proposed in PR #21; no successful remote ruleset write is claimed. Owner UI action is tracked in I24. This is owner review plus CI, not independent review; future production security qualification remains required. Source-release is still absent; no release/tag/merge/deployment was triggered.",
+      "verification": "100 repository tests pass with 98% coverage, including solo/team release modes and main ruleset safeguards. Ruff, strict mypy, actionlint, Zizmor and local Markdown links pass. After the integration write was denied HTTP 403, owner UI changes were verified through the full ruleset and effective main rules: all solo settings match and PR/CI/no-bypass protections remain.",
+      "limitations": "Implementation is proposed in PR #21. Live owner-applied solo rules are verified and I24 is resolved. This is owner review plus CI, not independent review; future production security qualification remains required. Source-release is still absent; no release/tag/merge/deployment was triggered.",
       "source_revision": "911ef20b425782e9cbd5d7797ecfa41fbac6578a",
       "sources": [
         {
@@ -2127,7 +2127,7 @@
     {
       "id": "I24",
       "title": "Team-only approval switches block the sole maintainer",
-      "status": "open",
+      "status": "resolved",
       "kind": "platform-configuration",
       "phases": [
         0,
@@ -2141,9 +2141,9 @@
         "P05-09",
         "P10-09"
       ],
-      "detail": "PR #21 is authored by the sole repository owner, who cannot self-approve. The live ruleset now has approval count zero but code-owner, last-push and extra unattributed-change approvals remain enabled. Integration PUT was denied HTTP 403.",
-      "resolution": "",
-      "next_action": "In Protect main ruleset 27498979, keep approvals zero and disable the three remaining approval switches. Keep required PR, up-to-date CI gate, resolved conversations and force-push/deletion protection with no bypass. Verify effective rules and PR mergeability after the owner change; no second maintainer is needed for current development.",
+      "detail": "PR #21 is authored by the sole repository owner, who cannot self-approve. Team-only code-owner, last-push and unattributed-change approval switches remained enabled after the approval count was set to zero. The integration write was denied HTTP 403.",
+      "resolution": "Subsequent owner UI changes are API-verified: required approvals zero and all three approval switches false. Effective main rules still require PRs, up-to-date GitHub Actions CI gate and resolved conversations, and block force-push/deletion with no bypass actors. A second maintainer is no longer required for development merges.",
+      "next_action": "Keep these solo development settings and inspect diff/CI before merging. Add independent review explicitly when an actual second maintainer joins; planned production security qualification is not waived.",
       "source_revision": "911ef20b425782e9cbd5d7797ecfa41fbac6578a",
       "sources": [
         {
@@ -2155,7 +2155,7 @@
           "label": "Desired main ruleset"
         }
       ],
-      "provenance": "Live ruleset and PR readback, plus actual HTTP 403 on the attempted configuration update; no settings change is inferred from committed JSON."
+      "provenance": "Full ruleset 27498979 and effective rules for main read back after owner changes; the failed integration PUT is not claimed as the mechanism."
     }
   ],
   "focus_phase": 1,

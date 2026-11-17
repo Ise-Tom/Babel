@@ -12,12 +12,13 @@ up-to-date **CI gate** (GitHub Actions app 15368), resolved conversations,
 no bypass actors and no force pushes/deletion. CODEOWNERS records ownership;
 it does not require an unavailable second reviewer. This is not independent review.
 
-The proposed template implements that solo policy. At the latest API readback,
-only the approval count was zero: code-owner, last-push and unattributed-change
-approvals were still enabled. They must also be disabled in the owner UI. The
-integration received HTTP 403 attempting the update; no successful settings write
-is claimed. Private vulnerability reporting is enabled; a submitted private report
-has not been exercised.
+The committed template implements that solo policy. Live API readback now verifies
+approval count zero and all three approval switches disabled. Effective main rules
+retain PRs, required up-to-date CI, resolved conversations, force-push/deletion
+protection and no bypass actors. The integration's update attempt received HTTP
+403; the subsequent owner UI change is verified rather than attributed to that
+failed write. Private vulnerability reporting is enabled; a submitted private
+report has not been exercised.
 
 The owner also confirmed read-only Actions defaults, disabled Actions PR approval
 and approval for all outside collaborators. Those three observations are explicitly
