@@ -891,10 +891,10 @@
         "P01-01",
         "P01-10"
       ],
-      "how": "Read-only preflight validates exact main CI, immutable artifact ID, size and SHA-256 digest. A bounded verifier rejects extra/traversing/symlink files and weak browser policy, then packages only HTML/.nojekyll. The separate Pages/OIDC job has no checkout or project-code execution, attempts Actions-only/HTTPS configuration and rechecks main before deployment. Added no-referrer policy, blocked images, CODEOWNERS, a main ruleset template and verified owner settings.",
-      "verification": "86 Python tests pass with 98% tooling coverage. Negative archive/CSP tests, actual standalone archive verification, strict types/lint, actionlint, Zizmor, six build/lint fixtures and 24 browser tests pass locally. Live current site returned HTTP 200; Pages API confirms HTTPS and environment main-only deployment policy.",
+      "how": "Read-only preflight validates exact main CI, immutable artifact ID, size and SHA-256 digest. A bounded verifier rejects extra/traversing/symlink files and weak browser policy, then packages only HTML/.nojekyll. The separate Pages/OIDC job has no checkout or project-code execution, attempts Actions-only/HTTPS configuration and rechecks main before deployment. Added no-referrer policy, blocked images, CODEOWNERS, a main ruleset template and verified owner settings. Registered only the named ruleset JSON with object/syntax validation in the CI scope guard; unrelated JSON manifests remain rejected. Shortened the focus summary and compacted phase cards after hosted viewport checks caught overflow.",
+      "verification": "87 Python tests pass with 98% tooling coverage. Negative archive/CSP tests, actual standalone archive verification, strict types/lint, actionlint, Zizmor, six build/lint fixtures and 24 browser tests pass locally. Live current site returned HTTP 200; Pages API confirms HTTPS and environment main-only deployment policy.",
       "limitations": "These stronger deployment changes await PR merge and a successful main workflow run. The integration cannot mutate admin settings (HTTP 403). The job-token Pages configuration step must succeed and read back correctly; no success is claimed in advance. Required review, private vulnerability reporting and other owner settings remain explicit actions. GitHub Pages does not support arbitrary security response headers.",
-      "source_revision": "9700ddc9a28f62a9204bafc49e0f67390ed0036e",
+      "source_revision": "b2cad80fed4acb38f132f5e15e34339b9e7748af",
       "sources": [
         {
           "path": ".github/workflows/dashboard-pages.yml",
@@ -939,12 +939,25 @@
         {
           "path": ".github/CODEOWNERS",
           "label": "CODEOWNERS"
+        },
+        {
+          "path": "scripts/check_ci_scope.py",
+          "label": "Named configuration scope and JSON validation"
+        },
+        {
+          "path": "tests/test_delivery.py",
+          "label": "Scope regression tests"
+        },
+        {
+          "path": "dashboard/src/style.css",
+          "label": "Compact dashboard viewport layout"
         }
       ],
       "problems": [
         "I02",
         "I10",
-        "I18"
+        "I18",
+        "I19"
       ]
     }
   ],
@@ -1517,6 +1530,44 @@
         }
       ],
       "provenance": "Direct GitHub settings API responses and successful public site/deployment observations on 2026-11-17; these are GitHub permission errors, not automatic approval-review rejections."
+    },
+    {
+      "id": "I19",
+      "title": "Hosted hardening run caught unregistered ruleset data and viewport overflow",
+      "status": "resolved",
+      "kind": "ci-regression",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "detail": "Run 44177850164 rejected the new docs/github-main-ruleset.json under the default-deny component scope policy. The desktop browser check also measured the last phase row at 1015px in a 1000px viewport after the progress summary grew. Local browser validation had preceded that progress-data update.",
+      "resolution": "Registered that exact non-executable JSON file with readable-object validation and negative tests; other JSON manifests remain rejected. Shortened the focus summary and reduced phase-card spacing. Rebuilt using the final progress data before rerunning browser checks; no CI assertion or source guard was removed.",
+      "next_action": "Require the corrected full hosted run to pass and keep rebuilding dashboard data before visual checks when progress facts change.",
+      "source_revision": "b2cad80fed4acb38f132f5e15e34339b9e7748af",
+      "sources": [
+        {
+          "path": "scripts/check_ci_scope.py",
+          "label": "Specific ruleset registration and JSON checks"
+        },
+        {
+          "path": "tests/test_delivery.py",
+          "label": "Scope rejection regression"
+        },
+        {
+          "path": "dashboard/src/style.css",
+          "label": "Compact cards"
+        },
+        {
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "Viewport assertion retained"
+        }
+      ],
+      "provenance": "Observed hosted repository/browser failures and inspected the actual 1440×1000 CI screenshot; not inferred from a local-only result."
     }
   ],
   "focus_phase": 1,
