@@ -2,8 +2,8 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-17",
-    "commit": "824d5760f4f95abb341f625b6ff37ab60dbd5d1f",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44175150495",
+    "commit": "208d61d0f2bcb25c75d19a6e2ad2a292732e09ef",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44179292379",
     "ci_result": "passed",
     "checks_passed": 12,
     "pull_requests": [
@@ -68,12 +68,17 @@
         "draft": false
       },
       {
+        "number": 17,
+        "state": "merged",
+        "draft": false
+      },
+      {
         "number": 18,
         "state": "merged",
         "draft": false
       }
     ],
-    "note": "Verified public main snapshot: PR #18 is merged, both scoped owner acceptances are recorded, all 12 main CI jobs passed and the Pages dashboard is live. PR #17 contains proposed compiler compatibility and deployment-hardening work; admin security settings still require owner action."
+    "note": "Verified main snapshot: PR #17 is merged and all 12 main CI jobs passed. Pages has Actions publishing and HTTPS enabled, but deployment 44179766192 failed on an unnecessary settings write; the last successful public site remains available. This PR proposes the read-only deployment fix and the owner-selected license/backend and lab definition."
   },
   "requirements": {
     "P00-01": {
@@ -97,8 +102,8 @@
       "note": "No licensed isolated Windows reference lab is recorded."
     },
     "P00-06": {
-      "status": "blocked",
-      "note": "Owner license/contributor decision is required before distribution."
+      "status": "in_progress",
+      "note": "Owner selected Apache-2.0 and DCO 1.1; files and metadata are applied in this PR. Third-party/specification/reference-fixture obligations still require review, so the full requirement is not accepted."
     },
     "P00-07": {
       "status": "in_progress",
@@ -126,8 +131,8 @@
       }
     },
     "P01-03": {
-      "status": "blocked",
-      "note": "Storage/identity/replication decisions must precede durable credential state."
+      "status": "in_progress",
+      "note": "Owner selected PostgreSQL and the local state/journal contract is proposed in ADR 0003. No durable store or credential writes are implemented; version/driver, schema, crash, backup and key-custody qualification remain."
     },
     "P01-04": {
       "status": "in_progress",
@@ -959,6 +964,178 @@
         "I18",
         "I19"
       ]
+    },
+    {
+      "id": "W24",
+      "title": "Verify correct Pages settings without administration writes",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "how": "Removed the unconditional Pages PUT that failed with HTTP 403 even when Source/HTTPS were correct. The job now reads and requires Actions-only publishing and HTTPS, with an actionable failure if either is wrong. Digest, archive, current-main and privileged-job boundaries are unchanged.",
+      "verification": "Observed failure run 44179766192: read-only artifact verification succeeded and the administration PUT failed. Live API confirms workflow publishing/HTTPS; corrected read-only predicate returns true locally. Workflow lint and Zizmor pass; actual new deployment still requires merge.",
+      "limitations": "The patch does not grant repository administration access or claim a deployment already succeeded. Missing/insecure settings and failed reads still block publication.",
+      "source_revision": "b58df33f10f80688bfeaf55e44d08d52156e7608",
+      "sources": [
+        {
+          "path": ".github/workflows/dashboard-pages.yml",
+          "label": "dashboard-pages.yml"
+        },
+        {
+          "path": "docs/github-security-settings.md",
+          "label": "github-security-settings.md"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        }
+      ],
+      "problems": [
+        "I18",
+        "I20"
+      ]
+    },
+    {
+      "id": "W25",
+      "title": "Apply owner-selected Apache-2.0 license and DCO contribution terms",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-06",
+        "P05-02"
+      ],
+      "how": "Copied the full Apache-2.0 and DCO 1.1 texts from their official publishers; added project notices, incoming contribution policy and consistent Cargo/npm SPDX metadata. Disabled the unpublished-package license-audit exemption. No contributor signature is fabricated.",
+      "verification": "Core and fuzz Cargo dependency/license/source/advisory audits pass with private-package ignore=false; Cargo metadata resolves the project license. TypeScript lint/build/security fixtures and npm audit pass with zero vulnerabilities. The owner’s explicit choice is recorded in D-01.",
+      "limitations": "DCO sign-off review is a maintainer responsibility, not an invented automated check. Third-party/specification/reference-fixture rights and production qualification remain open; publish=false remains in Rust manifests.",
+      "source_revision": "b58df33f10f80688bfeaf55e44d08d52156e7608",
+      "sources": [
+        {
+          "path": "LICENSE",
+          "label": "LICENSE"
+        },
+        {
+          "path": "DCO",
+          "label": "DCO"
+        },
+        {
+          "path": "NOTICE",
+          "label": "NOTICE"
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "label": "CONTRIBUTING.md"
+        },
+        {
+          "path": "Cargo.toml",
+          "label": "Cargo.toml"
+        },
+        {
+          "path": "native/babel-ldap/Cargo.toml",
+          "label": "Cargo.toml"
+        },
+        {
+          "path": "fuzz/Cargo.toml",
+          "label": "Cargo.toml"
+        },
+        {
+          "path": "dashboard/package.json",
+          "label": "package.json"
+        },
+        {
+          "path": "deny.toml",
+          "label": "deny.toml"
+        },
+        {
+          "path": "docs/decisions.md",
+          "label": "decisions.md"
+        }
+      ],
+      "problems": [
+        "I03"
+      ]
+    },
+    {
+      "id": "W26",
+      "title": "Prepare an isolated Windows reference lab definition without provisioning",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-05",
+        "P01-06"
+      ],
+      "how": "Defined two isolated .test networks and six scoped reference/Babel/client/probe machines with bounded resources, no bridge/routes/external DNS/downloads, fresh credentials and blank image metadata. Added a stdlib-only validator and same-PR configuration CI, with denied-safety/topology/resource/image tests and a provisioning/teardown/evidence contract.",
+      "verification": "93 Python tests pass with 98% tooling coverage; the lab validator has 100% measured line/branch coverage. The committed definition validates; require-images rejects the missing image placeholders. No KVM device or qualified Windows host exists in this worker.",
+      "limitations": "This is configuration preparation only. No images downloaded, terms accepted, VMs created, infrastructure purchased or Windows operations tested. I04 remains open; exact client builds and two clean real lab runs are required.",
+      "source_revision": "b58df33f10f80688bfeaf55e44d08d52156e7608",
+      "sources": [
+        {
+          "path": "lab/windows-reference.toml",
+          "label": "windows-reference.toml"
+        },
+        {
+          "path": "scripts/check_lab_definition.py",
+          "label": "check_lab_definition.py"
+        },
+        {
+          "path": "tests/test_lab_definition.py",
+          "label": "test_lab_definition.py"
+        },
+        {
+          "path": "docs/windows-reference-lab.md",
+          "label": "windows-reference-lab.md"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "label": "ci.yml"
+        },
+        {
+          "path": "scripts/check_ci_scope.py",
+          "label": "check_ci_scope.py"
+        }
+      ],
+      "problems": [
+        "I04"
+      ]
+    },
+    {
+      "id": "W27",
+      "title": "Record PostgreSQL selection and a reviewable native state contract",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-02",
+        "P00-04",
+        "P01-02",
+        "P01-03"
+      ],
+      "how": "Recorded the owner’s explicit PostgreSQL choice. ADR 0003 assigns identity/schema/ACL/replication semantics to Babel, independent local stores per DC, a proposed atomic journal/audit/idempotency transaction and ordered writer allocation. It explains why ordinary SQL sequence allocation can lose changes below a replicated watermark and specifies kill/retry/recovery qualification.",
+      "verification": "Design is linked to D-04/D-05/D-06 and existing Phase 1/3 requirements. Documentation links and phase/model validation pass. Backend-family selection is approved; schema/driver/runtime and durability claims are not marked tested.",
+      "limitations": "No database is installed or implemented by this ADR. Key custody, crash/index/locking evidence, AD conflict/RID/FSMO and GPO/SYSVOL contracts remain separate gates. A future backend migration still needs data/recovery/conformance qualification.",
+      "source_revision": "b58df33f10f80688bfeaf55e44d08d52156e7608",
+      "sources": [
+        {
+          "path": "docs/adr/0003-postgresql-directory-state.md",
+          "label": "0003-postgresql-directory-state.md"
+        },
+        {
+          "path": "docs/decisions.md",
+          "label": "decisions.md"
+        },
+        {
+          "path": "docs/architecture.md",
+          "label": "architecture.md"
+        },
+        {
+          "path": "docs/native-core-plan.md",
+          "label": "native-core-plan.md"
+        }
+      ],
+      "problems": [
+        "I05"
+      ]
     }
   ],
   "problems": [
@@ -1017,7 +1194,7 @@
     {
       "id": "I03",
       "title": "Project license and contributor policy not selected",
-      "status": "open",
+      "status": "resolved",
       "kind": "decision",
       "phases": [
         0,
@@ -1029,20 +1206,56 @@
         "P05-02"
       ],
       "detail": "No project LICENSE is selected. Native crates remain unpublished and source-prerelease creation is blocked by the license gate.",
-      "resolution": "",
-      "next_action": "Project owner resolves D-01 before public distribution and external contribution policy acceptance.",
+      "resolution": "The project owner explicitly selected Apache-2.0 plus DCO in this conversation on 2026-11-17. The full license/DCO texts, contribution policy, notices and package SPDX metadata are applied; unpublished Rust packages are now included in the license audit. This resolves selection, not all third-party or specification rights reviews.",
+      "next_action": "Merge the reviewed terms and retain upstream notices; maintainers verify external contribution sign-offs and complete the remaining D-01 rights review before corresponding distribution.",
       "sources": [
         {
+          "path": "LICENSE",
+          "label": "LICENSE"
+        },
+        {
+          "path": "DCO",
+          "label": "DCO"
+        },
+        {
+          "path": "NOTICE",
+          "label": "NOTICE"
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "label": "CONTRIBUTING.md"
+        },
+        {
+          "path": "Cargo.toml",
+          "label": "Cargo.toml"
+        },
+        {
+          "path": "native/babel-ldap/Cargo.toml",
+          "label": "Cargo.toml"
+        },
+        {
+          "path": "fuzz/Cargo.toml",
+          "label": "Cargo.toml"
+        },
+        {
+          "path": "dashboard/package.json",
+          "label": "package.json"
+        },
+        {
+          "path": "deny.toml",
+          "label": "deny.toml"
+        },
+        {
           "path": "docs/decisions.md",
-          "label": "D-01"
+          "label": "decisions.md"
         }
       ],
       "provenance": "Current repository decision register; third-party development license policy does not choose the project license.",
-      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
+      "source_revision": "b58df33f10f80688bfeaf55e44d08d52156e7608"
     },
     {
       "id": "I04",
-      "title": "Licensed isolated Windows reference lab is missing",
+      "title": "Windows lab definition prepared; host and real-client evidence are missing",
       "status": "open",
       "kind": "infrastructure",
       "phases": [
@@ -1055,25 +1268,41 @@
         "P01-06",
         "P02-10"
       ],
-      "detail": "Independent Linux LDAP-client evidence exists, but there is no recorded real Windows join/login/GPO conformance result or qualified reference image matrix.",
+      "detail": "The owner has no lab host and explicitly requested a definition only. A two-network/six-machine profile and fail-closed configuration validator are prepared. No images, licenses, VMs or Windows join/login/GPO results have been supplied.",
       "resolution": "",
-      "next_action": "Provide reproducible isolated Windows/reference hosts and exact supported builds before accepting Windows behavior.",
+      "next_action": "Select a host/provider, approved exact images and rights; implement reviewed provisioning/teardown and complete two fresh lab runs before Windows conformance acceptance.",
       "sources": [
         {
-          "path": "docs/decisions.md",
-          "label": "D-02 / D-10"
+          "path": "lab/windows-reference.toml",
+          "label": "windows-reference.toml"
         },
         {
-          "path": "docs/phase-01-progress.md",
-          "label": "Phase 1 remaining gates"
+          "path": "scripts/check_lab_definition.py",
+          "label": "check_lab_definition.py"
+        },
+        {
+          "path": "tests/test_lab_definition.py",
+          "label": "test_lab_definition.py"
+        },
+        {
+          "path": "docs/windows-reference-lab.md",
+          "label": "windows-reference-lab.md"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "label": "ci.yml"
+        },
+        {
+          "path": "scripts/check_ci_scope.py",
+          "label": "check_ci_scope.py"
         }
       ],
       "provenance": "Explicitly outstanding; no Windows test is marked passed.",
-      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
+      "source_revision": "b58df33f10f80688bfeaf55e44d08d52156e7608"
     },
     {
       "id": "I05",
-      "title": "Persistent identity, storage and replication decisions remain open",
+      "title": "PostgreSQL selected; durable-state and AD replication qualification remain",
       "status": "open",
       "kind": "design",
       "phases": [
@@ -1088,17 +1317,29 @@
         "P01-02",
         "P01-03"
       ],
-      "detail": "The lab has no persistent state. SID/GUID/schema/ACL, transaction/journal format, key custody and compatible replication metadata require reviewed designs and failure tests.",
+      "detail": "The owner accepted PostgreSQL as the initial backend. ADR 0003 proposes identity/ACL ownership, independent per-DC stores and atomic state/journal ordering. No storage implementation, crash evidence, credential key-custody choice, AD conflict/RID/FSMO qualification or GPO/SYSVOL transport is accepted.",
       "resolution": "",
-      "next_action": "Resolve D-04/D-05/D-06 before valuable credential-bearing writes or fixed recovery formats.",
+      "next_action": "Implement the synthetic local-store experiment with reviewed PostgreSQL version/driver and same-PR runtime CI. Qualify crash/locking/recovery and keys; resolve D-05/D-06 before credential-bearing or multi-controller writes.",
       "sources": [
         {
+          "path": "docs/adr/0003-postgresql-directory-state.md",
+          "label": "0003-postgresql-directory-state.md"
+        },
+        {
           "path": "docs/decisions.md",
-          "label": "Storage and replication decisions"
+          "label": "decisions.md"
+        },
+        {
+          "path": "docs/architecture.md",
+          "label": "architecture.md"
+        },
+        {
+          "path": "docs/native-core-plan.md",
+          "label": "native-core-plan.md"
         }
       ],
       "provenance": "Design blocker, not an implemented storage defect.",
-      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
+      "source_revision": "b58df33f10f80688bfeaf55e44d08d52156e7608"
     },
     {
       "id": "I06",
@@ -1467,7 +1708,7 @@
     },
     {
       "id": "I18",
-      "title": "GitHub denies repository security and Pages settings writes to the integration",
+      "title": "Repository security administration remains blocked; Pages settings are verified",
       "status": "open",
       "kind": "platform-permissions",
       "phases": [
@@ -1479,54 +1720,22 @@
         "P01-01",
         "P01-10"
       ],
-      "detail": "Pages configuration PUT, environment PUT, private vulnerability reporting enablement and ruleset creation all returned HTTP 403 Resource not accessible by integration. Pages is live with HTTPS, but its observed build type remains legacy; private reporting is disabled, ruleset listing empty and legacy protection/Actions defaults cannot be inspected.",
+      "detail": "Pages now reports build_type=workflow and https_enforced=true, and its environment remains main-only. Private vulnerability reporting is still disabled, ruleset listing empty and legacy protection/Actions defaults cannot be inspected. The integration cannot apply admin settings (HTTP 403). The deployment’s unnecessary write is tracked separately as I20.",
       "resolution": "",
-      "next_action": "Owner applies docs/github-security-settings.md and imports the supplied main ruleset. The revised deployment tries Actions-only/HTTPS with its legitimate Pages-scoped job token and fails if enforcement/readback is denied. Verify actual settings after application; no paid service or broader credential is requested.",
-      "source_revision": "9700ddc9a28f62a9204bafc49e0f67390ed0036e",
+      "next_action": "Owner imports the supplied main ruleset, enables private reporting and verifies Actions/environment controls using docs/github-security-settings.md. Merge the read-only Pages fix and verify a successful deployment; no broader credential or paid service is requested.",
+      "source_revision": "b58df33f10f80688bfeaf55e44d08d52156e7608",
       "sources": [
         {
           "path": ".github/workflows/dashboard-pages.yml",
           "label": "dashboard-pages.yml"
         },
         {
-          "path": ".github/workflows/dashboard.yml",
-          "label": "dashboard.yml"
-        },
-        {
-          "path": "scripts/check_pages_source.py",
-          "label": "check_pages_source.py"
-        },
-        {
-          "path": "scripts/verify_pages_artifact.py",
-          "label": "verify_pages_artifact.py"
-        },
-        {
-          "path": "tests/test_pages_artifact.py",
-          "label": "test_pages_artifact.py"
-        },
-        {
-          "path": "tests/test_pages_deployment.py",
-          "label": "test_pages_deployment.py"
-        },
-        {
-          "path": "dashboard/build.mjs",
-          "label": "build.mjs"
-        },
-        {
-          "path": "dashboard/src/index.html",
-          "label": "index.html"
-        },
-        {
           "path": "docs/github-security-settings.md",
           "label": "github-security-settings.md"
         },
         {
-          "path": "docs/github-main-ruleset.json",
-          "label": "github-main-ruleset.json"
-        },
-        {
-          "path": ".github/CODEOWNERS",
-          "label": "CODEOWNERS"
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
         }
       ],
       "provenance": "Direct GitHub settings API responses and successful public site/deployment observations on 2026-11-17; these are GitHub permission errors, not automatic approval-review rejections."
@@ -1568,8 +1777,42 @@
         }
       ],
       "provenance": "Observed hosted repository/browser failures and inspected the actual 1440×1000 CI screenshot; not inferred from a local-only result."
+    },
+    {
+      "id": "I20",
+      "title": "Pages deployment attempted an unnecessary denied administration write",
+      "status": "resolved",
+      "kind": "deployment-permissions",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "detail": "After PR #17 merged, main CI passed all 12 jobs and artifact verification passed, but Pages run 44179766192 failed on unconditional PUT /pages. Live settings were already Actions-only with HTTPS; the job token could not administer them.",
+      "resolution": "The follow-up removes the PUT and retains a fail-closed GET/readback check. Correct existing settings no longer require administration access; insecure settings or failed reads still stop deployment.",
+      "next_action": "Review/merge the patch and verify the next main Pages deployment; keep owner-only repository security controls explicit under I02/I18.",
+      "source_revision": "b58df33f10f80688bfeaf55e44d08d52156e7608",
+      "sources": [
+        {
+          "path": ".github/workflows/dashboard-pages.yml",
+          "label": "dashboard-pages.yml"
+        },
+        {
+          "path": "docs/github-security-settings.md",
+          "label": "github-security-settings.md"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        }
+      ],
+      "provenance": "Observed complete hosted failure logs and current API state on 2026-11-17; this is a GitHub permission rejection, not automatic approval review."
     }
   ],
   "focus_phase": 1,
-  "focus_summary": "Read-only LDAP discovery is implemented. PR #17 hardens public hosting. Storage, DNS, authentication, domain join and GPO remain outstanding."
+  "focus_summary": "Read-only LDAP discovery is implemented. PostgreSQL is selected; durable storage and the Windows lab still require implementation and evidence."
 }
