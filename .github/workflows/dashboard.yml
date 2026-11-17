@@ -63,7 +63,7 @@ jobs:
           SOURCE_REVISION: ${{ github.sha }}
         run: python3 ../scripts/render_dashboard.py --revision "$SOURCE_REVISION"
       - name: Preserve standalone HTML
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: dashboard-standalone
           path: dashboard/dist/index.html
@@ -71,7 +71,7 @@ jobs:
           if-no-files-found: error
       - name: Preserve browser/security evidence
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: dashboard-validation
           path: |
