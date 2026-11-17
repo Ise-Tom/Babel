@@ -1,5 +1,12 @@
 version: 2
 updates:
+  - package-ecosystem: docker
+    directory: /experiments/postgres_store
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: postgres
+        update-types: ['version-update:semver-major']
   - package-ecosystem: github-actions
     directory: /
     schedule:

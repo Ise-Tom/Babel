@@ -83,8 +83,9 @@ Configure **CI gate** as a required status check with a PR/review ruleset, and
 require independent review of workflow/policy changes. A successful job is not
 itself enforced merge protection. The earlier private-repository configuration
 rejected ruleset access with HTTP 403. The owner has now explicitly authorized a
-public repository. Protection settings still require API verification; visibility
-alone does not establish enforced review or release approval. Bandit, Zizmor and
+public repository. The active main ruleset and effective branch rules now verify review, up-to-date
+CI gate, no bypass, and force-push/deletion protection. Release-environment approval
+remains missing and is independently gated; main protection alone is not release approval. Bandit, Zizmor and
 pip-audit remain required; additional available security services must not replace
 those checks with unconditional success.
 
@@ -298,3 +299,21 @@ repository visibility changed. A site is advertised as live only after a success
 deployment; failures retain the prior site and are visible in the publishing run.
 The site is now live; [observed security settings](github-security-settings.md)
 distinguish verified controls from admin settings denied to the integration.
+
+## PostgreSQL state experiment gate
+
+The required database job uses the digest-pinned official PostgreSQL 18 test image
+with no network, published ports or host mounts. Official psql drives real SQL
+constraint/transaction and process-crash tests. It has a separate controller
+coverage gate of 90%, strict types, Ruff and Bandit, and a test-image CycloneDX
+inventory. The image dependency is tracked by Dependabot. This adds no production
+PostgreSQL driver, credential store or Windows/replication acceptance. See
+[ADR 0004](adr/0004-synthetic-postgresql-state-experiment.md) for exact scope.
+
+Source prereleases also have a read-only preflight for the existing protected
+`source-release` environment before the environment-bound write/OIDC job can run.
+It requires explicit independent reviewers, self-review prevention, no admin bypass
+and only `v*` tag deployments. Missing/inaccessible settings fail before the normal
+workflow could automatically create an unprotected environment. This assumes the
+reviewed release workflow; owner-controlled release tag creation and the platform
+environment remain necessary against unauthorized workflow/tag changes.

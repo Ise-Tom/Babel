@@ -68,3 +68,11 @@ D-01 obligations, D-02 platform qualification, D-04 durability/key custody,
 D-05/D-06 replication/policy and the Windows lab remain open where specified in the
 [decision register](decisions.md). No identity/key/storage format, release
 license, Windows conformance result or production hardware capacity is invented.
+
+## Synthetic PostgreSQL state experiment
+
+[ADR 0004](adr/0004-synthetic-postgresql-state-experiment.md) records the new isolated
+transaction/process-crash experiment. It validates bounded synthetic SQL state,
+journal ordering, rollback, retry and recovery. It is separate from the LDAP lab:
+there is still no persistent directory API, credential store or Rust storage adapter.
+I05 remains open for the remaining native model, recovery, keys and AD semantics.

@@ -29,6 +29,7 @@ required production runtime. Advanced security capabilities extend this core pro
 - [Architecture decisions](docs/architecture.md) and [native-core implementation plan](docs/native-core-plan.md)
 - [CI/CD operation and repository settings](docs/ci-cd.md)
 - [PostgreSQL storage decision](docs/adr/0003-postgresql-directory-state.md)
+- [Synthetic PostgreSQL transaction/crash experiment](docs/adr/0004-synthetic-postgresql-state-experiment.md)
 - [Unprovisioned Windows reference lab](docs/windows-reference-lab.md)
 - [Contributing](CONTRIBUTING.md) and [security reporting](SECURITY.md)
 

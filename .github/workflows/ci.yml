@@ -44,8 +44,8 @@ jobs:
           python scripts/check_docs.py
       - name: Formatting, lint and strict types
         run: |
-          ruff format --check scripts tests native/babel-ldap/tests/smoke_ldap.py
-          ruff check scripts tests native/babel-ldap/tests/smoke_ldap.py
+          ruff format --check scripts tests experiments/postgres_store native/babel-ldap/tests/smoke_ldap.py
+          ruff check scripts tests experiments/postgres_store native/babel-ldap/tests/smoke_ldap.py
           mypy
       - name: Source archive smoke test
         run: |
@@ -99,7 +99,7 @@ jobs:
       - name: Python static security analysis
         run: |
           mkdir -p reports
-          bandit -c pyproject.toml -r scripts -f json -o reports/bandit.json
+          bandit -c pyproject.toml -r scripts experiments/postgres_store/experiment.py -f json -o reports/bandit.json
       - name: Workflow security analysis
         if: ${{ !cancelled() }}
         run: zizmor --offline --strict-collection --format json .github/workflows > reports/zizmor.json
@@ -158,10 +158,47 @@ jobs:
     permissions:
       contents: read
 
+  postgres-store:
+    name: PostgreSQL synthetic state experiment
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Install integrity-locked test tools
+        run: python -m pip install --require-hashes -r requirements-ci.txt -r requirements-ci.in
+      - name: Real transactions, lock ordering and process crash recovery
+        run: |
+          coverage run --source=experiments.postgres_store.experiment -m unittest discover -s experiments/postgres_store -v
+          coverage report --fail-under=90
+          coverage xml -o reports/postgres-store-coverage.xml
+      - name: Inventory the pinned test-image dependencies
+        run: |
+          python3 scripts/install_ci_tools.py --directory "$RUNNER_TEMP/babel-ci-tools" --tools syft
+          python3 - <<'PYTHON' > "$RUNNER_TEMP/postgres-image"
+          from experiments.postgres_store.experiment import IMAGE
+          print(IMAGE)
+          PYTHON
+          read -r POSTGRES_IMAGE < "$RUNNER_TEMP/postgres-image"
+          "$RUNNER_TEMP/babel-ci-tools/syft" "docker:$POSTGRES_IMAGE" -o cyclonedx-json=reports/postgres-test-image.cdx.json
+      - name: Preserve experiment evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: postgres-store-evidence
+          path: |
+            reports/postgres-store-coverage.xml
+            reports/postgres-test-image.cdx.json
+          retention-days: 14
+
   gate:
     name: CI gate
     if: ${{ always() }}
-    needs: [repository, tests, security, workflows, secrets, native, dashboard]
+    needs: [repository, tests, security, workflows, secrets, native, dashboard, postgres-store]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

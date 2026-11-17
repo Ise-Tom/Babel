@@ -127,7 +127,11 @@ transport. Directory and filesystem writes cannot be called one atomic SQL
 transaction. Windows clients must never receive an unqualified claim of coherent
 policy after a partial publication.
 
-Next work can implement the synthetic local-store experiment once its dependency
+The [synthetic local-state experiment](0004-synthetic-postgresql-state-experiment.md)
+now exercises a bounded subset using official psql in an isolated container. It is
+not a Rust production adapter and does not close the remaining qualifications.
+
+Further implementation proceeds once its dependency
 and schema proposal meet these contracts. Account/password mutations, Windows
 join and writable multi-controller operation remain behind their separate gates.
 See [decision register](../decisions.md), [Phase 1](../phases/phase-01.md),

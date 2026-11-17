@@ -18,9 +18,25 @@ jobs:
     permissions:
       contents: read
 
+  release-environment:
+    name: Verify existing protected source-release environment
+    needs: checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Fail before an unprotected environment can be automatically created
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/check_release_environment.py
+
   release:
     name: Draft source prerelease
-    needs: checks
+    needs: [checks, release-environment]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     environment: source-release
