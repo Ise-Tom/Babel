@@ -44,11 +44,85 @@ Use your browser's Find command to search. Expand a phase's substeps to read its
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T20:01:30\+01:00.
+GitHub metadata checked: 2026-11-17T20:02:30\+01:00.
 
 **Current main CI: in\_progress.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#17 · Bump typescript from 6.0.3 to 7.0.2 in /dashboard](<https://github.com/Ise-Tom/Babel/pull/17>)
+
+**In review · Pending merge · CI: in\_progress** · Head a55e089
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    Bumps [typescript](https://github.com/microsoft/TypeScript) from 6.0.3 to 7.0.2.
+    <details>
+    <summary>Release notes</summary>
+    <p><em>Sourced from <a href="https://github.com/microsoft/TypeScript/releases">typescript's releases</a>.</em></p>
+    <blockquote>
+    <h2>TypeScript 7.0.2</h2>
+    <p><a href="https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/">https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/</a></p>
+    <p>This tag was originally released at: <a href="https://github.com/microsoft/typescript-go/releases/tag/typescript%2Fv7.0.2">https://github.com/microsoft/typescript-go/releases/tag/typescript%2Fv7.0.2</a></p>
+    </blockquote>
+    </details>
+    <details>
+    <summary>Commits</summary>
+    <ul>
+    <li><a href="https://github.com/microsoft/TypeScript/commit/1e4744d68260a7cb91b62b12edc3f6a2187faaf1"><code>1e4744d</code></a> Merge branch 'main' into ts7-release</li>
+    <li><a href="https://github.com/microsoft/TypeScript/commit/a5a219c3b5da0db4fa0ecf6c0b1f588c9af9c669"><code>a5a219c</code></a><code>microsoft/typescript-go#4558</code></li>
+    <li><a href="https://github.com/microsoft/TypeScript/commit/ecfe30dce91368d52c9a49b6095bb0b673a238f8"><code>ecfe30d</code></a> Update status localization</li>
+    <li><a href="https://github.com/microsoft/TypeScript/commit/5de25b5f8fec2ca35eadaed041f1f06d2e214895"><code>5de25b5</code></a> Hide executable name in TypeScript status</li>
+    <li><a href="https://github.com/microsoft/TypeScript/commit/d7ce74a75da2b80e8201506a1599c06549432b93"><code>d7ce74a</code></a> Show bundled TypeScript version for packaged servers</li>
+    <li><a href="https://github.com/microsoft/TypeScript/commit/29be66a607707f90d7a53103a4469bb3015a4d54"><code>29be66a</code></a> Correct TS 7 release version to 7.0.2</li>
+    <li><a href="https://github.com/microsoft/TypeScript/commit/ed2bd1bfa4aac5211ce4bc58fcd1313c7eddc8ff"><code>ed2bd1b</code></a> Merge branch 'main' into ts7-release</li>
+    <li><a href="https://github.com/microsoft/TypeScript/commit/887307575c58ea640dbeba3b4e8fdb6347cd3044"><code>8873075</code></a> Bump the github-actions group across 1 directory with 3 updates (microsoft/ty...</li>
+    <li><a href="https://github.com/microsoft/TypeScript/commit/9427131ae2d4e230a90ee8a09daac4e75da3e311"><code>9427131</code></a> Set up stable / nightly extension split, other prep (microsoft/typescript-go#...</li>
+    <li><a href="https://github.com/microsoft/TypeScript/commit/d4eaca5460a1f5f02a829e62706794b0a6fb903e"><code>d4eaca5</code></a><code>microsoft/typescript-go#4549</code></li>
+    <li>Additional commits viewable in <a href="https://github.com/microsoft/TypeScript/compare/v6.0.3...v7.0.2">compare view</a></li>
+    </ul>
+    </details>
+    <details>
+    <summary>Maintainer changes</summary>
+    <p>This version was pushed to npm by <a href="https://www.npmjs.com/~microsoft1es">microsoft1es</a>, a new releaser for typescript since your current version.</p>
+    </details>
+    <br />
+    
+    
+    [![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=typescript&package-manager=npm_and_yarn&previous-version=6.0.3&new-version=7.0.2)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)
+    
+    Dependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.
+    
+    [//]: # (dependabot-automerge-start)
+    [//]: # (dependabot-automerge-end)
+    
+    ---
+    
+    <details>
+    <summary>Dependabot commands and options</summary>
+    <br />
+    
+    You can trigger Dependabot actions by commenting on this PR:
+    - `@dependabot rebase` will rebase this PR
+    - `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it
+    - `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency
+    - `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)
+    - `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)
+    - `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)
+    
+    
+    </details>
+
+**Changed files:**
+
+- dashboard/package-lock.json
+- dashboard/package.json
+
+No structured work increment delta was imported; inspect the description/files.
+
+
+</details>
 
 
 ## Phase 00
