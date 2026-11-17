@@ -29,6 +29,28 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
         allowed = (
             name in ROOT_FILES
             or (
+                path.parts[0] == "dashboard"
+                and (
+                    name
+                    in {
+                        "dashboard/package.json",
+                        "dashboard/package-lock.json",
+                        "dashboard/tsconfig.json",
+                        "dashboard/eslint.config.mjs",
+                        "dashboard/playwright.config.ts",
+                        "dashboard/build.mjs",
+                        "dashboard/build.d.mts",
+                        "dashboard/progress.json",
+                        "dashboard/associations.json",
+                    }
+                    or (
+                        len(path.parts) > 2
+                        and path.parts[1] in {"src", "tests"}
+                        and path.suffix in {".ts", ".mjs", ".css", ".html"}
+                    )
+                )
+            )
+            or (
                 path.parts[:2] == ("native", "babel-ldap")
                 and (
                     name == "native/babel-ldap/Cargo.toml"

@@ -62,6 +62,18 @@ class DocumentationLinks(unittest.TestCase):
             self.assertEqual(links.check(root), [])
 
 
+class GeneratedDocumentation(unittest.TestCase):
+    def test_generated_dependency_docs_are_not_validated_as_project_sources(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "README.md").write_text("Project documentation")
+            for name in ("node_modules", "target", "test-results", "dist"):
+                output = root / name
+                output.mkdir()
+                (output / "README.md").write_text("[Generated](missing.md)")
+            self.assertEqual(links.check(root), [])
+
+
 class ReleasePolicy(unittest.TestCase):
     def test_source_prereleases(self):
         for tag in ("v0.1.0-alpha.1", "v0.12.4-beta.2", "v0.2.0-rc.0"):

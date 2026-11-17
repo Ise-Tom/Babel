@@ -18,6 +18,7 @@ runs cancel superseded runs; releases wait for their own full CI invocation.
 | Workflow lint | actionlint, including shell analysis when provided by the runner |
 | Secret scan | Redacted Gitleaks scan of full available Git history and checked-out files |
 | Native LDAP lab | Pinned Rust build/format/Clippy, property/transport tests and independent ldap3 process smoke, >=90% instrumented core line coverage, address-sanitizer fuzz, Cargo.lock advisory/license/source audit and CycloneDX inventory |
+| Project dashboard | Validated phase/progress model, strict TypeScript, ESLint/DOM security rules, deterministic HTML/CSP tests, full npm audit/SBOM and Chromium desktop/mobile flows/accessibility checks |
 | CI gate | Always-run aggregate; any failed, skipped or cancelled prerequisite blocks success |
 
 Security/coverage evidence is uploaded with 14-day retention, including a
@@ -209,3 +210,29 @@ binary or that all product licensing decisions have been approved.
 The lab-binary tar/checksum is an internal 14-day CI artifact, not a production
 release/installer. No native source change completes Phase 1 as a whole. Windows
 join/authentication, storage/ACL, DNS, TLS and GPO remain explicit future gates.
+
+## Project dashboard gate
+
+The read-only [dashboard](project-dashboard.md) has its own required reusable CI
+job. Node 24.22.1 and exact npm development dependencies are integrity-locked;
+installation scripts are disabled. Browser installation uses the pinned
+Playwright package's supported route with normal artifact/TLS verification.
+There is no runtime CDN, backend API, external telemetry, browser token or
+privileged publishing step. CI does not deploy GitHub Pages or change visibility.
+
+Python validates facts/source paths/feature mappings and prevents accepted status
+without review evidence; TypeScript uses text-only DOM operations for document
+data. Hash-based CSP disallows network connections and unapproved inline scripts.
+Node tests verify deterministic packing/JSON escaping/CSP bytes. Browser tests
+exercise all phases, filtering, evidence/issue history, keyboard dialog handling,
+export, hostile text and accessibility at desktop/mobile viewport sizes. The
+managed local Chromium blocks file URLs; tests serve the same standalone artifact
+through local HTTP and verify interaction/export after switching offline.
+
+The standalone HTML and browser/security evidence are retained for 14 days.
+`npm audit` covers development dependencies and fails on any reported severity;
+report/test tool failures remain failures. The npm CycloneDX report inventories
+build/test tooling, not a deployed AD product. Automated accessibility and
+Chromium viewport checks do not establish a complete WCAG or real-device audit.
+Progress facts are a dated, source-controlled snapshot; a fresh build does not
+silently refresh old evidence or mark planned work accepted.

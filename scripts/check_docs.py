@@ -10,9 +10,24 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def check(root: Path) -> list[str]:
     errors = []
-    for document in root.rglob("*.md"):
-        if any(part.startswith(".") for part in document.relative_to(root).parts):
-            continue
+    ignored = {
+        "node_modules",
+        "target",
+        "dist",
+        "generated",
+        "test-results",
+        "playwright-report",
+        "__pycache__",
+    }
+    documents: list[Path] = []
+    for directory, subdirectories, files in root.walk():
+        subdirectories[:] = [
+            name for name in subdirectories if not name.startswith(".") and name not in ignored
+        ]
+        documents.extend(
+            directory / name for name in files if name.endswith(".md") and not name.startswith(".")
+        )
+    for document in documents:
         text = re.sub(r"```.*?```", "", document.read_text(encoding="utf-8"), flags=re.S)
         for match in re.finditer(r"!?\[[^\]]*\]\(([^\s)]+)\)", text):
             link = match.group(1).strip("<>")

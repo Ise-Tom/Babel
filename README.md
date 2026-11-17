@@ -30,6 +30,24 @@ required production runtime. Advanced security capabilities extend this core pro
 - [CI/CD operation and repository settings](docs/ci-cd.md)
 - [Contributing](CONTRIBUTING.md) and [security reporting](SECURITY.md)
 
+## Project progress dashboard
+
+The [dashboard guide](docs/project-dashboard.md) explains how to build/open the
+portable phase board, inspect implementation evidence and maintain progress facts.
+It covers all 18 phases, 180 substeps, feature associations, completed increments
+and problems/resolutions. It is a read-only engineering report, not the planned
+directory administration console or a live production/GitHub status service.
+
+```sh
+cd dashboard
+npm ci --ignore-scripts
+npm run build
+npm run preview
+```
+
+The build also produces a self-contained `dashboard/dist/index.html`, available
+as the **dashboard-standalone** CI artifact. No public hosting is configured.
+
 ## Validate the repository
 
 Python 3.12 or 3.13 and Linux x86-64 are the tested repository-tooling targets.
