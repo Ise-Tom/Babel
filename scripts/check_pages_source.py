@@ -25,6 +25,22 @@ def validate_run(run: dict[str, Any], revision: str) -> int:
     return int(run["id"])
 
 
+def dashboard_artifact(selected: int, *, request: Api = api) -> dict[str, Any]:
+    artifacts = request("GET", f"actions/runs/{selected}/artifacts", None)["artifacts"]
+    matches = [item for item in artifacts if item.get("name") == "dashboard-standalone"]
+    if (
+        len(matches) != 1
+        or matches[0].get("expired") is not False
+        or type(matches[0].get("size_in_bytes")) is not int
+        or not 0 < matches[0]["size_in_bytes"] <= 2 * 1024 * 1024
+        or type(matches[0].get("id")) is not int
+        or matches[0]["id"] <= 0
+        or not re.fullmatch(r"sha256:[a-f0-9]{64}", str(matches[0].get("digest")))
+    ):
+        raise ValueError("The verified standalone dashboard artifact is missing or expired/invalid")
+    return dict(matches[0])
+
+
 def source_run(revision: str, run_id: str = "", *, request: Api = api) -> int | None:
     if not re.fullmatch(r"[a-f0-9]{40}", revision):
         raise ValueError("Invalid source revision")
@@ -47,17 +63,9 @@ def source_run(revision: str, run_id: str = "", *, request: Api = api) -> int | 
                 break
             except ValueError:
                 continue
-        if selected is None:
-            raise ValueError("No successful main CI exists for this revision; run CI first")
-    artifacts = request("GET", f"actions/runs/{selected}/artifacts", None)["artifacts"]
-    matches = [item for item in artifacts if item.get("name") == "dashboard-standalone"]
-    if (
-        len(matches) != 1
-        or matches[0].get("expired") is not False
-        or type(matches[0].get("size_in_bytes")) is not int
-        or matches[0]["size_in_bytes"] <= 0
-    ):
-        raise ValueError("The verified standalone dashboard artifact is missing or expired")
+    if selected is None:
+        raise ValueError("No successful main CI exists for this revision; run CI first")
+    dashboard_artifact(selected, request=request)
     return selected
 
 
@@ -68,8 +76,11 @@ if __name__ == "__main__":
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
     selected = source_run(args.revision, args.run_id)
+    artifact = dashboard_artifact(selected) if selected is not None else {}
     args.output.write_text(
-        f"ready={'true' if selected is not None else 'false'}\nrun_id={selected or ''}\n",
+        f"ready={'true' if selected is not None else 'false'}\nrun_id={selected or ''}\n"
+        f"revision={args.revision}\nartifact_id={artifact.get('id', '')}\n"
+        f"digest={artifact.get('digest', '')}\n",
         encoding="utf-8",
     )
     print(f"Verified CI run {selected}" if selected else "Skipped an outdated main revision")

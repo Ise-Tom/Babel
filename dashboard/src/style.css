@@ -308,7 +308,7 @@ label {
 .phase-grid {
   display: grid;
   grid-template-columns: repeat(6,minmax(0,1fr));
-  gap: 10px;
+  gap: 8px;
 }
 .phase-card {
   position: relative;
@@ -317,12 +317,12 @@ label {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  padding: 12px;
+  padding: 10px;
   min-width: 0;
 }
 .phase-card.in_progress {
   border-top: 3px solid #32654e;
-  padding-top: 10px;
+  padding-top: 8px;
 }
 .card-heading {
   display: flex;

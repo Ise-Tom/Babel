@@ -28,7 +28,15 @@ def successful_run():
 class PagesSource(unittest.TestCase):
     def setUp(self):
         self.run = successful_run()
-        self.artifacts = [{"name": "dashboard-standalone", "expired": False, "size_in_bytes": 200}]
+        self.artifacts = [
+            {
+                "id": 456,
+                "name": "dashboard-standalone",
+                "expired": False,
+                "size_in_bytes": 200,
+                "digest": "sha256:" + "b" * 64,
+            }
+        ]
         self.current = REVISION
         self.calls = []
 
@@ -81,6 +89,10 @@ class PagesSource(unittest.TestCase):
             [dict(self.artifacts[0], size_in_bytes=True)],
             [self.artifacts[0], self.artifacts[0]],
             [dict(self.artifacts[0], name="unrelated")],
+            [dict(self.artifacts[0], size_in_bytes=2 * 1024 * 1024 + 1)],
+            [dict(self.artifacts[0], id=True)],
+            [dict(self.artifacts[0], id=0)],
+            [dict(self.artifacts[0], digest="missing")],
         ):
             self.artifacts = artifacts
             with (

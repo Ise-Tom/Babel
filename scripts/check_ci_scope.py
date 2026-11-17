@@ -1,5 +1,6 @@
 """Reject source/build trees for which this foundation has no executable CI gates."""
 
+import json
 import subprocess  # nosec B404
 import sys
 from collections.abc import Iterable
@@ -73,6 +74,7 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
                 "fuzz/corpus/ldap_frame/rootdse-filter",
             }
             or (path.parts[0] == "docs" and path.suffix == ".md")
+            or name == "docs/github-main-ruleset.json"
             or (path.parts[0] in {"scripts", "tests"} and path.suffix == ".py")
             or (path.parts[0] == ".github" and path.suffix in {".yml", ".yaml", ".md"})
             or name == ".github/CODEOWNERS"
@@ -82,6 +84,12 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
                 f"{name}: unsupported CI scope or symlink. Add the component's locked build, "
                 "lint/type, functional, security and packaging gates before extending this policy."
             )
+        elif name == "docs/github-main-ruleset.json":
+            try:
+                if not isinstance(json.loads((root / path).read_text()), dict):
+                    raise ValueError("Expected an object")
+            except (ValueError, OSError):
+                errors.append(f"{name}: ruleset must be a readable JSON object")
     return errors
 
 

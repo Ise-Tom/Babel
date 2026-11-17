@@ -35,6 +35,20 @@ jobs:
           npm run lint
           npm run build
           npm run test:build
+          python3 - <<'PYTHON'
+          import hashlib, io, sys, zipfile
+          from pathlib import Path
+          sys.path.insert(0, '../scripts')
+          from verify_pages_artifact import verified_page
+          page = Path('dist/index.html').read_bytes()
+          buffer = io.BytesIO()
+          with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as archive:
+              archive.writestr('index.html', page)
+          raw = buffer.getvalue()
+          digest = 'sha256:' + hashlib.sha256(raw).hexdigest()
+          assert verified_page(raw, digest) == page
+          print('Built dashboard passes the deployment artifact policy')
+          PYTHON
       - name: Audit full tooling graph and create dependency inventory
         run: |
           mkdir -p ../reports

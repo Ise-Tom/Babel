@@ -2,8 +2,8 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-17",
-    "commit": "cd6ad149870a05db4ab2a4f7fbca3e4d461af848",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44153995669",
+    "commit": "824d5760f4f95abb341f625b6ff37ab60dbd5d1f",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44175150495",
     "ci_result": "passed",
     "checks_passed": 12,
     "pull_requests": [
@@ -66,9 +66,14 @@
         "number": 16,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 18,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Recorded main-branch snapshot: PRs 4–7 and 9–16 were merged when checked. All 12 main CI jobs passed. Open PR proposals are reported separately; acceptance still requires an explicit review."
+    "note": "Verified public main snapshot: PR #18 is merged, both scoped owner acceptances are recorded, all 12 main CI jobs passed and the Pages dashboard is live. PR #17 contains proposed compiler compatibility and deployment-hardening work; admin security settings still require owner action."
   },
   "requirements": {
     "P00-01": {
@@ -836,6 +841,124 @@
         "I15",
         "I16"
       ]
+    },
+    {
+      "id": "W22",
+      "title": "Keep the tested compiler API instead of silently weakening security lint",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10",
+        "P01-01"
+      ],
+      "how": "Reproduced TypeScript 7.0.2 passing typecheck but crashing lint because ScriptTarget.Latest is absent. Restored TypeScript 6.0.3 and its locked tooling graph, retained AST/DOM/eval checks and deferred automatic major compiler proposals until the security-policy API is explicitly migrated. PR #17 now carries this correction instead of an unsupported upgrade.",
+      "verification": "Strict compiler checks, ESLint, six build/security-lint fixtures, 24 desktop/mobile browser tests and npm audit all pass locally; audit reports zero vulnerabilities. Hosted full CI is rerun for the corrected PR head.",
+      "limitations": "TypeScript 7 is deliberately not adopted. Migration to its different unstable APIs needs a separate qualified change; a passing compiler CLI alone does not establish equivalent security lint.",
+      "source_revision": "9700ddc9a28f62a9204bafc49e0f67390ed0036e",
+      "sources": [
+        {
+          "path": "dashboard/package.json",
+          "label": "package.json"
+        },
+        {
+          "path": ".github/dependabot.yml",
+          "label": "dependabot.yml"
+        },
+        {
+          "path": "dashboard/lint.mjs",
+          "label": "lint.mjs"
+        },
+        {
+          "path": "dashboard/tests/lint.test.mjs",
+          "label": "lint.test.mjs"
+        },
+        {
+          "path": "docs/github-security-settings.md",
+          "label": "github-security-settings.md"
+        }
+      ],
+      "problems": [
+        "I17"
+      ]
+    },
+    {
+      "id": "W23",
+      "title": "Verify Pages archives and minimize privileged deployment operations",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "how": "Read-only preflight validates exact main CI, immutable artifact ID, size and SHA-256 digest. A bounded verifier rejects extra/traversing/symlink files and weak browser policy, then packages only HTML/.nojekyll. The separate Pages/OIDC job has no checkout or project-code execution, attempts Actions-only/HTTPS configuration and rechecks main before deployment. Added no-referrer policy, blocked images, CODEOWNERS, a main ruleset template and verified owner settings. Registered only the named ruleset JSON with object/syntax validation in the CI scope guard; unrelated JSON manifests remain rejected. Shortened the focus summary and compacted phase cards after hosted viewport checks caught overflow.",
+      "verification": "87 Python tests pass with 98% tooling coverage. Negative archive/CSP tests, actual standalone archive verification, strict types/lint, actionlint, Zizmor, six build/lint fixtures and 24 browser tests pass locally. Live current site returned HTTP 200; Pages API confirms HTTPS and environment main-only deployment policy.",
+      "limitations": "These stronger deployment changes await PR merge and a successful main workflow run. The integration cannot mutate admin settings (HTTP 403). The job-token Pages configuration step must succeed and read back correctly; no success is claimed in advance. Required review, private vulnerability reporting and other owner settings remain explicit actions. GitHub Pages does not support arbitrary security response headers.",
+      "source_revision": "b2cad80fed4acb38f132f5e15e34339b9e7748af",
+      "sources": [
+        {
+          "path": ".github/workflows/dashboard-pages.yml",
+          "label": "dashboard-pages.yml"
+        },
+        {
+          "path": ".github/workflows/dashboard.yml",
+          "label": "dashboard.yml"
+        },
+        {
+          "path": "scripts/check_pages_source.py",
+          "label": "check_pages_source.py"
+        },
+        {
+          "path": "scripts/verify_pages_artifact.py",
+          "label": "verify_pages_artifact.py"
+        },
+        {
+          "path": "tests/test_pages_artifact.py",
+          "label": "test_pages_artifact.py"
+        },
+        {
+          "path": "tests/test_pages_deployment.py",
+          "label": "test_pages_deployment.py"
+        },
+        {
+          "path": "dashboard/build.mjs",
+          "label": "build.mjs"
+        },
+        {
+          "path": "dashboard/src/index.html",
+          "label": "index.html"
+        },
+        {
+          "path": "docs/github-security-settings.md",
+          "label": "github-security-settings.md"
+        },
+        {
+          "path": "docs/github-main-ruleset.json",
+          "label": "github-main-ruleset.json"
+        },
+        {
+          "path": ".github/CODEOWNERS",
+          "label": "CODEOWNERS"
+        },
+        {
+          "path": "scripts/check_ci_scope.py",
+          "label": "Named configuration scope and JSON validation"
+        },
+        {
+          "path": "tests/test_delivery.py",
+          "label": "Scope regression tests"
+        },
+        {
+          "path": "dashboard/src/style.css",
+          "label": "Compact dashboard viewport layout"
+        }
+      ],
+      "problems": [
+        "I02",
+        "I10",
+        "I18",
+        "I19"
+      ]
     }
   ],
   "problems": [
@@ -860,7 +983,7 @@
     },
     {
       "id": "I02",
-      "title": "Mandatory merge protection unavailable on current GitHub plan",
+      "title": "Merge protection administration is unavailable to the integration",
       "status": "open",
       "kind": "platform",
       "phases": [
@@ -877,15 +1000,19 @@
       ],
       "detail": "GitHub rejected ruleset access for this private repository with HTTP 403 and requested a supported plan or public visibility. Passing CI is not enforced merge protection.",
       "resolution": "",
-      "next_action": "Owner chooses a supported plan/visibility and configures required checks/reviews. No paid-plan or visibility change has been made.",
+      "next_action": "Owner imports docs/github-main-ruleset.json, enables required review/CI gate and verifies enforcement. Public ruleset listing is empty; legacy branch protection GET returns HTTP 403, so no enforced protection is claimed.",
       "sources": [
         {
-          "path": "docs/ci-cd.md",
-          "label": "CI/CD enforcement boundary"
+          "path": "docs/github-security-settings.md",
+          "label": "Verified state and owner settings"
+        },
+        {
+          "path": "docs/github-main-ruleset.json",
+          "label": "Importable main ruleset"
         }
       ],
       "provenance": "GitHub API observation recorded during pipeline setup; verify again before production release.",
-      "source_revision": "3a69a6ba9cba6ce717fc712bae8d1fb07420e401"
+      "source_revision": "9700ddc9a28f62a9204bafc49e0f67390ed0036e"
     },
     {
       "id": "I03",
@@ -1080,7 +1207,7 @@
     {
       "id": "I10",
       "title": "Dashboard access and Pages activation remain unavailable",
-      "status": "open",
+      "status": "resolved",
       "kind": "hosting",
       "phases": [
         0,
@@ -1091,17 +1218,13 @@
         "P01-10"
       ],
       "detail": "The app ran inside the cloud workspace, but no user-accessible preview route was established. GitHub returned HTTP 403 for Pages activation; the repository still reports Pages disabled.",
-      "resolution": "",
-      "next_action": "Keep progress available on the private GitHub report; a future hosting change needs an actually verified accessible URL.",
-      "source_revision": "17228586920c9783ef3708f24ec782e542f48140",
+      "resolution": "The owner enabled Pages and applied public visibility. Deployment run 44175624652 succeeded for main 824d5760f4f95abb341f625b6ff37ab60dbd5d1f; https://ise-tom.github.io/Babel/ returned HTTP 200 with HTTPS/HSTS. This resolves user access through public hosting, without claiming cloud localhost forwarding works.",
+      "next_action": "Keep CI-gated deployment, apply the proposed artifact hardening and use the stable HTTPS URL.",
+      "source_revision": "9700ddc9a28f62a9204bafc49e0f67390ed0036e",
       "sources": [
         {
-          "path": "docs/project-dashboard.md",
-          "label": "project-dashboard.md"
-        },
-        {
-          "path": ".github/workflows/dashboard-pages.yml",
-          "label": "dashboard-pages.yml"
+          "path": "docs/github-security-settings.md",
+          "label": "Live hosting and verified controls"
         }
       ],
       "provenance": "Recorded development-session evidence and repository/CI observations; no separate public issue was created."
@@ -1253,7 +1376,7 @@
     {
       "id": "I15",
       "title": "GitHub Actions jobs blocked before startup by account billing",
-      "status": "open",
+      "status": "resolved",
       "kind": "infrastructure",
       "phases": [
         0,
@@ -1264,17 +1387,13 @@
         "P01-01"
       ],
       "detail": "All jobs in PR #18 CI run 44156039039 have zero executed steps. GitHub annotation: The job was not started because recent account payments have failed or your spending limit needs to be increased. Automatic dashboard refresh jobs are affected too.",
-      "resolution": "",
-      "next_action": "Repository/account owner checks GitHub Billing & plans and restores Actions capacity, then reruns PR CI and the private dashboard workflow. Local checks do not replace the required hosted gate.",
-      "source_revision": "cd6ad149870a05db4ab2a4f7fbca3e4d461af848",
+      "resolution": "After the owner made Babel public, main CI run 44175150495 executed all 12 jobs successfully. The earlier account-capacity block no longer prevents this verified public run.",
+      "next_action": "Monitor actual CI results; public standard runners do not authorize paid capacity or make all platform limits disappear.",
+      "source_revision": "9700ddc9a28f62a9204bafc49e0f67390ed0036e",
       "sources": [
         {
-          "path": ".github/workflows/ci.yml",
-          "label": "Required CI workflow"
-        },
-        {
-          "path": ".github/workflows/dashboard-publish.yml",
-          "label": "Private dashboard workflow"
+          "path": "docs/github-security-settings.md",
+          "label": "Observed public CI recovery"
         }
       ],
       "provenance": "Observed GitHub run 44156039039, check run 134296912744 annotation; no pipeline commands ran."
@@ -1282,7 +1401,7 @@
     {
       "id": "I16",
       "title": "GitHub integration cannot apply the authorized public visibility setting",
-      "status": "open",
+      "status": "resolved",
       "kind": "platform-permissions",
       "phases": [
         0,
@@ -1294,38 +1413,163 @@
         "P01-10"
       ],
       "detail": "The project owner explicitly requested public visibility. PATCH /repos/Ise-Tom/Babel with private=false returned HTTP 403, Resource not accessible by integration, despite repository metadata showing admin=true. The repository remained private on readback.",
-      "resolution": "",
-      "next_action": "Owner uses repository Settings → General → Danger Zone → Change repository visibility → Change to public. Rerun latest PR #18 CI and merge the public-compatible publisher after required checks pass. Verify actual Actions capacity; a remaining account-wide billing restriction requires account attention.",
-      "source_revision": "4ecfc729a9cae8d8f160dce73e344be926121457",
+      "resolution": "The owner applied public visibility and merged PR #18. GitHub now reports private=false and visibility=public, and the public-compatible dashboard publisher succeeds. The integration itself still lacks administration permissions.",
+      "next_action": "Keep visibility changes explicit owner decisions and track remaining settings permissions separately under I18.",
+      "source_revision": "9700ddc9a28f62a9204bafc49e0f67390ed0036e",
       "sources": [
         {
-          "path": "scripts/publish_dashboard.py",
-          "label": "publish_dashboard.py"
-        },
-        {
-          "path": "scripts/collect_pr_progress.py",
-          "label": "collect_pr_progress.py"
-        },
-        {
-          "path": "tests/test_dashboard_delivery.py",
-          "label": "test_dashboard_delivery.py"
-        },
-        {
-          "path": "tests/test_pr_progress.py",
-          "label": "test_pr_progress.py"
-        },
-        {
-          "path": ".github/workflows/dashboard-publish.yml",
-          "label": "dashboard-publish.yml"
-        },
-        {
-          "path": "docs/project-dashboard.md",
-          "label": "project-dashboard.md"
+          "path": "docs/github-security-settings.md",
+          "label": "Verified visibility and remaining permissions"
         }
       ],
       "provenance": "Direct GitHub API response in the authorized visibility-change task on 2026-11-17; no automatic approval-review rejection occurred and no visibility setting was applied."
+    },
+    {
+      "id": "I17",
+      "title": "TypeScript 7 removed the compiler API used by security lint",
+      "status": "resolved",
+      "kind": "tooling-compatibility",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01"
+      ],
+      "detail": "PR #17 run 44154241268 passed typecheck but failed dashboard lint with TypeError reading ScriptTarget.Latest. Local reproduction confirmed the major version no longer exposes the JavaScript compiler API; alternate APIs are unstable and require migration.",
+      "resolution": "The corrected PR retains TypeScript 6.0.3 and the existing AST/DOM/eval protections, with compatible updates still enabled and automatic compiler majors deferred. Local build, lint, browser and audit checks pass.",
+      "next_action": "Verify corrected PR CI. Migrate the policy explicitly before upgrading the compiler major; retain malformed-input and security regressions.",
+      "source_revision": "9700ddc9a28f62a9204bafc49e0f67390ed0036e",
+      "sources": [
+        {
+          "path": "dashboard/package.json",
+          "label": "package.json"
+        },
+        {
+          "path": ".github/dependabot.yml",
+          "label": "dependabot.yml"
+        },
+        {
+          "path": "dashboard/lint.mjs",
+          "label": "lint.mjs"
+        },
+        {
+          "path": "dashboard/tests/lint.test.mjs",
+          "label": "lint.test.mjs"
+        },
+        {
+          "path": "docs/github-security-settings.md",
+          "label": "github-security-settings.md"
+        }
+      ],
+      "provenance": "Observed failed hosted job 134361914270 and local reproduction of the same failure; no check was skipped."
+    },
+    {
+      "id": "I18",
+      "title": "GitHub denies repository security and Pages settings writes to the integration",
+      "status": "open",
+      "kind": "platform-permissions",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "detail": "Pages configuration PUT, environment PUT, private vulnerability reporting enablement and ruleset creation all returned HTTP 403 Resource not accessible by integration. Pages is live with HTTPS, but its observed build type remains legacy; private reporting is disabled, ruleset listing empty and legacy protection/Actions defaults cannot be inspected.",
+      "resolution": "",
+      "next_action": "Owner applies docs/github-security-settings.md and imports the supplied main ruleset. The revised deployment tries Actions-only/HTTPS with its legitimate Pages-scoped job token and fails if enforcement/readback is denied. Verify actual settings after application; no paid service or broader credential is requested.",
+      "source_revision": "9700ddc9a28f62a9204bafc49e0f67390ed0036e",
+      "sources": [
+        {
+          "path": ".github/workflows/dashboard-pages.yml",
+          "label": "dashboard-pages.yml"
+        },
+        {
+          "path": ".github/workflows/dashboard.yml",
+          "label": "dashboard.yml"
+        },
+        {
+          "path": "scripts/check_pages_source.py",
+          "label": "check_pages_source.py"
+        },
+        {
+          "path": "scripts/verify_pages_artifact.py",
+          "label": "verify_pages_artifact.py"
+        },
+        {
+          "path": "tests/test_pages_artifact.py",
+          "label": "test_pages_artifact.py"
+        },
+        {
+          "path": "tests/test_pages_deployment.py",
+          "label": "test_pages_deployment.py"
+        },
+        {
+          "path": "dashboard/build.mjs",
+          "label": "build.mjs"
+        },
+        {
+          "path": "dashboard/src/index.html",
+          "label": "index.html"
+        },
+        {
+          "path": "docs/github-security-settings.md",
+          "label": "github-security-settings.md"
+        },
+        {
+          "path": "docs/github-main-ruleset.json",
+          "label": "github-main-ruleset.json"
+        },
+        {
+          "path": ".github/CODEOWNERS",
+          "label": "CODEOWNERS"
+        }
+      ],
+      "provenance": "Direct GitHub settings API responses and successful public site/deployment observations on 2026-11-17; these are GitHub permission errors, not automatic approval-review rejections."
+    },
+    {
+      "id": "I19",
+      "title": "Hosted hardening run caught unregistered ruleset data and viewport overflow",
+      "status": "resolved",
+      "kind": "ci-regression",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "detail": "Run 44177850164 rejected the new docs/github-main-ruleset.json under the default-deny component scope policy. The desktop browser check also measured the last phase row at 1015px in a 1000px viewport after the progress summary grew. Local browser validation had preceded that progress-data update.",
+      "resolution": "Registered that exact non-executable JSON file with readable-object validation and negative tests; other JSON manifests remain rejected. Shortened the focus summary and reduced phase-card spacing. Rebuilt using the final progress data before rerunning browser checks; no CI assertion or source guard was removed.",
+      "next_action": "Require the corrected full hosted run to pass and keep rebuilding dashboard data before visual checks when progress facts change.",
+      "source_revision": "b2cad80fed4acb38f132f5e15e34339b9e7748af",
+      "sources": [
+        {
+          "path": "scripts/check_ci_scope.py",
+          "label": "Specific ruleset registration and JSON checks"
+        },
+        {
+          "path": "tests/test_delivery.py",
+          "label": "Scope rejection regression"
+        },
+        {
+          "path": "dashboard/src/style.css",
+          "label": "Compact cards"
+        },
+        {
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "Viewport assertion retained"
+        }
+      ],
+      "provenance": "Observed hosted repository/browser failures and inspected the actual 1440×1000 CI screenshot; not inferred from a local-only result."
     }
   ],
   "focus_phase": 1,
-  "focus_summary": "The read-only RootDSE lab is implemented. The development PR adds bounded LDAP boolean/objectClass filters and PR-aware progress reporting; durable identities, DNS, authentication and domain services remain future work."
+  "focus_summary": "Read-only LDAP discovery is implemented. PR #17 hardens public hosting. Storage, DNS, authentication, domain join and GPO remain outstanding."
 }

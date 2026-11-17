@@ -17,6 +17,8 @@ test('standalone builds are deterministic and CSP matches exact inline bytes', a
     for (const match of first.matchAll(regex)) assert.ok(first.includes(hash(match[1])));
   }
   assert.ok(first.includes("connect-src 'none'"));
+  assert.ok(first.includes("img-src 'none'"));
+  assert.ok(first.includes('<meta name="referrer" content="no-referrer">'));
   assert.ok(!first.includes("'unsafe-inline'"));
   assert.ok(!first.includes('src="http'));
   assert.ok(!first.includes('href="http'));
