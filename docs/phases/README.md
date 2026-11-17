@@ -6,9 +6,13 @@ phase descriptions. The first LDAP lab increment has started; full product accep
 See [progress](../phase-01-progress.md) for exact supported behavior.
 Existing CI validates tooling and document integrity; it does not validate AD.
 
-Each of the 18 phases has ten uniquely identified requirements, technical design,
+Each of the 18 phases has uniquely identified requirements, technical design,
 state/interfaces, security/failure behavior, capacity, dependencies and evidence.
-The 180 phase requirements refine and trace all 130 existing global/catalog IDs.
+Requirement and task counts follow the scope of each phase; they have no fixed
+quota and need not be equal or sequential. Stable IDs are retained when adding or
+splitting work. Independent tasks can proceed in parallel once their entry
+dependencies are met; phase numbering does not impose a single execution chain.
+The current 180 phase requirements refine and trace all 130 existing global/catalog IDs.
 A trace link is not a claim of delivery. Existing security/patch/endpoint catalogs
 remain normative capability contracts; phase specifications define their design
 and delivery gates. No requirement may be silently dropped to pass a milestone.

@@ -68,9 +68,14 @@ def check(root: Path) -> list[str]:
                 errors.append(f"{path.name}: missing or empty {section}")
         rows = re.findall(r"^\| (P\d{2}-\d{2}) \|([^|]*)\|([^|]*)\|$", text, re.M)
         identifiers = [row[0] for row in rows]
-        wanted = {f"P{number:02}-{item:02}" for item in range(1, 11)}
-        if set(identifiers) != wanted or len(identifiers) != len(wanted):
-            errors.append(f"{path.name}: require ten unique sequential phase IDs with acceptance")
+        if (
+            not identifiers
+            or len(set(identifiers)) != len(identifiers)
+            or any(not identifier.startswith(f"P{number:02}-") for identifier in identifiers)
+        ):
+            errors.append(
+                f"{path.name}: require unique IDs belonging to this phase with acceptance"
+            )
         if any(
             not requirement.strip() or not evidence.strip() for _, requirement, evidence in rows
         ):
@@ -94,4 +99,10 @@ if __name__ == "__main__":
         print(failure, file=sys.stderr)
     if failures:
         sys.exit(1)
-    print("Design baseline passed: 18 phases, 180 phase requirements; all catalog IDs assigned")
+    count = sum(
+        len(re.findall(r"^\| P\d{2}-\d{2} \|", path.read_text(), re.M))
+        for path in (ROOT / "docs/phases").glob("phase-*.md")
+    )
+    print(
+        f"Design baseline passed: 18 phases, {count} phase requirements; all catalog IDs assigned"
+    )

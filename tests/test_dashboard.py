@@ -47,6 +47,19 @@ class DashboardModel(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unknown status"):
             self.model()
 
+    def test_additional_noncontiguous_requirement_keeps_other_phase_counts(self):
+        phase = self.root / "docs/phases/phase-01.md"
+        phase.write_text(phase.read_text() + "\n| P01-42 | Fixture task | Fixture proof |\n")
+        path = self.root / "dashboard/associations.json"
+        associations = json.loads(path.read_text())
+        associations["P01-42"] = associations["P01-01"]
+        path.write_text(json.dumps(associations))
+        data = self.model()
+        self.assertEqual(len(data["phases"][0]["steps"]), 10)
+        self.assertEqual(len(data["phases"][1]["steps"]), 11)
+        self.assertEqual(data["phases"][1]["steps"][-1]["id"], "P01-42")
+        self.assertEqual(data["phases"][1]["steps"][-1]["status"], "planned")
+
     def test_acceptance_requires_review_and_implemented_explanation(self):
         self.progress["requirements"]["P01-02"] = {"status": "accepted"}
         with self.assertRaisesRegex(ValueError, "object required"):

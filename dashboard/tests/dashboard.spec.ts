@@ -35,13 +35,15 @@ test('overview has all phases and accurately reports no accepted phase', async (
   }
 });
 
-test('every phase exposes ten substeps, feature associations and source design', async ({ page }) => {
-  for (let id = 0; id < 18; id++) {
+test('every phase exposes its own requirements, feature associations and source design', async ({ page }) => {
+  const facts = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  for (const item of facts.phases) {
+    const id = item.id;
     await phase(page, id);
-    await expect(page.locator('.requirement')).toHaveCount(10);
+    await expect(page.locator('.requirement')).toHaveCount(item.steps.length);
     const first = page.locator('.requirement').first(); await first.locator(':scope > summary').click();
     await expect(first.locator('.chips .chip').first()).toBeVisible();
-    await expect(first).toContainText('ACCEPTANCE STILL REQUIRED');
+    await expect(first).toContainText(item.steps[0]?.status === 'accepted' ? 'ACCEPTANCE EVIDENCE' : 'ACCEPTANCE STILL REQUIRED');
     await expect(page.getByRole('link', { name: 'Canonical specification' })).toBeVisible();
   }
 });
@@ -67,6 +69,8 @@ test('implemented work explains how, validation, limitations and encountered pro
 });
 
 test('search, requirement filter, empty state and reset work together', async ({ page }) => {
+  const facts = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  const steps = facts.phases.find(item => item.id === 1)?.steps ?? [];
   await page.getByRole('searchbox').fill('P01-04');
   await expect(page.locator('.phase-card')).toHaveCount(1);
   await page.getByRole('button', { name: /^Open phase 01:/ }).click();
@@ -74,11 +78,15 @@ test('search, requirement filter, empty state and reset work together', async ({
   await expect(page.locator('.requirement')).toHaveCount(1);
   await page.getByRole('searchbox').fill('');
   await page.getByLabel('Requirement status', { exact: true }).selectOption('blocked');
-  await expect(page.locator('.requirement')).toHaveCount(3);
+  await expect(page.locator('.requirement')).toHaveCount(steps.filter(item => item.status === 'blocked').length);
   await page.getByLabel('Requirement status', { exact: true }).selectOption('accepted');
+  const accepted = steps.filter(item => item.status === 'accepted').length;
+  if (accepted) await expect(page.locator('.requirement')).toHaveCount(accepted);
+  else await expect(page.getByRole('heading', { name: 'No matches' })).toBeVisible();
+  await page.getByRole('searchbox').fill('missing-requirement-fixture');
   await expect(page.getByRole('heading', { name: 'No matches' })).toBeVisible();
   await page.getByRole('button', { name: 'Clear filters' }).click();
-  await expect(page.locator('.requirement')).toHaveCount(10);
+  await expect(page.locator('.requirement')).toHaveCount(steps.length);
 });
 
 test('feature dialog and keyboard escape preserve safe text and focus', async ({ page }) => {
@@ -107,10 +115,12 @@ test('journal separates open and resolved issues and links to parent requirement
 });
 
 test('deep links, back navigation and expand/collapse remain usable', async ({ page }) => {
+  const facts = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  const count = facts.phases.find(item => item.id === 1)?.steps.length ?? 0;
   await page.goto(`${file}#phase=1&step=P01-04`);
   await expect(page.getByTestId('P01-04')).toHaveAttribute('open', '');
   await page.getByRole('button', { name: 'Expand all', exact: true }).click();
-  await expect(page.locator('.requirement[open]')).toHaveCount(10);
+  await expect(page.locator('.requirement[open]')).toHaveCount(count);
   await page.getByRole('button', { name: 'Collapse all', exact: true }).click();
   await expect(page.locator('.requirement[open]')).toHaveCount(0);
   await phase(page, 17); await page.goBack();
@@ -151,4 +161,21 @@ test('unknown route and prototype-named filter fall back to a valid overview', a
   await page.goto(`${file}#phase=999&status=constructor`);
   await expect(page.locator('.phase-card')).toHaveCount(18);
   await expect(page.getByLabel('Requirement status', { exact: true })).toHaveValue('all');
+});
+
+
+test('unequal phase sizes render their own acceptance counts and requirement lists', async ({ page }) => {
+  const data = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  const small = data.phases[0]; const large = data.phases[1];
+  if (!small || !large || !large.steps[0]) throw new Error('Missing fixture phases');
+  small.steps = small.steps.slice(0, 3);
+  const template = large.steps[0];
+  large.steps.push(...[11, 12, 42].map(id => ({ ...template, id: `P01-${id}`, status: 'planned' as const, acceptance: null })));
+  await page.setContent(await htmlFor(data));
+  await expect(page.getByTestId('phase-card-0')).toContainText(`${small.steps.filter(s => s.status === 'accepted').length}/3 accepted`);
+  await expect(page.getByTestId('phase-card-1')).toContainText(`${large.steps.filter(s => s.status === 'accepted').length}/13 accepted`);
+  await phase(page, 0); await expect(page.locator('.requirement')).toHaveCount(3);
+  await phase(page, 1); await expect(page.locator('.requirement')).toHaveCount(13);
+  await page.getByRole('button', { name: 'Expand all', exact: true }).click();
+  await expect(page.locator('.requirement[open]')).toHaveCount(13);
 });

@@ -32,7 +32,31 @@ class DesignIntegrity(unittest.TestCase):
 
     def test_duplicate_or_wrong_phase_ids_are_rejected(self):
         self.rewrite("| P00-02 |", "| P00-01 |")
-        self.assertTrue(any("unique sequential" in error for error in design.check(self.root)))
+        self.assertTrue(any("unique IDs" in error for error in design.check(self.root)))
+
+    def test_wrong_phase_requirement_is_rejected(self):
+        self.rewrite("| P00-02 |", "| P01-02 |")
+        self.assertTrue(any("belonging to this phase" in e for e in design.check(self.root)))
+
+    def test_phase_counts_can_differ_and_ids_need_not_be_contiguous(self):
+        # Synthetic scope changes exercise the validator, not removal of real requirements.
+        lines = self.phase.read_text().splitlines()
+        self.phase.write_text(
+            "\n".join(line for line in lines if not line.startswith("| P00-02 |"))
+        )
+        other = self.root / "docs/phases/phase-01.md"
+        other.write_text(other.read_text() + "\n| P01-42 | Additional fixture | Test evidence |\n")
+        self.assertEqual(design.check(self.root), [])
+
+    def test_empty_requirement_list_is_rejected(self):
+        self.phase.write_text(
+            "\n".join(
+                line
+                for line in self.phase.read_text().splitlines()
+                if not line.startswith("| P00-")
+            )
+        )
+        self.assertTrue(any("unique IDs" in error for error in design.check(self.root)))
 
     def test_unknown_requirement_is_rejected(self):
         self.rewrite("Traceability: PLAT-01,", "Traceability: UNKNOWN-99,")

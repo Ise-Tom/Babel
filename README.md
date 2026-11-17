@@ -33,19 +33,19 @@ required production runtime. Advanced security capabilities extend this core pro
 ## Project progress dashboard
 
 The preferred interface is a compact, searchable phase board: select a phase,
-then open the substeps, implementation evidence and problems you need. The
+then open the requirements, implementation evidence and problems you need. The
 interactive build has a public GitHub Pages deployment workflow. An owner must
 enable **Settings → Pages → Source → GitHub Actions** once; successful main CI
 then updates the same web address automatically. See the
 [hosting setup](docs/project-dashboard.md#activate-public-web-hosting-once).
 
-The **[private GitHub fallback report](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md)**
-uses the repository's existing access controls and updates after successful
-main-branch CI. It remains available while interactive hosting is configured.
+The **[GitHub progress report](https://github.com/Ise-Tom/Babel/blob/dashboard-live/README.md)**
+follows repository visibility and refreshes on CI state changes, including failed checks.
+Open PR proposals remain separate from main-branch totals. It remains available while interactive hosting is configured.
 
 The [dashboard guide](docs/project-dashboard.md) explains how to build/open the
 portable phase board, inspect implementation evidence and maintain progress facts.
-It covers all 18 phases, 180 substeps, feature associations, completed increments
+It covers all 18 phases, 180 current requirements, feature associations, completed increments
 and problems/resolutions. It is a read-only engineering report, not the planned
 directory administration console or a live production/GitHub status service.
 
@@ -58,7 +58,8 @@ npm run preview
 
 The build also produces a self-contained `dashboard/dist/index.html`, available
 as the **dashboard-standalone** CI artifact. The Pages job publishes only this
-tested build; repository visibility stays private.
+tested build. The publisher supports public and private Babel repositories;
+workflows never change repository visibility.
 
 ## Validate the repository
 

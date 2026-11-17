@@ -1,4 +1,4 @@
-"""Render the validated progress model as a private, browser-readable GitHub report."""
+"""Render the validated progress model as a browser-readable GitHub report."""
 
 import argparse
 import html
@@ -97,7 +97,7 @@ def open_pr_section(data: dict[str, Any]) -> list[str]:
                     "",
                     f"#### Proposed {escaped(item['id'])} · {escaped(item['title'])}",
                     "",
-                    f"**Substeps:** {', '.join(escaped(r) for r in item['requirements'])}",
+                    f"**Requirements:** {', '.join(escaped(r) for r in item['requirements'])}",
                     "",
                     f"**How it was done:** {escaped(item['how'])}",
                     "",
@@ -165,26 +165,30 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
         "These are separate revisions. "
         "Rebuilding does not accept requirements or refresh evidence.",
         "",
-        f"**{len(phases)} phases · {sum(len(p['steps']) for p in phases)} substeps · "
+        f"**{len(phases)} phases · {sum(len(p['steps']) for p in phases)} requirements · "
         f"{len(features)} features · {accepted} phases accepted · "
         f"{len(work)} recorded increments · "
         f"{sum(p['status'] == 'open' for p in problems)} open problems**",
         "",
         "Implemented increments can be narrower than their parent requirement. "
-        "Design records and passing CI do not establish AD compatibility or production readiness.",
+        "Acceptance is recorded after an explicit owner review of the stated scope, evidence "
+        "and limits. Requirement and increment counts can differ between phases and are not "
+        "effort percentages. Design records and passing CI do not establish AD compatibility "
+        "or production readiness.",
         "",
         f"**Current focus:** Phase {data['focusPhase']:02} — {escaped(data['focusSummary'])}",
         "",
         "[Phase board](#phase-board) · [Implementation journal](#implementation-journal) · "
         "[Problems encountered](#problems-encountered) · [Feature catalog](#feature-catalog)",
         "",
-        "Use your browser's Find command to search. Expand a phase's substeps to read its details. "
+        "Use your browser's Find command to search. "
+        "Expand a phase's requirements to read its details. "
         "The standalone HTML adds interactive search/filtering and JSON export; "
         "this GitHub view is the persistent report.",
         "",
         "## Phase board",
         "",
-        "| Phase | Status | Accepted substeps | Recorded increments |",
+        "| Phase | Status | Accepted requirements | Recorded increments |",
         "| --- | --- | --- | --- |",
     ]
     for phase in phases:
@@ -210,7 +214,7 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
                 link("Canonical design and dependencies", phase["url"]),
                 "",
                 "<details>",
-                f"<summary>{len(phase['steps'])} substeps, "
+                f"<summary>{len(phase['steps'])} requirements, "
                 "associated features and evidence</summary>",
                 "",
             ]
@@ -272,7 +276,7 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
                 )
                 + ". See the [implementation journal](#implementation-journal)."
                 if associated
-                else "No implemented increment is recorded for this substep."
+                else "No implemented increment is recorded for this requirement."
             )
             lines.append("")
         lines.extend(["</details>", ""])
@@ -284,7 +288,7 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
                 "",
                 "**Design recorded**" if item["kind"] == "design" else "**Implemented increment**",
                 "",
-                f"**Substeps:** {', '.join(escaped(r) for r in item['requirements'])}",
+                f"**Requirements:** {', '.join(escaped(r) for r in item['requirements'])}",
                 "",
                 f"**How it was done:** {escaped(item['how'])}",
                 "",
@@ -366,4 +370,4 @@ if __name__ == "__main__":
     args.output.write_text(
         render(build(ROOT, args.revision), preview=args.preview), encoding="utf-8"
     )
-    print(f"Rendered private dashboard: {args.output}")
+    print(f"Rendered GitHub dashboard: {args.output}")

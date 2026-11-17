@@ -1,6 +1,7 @@
 # Security policy
 
-Babel is pre-implementation. There are no supported production versions and it
+Babel has an experimental loopback-only LDAP lab. There are no supported
+production versions and it
 must not be used as a production identity provider or domain controller yet.
 
 Do not post vulnerabilities, secrets, or real directory data in public issues.

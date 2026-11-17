@@ -2,10 +2,10 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-17",
-    "commit": "fc3be723bbacf65976a59216d8a035796a24d5eb",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44142657828",
-    "ci_result": "failed",
-    "checks_passed": 10,
+    "commit": "cd6ad149870a05db4ab2a4f7fbca3e4d461af848",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44153995669",
+    "ci_result": "passed",
+    "checks_passed": 12,
     "pull_requests": [
       {
         "number": 4,
@@ -61,9 +61,14 @@
         "number": 15,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 16,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Recorded main-branch snapshot: PRs 4–7 and 9–15 were merged when checked. Main CI currently fails its npm audit (GHSA-fc5q-39xc-vjpf); proposed fixes and development work appear separately under open PRs."
+    "note": "Recorded main-branch snapshot: PRs 4–7 and 9–16 were merged when checked. All 12 main CI jobs passed. Open PR proposals are reported separately; acceptance still requires an explicit review."
   },
   "requirements": {
     "P00-01": {
@@ -107,8 +112,13 @@
       "note": "Delivery gates and source packaging exist; real product upgrade/recovery/governance acceptance remains."
     },
     "P01-01": {
-      "status": "in_progress",
-      "note": "The lab component has executable checks; future native components need their own gates and review."
+      "status": "accepted",
+      "note": "Current native LDAP component development safeguards accepted by the project owner. Future components and full product qualification remain separate obligations.",
+      "acceptance": {
+        "reviewer": "Project owner (explicit approval in this conversation)",
+        "date": "2026-11-17",
+        "evidence": "Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: development safeguards for the current native LDAP component, not the full server or future components. PR #16 and its 12-job successful CI run: https://github.com/Ise-Tom/Babel/pull/16 ; https://github.com/Ise-Tom/Babel/actions/runs/44152161324 . Merged main cd6ad149870a05db4ab2a4f7fbca3e4d461af848 also passed all 12 jobs in run 44153995669."
+      }
     },
     "P01-03": {
       "status": "blocked",
@@ -131,8 +141,13 @@
       "note": "Lab limits and diagnostics are tested; TLS, Linux service lifecycle and production privileges are not."
     },
     "P01-10": {
-      "status": "in_progress",
-      "note": "The current subset is documented; the full phase is not accepted."
+      "status": "accepted",
+      "note": "Project owner accepted the current prototype’s scope inventory and limitation reporting. Authentication, storage, domain join and GPO remain unimplemented and Phase 1 remains in progress.",
+      "acceptance": {
+        "reviewer": "Project owner (explicit approval in this conversation)",
+        "date": "2026-11-17",
+        "evidence": "Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: documentation, tests and CLI label the current prototype as a loopback-only LDAP discovery lab and disclose missing production/domain functionality. Evidence pinned to merged main: https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phase-01-progress.md ; https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/native/babel-ldap/src/main.rs . This accepts scope reporting, not those missing features or production readiness."
+      }
     }
   },
   "phase_acceptance": {},
@@ -700,7 +715,7 @@
       ],
       "how": "Removed TypeScript-ESLint and its picomatch path. Retained supported ESLint 10 / TypeScript 6, strict compiler checks and explicit-any AST checks; runs DOM/eval rules on compiler-erased JavaScript without bundling, minification or execution.",
       "verification": "Locked clean install; npm audit reports zero vulnerabilities. Six build/lint tests include typed HTML sinks, eval, explicit-any declarations/casts and safe text rendering; strict typecheck and lint pass.",
-      "limitations": "This replaces recommended TypeScript style rules with documented compiler/security policies; it does not claim rule-for-rule style equivalence. Main remains red until this dependency fix is merged.",
+      "limitations": "This replaces recommended TypeScript style rules with documented compiler/security policies; it does not claim rule-for-rule style equivalence. PR #16 is merged; main run 44153995669 passed all 12 jobs.",
       "source_revision": "647a7ba026622bd08f2870c22397a070b4982ef2",
       "sources": [
         {
@@ -726,6 +741,100 @@
       ],
       "problems": [
         "I13"
+      ]
+    },
+    {
+      "id": "W20",
+      "title": "Scope-based phase sizes and explicit owner acceptance reviews",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "how": "Removed the enforced ten-item sequential quota, retaining unique phase-owned IDs, nonempty requirements/evidence and feature traceability. Renamed broad dashboard substeps to requirements. Documented concrete owner review questions and separate requirement/phase acceptance. Existing scope and stable IDs are preserved. The project owner explicitly approved P01-01 and P01-10 for their stated current-component scopes; reviewer/date/evidence records are stored on both requirements.",
+      "verification": "78 Python tests pass with 98% tooling coverage. Strict types, lint, documentation checks, six build/security-lint tests and 24 desktop/mobile browser tests pass. Synthetic 3/13-item phases exercise rendering, counts and expand-all; model/design fixtures allow unequal counts and noncontiguous IDs. Hosted run 44156039039 did not start: GitHub reported failed recent payments or an insufficient spending limit; this is not a hosted test result.",
+      "limitations": "Two scoped requirements (P01-01 and P01-10) are accepted by explicit owner answers on 2026-11-17. These approval records are proposed in PR #18 until merge; the main baseline count updates after merge. The current baseline retains 180 requirements, and full AD functionality and Phase 1 acceptance remain outstanding. Future components must satisfy their own safeguards.",
+      "source_revision": "fbf7cbd89be80e0f18f2464296deb4ad08383ca3",
+      "sources": [
+        {
+          "path": "scripts/check_design.py",
+          "label": "check_design.py"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "dashboard.spec.ts"
+        },
+        {
+          "path": "tests/test_design.py",
+          "label": "test_design.py"
+        },
+        {
+          "path": "tests/test_dashboard.py",
+          "label": "test_dashboard.py"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        }
+      ],
+      "problems": [
+        "I14",
+        "I15"
+      ]
+    },
+    {
+      "id": "W21",
+      "title": "Support public repository dashboard publication and prepare visibility transition",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "how": "Publisher and PR collector accept either explicit Babel visibility and reject other repository identities or unknown visibility. Retained default-branch-only publication, current-main revision checks, bounded data-only PR imports, metadata-only fork reporting and fast-forward README-only updates. Renamed the publishing workflow and corrected private-only documentation.",
+      "verification": "80 Python tests pass with 98% tooling coverage; strict types, lint, documentation links, actionlint and Zizmor pass. Tests cover public/private publication, unknown visibility, unrelated destinations and public fork metadata isolation. Gitleaks scanned fetched branch history with redacted output and found no leaks.",
+      "limitations": "Owner explicitly authorized public visibility, but GitHub rejected the integration’s private=false request with HTTP 403. The repository remains private and hosted CI is still blocked by billing. This PR must merge before default-branch publication supports public visibility. No license was invented and no paid capacity was purchased.",
+      "source_revision": "4ecfc729a9cae8d8f160dce73e344be926121457",
+      "sources": [
+        {
+          "path": "scripts/publish_dashboard.py",
+          "label": "publish_dashboard.py"
+        },
+        {
+          "path": "scripts/collect_pr_progress.py",
+          "label": "collect_pr_progress.py"
+        },
+        {
+          "path": "tests/test_dashboard_delivery.py",
+          "label": "test_dashboard_delivery.py"
+        },
+        {
+          "path": "tests/test_pr_progress.py",
+          "label": "test_pr_progress.py"
+        },
+        {
+          "path": ".github/workflows/dashboard-publish.yml",
+          "label": "dashboard-publish.yml"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        }
+      ],
+      "problems": [
+        "I15",
+        "I16"
       ]
     }
   ],
@@ -1072,8 +1181,8 @@
         "P01-01"
       ],
       "detail": "Main run 44142657828 failed npm audit for GHSA-fc5q-39xc-vjpf. The advisory affects picomatch through 4.0.7 and no patched version was published when checked.",
-      "resolution": "The development PR removes the vulnerable dependency path while retaining supported compiler/ESLint versions and tested DOM/eval/explicit-any checks. Its local audit is clean; main awaits merge.",
-      "next_action": "Keep all-severity audit enforcement and validate the replacement graph in hosted CI.",
+      "resolution": "PR #16 removed the vulnerable dependency path while retaining supported compiler/ESLint versions and tested DOM/eval/explicit-any checks. Merged main run 44153995669 passed all 12 jobs, including dependency audit.",
+      "next_action": "Keep all-severity audit enforcement and regression coverage on future tooling updates.",
       "source_revision": "647a7ba026622bd08f2870c22397a070b4982ef2",
       "sources": [
         {
@@ -1090,6 +1199,131 @@
         }
       ],
       "provenance": "Recorded development-session evidence and repository/CI observations; no separate public issue was created."
+    },
+    {
+      "id": "I14",
+      "title": "Fixed requirement quotas and ambiguous substep acceptance labels",
+      "status": "resolved",
+      "kind": "reporting",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "detail": "The design validator forced exactly ten sequential requirements per phase, while the report called those broad contracts substeps. Zero recorded acceptances made implemented increments hard to distinguish from owner-reviewed scope.",
+      "resolution": "Removed the fixed quota, clarified requirement/increment labels and documented scoped owner acceptance questions. The owner answered “Accept this scope” for P01-01 and P01-10; both carry reviewer/date/evidence records. Unequal-size regression tests pass. Phase acceptance remains outstanding.",
+      "next_action": "Merge the reviewed acceptance records after required checks can run; continue decomposing future work according to scope and dependencies while preserving requirement coverage.",
+      "source_revision": "fbf7cbd89be80e0f18f2464296deb4ad08383ca3",
+      "sources": [
+        {
+          "path": "scripts/check_design.py",
+          "label": "check_design.py"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "dashboard.spec.ts"
+        },
+        {
+          "path": "tests/test_design.py",
+          "label": "test_design.py"
+        },
+        {
+          "path": "tests/test_dashboard.py",
+          "label": "test_dashboard.py"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        }
+      ],
+      "provenance": "Project owner requested acceptance questions and said substep counts need not be linear; no separate GitHub issue was created."
+    },
+    {
+      "id": "I15",
+      "title": "GitHub Actions jobs blocked before startup by account billing",
+      "status": "open",
+      "kind": "infrastructure",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01"
+      ],
+      "detail": "All jobs in PR #18 CI run 44156039039 have zero executed steps. GitHub annotation: The job was not started because recent account payments have failed or your spending limit needs to be increased. Automatic dashboard refresh jobs are affected too.",
+      "resolution": "",
+      "next_action": "Repository/account owner checks GitHub Billing & plans and restores Actions capacity, then reruns PR CI and the private dashboard workflow. Local checks do not replace the required hosted gate.",
+      "source_revision": "cd6ad149870a05db4ab2a4f7fbca3e4d461af848",
+      "sources": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "label": "Required CI workflow"
+        },
+        {
+          "path": ".github/workflows/dashboard-publish.yml",
+          "label": "Private dashboard workflow"
+        }
+      ],
+      "provenance": "Observed GitHub run 44156039039, check run 134296912744 annotation; no pipeline commands ran."
+    },
+    {
+      "id": "I16",
+      "title": "GitHub integration cannot apply the authorized public visibility setting",
+      "status": "open",
+      "kind": "platform-permissions",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-10",
+        "P01-01",
+        "P01-10"
+      ],
+      "detail": "The project owner explicitly requested public visibility. PATCH /repos/Ise-Tom/Babel with private=false returned HTTP 403, Resource not accessible by integration, despite repository metadata showing admin=true. The repository remained private on readback.",
+      "resolution": "",
+      "next_action": "Owner uses repository Settings → General → Danger Zone → Change repository visibility → Change to public. Rerun latest PR #18 CI and merge the public-compatible publisher after required checks pass. Verify actual Actions capacity; a remaining account-wide billing restriction requires account attention.",
+      "source_revision": "4ecfc729a9cae8d8f160dce73e344be926121457",
+      "sources": [
+        {
+          "path": "scripts/publish_dashboard.py",
+          "label": "publish_dashboard.py"
+        },
+        {
+          "path": "scripts/collect_pr_progress.py",
+          "label": "collect_pr_progress.py"
+        },
+        {
+          "path": "tests/test_dashboard_delivery.py",
+          "label": "test_dashboard_delivery.py"
+        },
+        {
+          "path": "tests/test_pr_progress.py",
+          "label": "test_pr_progress.py"
+        },
+        {
+          "path": ".github/workflows/dashboard-publish.yml",
+          "label": "dashboard-publish.yml"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        }
+      ],
+      "provenance": "Direct GitHub API response in the authorized visibility-change task on 2026-11-17; no automatic approval-review rejection occurred and no visibility setting was applied."
     }
   ],
   "focus_phase": 1,

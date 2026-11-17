@@ -81,14 +81,20 @@ Markdown links inside fences, external URLs and anchors are not checked.
 
 Configure **CI gate** as a required status check with a PR/review ruleset, and
 require independent review of workflow/policy changes. A successful job is not
-itself enforced merge protection. During this change GitHub reported this
-repository as private and rejected ruleset access with HTTP 403, requesting a
-plan upgrade or a public repository. No visibility or paid-plan changes were
-made. Until the owner chooses a supported option, maintainers must enforce the
-same policy manually; a repository administrator can merge a failing PR.
-CodeQL/dependency-review features requiring unavailable private-repository
-entitlements are not substituted with always-green jobs: the open-source
-Bandit/Zizmor/pip-audit checks above run without those entitlements.
+itself enforced merge protection. The earlier private-repository configuration
+rejected ruleset access with HTTP 403. The owner has now explicitly authorized a
+public repository. Protection settings still require API verification; visibility
+alone does not establish enforced review or release approval. Bandit, Zizmor and
+pip-audit remain required; additional available security services must not replace
+those checks with unconditional success.
+
+Standard GitHub-hosted Ubuntu runners are used throughout the current workflows.
+Public repositories qualify for free standard runner usage under GitHub’s policy;
+private repository allowances, paid larger runners, storage and other platform
+limits are separate considerations. Visibility does not resolve an account-wide
+billing suspension automatically. Do not purchase capacity or weaken required
+checks to bypass a platform failure. Failed runs must be rerun and verified after
+capacity becomes available.
 
 ## Source prereleases
 
@@ -199,15 +205,16 @@ Crashes retain synthetic reproductions; no production credentials enter corpora.
 
 Cargo audit/license/source policy includes development/build dependencies for the
 core and fuzz graphs. MIT/Apache/NCSA cover current development dependencies;
-NCSA is required by the libFuzzer harness. Only unpublished private workspace
-license checks are exempt while D-01 remains open; all public product/registry
+NCSA is required by the libFuzzer harness. Only unpublished workspace-package
+license checks are exempt while D-01 remains open (Cargo package privacy means
+`publish = false`, independently of GitHub repository visibility); all public product/registry
 releases stay blocked. Duplicate versions are warnings, while unknown/yanked or
 advised dependencies, unapproved licenses/sources and wildcard dependencies fail.
 Native SBOM is a source Cargo.lock inventory including test/fuzz dependencies,
 not a claim those dependencies are present in the zero-runtime-dependency lab
 binary or that all product licensing decisions have been approved.
 
-The lab-binary tar/checksum is an internal 14-day CI artifact, not a production
+The lab-binary tar/checksum is a 14-day CI artifact visible to repository readers, not a production
 release/installer. No native source change completes Phase 1 as a whole. Windows
 join/authentication, storage/ACL, DNS, TLS and GPO remain explicit future gates.
 
@@ -250,18 +257,19 @@ the tested Node 24 major; major runtime/type upgrades require coordinated review
 Progress facts are a dated, source-controlled snapshot; a fresh build does not
 silently refresh old evidence or mark planned work accepted.
 
-The separate private-report workflow executes only the default branch at its
+The separate GitHub-report workflow executes only the default branch at its
 immutable GitHub context SHA, never a PR head. It can refresh when PR CI is
 requested/running/completed (including failure), when main CI changes state, or on
 a manual main dispatch. It records current main CI health (including failures),
 then reads bounded PR metadata/progress JSON through read-only APIs.
 Proposals and proposed problem resolutions remain separate from main totals and
 acceptance. Fork structured facts are not imported, malformed data is noted, and
-private overlays never enter public HTML artifacts. A closed PR is removed on the
+PR overlays never enter standalone HTML/Pages artifacts. A closed PR is removed on the
 next CI/manual refresh rather than through a live browser subscription.
 
 That publisher alone receives `contents: write` plus PR/Actions read permissions.
-It requires a private repository, writes only the automation-owned `dashboard-live`
+It accepts public or private Babel repositories with explicit visibility, rejects
+other repository identities, and writes only the automation-owned `dashboard-live`
 branch through its fixed destination, skips outdated main revisions, uses
 fast-forward updates and refuses unexpected files. PR/reusable release checks
 remain read-only. Publication failure retains the previous report. The stable

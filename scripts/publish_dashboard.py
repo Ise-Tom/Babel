@@ -1,4 +1,4 @@
-"""Update only the automation-owned dashboard-live branch of the private repository."""
+"""Update only Babel's automation-owned dashboard-live branch at either visibility."""
 
 import argparse
 import json
@@ -14,6 +14,14 @@ from render_dashboard import LIVE_URL, render
 API_REPO = "repos/Ise-Tom/Babel"
 BRANCH = "dashboard-live"
 Api = Callable[[str, str, dict[str, Any] | None], Any]
+
+
+def check_repository(repository: dict[str, Any]) -> None:
+    if (
+        repository.get("full_name") != "Ise-Tom/Babel"
+        or type(repository.get("private")) is not bool
+    ):
+        raise ValueError("Babel repository with explicit visibility required")
 
 
 def api(method: str, path: str, payload: dict[str, Any] | None = None) -> Any:
@@ -40,8 +48,7 @@ def publish(report: str, revision: str, *, preview: bool = False, request: Api =
     if not re.fullmatch(r"[a-f0-9]{40}", revision):
         raise ValueError("Invalid source revision")
     repository = request("GET", "", None)
-    if repository.get("private") is not True or repository.get("full_name") != "Ise-Tom/Babel":
-        raise ValueError("Private project repository required; visibility is never changed")
+    check_repository(repository)
     if not preview and request("GET", "branches/main", None)["commit"]["sha"] != revision:
         return "Skipped an older main revision; the previous report remains available."
     refs = request("GET", f"git/matching-refs/heads/{BRANCH}", None)

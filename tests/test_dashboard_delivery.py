@@ -115,7 +115,7 @@ class FakeGitHub:
         return {}
 
 
-class PrivatePublisher(unittest.TestCase):
+class DashboardPublisher(unittest.TestCase):
     def test_first_publication_has_a_readme_only_root_commit_on_report_branch(self):
         request = FakeGitHub()
         self.assertIn(view.LIVE_URL, delivery.publish("report", REVISION, request=request))
@@ -140,14 +140,26 @@ class PrivatePublisher(unittest.TestCase):
         self.assertIn("already current", delivery.publish("report", REVISION, request=request))
         self.assertFalse(any(path == "git/commits" for method, path, body in request.calls))
 
-    def test_public_or_other_repositories_are_never_published(self):
+    def test_babel_can_publish_at_either_visibility_without_changing_visibility(self):
+        for private in (True, False):
+            request = FakeGitHub()
+            request.repository["private"] = private
+            with self.subTest(private=private):
+                self.assertIn(view.LIVE_URL, delivery.publish("report", REVISION, request=request))
+                self.assertFalse(
+                    any(method != "GET" and path == "" for method, path, _ in request.calls)
+                )
+
+    def test_unknown_visibility_or_other_repositories_are_never_published(self):
         for repository in (
-            {"private": False, "full_name": "Ise-Tom/Babel"},
             {"private": True, "full_name": "other/repository"},
+            {"private": False, "full_name": "other/repository"},
+            {"full_name": "Ise-Tom/Babel"},
+            {"private": "false", "full_name": "Ise-Tom/Babel"},
         ):
             request = FakeGitHub()
             request.repository = repository
-            with self.assertRaisesRegex(ValueError, "Private project"):
+            with self.assertRaisesRegex(ValueError, "Babel repository"):
                 delivery.publish("report", REVISION, request=request)
             self.assertTrue(all(method == "GET" for method, path, body in request.calls))
 

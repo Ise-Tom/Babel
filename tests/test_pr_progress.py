@@ -57,7 +57,7 @@ class PullRequestProgress(unittest.TestCase):
         self.assertIsNone(payload)
         self.calls.append(path)
         if path == "":
-            return {"private": self.private}
+            return {"private": self.private, "full_name": "Ise-Tom/Babel"}
         if path == "branches/main":
             return {"commit": {"sha": self.current}}
         if path.startswith("actions/workflows/"):
@@ -117,12 +117,17 @@ class PullRequestProgress(unittest.TestCase):
         self.assertEqual(pr["problems"][0]["resolution"], "Revised resolution")
         self.assertIn("Proposed problem update", view.render(self.model))
 
-    def test_public_repository_or_stale_main_never_import_pr_data(self):
+    def test_public_repository_collects_same_repo_facts_and_fork_metadata_only(self):
         self.private = False
-        with self.assertRaisesRegex(ValueError, "private report"):
-            self.collect()
-        self.assertEqual(self.calls, [""])
-        self.private = True
+        self.assertEqual(self.collect()[0]["workItems"][0]["id"], "TEST-ONLY")
+        self.pr["head"]["repo"]["full_name"] = "fork/repo"
+        self.calls.clear()
+        pr = self.collect()[0]
+        self.assertEqual(pr["workItems"], [])
+        self.assertEqual(pr["title"], self.pr["title"])
+        self.assertNotIn(f"contents/dashboard/progress.json?ref={HEAD}", self.calls)
+
+    def test_stale_main_is_rejected_and_main_failure_remains_visible(self):
         self.current = HEAD
         with self.assertRaisesRegex(ValueError, "Outdated main"):
             self.collect()
