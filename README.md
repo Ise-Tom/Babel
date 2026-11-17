@@ -44,9 +44,106 @@ Use your browser's Find command to search. Expand a phase's substeps to read its
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-17T20:06:06\+01:00.
+GitHub metadata checked: 2026-11-17T20:13:17\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
+
+### [\#18 · Clarify owner acceptance and allow phase-specific requirement counts](<https://github.com/Ise-Tom/Babel/pull/18>)
+
+**Draft · Pending merge · CI: unknown** · Head c8f97eb
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    The dashboard called broad requirements “substeps”, and design validation forced exactly ten sequential items per phase. This removes the fixed quota, clarifies requirement versus implementation-increment labels, and documents asking the project owner scoped acceptance questions with evidence and limits before recording approval. Existing requirements and stable IDs are preserved; no acceptance is inferred from silence or passing CI.
+    
+    Progress facts include this change as W20, the resolved reporting issue I14, and the verified merged PR #16 snapshot (12 successful main CI jobs). The private GitHub report shows this PR’s proposed progress separately until merge.
+    
+    Validation: 78 Python tests, 98% tooling coverage, strict Python/TypeScript checks, lint and documentation checks, six build/security-lint tests, and 24 desktop/mobile browser tests. Synthetic unequal phase sizes and noncontiguous IDs exercise validation, rendering, filtering and expand-all. No product protocol behavior changed.
+
+**Changed files:**
+
+- dashboard/progress.json
+- dashboard/src/main.ts
+- dashboard/tests/dashboard.spec.ts
+- docs/phases/README.md
+- docs/project-dashboard.md
+- scripts/check\_design.py
+- scripts/render\_dashboard.py
+- tests/test\_dashboard.py
+- tests/test\_design.py
+
+#### Proposed W19 · Remove unpatched vulnerable tooling dependency path
+
+**Substeps:** P00-10, P01-01
+
+**How it was done:** Removed TypeScript-ESLint and its picomatch path. Retained supported ESLint 10 / TypeScript 6, strict compiler checks and explicit-any AST checks; runs DOM/eval rules on compiler-erased JavaScript without bundling, minification or execution.
+
+**Recorded validation:** Locked clean install; npm audit reports zero vulnerabilities. Six build/lint tests include typed HTML sinks, eval, explicit-any declarations/casts and safe text rendering; strict typecheck and lint pass.
+
+**Limits and remaining work:** This replaces recommended TypeScript style rules with documented compiler/security policies; it does not claim rule-for-rule style equivalence. PR \#16 is merged; main run 44153995669 passed all 12 jobs.
+
+**PR-head evidence:** [dashboard/package.json](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/package.json>) · [dashboard/package-lock.json](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/package-lock.json>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/lint.mjs>) · [dashboard/eslint.config.mjs](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/eslint.config.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/tests/lint.test.mjs>)
+
+
+#### Proposed W20 · Scope-based phase sizes and explicit owner acceptance reviews
+
+**Substeps:** P00-10, P01-01, P01-10
+
+**How it was done:** Removed the enforced ten-item sequential quota, retaining unique phase-owned IDs, nonempty requirements/evidence and feature traceability. Renamed broad dashboard substeps to requirements. Documented concrete owner review questions and separate requirement/phase acceptance. Existing scope and stable IDs are preserved.
+
+**Recorded validation:** 78 Python tests pass with 98% tooling coverage. Strict types, lint, documentation checks, six build/security-lint tests and 24 desktop/mobile browser tests pass. Synthetic 3/13-item phases exercise rendering, counts and expand-all; model/design fixtures allow unequal counts and noncontiguous IDs. Hosted run 44156039039 did not start: GitHub reported failed recent payments or an insufficient spending limit; this is not a hosted test result.
+
+**Limits and remaining work:** The current baseline still contains 180 requirements. Changing task counts does not estimate effort or accept work. Two current-component acceptance questions have been submitted to the owner; no affirmative answers have been recorded. Full AD functionality and phase acceptance remain outstanding.
+
+**PR-head evidence:** [scripts/check\_design.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/scripts/check_design.py>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/scripts/render_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/tests/dashboard.spec.ts>) · [tests/test\_design.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/tests/test_design.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/tests/test_dashboard.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/docs/project-dashboard.md>)
+
+#### Proposed problem update: I13 · Main CI rejected newly vulnerable picomatch tooling graph
+
+**Proposed status:** resolved
+
+Main run 44142657828 failed npm audit for GHSA-fc5q-39xc-vjpf. The advisory affects picomatch through 4.0.7 and no patched version was published when checked.
+
+**Resolution:** PR \#16 removed the vulnerable dependency path while retaining supported compiler/ESLint versions and tested DOM/eval/explicit-any checks. Merged main run 44153995669 passed all 12 jobs, including dependency audit.
+
+**Next action:** Keep all-severity audit enforcement and regression coverage on future tooling updates.
+
+**Provenance:** Recorded development-session evidence and repository/CI observations; no separate public issue was created.
+
+[dashboard/package-lock.json](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/package-lock.json>) · [dashboard/lint.mjs](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/lint.mjs>) · [dashboard/tests/lint.test.mjs](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/tests/lint.test.mjs>)
+
+#### Proposed problem update: I14 · Fixed requirement quotas and ambiguous substep acceptance labels
+
+**Proposed status:** resolved
+
+The design validator forced exactly ten sequential requirements per phase, while the report called those broad contracts substeps. Zero recorded acceptances made implemented increments hard to distinguish from owner-reviewed scope.
+
+**Resolution:** Removed the fixed quota, clarified requirement/increment labels, and documented asking the owner scoped evidence-based questions before recording acceptance. Regression tests cover unequal phase sizes; statuses are unchanged while answers are pending.
+
+**Next action:** Record explicit owner answers with reviewer/date/evidence. Decompose future work according to scope and dependencies while preserving requirement coverage.
+
+**Provenance:** Project owner requested acceptance questions and said substep counts need not be linear; no separate GitHub issue was created.
+
+[scripts/check\_design.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/scripts/check_design.py>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/scripts/render_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/dashboard/tests/dashboard.spec.ts>) · [tests/test\_design.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/tests/test_design.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/tests/test_dashboard.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/docs/project-dashboard.md>)
+
+#### Proposed problem update: I15 · GitHub Actions jobs blocked before startup by account billing
+
+**Proposed status:** open
+
+All jobs in PR \#18 CI run 44156039039 have zero executed steps. GitHub annotation: The job was not started because recent account payments have failed or your spending limit needs to be increased. Automatic dashboard refresh jobs are affected too.
+
+**Resolution:** Still open
+
+**Next action:** Repository/account owner checks GitHub Billing &amp; plans and restores Actions capacity, then reruns PR CI and the private dashboard workflow. Local checks do not replace the required hosted gate.
+
+**Provenance:** Observed GitHub run 44156039039, check run 134296912744 annotation; no pipeline commands ran.
+
+[.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/.github/workflows/ci.yml>) · [.github/workflows/dashboard-publish.yml](<https://github.com/Ise-Tom/Babel/blob/c8f97eb6737b73aa8af3583a8e70f8135686c782/.github/workflows/dashboard-publish.yml>)
+
+
+</details>
 
 ### [\#17 · Bump typescript from 6.0.3 to 7.0.2 in /dashboard](<https://github.com/Ise-Tom/Babel/pull/17>)
 
@@ -252,6 +349,8 @@ Delivery gates and source packaging exist; real product upgrade/recovery/governa
 
 **Acceptance evidence required:** Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact.
 
+**Pending PR proposals:** [\#18: Clarify owner acceptance and allow phase-specific requirement counts](<https://github.com/Ise-Tom/Babel/pull/18>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path. See the [implementation journal](#implementation-journal).
 
 </details>
@@ -275,6 +374,8 @@ The lab component has executable checks; future native components need their own
 **Associated features:** [SEC-08: Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/requirements.md>); [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/requirements.md>)
 
 **Acceptance evidence required:** The scope guard is extended in the same reviewed PR; clean Linux build plus malformed-input regression corpus passes.
+
+**Pending PR proposals:** [\#18: Clarify owner acceptance and allow phase-specific requirement counts](<https://github.com/Ise-Tom/Babel/pull/18>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W01: Native Rust workspace and reproducible builds; W02: Bounded BER / LDAP decoder; W06: Independent client and packaged-binary checks; W07: Property tests and core coverage gate; W08: Sanitizer fuzz smoke; W09: Native dependency, license and SBOM checks; W10: Required native and repository CI gates; W13: Tested source and lab archive packaging; W17: Bounded LDAP RootDSE filter discovery; W19: Remove unpatched vulnerable tooling dependency path. See the [implementation journal](#implementation-journal).
 
@@ -383,6 +484,8 @@ The current subset is documented; the full phase is not accepted.
 **Associated features:** [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/requirements.md>)
 
 **Acceptance evidence required:** Each public operation has a tested/unsupported status; lab credentials and incomplete protocol behavior cannot be promoted as a production release.
+
+**Pending PR proposals:** [\#18: Clarify owner acceptance and allow phase-specific requirement counts](<https://github.com/Ise-Tom/Babel/pull/18>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W17: Bounded LDAP RootDSE filter discovery; W18: Open-PR-aware private progress reporting. See the [implementation journal](#implementation-journal).
 
