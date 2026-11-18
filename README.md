@@ -44,11 +44,159 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T10:26:58\+01:00.
+GitHub metadata checked: 2026-11-18T11:42:29\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#25 · Phase 0: qualify a TLS candidate and track capability implementations](<https://github.com/Ise-Tom/Babel/pull/25>)
+
+**In review · Pending merge · CI: in\_progress** · Head 6ae8422
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    Babel's Phase 0 dependency review had no executable TLS candidate evidence, and the dashboard could show phase associations without explaining a capability's actual implementation. This change adds a bounded Rustls/ring qualification experiment and an explicit implementation tracker for all 130 canonical capabilities.
+    
+    - Add a standalone Linux loopback mutual-TLS probe with explicit trust, TLS 1.2/1.3 AES-GCM/ECDHE policy, static errors, buffer/byte/time limits and no early data, tickets or session cache. Seven Rust tests, 19 independent OpenSSL methods, exporter prerequisites and a dedicated sanitizer fuzz target exercise successful and rejected exchanges. ADR 0006 records exact versions/features, provider alternatives and production gaps.
+    - Add a searchable, mobile-accessible Capabilities tab with implementation stage/status, implemented and missing behavior, source-backed work, related requirements and blockers. Sparse claims default to planned; supporting tools, requirement acceptance and related design never automatically claim product delivery. The GitHub report includes the same scoped claims.
+    - Package actual project/runtime dependency/Rust-library copyright and license texts alongside both lab binaries. Verify digests after extraction and rerun both independent probes. Keep full development/fuzz graph advisory and license audits. ISC/BSD-3-Clause policy additions follow review of actual source terms; no advisories are ignored.
+    - Record W41–W43, resolved development gaps I31/I32 and the remaining I26 qualification gap with immutable implementation evidence. Update the verified main snapshot to merged PR #24. Four owner-accepted requirement scopes are unchanged, only Phases 0/1 are active, and all 60 conformance scenarios remain unrun.
+    
+    Validation completed locally: 150 repository tests, 99% combined statement/branch coverage; 30 desktop/mobile browser tests including automated WCAG 2.2 AA-tagged checks; six dashboard build/security tests; strict types/lint, Clippy, workflow/security and both locked dependency graph audits. Seven new TLS and 28 existing LDAP Rust tests pass; TLS library coverage is 93.23%, combined native 94.21%. Both sanitizer fuzz targets completed 20,000 iterations. Both extracted binaries and 40 retained notice files passed verification. Hosted checks must pass on this PR head before merge.
+    
+    This is qualification tooling, not LDAP/StartTLS/SASL integration, Windows compatibility, production key custody/rotation/revocation/provider-fault handling, measured capacity or phase acceptance. No domain, schema or credential migration is introduced. Reverting removes the independent lab/tracker without changing LDAP runtime state. The Pages interface updates after merge and successful trusted deployment; proposed work appears separately in the GitHub PR-aware report.
+
+**Changed files:**
+
+- .github/workflows/ci.yml
+- .github/workflows/native.yml
+- .gitignore
+- CONTRIBUTING.md
+- Cargo.lock
+- Cargo.toml
+- README.md
+- dashboard/associations.json
+- dashboard/capabilities.json
+- dashboard/progress.json
+- dashboard/src/index.html
+- dashboard/src/main.ts
+- dashboard/src/style.css
+- dashboard/src/types.ts
+- dashboard/tests/dashboard.spec.ts
+- deny.toml
+- docs/adr/0006-tls-qualification-lab.md
+- docs/capability-tracker.md
+- docs/ci-cd.md
+- docs/decisions.md
+- docs/phase-00-progress.md
+- docs/phase-00-security-and-dependencies.md
+- docs/project-dashboard.md
+- fuzz/Cargo.lock
+- fuzz/Cargo.toml
+- fuzz/corpus/tls\_record/empty-record
+- fuzz/corpus/tls\_record/plaintext
+- fuzz/fuzz\_targets/tls\_record.rs
+- native/babel-tls-lab/Cargo.toml
+- native/babel-tls-lab/src/budget\_tests.rs
+- native/babel-tls-lab/src/lib.rs
+- native/babel-tls-lab/src/main.rs
+- native/babel-tls-lab/tests/handshake.rs
+- native/babel-tls-lab/tests/interop\_tls.py
+- pyproject.toml
+- rust-toolchain.toml
+- scripts/build\_dashboard.py
+- scripts/capability\_tracker.py
+- scripts/check\_ci\_scope.py
+- scripts/collect\_native\_notices.py
+- scripts/render\_dashboard.py
+- tests/test\_capabilities.py
+- tests/test\_dashboard.py
+- tests/test\_native\_notices.py
+
+#### Proposed W41 · Track all global capabilities with explicit implementation scope and evidence
+
+**Requirements:** P00-08, P00-10
+
+**How it was done:** Added a sparse versioned claim register over all 130 canonical capabilities, planned defaults, strict references, explicit stage/status, implemented and missing behavior and separate full-capability acceptance. The interactive tab supports search/status filters, lazy details, direct links, mobile navigation, work/source/blocker links and related preparation. The GitHub report renders the same claims. Documentation requires same-PR updates without inferring delivery from related work or accepted requirement subsets.
+
+**Recorded validation:** 150 repository tests pass at 99% combined statement/branch coverage; the tracker validator has 100%. All 30 desktop/mobile browser tests and six build/security tests pass, including capability navigation, missing scope, immutable evidence, filters/deep links, no horizontal overflow and WCAG 2.2 AA-tagged automated checks. Strict TypeScript/lint and canonical/docs validation pass.
+
+**Limits and remaining work:** This is project development tooling, not domain administration UI/API or product conformance. Claims still require human review and maintenance. No full capability acceptance, additional requirement acceptance or later phase activity is inferred. Pages receives the change only after merge and successful trusted deployment; open-PR increments appear separately in the GitHub report.
+
+**PR-head evidence:** [dashboard/capabilities.json](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/dashboard/capabilities.json>) · [scripts/capability\_tracker.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/scripts/capability_tracker.py>) · [tests/test\_capabilities.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/tests/test_capabilities.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/dashboard/tests/dashboard.spec.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/scripts/render_dashboard.py>) · [docs/capability-tracker.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/capability-tracker.md>)
+
+
+#### Proposed W42 · Qualify a bounded Rustls/ring TLS candidate with independent enforcement tests
+
+**Requirements:** P00-04, P00-13
+
+**How it was done:** Implemented a standalone loopback, one-session Rustls 0.23.46/ring 0.17.14 experiment with explicit client CA, mandatory client certificates, server verification by an independent OpenSSL client, TLS 1.2/1.3 AES-GCM/ECDHE suites, no early data/tickets/cache, bounded DER/wire/application buffers and monotonic deadlines. Added certificate/identity/time/purpose failures, tampering, scoped exporter prerequisites, property tests, a TLS-record sanitizer fuzzer and separate library coverage gate. ADR 0006 compares provider alternatives, actual license terms and unqualified production obligations.
+
+**Recorded validation:** Seven Rust TLS tests pass, including 64-case generated-record checks; the existing 28 LDAP tests pass. Nineteen OpenSSL methods pass against release, instrumented and extracted binaries using OpenSSL 3.5.7. TLS library line coverage is 93.23%; combined native coverage is 94.21%. TLS and LDAP sanitizer targets each complete 20,000 local iterations with no crash. Formatting/Clippy, both locked graph advisory/license/source audits, Bandit and workflow analysis pass.
+
+**Limits and remaining work:** Qualification experiment only: no LDAP/StartTLS/SASL/EPA integration, AD authentication, production key custody/revocation/rotation/HSM/provider-loss or load qualification. Generic exporter agreement is not Windows channel-binding conformance. No Windows/macOS host was used; all 60 conformance cases remain unrun. Ring uses native C/assembly; this is not all-memory-safe or FIPS validation. No owner acceptance is inferred.
+
+**PR-head evidence:** [docs/adr/0006-tls-qualification-lab.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/adr/0006-tls-qualification-lab.md>) · [native/babel-tls-lab/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/native/babel-tls-lab/Cargo.toml>) · [native/babel-tls-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/native/babel-tls-lab/src/lib.rs>) · [native/babel-tls-lab/tests/handshake.rs](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/native/babel-tls-lab/tests/handshake.rs>) · [native/babel-tls-lab/tests/interop\_tls.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/native/babel-tls-lab/tests/interop_tls.py>) · [fuzz/fuzz\_targets/tls\_record.rs](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/fuzz/fuzz_targets/tls_record.rs>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/.github/workflows/native.yml>)
+
+
+#### Proposed W43 · Retain and verify actual license notices in experimental native archives
+
+**Requirements:** P00-06
+
+**How it was done:** Added a fail-closed collector for actual nested LICENSE/COPYING/COPYRIGHT/NOTICE and declared license files in the selected normal/runtime Cargo dependency closure, plus project LICENSE/NOTICE/DCO and Rust library copyright/referenced terms. Preserved versions/SPDX and per-file SHA-256/size in a manifest. Native CI packages both binaries with notices, extracts/verifies the archive and reruns independent LDAP and TLS probes; full development/fuzz graph license and advisory checks remain mandatory.
+
+**Recorded validation:** Eight notice tests pass, covering nested and explicit terms, normal-vs-dev closure, graph cycles/unknown roots, missing/linked/empty terms, traversal and same-size digest tampering. Actual local archive contains notices for 11 selected runtime crates and 40 retained files totaling 1,738,841 bytes; post-extraction notice verification and both protocol probes pass. Root tooling coverage remains 99%.
+
+**Limits and remaining work:** Experimental Linux x86\_64 lab archive only. Rust reference notices may list components not linked; this is not complete binary-link analysis, legal clearance, protocol/fixture rights or product-distribution acceptance. Notice verification checks retained bytes, not legal interpretation or provenance by itself.
+
+**PR-head evidence:** [scripts/collect\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/scripts/collect_native_notices.py>) · [tests/test\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/tests/test_native_notices.py>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/.github/workflows/native.yml>) · [deny.toml](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/deny.toml>) · [docs/adr/0006-tls-qualification-lab.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/adr/0006-tls-qualification-lab.md>)
+
+#### Proposed problem update: I26 · Production TLS/Kerberos/storage/transport libraries need qualification
+
+**Proposed status:** open
+
+Rust and bounded LDAP safeguards, PostgreSQL synthetic transactions and now a standalone Rustls/ring TLS candidate have executable lab evidence. Production TLS/key custody/client integration, Kerberos/PAC, native store driver and DNS/SMB/RPC remain unqualified.
+
+**Resolution:** Still open
+
+**Next action:** Review the TLS candidate ADR and qualify LDAP/SASL/client/revocation/rotation/provider-fault boundaries before production use. Separately select and test Kerberos/PAC, storage driver and other transports with exact versions/features/rights/advisories and runtime failure/reference evidence.
+
+**Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
+
+[docs/adr/0006-tls-qualification-lab.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/adr/0006-tls-qualification-lab.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/phase-00-security-and-dependencies.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/decisions.md>)
+
+#### Proposed problem update: I31 · Capability associations lacked an explicit implementation tracker
+
+**Proposed status:** resolved
+
+Phase work and broad feature associations could not show which subset of a global capability actually existed or distinguish supporting tools from product functionality.
+
+**Resolution:** Added an explicit 130-capability tracker with scoped claims, implemented/missing behavior, work/evidence/blocker links and separate full-capability acceptance. Planned defaults and validation prevent shared design/tooling or accepted requirement subsets from automatically claiming delivery.
+
+**Next action:** Maintain claims with every functional-scope change and review actual behavior; do not infer product acceptance from a green dashboard check.
+
+**Provenance:** Development implementation/tooling gap observed in the repository and verified with executable tests; not a GitHub setup incident.
+
+[docs/capability-tracker.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/capability-tracker.md>) · [scripts/capability\_tracker.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/scripts/capability_tracker.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/dashboard/src/main.ts>) · [tests/test\_capabilities.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/tests/test_capabilities.py>)
+
+#### Proposed problem update: I32 · Internal native binary archive did not carry actual third-party notice texts
+
+**Proposed status:** resolved
+
+The previous LDAP lab had no external runtime crate dependencies. The added TLS stack introduces copyright/permission/disclaimer obligations that an SPDX SBOM alone does not retain in the binary archive.
+
+**Resolution:** Reviewed ISC/BSD-3-Clause terms alongside Apache/MIT and bundled actual nested runtime-source license files, project terms and Rust-library notices. Added a per-file digest manifest, extraction verification and both packaged executable probes; no audit findings are ignored.
+
+**Next action:** Re-review actual notices on dependency/provider/toolchain changes and expand platform/product distribution analysis before publishing product packages; specification/fixture rights remain open.
+
+**Provenance:** Development implementation/tooling gap observed in the repository and verified with executable tests; not a GitHub setup incident.
+
+[scripts/collect\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/scripts/collect_native_notices.py>) · [tests/test\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/tests/test_native_notices.py>) · [deny.toml](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/deny.toml>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/.github/workflows/native.yml>)
+
+
+</details>
 
 
 ## Phase 00
@@ -106,6 +254,8 @@ Rust/toolchain and parser safeguards are qualified only for the bounded lab subs
 
 **Acceptance evidence required:** Record supported platforms, alternatives, license/advisory maintenance and locked build/fuzz/security jobs.
 
+**Pending PR proposals:** [\#25: Phase 0: qualify a TLS candidate and track capability implementations](<https://github.com/Ise-Tom/Babel/pull/25>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W01: Native Rust workspace and reproducible builds; W27: Record PostgreSQL selection and a reviewable native state contract; W35: Map security ownership and dependency/rights qualification gaps; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
 ### P00-05
@@ -129,6 +279,8 @@ The owner-selected Apache-2.0 and DCO are implemented; explicit acceptance of th
 **Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/2e2b4baccb3a1c6769e698a9e926ff46f6ea9407/docs/requirements.md>)
 
 **Acceptance evidence required:** Record owner license/DCO decisions, contribution terms and third-party notice/redistribution obligations before distribution; do not invent certification.
+
+**Pending PR proposals:** [\#25: Phase 0: qualify a TLS candidate and track capability implementations](<https://github.com/Ise-Tom/Babel/pull/25>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W25: Apply owner-selected Apache-2.0 license and DCO contribution terms; W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients; W35: Map security ownership and dependency/rights qualification gaps; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
@@ -156,6 +308,8 @@ Current version-1 compatibility/evidence schema and traceability tooling accepte
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-18. The project owner explicitly answered “Accept this schema/tooling scope” in this conversation on 18 November 2026. Scope: current version-1 schema and traceability implementation in PR \#22, not client compatibility or phase acceptance. Implementation/tests pinned to b98dac7d33b20bef1ab6ccfb4a295f40d2330500: https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/scripts/check\_conformance.py ; https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/tests/test\_conformance.py . 118 local repository tests passed; all 60 conformance scenarios are explicitly unrun.
 
+**Pending PR proposals:** [\#25: Phase 0: qualify a TLS candidate and track capability implementations](<https://github.com/Ise-Tom/Babel/pull/25>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W10: Required native and repository CI gates; W11: Complete phase specifications and traceability; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W18: Open-PR-aware private progress reporting; W33: Enforce versioned conformance evidence integrity in CI; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation. See the [implementation journal](#implementation-journal).
 
 ### P00-09
@@ -181,6 +335,8 @@ Solo development governance and worked schema/key/restore/functional-level/stora
 **Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/2e2b4baccb3a1c6769e698a9e926ff46f6ea9407/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/2e2b4baccb3a1c6769e698a9e926ff46f6ea9407/docs/requirements.md>)
 
 **Acceptance evidence required:** Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact.
+
+**Pending PR proposals:** [\#25: Phase 0: qualify a TLS candidate and track capability implementations](<https://github.com/Ise-Tom/Babel/pull/25>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI; W33: Enforce versioned conformance evidence integrity in CI; W34: Specify stable state and worked replication/recovery invariants; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation. See the [implementation journal](#implementation-journal).
 
@@ -218,6 +374,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Review exact versions/features, key custody, certificate, downgrade, channel-binding and provider-loss cases; no custom cryptography.
 
+**Pending PR proposals:** [\#25: Phase 0: qualify a TLS candidate and track capability implementations](<https://github.com/Ise-Tom/Babel/pull/25>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P00-14
@@ -230,6 +388,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Review AES/PAC/replay/delegation support, licenses, FFI/unsafe boundaries and upstream maintenance; generic Kerberos is not AD conformance.
 
+**Pending PR proposals:** [\#25: Phase 0: qualify a TLS candidate and track capability implementations](<https://github.com/Ise-Tom/Babel/pull/25>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P00-15
@@ -241,6 +401,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/2e2b4baccb3a1c6769e698a9e926ff46f6ea9407/docs/requirements.md>); [SEC-08: Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion](<https://github.com/Ise-Tom/Babel/blob/2e2b4baccb3a1c6769e698a9e926ff46f6ea9407/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/2e2b4baccb3a1c6769e698a9e926ff46f6ea9407/docs/requirements.md>)
 
 **Acceptance evidence required:** Review versions, parameterization, cancellation, commit/error mapping and recovery before credentials or stable formats persist.
+
+**Pending PR proposals:** [\#25: Phase 0: qualify a TLS candidate and track capability implementations](<https://github.com/Ise-Tom/Babel/pull/25>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
