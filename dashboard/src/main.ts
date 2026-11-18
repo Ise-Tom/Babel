@@ -19,7 +19,7 @@ function link(label: string, url: string, className = ''): HTMLAnchorElement {
 }
 const board = JSON.parse(get('dashboard-data').textContent ?? '{}') as Board;
 const featureMap = new Map(board.features.map(feature => [feature.id, feature]));
-const names: Record<Status, string> = { planned: 'Planned', in_progress: 'In progress', blocked: 'Blocked', accepted: 'Accepted' };
+const names: Record<Status, string> = { planned: 'Planned', in_progress: 'In progress', blocked: 'Blocked', ready_for_validation: 'Ready for validation', accepted: 'Accepted' };
 function badge(status: Status | 'implemented' | 'open' | 'resolved', label?: string): HTMLElement {
   return el('span', `badge ${status}`, label ?? (Object.hasOwn(names, status) ? names[status as Status] : status === 'implemented' ? 'Implemented increment' : status === 'resolved' ? 'Resolved' : 'Open'));
 }
@@ -127,9 +127,9 @@ function stats(): HTMLElement {
 }
 function reset(): HTMLElement { return button('Clear filters', 'button secondary', () => navigate({ q: '', status: 'all', capabilityStatus: 'all' }, false)); }
 function phaseWork(phase: Phase): Work[] { return board.workItems.filter(item => item.requirements.some(id => phase.steps.some(step => step.id === id))); }
-const statusOrder: Status[] = ['accepted', 'in_progress', 'blocked', 'planned'];
+const statusOrder: Status[] = ['accepted', 'ready_for_validation', 'in_progress', 'blocked', 'planned'];
 function phaseCounts(phase: Phase): Record<Status, number> {
-  return { accepted: phase.steps.filter(s => s.status === 'accepted').length, in_progress: phase.steps.filter(s => s.status === 'in_progress').length, blocked: phase.steps.filter(s => s.status === 'blocked').length, planned: phase.steps.filter(s => s.status === 'planned').length };
+  return { accepted: phase.steps.filter(s => s.status === 'accepted').length, ready_for_validation: phase.steps.filter(s => s.status === 'ready_for_validation').length, in_progress: phase.steps.filter(s => s.status === 'in_progress').length, blocked: phase.steps.filter(s => s.status === 'blocked').length, planned: phase.steps.filter(s => s.status === 'planned').length };
 }
 function phaseActivity(phase: Phase): string { const counts = phaseCounts(phase); return statusOrder.map(status => `${counts[status]} ${names[status].toLowerCase()}`).join(' · '); }
 function statusStrip(phase: Phase): HTMLElement {
@@ -156,8 +156,8 @@ function overview(): HTMLElement {
   const grid = el('div', 'phase-grid');
   for (const phase of visible) {
     const card = el('article', `phase-card ${phase.status}`); card.dataset.testid = `phase-card-${phase.id}`;
-    const top = el('div', 'card-heading'); top.append(el('span', 'phase-number', String(phase.id).padStart(2, '0')), badge(phase.status));
     const counts = phaseCounts(phase); const increments = phaseWork(phase).length;
+    const top = el('div', 'card-heading'); top.append(el('span', 'phase-number', String(phase.id).padStart(2, '0')), counts.ready_for_validation ? badge('ready_for_validation', `${counts.ready_for_validation} ready`) : badge(phase.status));
     const activity = counts.in_progress ? `${counts.in_progress} in progress` : counts.blocked ? `${counts.blocked} blocked` : counts.planned ? `${counts.planned} planned` : '';
     card.append(top, el('h3', '', phase.title), el('p', 'phase-caption', `${counts.accepted}/${phase.steps.length} accepted${activity ? ` · ${activity}` : ''}`), statusStrip(phase));
     if (state.q || state.status !== 'all') card.append(el('span', 'match-count', `${filtered(phase).length} matching requirements`));
@@ -172,6 +172,7 @@ function requirement(step: Step): HTMLDetailsElement {
   const summary = el('summary'); summary.append(el('code', 'step-code', step.id), el('span', 'step-title', step.title), badge(step.status)); detail.append(summary);
   const body = el('div', 'requirement-body'); body.append(el('p', 'step-note', step.note), el('div', 'section-label', 'ASSOCIATED FEATURES'), chips(step.features), el('div', 'section-label', step.status === 'accepted' ? 'ACCEPTANCE EVIDENCE' : 'ACCEPTANCE STILL REQUIRED'), el('p', '', step.verification));
   if (step.acceptance) body.append(el('p', 'step-note', `Accepted by ${step.acceptance.reviewer} on ${step.acceptance.date}. ${step.acceptance.evidence}`));
+  if (step.validation) body.append(el('div', 'section-label', step.status === 'ready_for_validation' ? 'EXIT CRITERIA COMPLETE · OWNER VALIDATION PENDING' : 'VALIDATION PACKET'), el('p', '', step.validation.scope), link('Review exit criteria and evidence →', step.validation.packet.url, 'text-link'));
   const work = workFor(step);
   if (step.status === 'planned' && work.length) body.append(el('p', 'muted', 'Related preparation is recorded below. This requirement remains planned; links to shared work do not start a phase.'));
   body.append(el('h3', '', 'Related work & evidence'));

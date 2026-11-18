@@ -151,3 +151,14 @@ evidence. Reviewed Unicode data terms and actual dependency notices are included
 This is a candidate experiment, not native directory storage, production driver
 selection, schema/ACL or capacity acceptance. P00-15 and I05/I26 remain open;
 all 60 client conformance scenarios and four accepted scopes are unchanged.
+
+## P00-15 exit submission
+
+The [full driver/transaction validation packet](validation/p00-15.md) now addresses
+every original P00-15 criterion. The selected stack has a typed default API,
+streaming result bounds, cancellation-safe transaction ownership, durable receipt
+replay with reauthorization, actual COMMIT reply-loss evidence and two coordinated
+PostgreSQL process-crash recoveries. These close the gaps left by the candidate
+increment. The requirement is ready for owner validation rather than another
+partially completed experiment; later native directory/key/backup/capacity gates
+remain under their actual Phase 1/3/4 requirements. No acceptance is inferred.

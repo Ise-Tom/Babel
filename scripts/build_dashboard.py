@@ -13,7 +13,7 @@ from check_design import GLOBAL_ID, GLOBAL_SOURCES, SECTIONS, check
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = "https://github.com/Ise-Tom/Babel"
-STATES = {"planned", "in_progress", "blocked", "accepted"}
+STATES = {"planned", "in_progress", "blocked", "ready_for_validation", "accepted"}
 
 
 def require(condition: bool, message: str) -> None:
@@ -163,6 +163,21 @@ def build(root: Path, revision: str) -> dict[str, Any]:
             require(status in STATES, f"{identifier}: unknown status")
             if status == "accepted":
                 acceptance(override.get("acceptance"), identifier)
+            validation = override.get("validation")
+            if status == "ready_for_validation":
+                require(isinstance(validation, dict), f"{identifier}: validation packet required")
+            if validation is not None:
+                validation = record(validation, identifier + " validation")
+                text(validation.get("scope"), identifier + " validation scope")
+                packet_revision = text(validation.get("source_revision"), "validation revision")
+                require(
+                    bool(re.fullmatch(r"[a-f0-9]{40}", packet_revision)),
+                    "Invalid validation revision",
+                )
+                validation = {
+                    "scope": validation["scope"],
+                    "packet": sources(root, [validation.get("packet")], packet_revision)[0],
+                }
             steps.append(
                 {
                     "id": identifier,
@@ -174,6 +189,7 @@ def build(root: Path, revision: str) -> dict[str, Any]:
                         identifier + " note",
                     ),
                     "acceptance": override.get("acceptance"),
+                    "validation": validation,
                     "features": associated,
                 }
             )
@@ -193,7 +209,10 @@ def build(root: Path, revision: str) -> dict[str, Any]:
             "accepted"
             if phase_proof is not None
             else "in_progress"
-            if any(step["status"] in {"in_progress", "accepted"} for step in steps)
+            if any(
+                step["status"] in {"in_progress", "ready_for_validation", "accepted"}
+                for step in steps
+            )
             else "planned"
         )
         phases.append(
@@ -272,10 +291,10 @@ def build(root: Path, revision: str) -> dict[str, Any]:
         require(bool(item["sources"]), "Implemented work requires source evidence")
     for phase in phases:
         for step in phase["steps"]:
-            if step["status"] == "accepted":
+            if step["status"] in {"accepted", "ready_for_validation"}:
                 require(
                     any(step["id"] in item["requirements"] for item in work),
-                    "Accepted requirement needs implementation/explanation record",
+                    "Accepted/validation-ready requirement needs implementation/explanation record",
                 )
     from capability_tracker import enrich
 

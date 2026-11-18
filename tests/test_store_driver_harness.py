@@ -3,6 +3,7 @@
 import copy
 import io
 import json
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -145,6 +146,7 @@ class DriverHarness(unittest.TestCase):
             harness.configure(self.lab, "synthetic")
 
     def qualify(self, *, coverage=False, cargo=None, cleanup=True):
+        shutil.rmtree(Path(self.temp.name) / "driver-control", ignore_errors=True)
         self.lab.__enter__ = Mock(return_value=self.lab)
         self.lab.__exit__ = Mock(
             side_effect=lambda *_: self.socket.rmdir() if cleanup and self.socket.exists() else None
@@ -158,8 +160,8 @@ class DriverHarness(unittest.TestCase):
             patch.object(harness, "isolation"),
             patch.object(harness.secrets, "token_hex", return_value="synthetic-secret"),
             patch.object(
-                harness.subprocess,
-                "run",
+                harness,
+                "run_owned",
                 side_effect=cargo if isinstance(cargo, BaseException) else None,
                 return_value=cargo or result(stdout=output),
             ) as run,
@@ -192,3 +194,50 @@ class DriverHarness(unittest.TestCase):
         self.socket.mkdir(exist_ok=True)
         with self.assertRaisesRegex(RuntimeError, "cleanup incomplete"):
             self.qualify(cleanup=False)
+
+    def test_owned_process_coordinates_actual_checkpoint_calls_before_reporting_success(self):
+        control = Path(self.temp.name) / "coordinator"
+        control.mkdir()
+        process = Mock(pid=76543, returncode=0)
+        process.poll.return_value = 0
+        calls = 0
+
+        def communicate(*_, **__):
+            nonlocal calls
+            calls += 1
+            if calls == 1:
+                for checkpoint in harness.RECOVERY_CHECKPOINTS:
+                    (control / f"{checkpoint}.ready").write_text("ready")
+                raise subprocess.TimeoutExpired(["cargo"], 0.2)
+            return "complete", ""
+
+        process.communicate.side_effect = communicate
+        with patch.object(harness.subprocess, "Popen", return_value=process) as start:
+            finished = harness.run_owned(
+                ["cargo", "test"], cwd=Path(self.temp.name), env={}, lab=self.lab, control=control
+            )
+        self.assertEqual(finished.returncode, 0)
+        self.assertEqual(self.lab.crash_restart.call_count, 2)
+        self.assertTrue(start.call_args.kwargs["start_new_session"])
+        for checkpoint in harness.RECOVERY_CHECKPOINTS:
+            self.assertEqual((control / f"{checkpoint}.done").read_text(), "restarted")
+
+    def test_owned_process_rejects_missing_recovery_and_kills_only_its_group_on_timeout(self):
+        control = Path(self.temp.name) / "coordinator"
+        control.mkdir()
+        process = Mock(pid=76543, returncode=0)
+        process.communicate.return_value = ("", "")
+        process.poll.return_value = 0
+        with patch.object(harness.subprocess, "Popen", return_value=process):
+            with self.assertRaisesRegex(RuntimeError, "checkpoints incomplete"):
+                harness.run_owned(["cargo"], cwd=control, env={}, lab=self.lab, control=control)
+        process.poll.return_value = None
+        with (
+            patch.object(harness.subprocess, "Popen", return_value=process),
+            patch.object(harness.time, "monotonic", side_effect=[0, 421]),
+            patch.object(harness.os, "killpg") as kill,
+        ):
+            with self.assertRaisesRegex(RuntimeError, "deadline"):
+                harness.run_owned(["cargo"], cwd=control, env={}, lab=self.lab, control=control)
+        kill.assert_called_once_with(76543, harness.signal.SIGKILL)
+        process.communicate.assert_called_with(timeout=10)

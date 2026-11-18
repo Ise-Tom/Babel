@@ -60,7 +60,7 @@ async fn invalid_configuration_and_unavailable_socket_are_redacted() {
     ));
     assert_eq!(
         Failure::Constraint.to_string(),
-        "Driver lab rejected: Constraint"
+        "Driver rejected: Constraint"
     );
 }
 
@@ -428,4 +428,435 @@ async fn raw_driver_aborted_commit_requires_application_failure_tracking() {
     })
     .await
     .expect("Raw comparison deadline");
+}
+
+mod support;
+use babel_store_driver_lab::{MAX_RESULT_BYTES, MAX_ROWS, Mutation, ObjectId};
+const ACTOR: u128 = 0x00000000000040008000000000000001;
+fn typed(request: u128, object: u128, rid: u32, label: &str) -> Mutation {
+    Mutation::create(
+        ObjectId::new(ACTOR).unwrap(),
+        ObjectId::new(request).unwrap(),
+        ObjectId::new(object).unwrap(),
+        rid,
+        label,
+    )
+    .expect("Bounded fixture mutation")
+}
+fn object_text(object: u128) -> String {
+    let s = format!("{object:032x}");
+    format!(
+        "{}-{}-{}-{}-{}",
+        &s[..8],
+        &s[8..12],
+        &s[12..16],
+        &s[16..20],
+        &s[20..]
+    )
+}
+async fn effects(db: &mut Session, object: u128) -> Vec<i64> {
+    let rows = db
+        .query(
+            "SELECT * FROM driver_lab.effects($1::text)",
+            &[&object_text(object)],
+        )
+        .await
+        .expect("Observed fixture state");
+    (0..4).map(|i| rows[0].get(i)).collect()
+}
+async fn wait_active(observer: &mut Session, app: &str, wait: &str) {
+    tokio::time::timeout(Duration::from_secs(2),async {
+        loop {
+            let rows=observer.query("SELECT count(*) FROM pg_stat_activity WHERE application_name=$1 AND wait_event_type=$2",&[&app,&wait]).await.expect("Owned session observation");
+            if rows[0].get::<_,i64>(0)==1 { break; }
+            tokio::time::sleep(Duration::from_millis(2)).await;
+        }
+    }).await.expect("Activity barrier");
+}
+async fn wait_gone(observer: &mut Session, app: &str) {
+    tokio::time::timeout(Duration::from_secs(3), async {
+        loop {
+            let rows = observer
+                .query(
+                    "SELECT count(*) FROM pg_stat_activity WHERE application_name=$1",
+                    &[&app],
+                )
+                .await
+                .expect("Owned session observation");
+            if rows[0].get::<_, i64>(0) == 0 {
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(2)).await;
+        }
+    })
+    .await
+    .expect("Disconnected session cleanup");
+}
+
+#[tokio::test]
+async fn typed_mutations_bind_identity_payload_and_reauthorize_receipt_replay() {
+    let mut db = session("typed-mutations").await;
+    let create = typed(10001, 10001, 10001, "native-create");
+    let first = db.mutate(&create).await.expect("Typed durable create");
+    assert_eq!(db.mutate(&create).await, Ok(first));
+    assert_eq!(effects(&mut db, 10001).await, vec![1, 1, 1, 1]);
+    assert_eq!(
+        db.mutate(&typed(10001, 10001, 10001, "changed-payload"))
+            .await,
+        Err(Failure::Rejected)
+    );
+    let rename = Mutation::rename(
+        ObjectId::new(ACTOR).unwrap(),
+        ObjectId::new(10002).unwrap(),
+        ObjectId::new(10001).unwrap(),
+        10001,
+        "native-rename",
+        1,
+    )
+    .unwrap();
+    assert!(db.mutate(&rename).await.expect("Typed rename") > first);
+    assert_eq!(db.mutate(&rename).await.unwrap(), first + 1);
+    assert_eq!(effects(&mut db, 10001).await, vec![1, 2, 2, 2]);
+    db.query(
+        "SELECT driver_lab.set_actor_active($1::text,false)",
+        &[&object_text(ACTOR)],
+    )
+    .await
+    .unwrap();
+    let revoked = db.mutate(&create).await;
+    db.query(
+        "SELECT driver_lab.set_actor_active($1::text,true)",
+        &[&object_text(ACTOR)],
+    )
+    .await
+    .unwrap();
+    assert_eq!(revoked, Err(Failure::Denied));
+    let inactive = Mutation::create(
+        ObjectId::new(999).unwrap(),
+        ObjectId::new(10003).unwrap(),
+        ObjectId::new(10003).unwrap(),
+        10003,
+        "inactive",
+    )
+    .unwrap();
+    assert_eq!(db.mutate(&inactive).await, Err(Failure::Denied));
+    let stale = Mutation::rename(
+        ObjectId::new(ACTOR).unwrap(),
+        ObjectId::new(10004).unwrap(),
+        ObjectId::new(10001).unwrap(),
+        10001,
+        "stale",
+        1,
+    )
+    .unwrap();
+    assert_eq!(db.mutate(&stale).await, Err(Failure::Retryable));
+}
+
+#[tokio::test]
+async fn typed_input_limits_reject_before_any_database_request() {
+    let id = ObjectId::new(1).unwrap();
+    assert!(ObjectId::new(0).is_err());
+    for label in [
+        "",
+        "x'",
+        "Uppercase",
+        "x\0",
+        "invalid space",
+        &"a".repeat(33),
+    ] {
+        assert!(Mutation::create(id, id, id, 1000, label).is_err());
+    }
+    for rid in [0, 999, 1_000_000_000] {
+        assert!(Mutation::create(id, id, id, rid, "valid").is_err());
+    }
+    assert!(Mutation::rename(id, id, id, 1000, "valid", 0).is_err());
+    assert!(Mutation::create(id, id, id, 999_999_999, &"a".repeat(32)).is_ok());
+}
+
+#[tokio::test]
+async fn bounded_results_discard_over_budget_sessions() {
+    let mut rows = session("rows-budget").await;
+    let max = MAX_ROWS as i32;
+    assert_eq!(
+        rows.query("SELECT generate_series(1,$1::int)", &[&max])
+            .await
+            .unwrap()
+            .len(),
+        MAX_ROWS
+    );
+    assert_eq!(
+        rows.query("SELECT generate_series(1,$1::int)", &[&(max + 1)])
+            .await
+            .err(),
+        Some(Failure::Budget)
+    );
+    assert_eq!(
+        rows.query("SELECT 1", &[]).await.err(),
+        Some(Failure::Unavailable)
+    );
+    let mut bytes = session("bytes-budget").await;
+    let max = MAX_RESULT_BYTES as i32;
+    assert_eq!(
+        bytes
+            .query("SELECT repeat('x',$1::int)", &[&max])
+            .await
+            .unwrap()[0]
+            .get::<_, &str>(0)
+            .len(),
+        MAX_RESULT_BYTES
+    );
+    assert_eq!(
+        bytes
+            .query("SELECT repeat('x',$1::int)", &[&(max + 1)])
+            .await
+            .err(),
+        Some(Failure::Budget)
+    );
+    let mut columns = session("column-budget").await;
+    assert_eq!(
+        columns
+            .query(
+                "SELECT 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+                &[]
+            )
+            .await
+            .err(),
+        Some(Failure::Budget)
+    );
+}
+
+#[tokio::test]
+async fn caller_dropped_query_discards_its_session() {
+    let mut db = session("dropped-query").await;
+    db.query("SET statement_timeout=0", &[]).await.unwrap();
+    let mut observer = session("drop-query-observer").await;
+    let mut pending = Box::pin(db.query("SELECT pg_sleep(3)", &[]));
+    tokio::select! { _=wait_active(&mut observer,"dropped-query","Timeout")=>{}, _=&mut pending=>panic!("Query completed before cancellation barrier") }
+    drop(pending);
+    assert_eq!(
+        db.query("SELECT 1", &[]).await.err(),
+        Some(Failure::Unavailable)
+    );
+}
+
+#[tokio::test]
+async fn caller_dropped_begin_and_rollback_discard_their_sessions() {
+    let (socket, password) = inputs();
+    for command in [b"START TRANSACTION\0".as_slice(), b"ROLLBACK\0".as_slice()] {
+        let proxy = support::ReplyHold::new(&socket, command);
+        let mut db = Session::connect(&proxy.path, &password, "dropped-control")
+            .await
+            .unwrap();
+        if command == b"START TRANSACTION\0" {
+            let mut pending = Box::pin(db.begin());
+            tokio::select! { _=proxy.held.notified()=>{}, result=&mut pending=>panic!("Begin reply unexpectedly delivered: {:?}", result.map(|_| ())) }
+            drop(pending);
+        } else {
+            let tx = db.begin().await.unwrap();
+            let mut pending = Box::pin(tx.rollback());
+            tokio::select! { _=proxy.held.notified()=>{}, _=&mut pending=>panic!("Rollback reply unexpectedly delivered") }
+            drop(pending);
+        }
+        assert_eq!(
+            db.query("SELECT 1", &[]).await.err(),
+            Some(Failure::Unavailable)
+        );
+    }
+}
+
+#[tokio::test]
+async fn caller_dropped_mutation_rolls_back_and_prevents_connection_reuse() {
+    let mut db = session("dropped-mutation").await;
+    db.query("SET statement_timeout=0", &[]).await.unwrap();
+    let mut observer = session("mutation-observer").await;
+    observer
+        .query("SELECT pg_advisory_lock(882204)", &[])
+        .await
+        .unwrap();
+    let value = typed(11001, 11001, 11001, "wait-mutation");
+    let mut pending = Box::pin(db.mutate(&value));
+    tokio::select! { _=wait_active(&mut observer,"dropped-mutation","Lock")=>{}, _=&mut pending=>panic!("Mutation completed before its controlled lock barrier") }
+    drop(pending);
+    assert_eq!(
+        db.query("SELECT 1", &[]).await.err(),
+        Some(Failure::Unavailable)
+    );
+    observer
+        .query("SELECT pg_advisory_unlock(882204)", &[])
+        .await
+        .unwrap();
+    wait_gone(&mut observer, "dropped-mutation").await;
+    assert_eq!(effects(&mut observer, 11001).await, vec![0, 0, 0, 0]);
+}
+
+#[tokio::test]
+async fn durable_commit_with_lost_reply_is_recovered_without_repeating_mutation() {
+    let (socket, password) = inputs();
+    let proxy = support::ReplyHold::new(&socket, b"COMMIT\0");
+    let mut db = Session::connect(&proxy.path, &password, "lost-commit-reply")
+        .await
+        .unwrap();
+    let value = typed(12001, 12001, 12001, "durable-lost-reply");
+    let mut pending = Box::pin(db.mutate(&value));
+    tokio::select! { _=proxy.held.notified()=>{}, _=&mut pending=>panic!("Commit reply unexpectedly delivered") }
+    let mut observer = session("committed-state-observer").await;
+    assert_eq!(effects(&mut observer, 12001).await, vec![1, 1, 1, 1]);
+    drop(proxy);
+    assert_eq!(pending.await, Err(Failure::UnknownCommit));
+    assert_eq!(
+        db.query("SELECT 1", &[]).await.err(),
+        Some(Failure::Unavailable)
+    );
+    let result = observer.mutate(&value).await.unwrap();
+    assert_eq!(observer.mutate(&value).await, Ok(result));
+    assert_eq!(effects(&mut observer, 12001).await, vec![1, 1, 1, 1]);
+}
+
+#[tokio::test]
+async fn dropped_commit_future_after_durability_requires_receipt_recovery() {
+    let (socket, password) = inputs();
+    let proxy = support::ReplyHold::new(&socket, b"COMMIT\0");
+    let mut db = Session::connect(&proxy.path, &password, "dropped-commit")
+        .await
+        .unwrap();
+    let value = typed(13001, 13001, 13001, "dropped-after-commit");
+    let mut pending = Box::pin(db.mutate(&value));
+    tokio::select! { _=proxy.held.notified()=>{}, _=&mut pending=>panic!("Commit reply unexpectedly delivered") }
+    let mut observer = session("drop-commit-observer").await;
+    assert_eq!(effects(&mut observer, 13001).await, vec![1, 1, 1, 1]);
+    drop(pending);
+    assert_eq!(
+        db.query("SELECT 1", &[]).await.err(),
+        Some(Failure::Unavailable)
+    );
+    drop(proxy);
+    assert!(observer.mutate(&value).await.is_ok());
+    assert_eq!(effects(&mut observer, 13001).await, vec![1, 1, 1, 1]);
+}
+
+#[tokio::test]
+async fn concurrent_identical_requests_commit_once_and_conflicting_reuse_is_denied() {
+    let mut a = session("duplicate-a").await;
+    let mut b = session("duplicate-b").await;
+    let value = typed(14001, 14001, 14001, "concurrent-retry");
+    let (first, second) = tokio::join!(a.mutate(&value), b.mutate(&value));
+    assert!(first.is_ok());
+    assert_eq!(first, second);
+    assert_eq!(effects(&mut a, 14001).await, vec![1, 1, 1, 1]);
+    assert_eq!(
+        a.mutate(&typed(14001, 14001, 14001, "conflicting-reuse"))
+            .await,
+        Err(Failure::Rejected)
+    );
+    assert_eq!(effects(&mut a, 14001).await, vec![1, 1, 1, 1]);
+}
+
+async fn restart_checkpoint(name: &str) {
+    let control: PathBuf = std::env::var_os("BABEL_DRIVER_CONTROL")
+        .expect("Owned crash coordinator required")
+        .into();
+    std::fs::write(control.join(format!("{name}.ready")), b"ready").expect("Crash checkpoint");
+    tokio::time::timeout(Duration::from_secs(30), async {
+        loop {
+            if std::fs::read(control.join(format!("{name}.done")))
+                .ok()
+                .as_deref()
+                == Some(b"restarted")
+            {
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+    })
+    .await
+    .expect("Owned crash/restart deadline");
+}
+
+#[tokio::test]
+async fn driver_recovery_after_confirmed_commit() {
+    let mut db = session("recovery-committed").await;
+    let value = typed(15001, 15001, 15001, "survives-real-restart");
+    let original = db.mutate(&value).await.unwrap();
+    restart_checkpoint("after_commit").await;
+    assert!(db.query("SELECT 1", &[]).await.is_err());
+    let mut recovered = session("recovered-confirmed").await;
+    assert_eq!(effects(&mut recovered, 15001).await, vec![1, 1, 1, 1]);
+    assert_eq!(recovered.mutate(&value).await, Ok(original));
+    assert_eq!(effects(&mut recovered, 15001).await, vec![1, 1, 1, 1]);
+    let rename = Mutation::rename(
+        ObjectId::new(ACTOR).unwrap(),
+        ObjectId::new(15002).unwrap(),
+        ObjectId::new(15001).unwrap(),
+        15001,
+        "after-recovery",
+        1,
+    )
+    .unwrap();
+    assert!(recovered.mutate(&rename).await.unwrap() > original);
+}
+
+#[tokio::test]
+async fn driver_recovery_before_commit() {
+    let mut db = session("recovery-uncommitted").await;
+    let mut tx = db.begin().await.unwrap();
+    let actor = object_text(ACTOR);
+    let request = object_text(15101);
+    let object = object_text(15101);
+    tx.execute("SELECT driver_lab.apply($1::text,$2::text,'create',$3::text,'S-1-5-21-100-200-300-15101','uncommitted-restart',0)",&[&actor,&request,&object]).await.unwrap();
+    let staged = tx
+        .query("SELECT * FROM driver_lab.effects($1::text)", &[&object])
+        .await
+        .unwrap();
+    assert_eq!(
+        (0..4)
+            .map(|i| staged[0].get::<_, i64>(i))
+            .collect::<Vec<_>>(),
+        vec![1, 1, 1, 1]
+    );
+    restart_checkpoint("before_commit").await;
+    assert_eq!(tx.commit().await, Err(Failure::UnknownCommit));
+    let mut recovered = session("recovered-uncommitted").await;
+    assert_eq!(effects(&mut recovered, 15101).await, vec![0, 0, 0, 0]);
+    let value = typed(15101, 15101, 15101, "uncommitted-restart");
+    let result = recovered.mutate(&value).await.unwrap();
+    assert_eq!(recovered.mutate(&value).await, Ok(result));
+    assert_eq!(effects(&mut recovered, 15101).await, vec![1, 1, 1, 1]);
+}
+
+#[tokio::test]
+async fn statement_and_parameter_budgets_are_enforced_before_execution() {
+    let mut sql = session("sql-budget").await;
+    let oversized: &'static str = Box::leak(" ".repeat(4097).into_boxed_str());
+    assert_eq!(sql.query(oversized, &[]).await.err(), Some(Failure::Budget));
+    let mut db = session("parameter-budget").await;
+    let value = 1i32;
+    let params = vec![&value as &(dyn tokio_postgres::types::ToSql + Sync); 33];
+    assert_eq!(
+        db.query("SELECT $1::int", &params).await.err(),
+        Some(Failure::Budget)
+    );
+    assert_eq!(
+        db.query("SELECT 1", &[]).await.err(),
+        Some(Failure::Unavailable)
+    );
+}
+
+#[tokio::test]
+async fn transaction_result_limits_prevent_false_commit_and_partial_state() {
+    let mut db = session("tx-read-budget").await;
+    let mut tx = db.begin().await.unwrap();
+    tx.execute(
+        "INSERT INTO driver_lab.records VALUES (70,'budget-rollback')",
+        &[],
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        tx.query("SELECT generate_series(1,129)", &[]).await.err(),
+        Some(Failure::Budget)
+    );
+    assert_eq!(tx.commit().await, Err(Failure::Aborted));
+    let mut observer = session("tx-budget-observer").await;
+    wait_gone(&mut observer, "tx-read-budget").await;
+    assert_eq!(count(&mut observer, 70).await, 0);
 }

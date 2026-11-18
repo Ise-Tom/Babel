@@ -13,6 +13,7 @@ LIVE_URL = f"{REPO}/blob/dashboard-live/README.md"
 LABELS = {
     "planned": "Planned",
     "in_progress": "In progress",
+    "ready_for_validation": "Ready for validation",
     "blocked": "Blocked",
     "accepted": "Accepted",
 }
@@ -190,16 +191,17 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
         "",
         "## Phase board",
         "",
-        "| Phase | Status | Accepted requirements | In progress | Blocked | Planned "
+        "| Phase | Status | Accepted requirements | Ready for validation "
+        "| In progress | Blocked | Planned "
         "| Related work records |",
-        "| --- | --- | --- | --- | --- | --- | --- |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- |",
     ]
     for phase in phases:
         number = phase["id"]
         count = sum(step["status"] == "accepted" for step in phase["steps"])
         activity = [
             sum(step["status"] == state for step in phase["steps"])
-            for state in ("in_progress", "blocked", "planned")
+            for state in ("ready_for_validation", "in_progress", "blocked", "planned")
         ]
         increments = sum(
             any(r.startswith(f"P{number:02}-") for r in item["requirements"]) for item in work
@@ -207,7 +209,7 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
         lines.append(
             f"| [{number:02} · {escaped(phase['title'])}](#phase-{number:02}) "
             f"| {LABELS[phase['status']]} | {count}/{len(phase['steps'])} "
-            f"| {activity[0]} | {activity[1]} | {activity[2]} | {increments} |"
+            f"| {activity[0]} | {activity[1]} | {activity[2]} | {activity[3]} | {increments} |"
         )
     lines.extend(open_pr_section(data))
     for phase in phases:
@@ -225,7 +227,7 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
         )
         counts = [
             f"{sum(s['status'] == state for s in phase['steps'])} {LABELS[state].lower()}"
-            for state in ("in_progress", "blocked", "planned", "accepted")
+            for state in ("ready_for_validation", "in_progress", "blocked", "planned", "accepted")
         ]
         lines.extend(["**Requirement status:** " + " · ".join(counts), ""])
         related = [
@@ -275,6 +277,17 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
                     [
                         f"**Acceptance review:** {escaped(proof['reviewer'])}, "
                         f"{escaped(proof['date'])}. {escaped(proof['evidence'])}",
+                        "",
+                    ]
+                )
+            if step.get("validation"):
+                packet = step["validation"]
+                lines.extend(
+                    [
+                        "**Validation packet:** "
+                        + escaped(packet["scope"])
+                        + " "
+                        + link("Review exit criteria and evidence", packet["packet"]["url"]),
                         "",
                     ]
                 )

@@ -798,3 +798,8 @@ dialog .button {
 .activity-counts { font-size: 13px; font-weight: 650; margin-bottom: 5px; }
 .phase-activity>p.muted { font-size: 11px; }
 .phase-activity>h2 { font-size: 16px; margin: 16px 0 8px; }
+.badge.ready_for_validation { background: #eee7f6; color: #654184; }
+.status-unit.ready_for_validation,.legend-item.ready_for_validation::before { background: #78509c; }
+@media(max-width:760px) {
+  .overview-page .list-heading { row-gap: 4px; margin-top: 12px; }
+}

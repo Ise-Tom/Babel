@@ -197,3 +197,23 @@ class DashboardModel(unittest.TestCase):
             "note": "Synthetic explicit execution fixture",
         }
         self.assertEqual(self.model()["phases"][5]["status"], "in_progress")
+
+    def test_validation_ready_requires_pinned_packet_and_does_not_invent_acceptance(self):
+        self.progress["requirements"]["P00-15"] = {
+            "status": "ready_for_validation",
+            "note": "Complete fixture exit; review pending",
+        }
+        with self.assertRaisesRegex(ValueError, "validation packet required"):
+            self.model()
+        self.progress["requirements"]["P00-15"]["validation"] = {
+            "scope": "Entire Phase 0 driver review; no product acceptance",
+            "source_revision": "b" * 40,
+            "packet": {"path": "docs/validation/p00-15.md", "label": "Exit criteria"},
+        }
+        data = self.model()
+        step = next(s for s in data["phases"][0]["steps"] if s["id"] == "P00-15")
+        self.assertEqual(step["status"], "ready_for_validation")
+        self.assertIsNone(step["acceptance"])
+        self.assertIn("/" + "b" * 40 + "/", step["validation"]["packet"]["url"])
+        self.assertEqual(sum(s["status"] == "accepted" for s in data["phases"][0]["steps"]), 2)
+        self.assertEqual(data["phases"][0]["status"], "in_progress")

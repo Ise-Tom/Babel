@@ -232,7 +232,10 @@ The [driver candidate](adr/0007-postgresql-driver-qualification.md) has a separa
 required native job that enables its database test target's `qualification`
 feature. Default workspace tests do not run that target. Its independent 90%
 coverage gate prevents unrelated protocol coverage masking missing driver tests;
-the protocol coverage report excludes this separately gated component. All-feature
+the protocol coverage report excludes this separately gated component. The driver
+harness now requires actual owned-database SIGKILL/restart checkpoints before and
+after commit, and includes reply-loss, dropped-future, bounds and durable retry
+cases. Missing crash checkpoints fail independently of the Rust exit code. All-feature
 Clippy compiles its tests, and the whole workspace remains in advisory/license/SBOM
 scope. The driver job retains actual normal-dependency notices, including reviewed
 Unicode-3.0 copyright/permission and non-promotion terms. No new driver binary is

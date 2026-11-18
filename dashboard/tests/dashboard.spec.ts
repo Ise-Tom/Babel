@@ -259,3 +259,21 @@ test('phase activity and recent work are visible separately from acceptance and 
   await phase(page, 5);
   await expect(page.getByRole('region', { name: 'Phase activity', exact: true }).locator('.work-card')).toHaveCount(0);
 });
+
+test('completed exit work can await validation without being accepted', async ({ page }) => {
+  const facts = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  const current = facts.phases[0]; const step = current?.steps.find(s => s.id === 'P00-15');
+  if (!current || !step) throw new Error('Missing storage gate');
+  step.status = 'ready_for_validation'; step.acceptance = null;
+  step.validation = { scope: 'Full driver exit review', packet: { path: 'docs/validation/p00-15.md', label: 'Exit packet', url: `https://github.com/Ise-Tom/Babel/blob/${facts.buildRevision}/docs/validation/p00-15.md` } };
+  await page.setContent(await htmlFor(facts));
+  await expect(page.getByTestId('phase-card-0').locator('.badge')).toHaveText('1 ready');
+  await expect(page.getByTestId('phase-card-0')).toContainText('2/17 accepted');
+  await phase(page, 0);
+  await page.getByLabel('Requirement status', { exact: true }).selectOption('ready_for_validation');
+  await expect(page.locator('.requirement')).toHaveCount(1);
+  const item = page.getByTestId('P00-15'); await item.locator(':scope > summary').click();
+  await expect(item).toContainText('EXIT CRITERIA COMPLETE');
+  await expect(item.getByRole('link', { name: 'Review exit criteria and evidence' })).toBeVisible();
+  await expect(item).not.toContainText('Accepted by');
+});

@@ -1,14 +1,14 @@
 # ADR 0007 — Rust PostgreSQL driver candidate qualification
 
-Date: 18 November 2026. Status: **implemented synthetic experiment; P00-15 and
-production driver/interface acceptance remain open**. PostgreSQL's backend-family
+Date: 18 November 2026. Status: **Phase 0 driver/transaction qualification complete; owner validation of
+P00-15 requested in the [exit packet](../validation/p00-15.md)**. PostgreSQL's backend-family
 selection remains owner-approved under [ADR 0003](0003-postgresql-directory-state.md).
 This increment extends the [SQL experiment](0004-synthetic-postgresql-state-experiment.md)
 with a real Rust client; it does not add native directory storage.
 
 ## Candidate and alternatives
 
-Evaluate **tokio-postgres 0.7.18** with only its `runtime` feature, and **Tokio
+Select **tokio-postgres 0.7.18** with only its `runtime` feature, and **Tokio
 1.54.1** with explicit runtime/time features. Tests additionally enable Tokio's
 macros/net and tempfile 3.27.0. Exact transitives/checksums are in Cargo.lock;
 no ORM, dynamic SQL generator or custom authentication cryptography is introduced.
@@ -25,7 +25,7 @@ without putting a synchronous driver on protocol threads. The synchronous
 boundary in an async service. SQLx offers a broader API and query tooling but
 adds abstraction/build/schema decisions. libpq bindings add a native library/FFI
 and packaging boundary. These are alternatives, not qualified production choices.
-No pool is selected. Every logical DC still owns independent local storage;
+The selected initial profile uses no connection pool. Pool introduction requires requalification. Every logical DC still owns independent local storage;
 database replication does not implement AD replication.
 
 ## Fixture ownership and authentication
@@ -60,8 +60,9 @@ resource limits and credential zeroization/custody need further qualification.
 
 ## Executed interface and failure cases
 
-The library is a qualification helper with fixed role/database and static SQL
-call sites, not a public administration or directory mutation interface. Real
+The library is a qualification helper with fixed role/database and a bounded typed mutation API, not a public
+administration or AD directory interface. Raw SQL and transaction entry points
+are compiled only with the explicit qualification feature. Real
 tests qualify parameter binding for quoted/Unicode text, null and binary values;
 client type errors and SQLSTATE failures have static redacted categories.
 
@@ -72,13 +73,19 @@ failure forces rollback and an `Aborted` result instead of treating PostgreSQL's
 successful response to a rolled-back `COMMIT` as an acknowledged mutation.
 Other unconfirmed commit errors conservatively report `UnknownCommit`, discard
 the session and never retry automatically. Deferred constraint failure and a
-terminated owned transaction both exercise that result. This is not an exact
-after-durable-commit wire-response-loss experiment or durable idempotency API.
+terminated owned transaction both exercise that result. A controlled Unix relay now withholds the actual server COMMIT response; an
+independent connection first verifies the committed object, journal, audit intent
+and receipt. Lost replies and dropped caller futures recover the same durable
+result without repeating the mutation. Concurrent identical requests serialize;
+changed payload and locally revoked actors are denied, including receipt replay.
 
 Connection establishment has a two-second asynchronous deadline. Helper queries
 and transaction steps have 600-ms deadlines; the default server statement and
-lock timeouts are 300/100 ms. An expired operation discards its connection rather
-than returning it for reuse. Tests exercise an unresponsive Unix peer, server
+lock timeouts are 300/100 ms. An expired or caller-dropped operation poisons and closes its connection,
+including BEGIN, mutation, rollback and COMMIT futures. There is no pool for an
+uncertain transaction to reenter. Streaming reads cap 128 rows, 32 columns and
+65,536 retained field bytes; statements/parameters cap at 4,096 bytes/32. Normal
+typed mutations have smaller fixed bounds. Tests exercise an unresponsive Unix peer, server
 statement/lock timeouts, explicit cancellation after an observed active-query
 barrier, and client/transaction deadlines when the server timeout is deliberately
 disabled in the disposable fixture. Effective durable settings and PostgreSQL
@@ -125,9 +132,12 @@ digest-verified. No new test binary is published as a product artifact.
 
 Review upstream/toolchain advisories on scheduled CI, proposed dependency updates,
 feature/crypto changes and target-platform support. Rerun these cases and rights
-inventory after upgrades. Keep the helper isolated; replacing a lab candidate
-does not migrate directory data. Choosing a production adapter still requires
-typed authorized operations, row/byte/query bounds, pool hygiene, ambiguous-commit
-recovery/idempotency, caller-dropped-future safety, key custody, process/host/disk/backup/upgrade evidence,
-capacity measurements and owner review. All 60 AD/client conformance scenarios
-remain unrun; no whole requirement, phase or capability acceptance is inferred.
+inventory after upgrades. The [P00-15 packet](../validation/p00-15.md) records the completed criterion table
+and selected local profile. Two mandatory Python-coordinated SIGKILL/restart
+checkpoints now prove driver recovery before commit and after a confirmed commit.
+The fixture schema is not an AD format. Native identity/schema/ACL integration,
+real directory journal/receipts, service provisioning and valuable credential/key
+custody remain P01-02/P01-03/P01-09/P01-11/P01-12/P01-14 implementation gates.
+Domain replication/backup/upgrade, physical host/disk failures and capacity remain
+P03/P04 qualification gates. These later obligations no longer obscure completion
+of the Phase 0 library/transaction review. All 60 AD/client scenarios remain unrun.

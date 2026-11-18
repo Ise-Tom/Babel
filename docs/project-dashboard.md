@@ -33,8 +33,8 @@ Cards can be opened anywhere, keyboard focus moves to the selected page, and
 mobile layouts use two columns plus the direct phase picker.
 
 Phase cards show acceptance and active requirement counts separately. Their
-colored strips show explicit requirement states (accepted/in progress/blocked/
-planned), not completion or effort percentages. Active phase pages expose the
+colored strips show explicit requirement states (accepted/ready for validation/
+in progress/blocked/planned), not completion or effort percentages. Active phase pages expose the
 latest three recorded increments above the requirement details. Shared preparation
 does not start planned phases. The header identifies the artifact's actual build;
 the footer labels the separately recorded CI evidence baseline. The GitHub report
@@ -287,3 +287,9 @@ Requirements are read from the canonical phase tables, whose composite obligatio
 have been split by independent acceptance evidence. There is no ten-item quota or
 hardcoded total in dashboard/export tests. Existing accepted scopes are preserved;
 refinement adds no automatic acceptance and starts no later phase.
+
+A requirement may enter **Ready for validation** only with completed exit evidence,
+a pinned validation packet and a recorded implementation/explanation. This is
+separate from work still in progress and from owner acceptance. The normal
+requirement filter can show that queue; a ready item does not accept a capability
+or its phase. The P00-15 packet is the first such complete Phase 0 submission.
