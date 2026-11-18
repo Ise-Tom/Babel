@@ -44,11 +44,68 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T14:29:29\+01:00.
+GitHub metadata checked: 2026-11-18T14:48:41\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#27 · Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>)
+
+**In review · Pending merge · CI: in\_progress** · Head 9ee1545
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    The live dashboard already contained PR #26 and W44, but Phase 0 looked unchanged: its only bar showed 2/17 accepted requirements while 9 active requirements and recent implementations were hidden in collapsed details. The header also showed an older evidence baseline rather than the actual published build.
+    
+    - Show explicit accepted/in-progress/blocked/planned status segments and active counts on phase cards. Keep related preparation separate; shared records never start future phases and counts are not effort percentages.
+    - Expose phase status totals and the three newest source-backed work records above collapsed requirements. Give the GitHub report the same visible counts/recent summaries.
+    - Identify the artifact's actual build in the header and label the separate recorded CI baseline in the footer. Record W45 and resolved development usability defect I34; update the verified main baseline to merged PR #26. Preserve all four owner acceptance proofs and all 60 unrun conformance scenarios.
+    
+    Validation: 32 desktop/mobile browser checks, including new activity/acceptance/build/recent-work regressions and automated WCAG 2.2 AA-tagged checks; six build/security tests; 157 repository tests at 99% branch-inclusive tooling coverage. All 18 cards still fit the tested desktop viewport; mobile overflow, strict types/lint, Bandit and workflow checks pass. Hosted CI must pass on this PR head before merge.
+    
+    This changes reporting, not native server behavior or acceptance state. No new dependencies, external requests, CSP exceptions or deployment permissions are introduced. Pages updates after merge and successful trusted deployment; the PR-aware GitHub report shows this proposal separately meanwhile.
+
+**Changed files:**
+
+- dashboard/capabilities.json
+- dashboard/progress.json
+- dashboard/src/main.ts
+- dashboard/src/style.css
+- dashboard/tests/dashboard.spec.ts
+- docs/project-dashboard.md
+- scripts/render\_dashboard.py
+- tests/test\_dashboard\_delivery.py
+
+#### Proposed W45 · Make phase activity and recent work visible separately from acceptance
+
+**Requirements:** P00-08, P00-10
+
+**How it was done:** Reproduced the live main dashboard after PR \#26: current build f42815d included W44 and 35 Phase 0 records, but its bar showed only 2/17 accepted and its header showed the older baseline. Replaced the acceptance-only bar with labeled explicit-status segments; cards show active/planned counts and related records. Active phase pages show status totals and the newest three source-backed work records above collapsed requirements. The header now uses the artifact build revision and the footer labels the separate recorded CI baseline. The GitHub report shows the same counts and recent records outside disclosures.
+
+**Recorded validation:** All 32 desktop/mobile browser checks and six build/security tests pass. New regressions verify activity and acceptance remain separate, current build labeling, actual recent work/source evidence, and no promotion of future planned phases. All 18 phase cards still fit the tested desktop viewport; mobile overflow and automated WCAG 2.2 AA-tagged checks pass. All 157 repository tests pass at 99% branch-inclusive tooling coverage; the GitHub report has a regression for visible status/recent evidence without phase acceptance. Strict types/lint, Bandit and workflow analysis pass.
+
+**Limits and remaining work:** This is dashboard visibility and traceability work, not new native AD behavior or acceptance. Requirement counts and status segments are not effort/completion percentages. Work linked to a planned phase remains preparation. Pages receives the UI change after merge and successful trusted deployment; proposed work is visible separately in the GitHub report. Four accepted scopes remain unchanged and all 60 conformance scenarios stay unrun.
+
+**PR-head evidence:** [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/dashboard/src/main.ts>) · [dashboard/src/style.css](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/dashboard/src/style.css>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/dashboard/tests/dashboard.spec.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/scripts/render_dashboard.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/tests/test_dashboard_delivery.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/docs/project-dashboard.md>)
+
+#### Proposed problem update: I34 · Acceptance-only meter hid Phase 0 activity and recent implementations
+
+**Proposed status:** resolved
+
+The live site was correctly deployed after PR \#26 and contained the Rust-driver increment. Phase 0 nevertheless looked unchanged because its bar represented only accepted requirements \(2/17\); 9 active requirements and recent work were buried in collapsed details. The header also displayed an older evidence baseline instead of the artifact build revision.
+
+**Resolution:** Added explicit status counts/segments alongside acceptance, visible recent work and source-backed explanations on active phase pages, corresponding GitHub report summaries, and actual build identification. Browser/report regressions preserve acceptance totals and ensure shared preparation does not start future phases.
+
+**Next action:** Maintain explicit requirement states and work evidence in each development PR. Keep activity, acceptance, related preparation and recorded CI baseline distinct; do not turn counts into effort percentages or infer acceptance from CI.
+
+**Provenance:** Observed in the actual published f42815d dashboard data and reproduced against main. This is a development usability defect; CI and Pages publication had succeeded.
+
+[dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/dashboard/tests/dashboard.spec.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/scripts/render_dashboard.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/tests/test_dashboard_delivery.py>)
+
+
+</details>
 
 
 ## Phase 00
@@ -156,6 +213,8 @@ Current version-1 compatibility/evidence schema and traceability tooling accepte
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-18. The project owner explicitly answered “Accept this schema/tooling scope” in this conversation on 18 November 2026. Scope: current version-1 schema and traceability implementation in PR \#22, not client compatibility or phase acceptance. Implementation/tests pinned to b98dac7d33b20bef1ab6ccfb4a295f40d2330500: https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/scripts/check\_conformance.py ; https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/tests/test\_conformance.py . 118 local repository tests passed; all 60 conformance scenarios are explicitly unrun.
 
+**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W10: Required native and repository CI gates; W11: Complete phase specifications and traceability; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W18: Open-PR-aware private progress reporting; W33: Enforce versioned conformance evidence integrity in CI; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence. See the [implementation journal](#implementation-journal).
 
 ### P00-09
@@ -181,6 +240,8 @@ Solo development governance and worked schema/key/restore/functional-level/stora
 **Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/f42815d5a3132f56dbdf4dafde220b8b0939d7f6/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/f42815d5a3132f56dbdf4dafde220b8b0939d7f6/docs/requirements.md>)
 
 **Acceptance evidence required:** Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact.
+
+**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI; W33: Enforce versioned conformance evidence integrity in CI; W34: Specify stable state and worked replication/recovery invariants; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence. See the [implementation journal](#implementation-journal).
 
