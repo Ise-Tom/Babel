@@ -44,9 +44,9 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T09:54:19\+01:00.
+GitHub metadata checked: 2026-11-18T09:56:40\+01:00.
 
-**Current main CI: in\_progress.** A failed build is shown here; it does not qualify a public deployment or product release.
+**Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 No open pull requests against main were observed.
 
