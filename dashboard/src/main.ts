@@ -23,7 +23,7 @@ const names: Record<Status, string> = { planned: 'Planned', in_progress: 'In pro
 function badge(status: Status | 'implemented' | 'open' | 'resolved', label?: string): HTMLElement {
   return el('span', `badge ${status}`, label ?? (Object.hasOwn(names, status) ? names[status as Status] : status === 'implemented' ? 'Implemented increment' : status === 'resolved' ? 'Resolved' : 'Open'));
 }
-const capabilityNames: Record<CapabilityStatus, string> = { planned: 'Planned', prototype: 'Prototype', partial: 'Partial implementation', implemented: 'Implemented (unqualified)' };
+const capabilityNames: Record<CapabilityStatus, string> = { planned: 'Planned', prototype: 'Prototype', partial: 'Partial implementation', implemented: 'Implemented' };
 const categoryNames = { product: 'Product capability', runtime_lab: 'Runtime lab', experiment: 'Qualification experiment', engineering: 'Engineering tooling' };
 interface State { view: 'overview' | 'phase' | 'log' | 'capabilities'; phase: number | null; q: string; status: Status | 'all'; step: string | null; capability: string | null; capabilityStatus: CapabilityStatus | 'all' }
 function readState(): State {
