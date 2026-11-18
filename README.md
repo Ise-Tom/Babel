@@ -44,7 +44,7 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T14:21:35\+01:00.
+GitHub metadata checked: 2026-11-18T14:22:55\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -64,9 +64,10 @@ GitHub metadata checked: 2026-11-18T14:21:35\+01:00.
     - Add a required native driver job with an independent 90% library line-coverage gate and complete case accounting. Keep all-feature Clippy, advisory/license/source audits and the existing protocol/database/dashboard gates. Retain actual selected dependency/Rust-library notices, including reviewed Unicode-3.0 obligations; no findings are ignored and no new driver binary is published.
     - Document candidate alternatives, the exact dependency/features/authentication boundary and remaining production obligations in ADR 0007. Record W44, resolved helper finding I33 and the remaining I05/I26 gaps. Update the capability tracker and verified main snapshot to merged PR #25. Four accepted scopes, only Phases 0/1 active, and all 60 unrun AD conformance scenarios are preserved.
     
-    Local validation: all 16 Rust/database cases pass; driver line coverage is 92.12% (152/165). All 156 repository tests pass at 99% branch-inclusive tooling coverage; all 25 SQL/controller tests pass at 94% controller coverage. The 30 desktop/mobile browser checks, six dashboard build/security tests, strict types/lint, all-feature Clippy, Bandit, workflow analysis and both locked dependency audits pass. Actual notice retention verifies 62 normal-closure packages and 144 files. Hosted CI must pass on this PR head before merge.
+    Local validation: all 16 Rust/database cases pass; driver line coverage is 92.12% (152/165). All 156 repository tests pass at 99% branch-inclusive tooling coverage; all 25 SQL/controller tests pass at 94% controller coverage. The 30 desktop/mobile browser checks, six dashboard build/security tests, strict types/lint, all-feature Clippy, Bandit, workflow analysis and both locked dependency audits pass. Actual notice retention verifies 62 normal-closure packages and 144 files. Hosted [CI run 44311663164](https://github.com/Ise-Tom/Babel/actions/runs/44311663164) passed all 14 jobs on `7a452cb2758c4aeb223d5678c7bcc5691c4120f5`. Downloaded driver evidence independently confirms 16 passed, zero failed/unrun, PostgreSQL 18.7, 92.12% library line coverage, verified isolation/cleanup and all 144 retained notice files for 62 selected packages. The PR is mergeable with the required gate green.
     
     This remains an isolated candidate experiment, separate from LDAP and native directory storage. Production driver selection, typed authorized operations, row/byte/pool limits, enforced production authentication policy, credential custody, exact after-durable-commit response loss, durable idempotency, caller-dropped-future safety, host/disk/backup/upgrade and capacity qualification remain open. No directory/schema/credential migration is introduced; reverting removes the helper and optional fixture extension. The GitHub dashboard labels PR work pending merge; Pages updates after merge and trusted deployment.
+    
 
 **Changed files:**
 
