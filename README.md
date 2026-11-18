@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T14:17:43\+01:00.
+GitHub metadata checked: 2026-11-18T14:21:13\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#26 · Phase 0: qualify the Rust PostgreSQL driver and transaction failure semantics](<https://github.com/Ise-Tom/Babel/pull/26>)
 
-**In review · Pending merge · CI: in\_progress** · Head 7a452cb
+**In review · Pending merge · CI: success** · Head 7a452cb
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
