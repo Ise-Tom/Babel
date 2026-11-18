@@ -93,48 +93,48 @@
         "draft": false
       }
     ],
-    "note": "Verified published main snapshot: PR #20 is merged, all 12 main CI jobs and Pages deployment 44183656847 succeeded. Main protection, private reporting and Pages restrictions are API-verified; Actions defaults are owner-confirmed. New PostgreSQL/release-preflight work is proposed in the development PR, separately from main totals; hosted checks report the current PR head."
+    "note": "Verified published main snapshot: PR #21 is merged and all 13 main CI jobs passed for 58c3668. The loopback LDAP lab and synthetic PostgreSQL experiment remain limited prototypes. New Phase 0 contract/evidence work is proposed separately from main acceptance totals; no phase is accepted."
   },
   "requirements": {
     "P00-01": {
       "status": "in_progress",
-      "note": "The scope exists, but exact client builds and the approved operation matrix are not complete."
+      "note": "Owner selected the 2016 initial domain/forest baseline with explicit non-Windows clients. The versioned matrix has 30 operation families across Windows/Linux/macOS; exact builds/spec revisions and detailed wire/control/error cases remain unqualified."
     },
     "P00-02": {
       "status": "in_progress",
-      "note": "Design invariants are documented; the identity/ACL model is not implemented or accepted."
+      "note": "ADR 0005 specifies stable identity, authorization order and worked rename/collision/revocation/group cases. Native identity/ACL behavior and specification/reference review remain unqualified."
     },
     "P00-03": {
       "status": "in_progress",
-      "note": "Replication and restore contracts are designed; metadata algorithms and failure evidence remain open."
+      "note": "ADR 0005 works through attribute/link conflicts, partitions, cursor commits, tombstones, RID authority and restore quarantine. Exact AD algorithms/reference outcomes and native replication remain unimplemented."
     },
     "P00-04": {
       "status": "in_progress",
-      "note": "Rust is accepted only for the bounded lab subset; broader crypto/store libraries remain under review."
+      "note": "The bounded Rust lab is qualified within its existing scope. A dependency qualification register now separates that evidence from unselected/unqualified production TLS, Kerberos/PAC, parser/transport and Rust storage dependencies."
     },
     "P00-05": {
       "status": "blocked",
-      "note": "No licensed isolated Windows reference lab is recorded."
+      "note": "The isolated Windows lab definition exists; licensed Windows/Mac hosts and exact images are missing. Linux/macOS client qualification and two clean deployments have not run."
     },
     "P00-06": {
       "status": "in_progress",
-      "note": "Owner selected Apache-2.0 and DCO 1.1; files and metadata are applied in this PR. Third-party/specification/reference-fixture obligations still require review, so the full requirement is not accepted."
+      "note": "Apache-2.0 and DCO are selected and merged. Specification revision/use rights, reference fixtures and future production dependency distribution obligations remain explicitly pending."
     },
     "P00-07": {
       "status": "in_progress",
-      "note": "Threat model exists; named contacts and the complete operating security process are not established."
+      "note": "Ise-Tom is named accountable development owner for Tier 0 boundaries and threat evidence. Security-intake/incident exercises, backup response coverage and independent production assessment are not qualified."
     },
     "P00-08": {
       "status": "in_progress",
-      "note": "Design traceability tooling is implemented; full compatibility/evidence acceptance is not complete."
+      "note": "CI validates a versioned compatibility/evidence inventory with digest binding, honest outcomes, exact executed-run metadata and artifact integrity. All 60 declared conformance scenarios are unrun; the readiness check intentionally fails. No acceptance is inferred."
     },
     "P00-09": {
       "status": "in_progress",
-      "note": "Provisional workloads are specified; no production benchmark has ratified them."
+      "note": "A concrete synthetic dataset, mixed open-loop traffic, cold/warm/fault/soak profiles and measurement/cost method are proposed. No capacity run, procurement or production SLO ratification is claimed."
     },
     "P00-10": {
       "status": "in_progress",
-      "note": "Delivery gates and source packaging exist; real product upgrade/recovery/governance acceptance remains."
+      "note": "Solo development governance and worked schema/key/restore/functional-level/storage/GPO transitions are documented. Runtime recovery exercises and explicit requirement/phase review remain outstanding."
     },
     "P01-01": {
       "status": "accepted",
@@ -147,11 +147,11 @@
     },
     "P01-03": {
       "status": "in_progress",
-      "note": "Owner selected PostgreSQL and the local state/journal contract is proposed in ADR 0003. No durable store or credential writes are implemented; version/driver, schema, crash, backup and key-custody qualification remain."
+      "note": "The owner-selected PostgreSQL backend and local transaction/journal contract are merged. Twenty-two synthetic real-database transaction/process-crash tests pass; the production Rust adapter, identity/ACL model, key custody, host/disk/backup and AD replication qualification remain open."
     },
     "P01-04": {
       "status": "in_progress",
-      "note": "Read-only RootDSE discovery exists. The development PR extends presence/objectClass equality and boolean filters with strict budgets and Undefined semantics. DNS, real directory queries and Windows discovery evidence remain open."
+      "note": "Loopback read-only RootDSE discovery and bounded presence/objectClass equality/boolean filters are implemented and tested. DNS, real directory queries and Windows discovery evidence remain unqualified."
     },
     "P01-05": {
       "status": "blocked",
@@ -1281,6 +1281,200 @@
         }
       ],
       "problems": []
+    },
+    {
+      "id": "W32",
+      "title": "Inventory the initial 2016 AD profile and Windows/Linux/macOS clients",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-01",
+        "P00-05",
+        "P00-06"
+      ],
+      "how": "Added a versioned matrix of 30 operation families, positive/negative expectations, requirement/protocol references, profile/comparison targets and owner. Preserved Linux hosting and made Ubuntu/Debian/macOS identity clients explicit; Windows GPO and later cross-platform agents remain separate.",
+      "verification": "Matrix/evidence structure validation passes for 60 explicitly unrun scenarios. Scope regression tests retain the owner-selected 2016 level and Windows/Linux/macOS profiles; canonical AD-01–AD-10, PLAT-01–PLAT-03, IAM/OPS/UX references are covered.",
+      "limitations": "Exact patched builds, wire-operation/control/error decomposition, specification revisions and rights remain pending. No real-client compatibility or full requirement acceptance is claimed.",
+      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
+      "sources": [
+        {
+          "path": "lab/compatibility.json",
+          "label": "compatibility.json"
+        },
+        {
+          "path": "docs/phase-00-progress.md",
+          "label": "phase-00-progress.md"
+        },
+        {
+          "path": "docs/windows-reference-lab.md",
+          "label": "windows-reference-lab.md"
+        }
+      ],
+      "problems": [
+        "I04",
+        "I25",
+        "I28"
+      ]
+    },
+    {
+      "id": "W33",
+      "title": "Enforce versioned conformance evidence integrity in CI",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-01",
+        "P00-08",
+        "P00-10"
+      ],
+      "how": "Implemented a stdlib validator with exact matrix digest binding, unique complete positive/negative cases, known references and distinct passed/failed/skipped/unsupported/unrun outcomes. Executed passes need exact profiles/builds/source/tool/time metadata, retained file hashes and every declared comparison. A separate readiness mode blocks unqualified or unaccepted evidence.",
+      "verification": "118 repository tests pass at 99% combined tooling coverage; all statements/branches in the new validator are covered. Tests reject stale digests, fabricated/partial passes, scope loss, wrong results, changed assertions, unsafe artifact paths/symlinks, missing review and skipped/unrun qualification. Current readiness fails as expected; no Windows job was fabricated.",
+      "limitations": "Schema validation cannot authenticate evidence, prove redaction, validate assertion semantics or replace trusted execution/human review. All current 60 product scenarios remain unrun; temporary synthetic unit fixtures are not product evidence.",
+      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
+      "sources": [
+        {
+          "path": "scripts/check_conformance.py",
+          "label": "check_conformance.py"
+        },
+        {
+          "path": "tests/test_conformance.py",
+          "label": "test_conformance.py"
+        },
+        {
+          "path": "lab/conformance-evidence.json",
+          "label": "conformance-evidence.json"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "label": "ci.yml"
+        }
+      ],
+      "problems": [
+        "I04",
+        "I25",
+        "I28"
+      ]
+    },
+    {
+      "id": "W34",
+      "title": "Specify stable state and worked replication/recovery invariants",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-02",
+        "P00-03",
+        "P00-10"
+      ],
+      "how": "ADR 0005 defines immutable identities, schema matching boundaries, ordered access checks, local authorization/write serialization and durable acknowledgement. Worked cases cover rename/collision/revocation/groups/idempotency, GPO partial publication, attribute/link conflicts, cursor crashes, stale restore, tombstones and RID authority.",
+      "verification": "Canonical traceability/document links validate. The ADR identifies unresolved exact MS-ADTS/MS-DRSR comparison/encoding/restore rules rather than presenting a custom replication algorithm as qualified.",
+      "limitations": "No native identity/ACL/replication implementation or Windows reference model evidence is introduced. The existing local SQL experiment does not establish AD metadata, replication or credential durability.",
+      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
+      "sources": [
+        {
+          "path": "docs/adr/0005-directory-and-replication-invariants.md",
+          "label": "0005-directory-and-replication-invariants.md"
+        },
+        {
+          "path": "docs/adr/0003-postgresql-directory-state.md",
+          "label": "0003-postgresql-directory-state.md"
+        }
+      ],
+      "problems": [
+        "I05",
+        "I28"
+      ]
+    },
+    {
+      "id": "W35",
+      "title": "Map security ownership and dependency/rights qualification gaps",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-04",
+        "P00-06",
+        "P00-07"
+      ],
+      "how": "Named Ise-Tom as the current accountable development owner for Tier 0 and future module boundaries, mapped threats to required misuse evidence, and documented a private synthetic intake/incident exercise procedure. Separated qualified lab inputs from unqualified production TLS/Kerberos/storage/transports and versioned specification-rights reviews.",
+      "verification": "Threat links and canonical documentation checks pass. Existing project license/DCO and scoped dependency jobs remain intact; no invented contact, private report submission, legal clearance or production library selection is recorded.",
+      "limitations": "Backup response coverage, intake/incident exercises and independent production assessment remain open. Solo diff/CI review does not provide independent security review or separation of duty.",
+      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
+      "sources": [
+        {
+          "path": "docs/phase-00-security-and-dependencies.md",
+          "label": "phase-00-security-and-dependencies.md"
+        },
+        {
+          "path": "docs/threat-model.md",
+          "label": "threat-model.md"
+        },
+        {
+          "path": "docs/decisions.md",
+          "label": "decisions.md"
+        }
+      ],
+      "problems": [
+        "I03",
+        "I26",
+        "I27",
+        "I28"
+      ]
+    },
+    {
+      "id": "W36",
+      "title": "Define a reproducible target-scale mixed workload and fault method",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-09"
+      ],
+      "how": "Specified seeded synthetic 10k-user/10k-computer/2k-group distributions, six-DC/three-site topology, mixed successful/denied authentication/read/write traffic, open-loop overload accounting, cold/warm/burst/soak phases, WAN/DC/site/clock/storage/key/audit faults, per-site histograms and hardware/cost manifests.",
+      "verification": "Cross-checked rates, topology, network/failure and provisional SLO values against requirements.md; documentation integrity passes. No benchmark output or infrastructure cost was invented.",
+      "limitations": "The generator/load runner and actual hosts are not implemented or allocated; workload distributions need review and measured SLO ratification. SQL microbenchmarks or simulated login cannot replace native protocol/client load.",
+      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
+      "sources": [
+        {
+          "path": "docs/phase-00-workload.md",
+          "label": "phase-00-workload.md"
+        },
+        {
+          "path": "docs/requirements.md",
+          "label": "requirements.md"
+        }
+      ],
+      "problems": [
+        "I04"
+      ]
+    },
+    {
+      "id": "W37",
+      "title": "Make Phase 0 recovery, scope and acceptance governance concrete",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-08",
+        "P00-10"
+      ],
+      "how": "Documented owner-reviewed scope changes, evidence invalidation, expiring exact-scope exceptions and worked interrupted schema/key/restore/functional-level/storage/GPO transitions. Kept sole-maintainer PR/CI workflow while retaining independent production qualification and explicit acceptance.",
+      "verification": "Design, documentation and dashboard validation pass. No scope exception can remove the first-production AD/IAM/OPS/UX or baseline security contract. The problem list now excludes ten GitHub setup records while retaining stable development problem IDs and source history.",
+      "limitations": "These are reviewable transition contracts; no runtime migration, clean-domain restore or whole Phase 0 acceptance is demonstrated. GitHub setup history remains in operational documentation/Git history rather than the problem list.",
+      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
+      "sources": [
+        {
+          "path": "docs/phase-00-governance.md",
+          "label": "phase-00-governance.md"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        },
+        {
+          "path": "docs/phase-00-progress.md",
+          "label": "phase-00-progress.md"
+        }
+      ],
+      "problems": [
+        "I05",
+        "I25"
+      ]
     }
   ],
   "problems": [
@@ -1348,7 +1542,7 @@
     },
     {
       "id": "I04",
-      "title": "Windows lab definition prepared; host and real-client evidence are missing",
+      "title": "Licensed Windows/Mac lab hosts and real cross-platform client evidence are missing",
       "status": "open",
       "kind": "infrastructure",
       "phases": [
@@ -1361,9 +1555,9 @@
         "P01-06",
         "P02-10"
       ],
-      "detail": "The owner has no lab host and explicitly requested a definition only. A two-network/six-machine profile and fail-closed configuration validator are prepared. No images, licenses, VMs or Windows join/login/GPO results have been supplied.",
+      "detail": "The existing six-VM isolated Windows reference definition is prepared but no host/images have been provisioned. The initial scope now also includes Linux SSSD/MIT Kerberos and macOS Apple Silicon/Intel; Mac hardware/image rights and exact client/package builds are not allocated or qualified.",
       "resolution": "",
-      "next_action": "Select a host/provider, approved exact images and rights; implement reviewed provisioning/teardown and complete two fresh lab runs before Windows conformance acceptance.",
+      "next_action": "Select licensed isolated test infrastructure and exact image/package manifests; extend provisioning for Linux/macOS clients, then perform two clean deployment/discovery/cleanup runs with actual login/password/SSO evidence. No purchase or automatic VM/image download is authorized.",
       "sources": [
         {
           "path": "lab/windows-reference.toml",
@@ -1388,10 +1582,14 @@
         {
           "path": "scripts/check_ci_scope.py",
           "label": "check_ci_scope.py"
+        },
+        {
+          "path": "docs/phase-00-progress.md",
+          "label": "Cross-platform Phase 0 scope"
         }
       ],
       "provenance": "Explicitly outstanding; no Windows test is marked passed.",
-      "source_revision": "b58df33f10f80688bfeaf55e44d08d52156e7608"
+      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500"
     },
     {
       "id": "I05",
@@ -1813,8 +2011,128 @@
         }
       ],
       "provenance": "Observed local real-container failure and subsequent successful 21-test integration run; not a Windows or production failure claim."
+    },
+    {
+      "id": "I25",
+      "title": "Exact compatibility builds and detailed wire cases remain unqualified",
+      "status": "open",
+      "kind": "development-qualification",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-01",
+        "P00-05",
+        "P00-08"
+      ],
+      "detail": "The initial profile and 30 operation families are explicit, but exact Windows/Linux/macOS image/package builds and detailed control/opnum/error fixtures are not approved. Every one of the 60 initial product conformance scenarios is unrun.",
+      "resolution": "",
+      "next_action": "Pin exact licensed images/packages, decompose operation families into executable reference/negative cases and retain reviewed evidence per client/target; keep unknown or unsupported behavior visible.",
+      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
+      "sources": [
+        {
+          "path": "lab/compatibility.json",
+          "label": "compatibility.json"
+        },
+        {
+          "path": "lab/conformance-evidence.json",
+          "label": "conformance-evidence.json"
+        },
+        {
+          "path": "docs/phase-00-progress.md",
+          "label": "phase-00-progress.md"
+        }
+      ],
+      "provenance": "Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting."
+    },
+    {
+      "id": "I26",
+      "title": "Production TLS/Kerberos/storage/transport libraries need qualification",
+      "status": "open",
+      "kind": "development-qualification",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-04"
+      ],
+      "detail": "Rust is qualified for the bounded LDAP lab and PostgreSQL for a synthetic local experiment. Production TLS/provider, Kerberos/PAC, Rust store driver and DNS/SMB/RPC choices and their maintenance/license/FFI/security behavior are not qualified.",
+      "resolution": "",
+      "next_action": "Review alternatives with exact versions/features/rights/advisories, then add targeted build/fuzz/negative/reference/failure evidence before admitting production use; do not implement custom cryptography.",
+      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
+      "sources": [
+        {
+          "path": "docs/phase-00-security-and-dependencies.md",
+          "label": "phase-00-security-and-dependencies.md"
+        },
+        {
+          "path": "docs/decisions.md",
+          "label": "decisions.md"
+        }
+      ],
+      "provenance": "Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting."
+    },
+    {
+      "id": "I27",
+      "title": "Security response coverage and Tier 0 incident exercises remain unqualified",
+      "status": "open",
+      "kind": "development-qualification",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-07"
+      ],
+      "detail": "The current owner and threat boundaries are explicit, but no backup response contact, private synthetic intake exercise or incident/recovery drill is evidenced. Solo development review cannot establish production response coverage.",
+      "resolution": "",
+      "next_action": "Assign an actual backup response contact and exercise owner-authorized private synthetic intake and containment/recovery procedures; retain only redacted exercise metadata. No messages or private reports were sent by this work.",
+      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
+      "sources": [
+        {
+          "path": "docs/phase-00-security-and-dependencies.md",
+          "label": "phase-00-security-and-dependencies.md"
+        },
+        {
+          "path": "SECURITY.md",
+          "label": "SECURITY.md"
+        }
+      ],
+      "provenance": "Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting."
+    },
+    {
+      "id": "I28",
+      "title": "Specification revisions, interpretation and use rights need review",
+      "status": "open",
+      "kind": "development-qualification",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-01",
+        "P00-03",
+        "P00-06"
+      ],
+      "detail": "The matrix references public protocol documents without copying their content, but revision pins and use/fixture distribution reviews remain pending. Exact conflict/link/restore/RID semantics still require reference qualification.",
+      "resolution": "",
+      "next_action": "Pin document revisions/sections, record the actual applicable rights review and minimize synthetic reference fixtures; review the worked state cases before freezing formats or AD algorithms.",
+      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
+      "sources": [
+        {
+          "path": "lab/compatibility.json",
+          "label": "compatibility.json"
+        },
+        {
+          "path": "docs/adr/0005-directory-and-replication-invariants.md",
+          "label": "0005-directory-and-replication-invariants.md"
+        },
+        {
+          "path": "docs/phase-00-security-and-dependencies.md",
+          "label": "phase-00-security-and-dependencies.md"
+        }
+      ],
+      "provenance": "Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting."
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "Phase 0: build the compatibility/evidence contract and explicit design qualification plan. Problems track development work; GitHub hosting, permissions, billing and approval setup are documented outside this list."
+  "focus_summary": "Phase 0 now has a Windows/Linux/macOS compatibility inventory, executable evidence-integrity checks and worked state/security/workload/recovery contracts. All 60 initial conformance scenarios remain unrun; exact builds, licensed labs, production dependencies and security-response qualification remain open. Problems track development activity only."
 }
