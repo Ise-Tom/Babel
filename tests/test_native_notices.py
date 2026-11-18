@@ -48,18 +48,28 @@ class NativeNotices(unittest.TestCase):
                 {"id": "crate-id", "deps": []},
             ]
         }
+        self.system = self.root / "system"
+        for name in notices.SYSTEM_TERMS.values():
+            target = self.system / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("Synthetic system runtime license/copyright fixture\n")
         self.output = self.root / "out"
 
     def assemble(self):
         return notices.assemble(
-            self.meta, self.project, self.docs, self.output, selected=("local",)
+            self.meta,
+            self.project,
+            self.docs,
+            self.output,
+            selected=("local",),
+            system_root=self.system,
         )
 
     def test_actual_nested_terms_project_and_rust_notices_are_retained(self):
         manifest = self.assemble()
         notices.verify(self.output)
         self.assertEqual(len(manifest["packages"]), 1)
-        self.assertEqual(len(manifest["files"]), 7)
+        self.assertEqual(len(manifest["files"]), 13)
         self.assertEqual(
             (self.output / "third-party/test-crate-1.0.0/third-party/NOTICE").read_bytes(),
             (self.package / "third-party/NOTICE").read_bytes(),
@@ -90,7 +100,12 @@ class NativeNotices(unittest.TestCase):
         (self.package / "LICENSE").symlink_to(self.project / "LICENSE")
         with self.assertRaises(ValueError):
             notices.assemble(
-                self.meta, self.project, self.docs, self.root / "other", selected=("local",)
+                self.meta,
+                self.project,
+                self.docs,
+                self.root / "other",
+                selected=("local",),
+                system_root=self.system,
             )
 
     def test_empty_or_oversized_terms_fail(self):
@@ -140,6 +155,7 @@ class NativeNotices(unittest.TestCase):
             "omit",
             "missing_project",
             "missing_rust",
+            "missing_system",
             "drop_package",
             "duplicate_package",
             "wrong_package",
@@ -157,6 +173,8 @@ class NativeNotices(unittest.TestCase):
                 manifest["files"] = [
                     r for r in manifest["files"] if not r["path"].startswith("rust/licenses/")
                 ]
+            elif edit == "missing_system":
+                manifest["files"] = [r for r in manifest["files"] if r["path"] != "system/LGPL-2.1"]
             elif edit == "drop_package":
                 manifest["packages"] = []
             elif edit == "duplicate_package":
@@ -217,3 +235,19 @@ class NativeNotices(unittest.TestCase):
         link.symlink_to(self.output, target_is_directory=True)
         with self.assertRaisesRegex(ValueError, "directory"):
             notices.verify(link)
+
+    def test_system_runtime_terms_are_required_and_cannot_escape_the_trusted_tree(self):
+        path = self.system / "common-licenses/LGPL-2.1"
+        path.unlink()
+        with self.assertRaises(ValueError):
+            self.assemble()
+        path.symlink_to(self.project / "LICENSE")
+        with self.assertRaises(ValueError):
+            notices.assemble(
+                self.meta,
+                self.project,
+                self.docs,
+                self.root / "escaped-system",
+                selected=("local",),
+                system_root=self.system,
+            )

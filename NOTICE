@@ -5,3 +5,10 @@ Licensed under the Apache License, Version 2.0.
 Third-party components retain their own copyrights and license terms.
 Dependency inventories are produced by CI; preserve upstream notices when
 redistributing third-party components.
+
+GNU/Linux native lab binaries dynamically use the GNU C Library and libgcc.
+Their applicable LGPL and GCC Runtime Library Exception terms are retained
+with the actual system package copyright texts in notices/system/.
+These system libraries are not themselves bundled. Compatible shared-library
+replacement and debugging of modified LGPL libraries are not restricted by Babel.
+The system package catalogs can describe components not linked into Babel.

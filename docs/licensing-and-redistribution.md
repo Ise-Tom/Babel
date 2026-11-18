@@ -26,7 +26,7 @@ claimed automated DCO or legal-certification check.
 | BSD-3-Clause | Retain copyright, conditions/disclaimer and non-endorsement restriction |
 | Unicode-3.0 | Retain applicable copyright, permission/disclaimer and holder-name restrictions for selected identifier/normalization/property data |
 | NCSA | Retain copyright/permission/disclaimer; selected libFuzzer is development tooling, not parser runtime code |
-| System shared libraries | ELF records libc/libgcc/loader names separately from Cargo crates. The current archive does not copy those OS libraries. Redistributing them in an installer/container requires their applicable LGPL/GCC-runtime-exception and OS-package terms; a Cargo SBOM cannot clear system libraries |
+| System shared libraries | ELF records libc/libgcc/loader names separately from Cargo crates. GNU/Linux artifacts retain actual glibc/libgcc package copyright catalogs and LGPL-2.1/LGPL-3/GPL-2/GPL-3 texts, alongside the Rust catalog’s GCC Runtime Library Exception. Shared libraries remain replaceable and are not copied into the archive. Broader installers/containers must review their actual OS contents |
 | Rust library bundle | Retain actual `COPYRIGHT-library.html` and its referenced license texts. The catalog can list components not linked into Babel; it is not a binary-link inventory |
 
 Exact package versions, selected SPDX expressions and actual nested notice files
@@ -42,13 +42,13 @@ rights/notice review; a current green advisory/license scan is time-bound eviden
 | Surface | Concrete handling |
 | --- | --- |
 | Source archive | `git archive` includes the project's full LICENSE/NOTICE/DCO and contributor terms, without vendoring Cargo/npm/pip caches. Downstream dependencies retain their upstream terms |
-| Internal native protocol archive | Actual project, selected normal/runtime dependency notices and Rust catalog/license texts accompany binaries; extraction verifies a manifest digest captured before archiving, all notice bytes, required files and package/file accounting |
-| Driver qualification artifact | Actual selected driver dependency notices and Rust catalog, with file hashes and strict complete-tree verification; this is not a published product library/package |
+| Internal native protocol archive | Actual project, selected normal/runtime dependency notices Rust catalog/license texts and actual GNU system-runtime terms accompany binaries; extraction verifies a manifest digest captured before archiving, all notice bytes, required files and package/file accounting |
+| Driver qualification artifact | Actual selected driver dependency notices, Rust catalog and GNU system-runtime terms, with file hashes and strict complete-tree verification; this is not a published product library/package |
 | Public/standalone dashboard | Full project license/notice and actual esbuild build-tool license text are safely retained inside an inert HTML template. Bundled inputs must remain project TypeScript sources; adding a runtime npm/vendor input fails until its redistribution policy is reviewed and implemented |
 | CI tooling | Hash/version-locked Python/npm/Rust tooling has dependency inventories/audits. Installing tools in ephemeral CI does not mean they are bundled in the dashboard/native artifact; distributing an installer/container must assess its own complete contents |
 
 The [notice collector/verifier](../scripts/collect_native_notices.py) now refuses
-missing required project/Rust files, omitted/unlisted files, symlinked roots/trees/
+missing required project/Rust/system-runtime files, omitted/unlisted files, symlinked roots/trees/
 manifests, missing/duplicate/unaccounted package inventories and mismatched bytes.
 The trusted pre-archive manifest digest also detects a rewritten manifest even
 when an attacker changes both a notice and its self-reported hash. That CI digest

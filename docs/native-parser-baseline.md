@@ -66,7 +66,9 @@ proof. Archive extraction reruns the real probes and verifies retained notices.
 
 Babel uses owner-selected Apache-2.0/DCO. Rust is distributed under its actual
 MIT/Apache and bundled component terms; the standard-library copyright catalog
-and referenced license texts travel with native lab artifacts. Development and
+and referenced license texts travel with native lab artifacts. The actual GNU
+system-runtime copyright/LGPL/GPL texts are also retained; those OS libraries
+remain dynamically replaceable and are not copied into the archive. Development and
 fuzz graph terms, including NCSA libFuzzer, remain in the audit. See the
 [redistribution register](licensing-and-redistribution.md); a compiler choice does
 not settle specification or reference-image rights.
