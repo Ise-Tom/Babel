@@ -232,3 +232,49 @@ test('capability filters, empty state, deep links and history work independently
   await expect(page.getByLabel('Implementation status', { exact: true })).toHaveValue('all');
   await expect(page.locator('.capability-card[open]')).toHaveCount(0);
 });
+
+test('phase activity and recent work are visible separately from acceptance and baseline', async ({ page }, info) => {
+  const facts = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  const current = facts.phases[0]; if (!current) throw new Error('Missing Phase 0');
+  const active = current.steps.filter(s => s.status === 'in_progress').length;
+  const accepted = current.steps.filter(s => s.status === 'accepted').length;
+  const related = facts.workItems.filter(w => w.requirements.some(id => current.steps.some(s => s.id === id)));
+  const card = page.getByTestId('phase-card-0');
+  await expect(card).toContainText(`${active} in progress`);
+  await expect(card).toContainText(`${accepted}/${current.steps.length} accepted`);
+  await expect(card.getByRole('img')).toHaveAttribute('aria-label', new RegExp(`${active} in progress`));
+  await expect(card.locator('.status-unit')).toHaveCount(current.steps.length);
+  await expect(page.locator('#snapshot-short')).toHaveText(`Dashboard build ${facts.buildRevision.slice(0, 7)}`);
+  await phase(page, 0);
+  const activity = page.getByRole('region', { name: 'Phase activity', exact: true });
+  await expect(activity).toContainText(`${active} in progress`);
+  await expect(activity).toContainText(`${current.steps.filter(s => s.status === 'blocked').length} blocked`);
+  await expect(activity.locator('.work-card')).toHaveCount(Math.min(3, related.length));
+  const latest = related.at(-1); if (!latest) throw new Error('Missing actual phase work');
+  await expect(activity.locator('.work-card').first()).toContainText(latest.id);
+  await activity.locator('.work-card').first().locator(':scope > summary').click();
+  await expect(activity).toContainText(latest.verification);
+  await page.screenshot({ path: resolve('..', `reports/phase-activity-${info.project.name}.png`), fullPage: false });
+  expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
+  await phase(page, 5);
+  await expect(page.getByRole('region', { name: 'Phase activity', exact: true }).locator('.work-card')).toHaveCount(0);
+});
+
+test('completed exit work can await validation without being accepted', async ({ page }) => {
+  const facts = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  const current = facts.phases[0]; const step = current?.steps.find(s => s.id === 'P00-15');
+  if (!current || !step) throw new Error('Missing storage gate');
+  step.status = 'ready_for_validation'; step.acceptance = null;
+  step.validation = { scope: 'Full driver exit review', packet: { path: 'docs/validation/p00-15.md', label: 'Exit packet', url: `https://github.com/Ise-Tom/Babel/blob/${facts.buildRevision}/docs/validation/p00-15.md` } };
+  await page.setContent(await htmlFor(facts));
+  await expect(page.getByTestId('phase-card-0').locator('.badge')).toHaveText('1 ready');
+  const accepted = current.steps.filter(s => s.status === 'accepted').length;
+  await expect(page.getByTestId('phase-card-0')).toContainText(`${accepted}/${current.steps.length} accepted`);
+  await phase(page, 0);
+  await page.getByLabel('Requirement status', { exact: true }).selectOption('ready_for_validation');
+  await expect(page.locator('.requirement')).toHaveCount(1);
+  const item = page.getByTestId('P00-15'); await item.locator(':scope > summary').click();
+  await expect(item).toContainText('EXIT CRITERIA COMPLETE');
+  await expect(item.getByRole('link', { name: 'Review exit criteria and evidence' })).toBeVisible();
+  await expect(item).not.toContainText('Accepted by');
+});

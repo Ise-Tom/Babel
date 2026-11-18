@@ -19,7 +19,7 @@ function link(label: string, url: string, className = ''): HTMLAnchorElement {
 }
 const board = JSON.parse(get('dashboard-data').textContent ?? '{}') as Board;
 const featureMap = new Map(board.features.map(feature => [feature.id, feature]));
-const names: Record<Status, string> = { planned: 'Planned', in_progress: 'In progress', blocked: 'Blocked', accepted: 'Accepted' };
+const names: Record<Status, string> = { planned: 'Planned', in_progress: 'In progress', blocked: 'Blocked', ready_for_validation: 'Ready for validation', accepted: 'Accepted' };
 function badge(status: Status | 'implemented' | 'open' | 'resolved', label?: string): HTMLElement {
   return el('span', `badge ${status}`, label ?? (Object.hasOwn(names, status) ? names[status as Status] : status === 'implemented' ? 'Implemented increment' : status === 'resolved' ? 'Resolved' : 'Open'));
 }
@@ -126,6 +126,18 @@ function stats(): HTMLElement {
   return result;
 }
 function reset(): HTMLElement { return button('Clear filters', 'button secondary', () => navigate({ q: '', status: 'all', capabilityStatus: 'all' }, false)); }
+function phaseWork(phase: Phase): Work[] { return board.workItems.filter(item => item.requirements.some(id => phase.steps.some(step => step.id === id))); }
+const statusOrder: Status[] = ['accepted', 'ready_for_validation', 'in_progress', 'blocked', 'planned'];
+function phaseCounts(phase: Phase): Record<Status, number> {
+  return { accepted: phase.steps.filter(s => s.status === 'accepted').length, ready_for_validation: phase.steps.filter(s => s.status === 'ready_for_validation').length, in_progress: phase.steps.filter(s => s.status === 'in_progress').length, blocked: phase.steps.filter(s => s.status === 'blocked').length, planned: phase.steps.filter(s => s.status === 'planned').length };
+}
+function phaseActivity(phase: Phase): string { const counts = phaseCounts(phase); return statusOrder.map(status => `${counts[status]} ${names[status].toLowerCase()}`).join(' · '); }
+function statusStrip(phase: Phase): HTMLElement {
+  const strip = el('div', 'status-strip'); const description = `Phase ${phase.id} requirement status: ${phaseActivity(phase)}`;
+  strip.setAttribute('role', 'img'); strip.setAttribute('aria-label', description); strip.title = description;
+  for (const status of statusOrder) for (const step of phase.steps.filter(s => s.status === status)) { const unit = el('span', `status-unit ${step.status}`); unit.setAttribute('aria-hidden', 'true'); strip.append(unit); }
+  return strip;
+}
 function empty(text: string): HTMLElement {
   const result = el('div', 'empty'); result.append(el('h3', '', 'No matches'), el('p', '', text), reset()); return result;
 }
@@ -136,18 +148,20 @@ function overview(): HTMLElement {
   focusText.append(el('div', 'eyebrow', 'CURRENT FOCUS'), el('h2', '', `${String(board.focusPhase).padStart(2, '0')} / ${focusPhase?.title ?? 'Development'}`), el('p', '', board.focusSummary));
   focus.append(focusText, button(`Review Phase ${String(board.focusPhase).padStart(2, '0')} →`, 'button primary', () => navigate({ view: 'phase', phase: board.focusPhase, q: '', status: 'all' }))); result.append(focus);
   const visible = board.phases.filter(phase => filtered(phase).length > 0);
-  const heading = el('div', 'list-heading'); heading.append(el('h2', '', 'The delivery plan'), el('span', 'muted', `${visible.length} of ${board.phases.length} phases · ${board.phases.reduce((sum, phase) => sum + phase.steps.length, 0)} requirements`)); result.append(heading);
+  const heading = el('div', 'list-heading'); heading.append(el('h2', '', 'The delivery plan'));
+  const legend = el('span', 'status-legend'); legend.append(el('span', '', 'Requirement status:'));
+  for (const status of statusOrder) legend.append(el('span', `legend-item ${status}`, names[status]));
+  heading.append(legend, el('span', 'muted', `${visible.length} of ${board.phases.length} phases · ${board.phases.reduce((sum, phase) => sum + phase.steps.length, 0)} requirements`)); result.append(heading);
   if (!visible.length) result.append(empty('No phase contains a requirement matching your search and status.'));
   const grid = el('div', 'phase-grid');
   for (const phase of visible) {
     const card = el('article', `phase-card ${phase.status}`); card.dataset.testid = `phase-card-${phase.id}`;
-    const top = el('div', 'card-heading'); top.append(el('span', 'phase-number', String(phase.id).padStart(2, '0')), badge(phase.status));
-    const accepted = phase.steps.filter(step => step.status === 'accepted').length;
-    const increments = board.workItems.filter(item => item.requirements.some(id => phase.steps.some(step => step.id === id))).length;
-    card.append(top, el('h3', '', phase.title), el('p', 'phase-caption', `${accepted}/${phase.steps.length} accepted · ${increments} related records`));
-    const progress = el('progress'); progress.max = phase.steps.length; progress.value = accepted; progress.setAttribute('aria-label', `Phase ${phase.id}: ${accepted} of ${phase.steps.length} requirements accepted`); card.append(progress);
+    const counts = phaseCounts(phase); const increments = phaseWork(phase).length;
+    const top = el('div', 'card-heading'); top.append(el('span', 'phase-number', String(phase.id).padStart(2, '0')), counts.ready_for_validation ? badge('ready_for_validation', `${counts.ready_for_validation} ready`) : badge(phase.status));
+    const activity = counts.in_progress ? `${counts.in_progress} in progress` : counts.blocked ? `${counts.blocked} blocked` : counts.planned ? `${counts.planned} planned` : '';
+    card.append(top, el('h3', '', phase.title), el('p', 'phase-caption', `${counts.accepted}/${phase.steps.length} accepted${activity ? ` · ${activity}` : ''}`), statusStrip(phase));
     if (state.q || state.status !== 'all') card.append(el('span', 'match-count', `${filtered(phase).length} matching requirements`));
-    const open = button('Review phase →', 'phase-open', () => navigate({ view: 'phase', phase: phase.id }));
+    const open = button(`${increments} related records →`, 'phase-open', () => navigate({ view: 'phase', phase: phase.id }));
     open.setAttribute('aria-label', `Open phase ${String(phase.id).padStart(2, '0')}: ${phase.title}`);
     card.append(open); grid.append(card);
   }
@@ -158,6 +172,7 @@ function requirement(step: Step): HTMLDetailsElement {
   const summary = el('summary'); summary.append(el('code', 'step-code', step.id), el('span', 'step-title', step.title), badge(step.status)); detail.append(summary);
   const body = el('div', 'requirement-body'); body.append(el('p', 'step-note', step.note), el('div', 'section-label', 'ASSOCIATED FEATURES'), chips(step.features), el('div', 'section-label', step.status === 'accepted' ? 'ACCEPTANCE EVIDENCE' : 'ACCEPTANCE STILL REQUIRED'), el('p', '', step.verification));
   if (step.acceptance) body.append(el('p', 'step-note', `Accepted by ${step.acceptance.reviewer} on ${step.acceptance.date}. ${step.acceptance.evidence}`));
+  if (step.validation) body.append(el('div', 'section-label', step.status === 'ready_for_validation' ? 'EXIT CRITERIA COMPLETE · OWNER VALIDATION PENDING' : 'VALIDATION PACKET'), el('p', '', step.validation.scope), link('Review exit criteria and evidence →', step.validation.packet.url, 'text-link'));
   const work = workFor(step);
   if (step.status === 'planned' && work.length) body.append(el('p', 'muted', 'Related preparation is recorded below. This requirement remains planned; links to shared work do not start a phase.'));
   body.append(el('h3', '', 'Related work & evidence'));
@@ -170,6 +185,11 @@ function requirement(step: Step): HTMLDetailsElement {
 function phaseView(phase: Phase): HTMLElement {
   const result = el('div'); result.append(header(`PHASE ${String(phase.id).padStart(2, '0')} / ${phase.id <= 5 ? 'CORE PLATFORM' : phase.id <= 10 ? 'SECURITY & OPERATIONS' : 'ENDPOINT SERVICES'}`, phase.title, 'Open a requirement to inspect its features, work and problems.'));
   const meta = el('div', 'phase-meta'); meta.append(badge(phase.status), el('span', 'muted', `${phase.steps.filter(s => s.status === 'accepted').length} of ${phase.steps.length} requirements accepted`), link('Canonical specification →', phase.url, 'text-link')); result.append(meta, notice());
+  const activity = el('section', 'phase-activity'); activity.setAttribute('aria-label', 'Phase activity');
+  const related = phaseWork(phase);
+  activity.append(el('p', 'activity-counts', phaseActivity(phase)), el('p', 'muted', `${related.filter(w => w.kind === 'implementation').length} code/tooling records · ${related.filter(w => w.kind === 'design').length} design records. Shared preparation does not start a phase.`));
+  if (phase.status !== 'planned' && related.length) { activity.append(el('h2', '', 'Recent recorded work')); for (const work of related.slice(-3).reverse()) activity.append(workCard(work)); }
+  result.append(activity);
   const architecture = el('details', 'design-notes'); const summary = el('summary', '', 'Design, dependencies & operational constraints'); architecture.append(summary);
   const notes = el('div', 'notes-body');
   for (const name of ['Scope and entry', 'Design and interfaces', 'Data and lifecycle', 'Security and failure handling', 'Capacity and operations', 'Dependencies and traceability']) {
@@ -290,9 +310,9 @@ get('download').addEventListener('click', () => {
   const url = URL.createObjectURL(new Blob([JSON.stringify(board, null, 2)], { type: 'application/json' }));
   const anchor = el('a'); anchor.href = url; anchor.download = `babel-progress-${board.snapshot.date}.json`; anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
-get('snapshot-short').textContent = `Snapshot ${board.snapshot.date} · ${board.snapshot.commit.slice(0, 7)}`;
+get('snapshot-short').textContent = `Dashboard build ${board.buildRevision.slice(0, 7)}`;
 const footer = get('footer');
-footer.append(el('span', '', `Evidence snapshot: ${board.snapshot.date} · ${board.snapshot.commit.slice(0, 7)}. `), link(`Evidence snapshot CI: ${board.snapshot.ci_result} · ${board.snapshot.checks_passed} passing checks →`, board.snapshot.ci_url), el('p', '', board.snapshot.note), el('small', '', `Design build ${board.buildRevision.slice(0, 7)} · Offline report; no live GitHub connection.`));
+footer.append(el('span', '', `Recorded CI baseline: ${board.snapshot.date} · ${board.snapshot.commit.slice(0, 7)}. `), link(`Baseline CI: ${board.snapshot.ci_result} · ${board.snapshot.checks_passed} passing checks →`, board.snapshot.ci_url), el('p', '', board.snapshot.note), el('small', '', `Dashboard build ${board.buildRevision.slice(0, 7)} · Offline report; no live GitHub connection.`));
 window.addEventListener('popstate', () => { state = readState(); render(); });
 window.addEventListener('hashchange', () => { state = readState(); render(); });
 render();

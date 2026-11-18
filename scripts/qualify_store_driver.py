@@ -5,8 +5,10 @@ import json
 import os
 import re
 import secrets
+import signal
 import subprocess  # nosec B404
 import time
+import tomllib
 from pathlib import Path
 from typing import Any
 
@@ -30,6 +32,19 @@ CASES = {
     "lost_connection_during_transaction_has_unknown_commit_outcome",
     "transaction_deadline_prevents_commit_and_session_reuse",
     "raw_driver_aborted_commit_requires_application_failure_tracking",
+    "typed_mutations_bind_identity_payload_and_reauthorize_receipt_replay",
+    "typed_input_limits_reject_before_any_database_request",
+    "bounded_results_discard_over_budget_sessions",
+    "caller_dropped_query_discards_its_session",
+    "caller_dropped_begin_and_rollback_discard_their_sessions",
+    "caller_dropped_mutation_rolls_back_and_prevents_connection_reuse",
+    "durable_commit_with_lost_reply_is_recovered_without_repeating_mutation",
+    "dropped_commit_future_after_durability_requires_receipt_recovery",
+    "concurrent_identical_requests_commit_once_and_conflicting_reuse_is_denied",
+    "driver_recovery_after_confirmed_commit",
+    "driver_recovery_before_commit",
+    "statement_and_parameter_budgets_are_enforced_before_execution",
+    "transaction_result_limits_prevent_false_commit_and_partial_state",
 }
 
 
@@ -112,6 +127,45 @@ def case_results(output: str) -> list[str]:
     return sorted(passed)
 
 
+RECOVERY_CHECKPOINTS = ("after_commit", "before_commit")
+
+
+def run_owned(
+    command: list[str], *, cwd: Path, env: dict[str, str], lab: PostgresLab, control: Path
+) -> subprocess.CompletedProcess[str]:
+    # Own the Cargo process group, including its Rust test subprocesses.
+    process = subprocess.Popen(  # nosec B603
+        command,
+        cwd=cwd,
+        env=env,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        start_new_session=True,
+    )
+    completed: set[str] = set()
+    deadline = time.monotonic() + 420
+    try:
+        while time.monotonic() < deadline:
+            for checkpoint in RECOVERY_CHECKPOINTS:
+                if checkpoint not in completed and (control / f"{checkpoint}.ready").is_file():
+                    lab.crash_restart()
+                    (control / f"{checkpoint}.done").write_text("restarted")
+                    completed.add(checkpoint)
+            try:
+                stdout, stderr = process.communicate(timeout=0.2)
+            except subprocess.TimeoutExpired:
+                continue
+            if process.returncode == 0 and completed != set(RECOVERY_CHECKPOINTS):
+                raise RuntimeError("Real recovery checkpoints incomplete")
+            return subprocess.CompletedProcess(command, process.returncode, stdout, stderr)
+        raise RuntimeError("Owned driver process exceeded its deadline")
+    finally:
+        if process.poll() is None:
+            os.killpg(process.pid, signal.SIGKILL)
+            process.communicate(timeout=10)
+
+
 def qualify(*, coverage: bool = False) -> dict[str, Any]:
     password = secrets.token_hex(32)
     with PostgresLab(share_socket=True) as lab:
@@ -122,8 +176,13 @@ def qualify(*, coverage: bool = False) -> dict[str, Any]:
         if socket is None:
             raise RuntimeError("Owned private socket missing")
         version = lab.query("SHOW server_version;")
+        control = socket.parent / "driver-control"
+        control.mkdir(mode=0o700)
         environment = dict(
-            os.environ, BABEL_DRIVER_SOCKET=str(socket), BABEL_DRIVER_PASSWORD=password
+            os.environ,
+            BABEL_DRIVER_SOCKET=str(socket),
+            BABEL_DRIVER_PASSWORD=password,
+            BABEL_DRIVER_CONTROL=str(control),
         )
         command = ["cargo", "llvm-cov" if coverage else "test"]
         command += [
@@ -147,16 +206,7 @@ def qualify(*, coverage: bool = False) -> dict[str, Any]:
             ]
         command += ["--", "--test-threads=1"]
         try:
-            # Fixed Cargo qualification argv; synthetic credentials are in its environment.
-            result = subprocess.run(  # nosec B603
-                command,
-                cwd=ROOT,
-                env=environment,
-                capture_output=True,
-                text=True,
-                timeout=420,
-                check=False,
-            )
+            result = run_owned(command, cwd=ROOT, env=environment, lab=lab, control=control)
         except (OSError, subprocess.TimeoutExpired):
             raise RuntimeError("Rust driver qualification unavailable or timed out") from None
         output = (result.stdout + result.stderr).replace(password, "[redacted]")
@@ -166,8 +216,13 @@ def qualify(*, coverage: bool = False) -> dict[str, Any]:
         passed = case_results(output)
     if socket.exists() or lab.docker(["inspect", container]).returncode == 0:
         raise RuntimeError("Owned driver fixture cleanup incomplete")
+    manifest = tomllib.loads((ROOT / "native/babel-store-driver-lab/Cargo.toml").read_text())
     return {
-        "scope": "Synthetic PostgreSQL driver candidate; no native directory/AD conformance",
+        "requirement": "P00-15",
+        "profile": "pg18-local-unix-scram-no-pool-v1",
+        "driver_version": manifest["dependencies"]["tokio-postgres"]["version"].removeprefix("="),
+        "runtime_version": manifest["dependencies"]["tokio"]["version"].removeprefix("="),
+        "scope": "Phase 0 driver/transaction qualification; no native directory/AD conformance",
         "source_revision": os.environ.get("GITHUB_SHA"),
         "image": IMAGE,
         "postgresql": version,
@@ -178,6 +233,7 @@ def qualify(*, coverage: bool = False) -> dict[str, Any]:
         "transport": "private Unix socket; SCRAM role; no network/ports",
         "cleanup_verified": True,
         "fixture_isolation_verified": True,
+        "recovery_checkpoints": list(RECOVERY_CHECKPOINTS),
     }
 
 

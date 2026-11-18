@@ -2,10 +2,10 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-18",
-    "commit": "685758b59c354c6a95e3b6fdd838bdd43f52b06b",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44304413862",
+    "commit": "f42815d5a3132f56dbdf4dafde220b8b0939d7f6",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44313568549",
     "ci_result": "passed",
-    "checks_passed": 13,
+    "checks_passed": 14,
     "pull_requests": [
       {
         "number": 4,
@@ -111,9 +111,14 @@
         "number": 25,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 26,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Verified main snapshot: PR #25 is merged and all 13 main CI jobs passed for 685758b. The capability tracker is part of main. Only Phases 0 and 1 are active; 274 requirements and four owner-accepted scopes are unchanged. The current PR qualifies a Rust PostgreSQL driver candidate with real synthetic cases; native directory storage, AD conformance and capacity are not accepted."
+    "note": "Verified main baseline: PR #26 is merged and f42815d passed all 14 CI jobs with a successful Pages deployment. This PR completes P00-15 technical qualification and records the owner’s explicit validation of its full Phase 0 gate, alongside the earlier display fix. The four prior accepted proofs are preserved; no AD/client or capacity acceptance is inferred."
   },
   "requirements": {
     "P00-01": {
@@ -177,7 +182,7 @@
     },
     "P01-03": {
       "status": "in_progress",
-      "note": "PostgreSQL backend and local transaction/journal contract are merged. The SQL transaction/process-crash experiment and a Phase 0 Rust driver candidate have synthetic evidence. The production adapter, full identity/ACL model, key custody, host/disk/backup/upgrade and AD replication remain open."
+      "note": "The P00-15 driver/transaction profile is now technically complete and ready for validation, including typed writes, bounds, abandoned futures, durable reply loss and actual before/after-commit Rust-driver recovery. Native AD identity/schema/ACL integration and the production directory store remain Phase 1 implementation work; this does not accept that store."
     },
     "P01-04": {
       "status": "in_progress",
@@ -209,8 +214,21 @@
       "note": "ADR 0006 and a bounded Rustls 0.23.46/ring 0.17.14 mutual-TLS lab now have certificate/identity/protocol/property/OpenSSL/fuzz and separate coverage evidence. This qualifies a candidate experiment only; production selection, LDAP/SASL channel binding, client compatibility, revocation/rotation/key custody, provider faults and load remain open."
     },
     "P00-15": {
-      "status": "in_progress",
-      "note": "ADR 0007 now has tokio-postgres 0.7.18/Tokio 1.54.1 candidate evidence: real SCRAM/binding/transaction/error/deadline/cancel cases and a separate driver coverage gate. Production selection, typed authorized operations, row/byte/pool limits, ambiguous-commit/idempotency and caller-dropped-future safety, key custody and host/disk/backup/upgrade remain open."
+      "status": "accepted",
+      "note": "The project owner explicitly validated the entire original Phase 0 driver/transaction gate on 18 November 2026: version review, parameterization, cancellation, commit/error mapping and recovery. The selected tokio-postgres 0.7.18/Tokio 1.54.1 local Unix/SCRAM/no-pool profile passes all 29 qualification cases, including actual lost durable replies and two process restarts. Native AD schema/ACL/service/key and domain recovery/capacity retain their separate Phase 1/3/4 gates.",
+      "validation": {
+        "scope": "Full P00-15 Phase 0 driver/transaction qualification gate and selected pg18-local-unix-scram-no-pool-v1 profile, accepted by the project owner on 18 November 2026.",
+        "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142",
+        "packet": {
+          "path": "docs/validation/p00-15.md",
+          "label": "P00-15 full exit criteria and evidence"
+        }
+      },
+      "acceptance": {
+        "reviewer": "Project owner (explicit validation in this conversation)",
+        "date": "2026-11-18",
+        "evidence": "The project owner explicitly answered “Validate P00-15” in this conversation on 18 November 2026. This validates the entire original Phase 0 gate: driver/version review, parameterization, cancellation, commit/error handling and recovery, for profile pg18-local-unix-scram-no-pool-v1. Reviewed implementation and full criterion packet: https://github.com/Ise-Tom/Babel/blob/8d21b7b83a76bd45f9564f7a44f7e144c50c9142/docs/validation/p00-15.md . All 29 cases pass, with actual lost commit replies, two database process restarts and 97.81% driver-library line coverage; all 14 CI jobs pass: https://github.com/Ise-Tom/Babel/actions/runs/44327591957 . Recorded decision: https://github.com/Ise-Tom/Babel/blob/49abca719c43082e4e9af30c5bc960d2b714f1b0/docs/validation/p00-15.md . Native AD storage, credential/key custody, domain recovery/capacity, the 60 unrun client scenarios and whole-phase acceptance remain separate gates."
+      }
     }
   },
   "phase_acceptance": {},
@@ -1906,6 +1924,129 @@
         "I26",
         "I33"
       ]
+    },
+    {
+      "id": "W45",
+      "title": "Make phase activity and recent work visible separately from acceptance",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-08",
+        "P00-10"
+      ],
+      "how": "Reproduced the live main dashboard after PR #26: current build f42815d included W44 and 35 Phase 0 records, but its bar showed only 2/17 accepted and its header showed the older baseline. Replaced the acceptance-only bar with labeled explicit-status segments; cards show active/planned counts and related records. Active phase pages show status totals and the newest three source-backed work records above collapsed requirements. The header now uses the artifact build revision and the footer labels the separate recorded CI baseline. The GitHub report shows the same counts and recent records outside disclosures.",
+      "verification": "All 32 desktop/mobile browser checks and six build/security tests pass. New regressions verify activity and acceptance remain separate, current build labeling, actual recent work/source evidence, and no promotion of future planned phases. All 18 phase cards still fit the tested desktop viewport; mobile overflow and automated WCAG 2.2 AA-tagged checks pass. All 157 repository tests pass at 99% branch-inclusive tooling coverage; the GitHub report has a regression for visible status/recent evidence without phase acceptance. Strict types/lint, Bandit and workflow analysis pass.",
+      "limitations": "This is dashboard visibility and traceability work, not new native AD behavior or acceptance. Requirement counts and status segments are not effort/completion percentages. Work linked to a planned phase remains preparation. Pages receives the UI change after merge and successful trusted deployment; proposed work is visible separately in the GitHub report. Four accepted scopes remain unchanged and all 60 conformance scenarios stay unrun.",
+      "source_revision": "5463fb55119f1f89841c5ea645bd9ebcefd8a8f6",
+      "sources": [
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": "dashboard/src/style.css",
+          "label": "style.css"
+        },
+        {
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "dashboard.spec.ts"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "tests/test_dashboard_delivery.py",
+          "label": "test_dashboard_delivery.py"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        }
+      ],
+      "problems": [
+        "I34"
+      ]
+    },
+    {
+      "id": "W46",
+      "title": "Complete the P00-15 storage driver and transaction qualification gate",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-15"
+      ],
+      "how": "Closed the candidate increment's technical gaps in the existing component. Added a typed default create/rename path over atomic state/journal/audit/actor-request-payload receipts; generic SQL/transaction entry is qualification-only. Streaming results and statement/parameter inputs have explicit budgets. Armed RAII guards poison and close sessions on caller-dropped futures for query/BEGIN/mutation/rollback/COMMIT. A bounded private relay withholds the actual PostgreSQL commit reply; an independent connection verifies committed effects before recovery. The controller now SIGKILLs/restarts its owned database at two mandatory Rust checkpoints and rejects missing checkpoint accounting. Added a complete criterion-by-criterion P00-15 exit packet and a validation-ready state requiring pinned evidence, separate from owner acceptance.",
+      "verification": "All 29 qualification cases pass with none ignored; driver library line coverage is 97.81% (312/319). Tests prove actual committed state exists after restart before any retry, staged state is absent after a pre-commit kill, lost durable replies and dropped commit futures recover exactly one effect, concurrent duplicate requests commit once, changed payload/revoked actors are denied, and over-budget or abandoned operations cannot reuse their connection. Both real process-crash checkpoints completed. All 160 repository tests pass at 99% tooling coverage; 34 desktop/mobile browser checks and six build/security tests pass. Strict types, all-feature Clippy, Bandit, workflow checks and root/fuzz locked graph audits pass.",
+      "limitations": "This completes the entire stated Phase 0 P00-15 library/transaction review, submitted for owner validation. It does not accept later native AD storage or a production release. Native GUID/SID/schema/ACL integration, service provisioning, credential/key custody and domain/host/disk/backup/upgrade/capacity qualification retain their actual Phase 1/3/4 gates. The fixed fixture identities and actor switch are not AD semantics/authentication. All 60 client conformance scenarios remain unrun; existing accepted proofs are unchanged.",
+      "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142",
+      "sources": [
+        {
+          "path": "docs/validation/p00-15.md",
+          "label": "p00-15.md"
+        },
+        {
+          "path": "docs/adr/0007-postgresql-driver-qualification.md",
+          "label": "0007-postgresql-driver-qualification.md"
+        },
+        {
+          "path": "native/babel-store-driver-lab/src/lib.rs",
+          "label": "lib.rs"
+        },
+        {
+          "path": "native/babel-store-driver-lab/src/mutation.rs",
+          "label": "mutation.rs"
+        },
+        {
+          "path": "native/babel-store-driver-lab/tests/database.rs",
+          "label": "database.rs"
+        },
+        {
+          "path": "native/babel-store-driver-lab/tests/support/mod.rs",
+          "label": "mod.rs"
+        },
+        {
+          "path": "native/babel-store-driver-lab/tests/fixture.sql",
+          "label": "fixture.sql"
+        },
+        {
+          "path": "scripts/qualify_store_driver.py",
+          "label": "qualify_store_driver.py"
+        },
+        {
+          "path": "tests/test_store_driver_harness.py",
+          "label": "test_store_driver_harness.py"
+        }
+      ],
+      "problems": [
+        "I05",
+        "I26",
+        "I35"
+      ]
+    },
+    {
+      "id": "W47",
+      "title": "Record owner validation of the full P00-15 Phase 0 gate",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-15"
+      ],
+      "how": "The project owner explicitly answered “Validate P00-15” after reviewing the complete criterion packet and passing CI. Recorded the dated decision in the source-pinned packet and acceptance ledger, changed P00-15 from ready for validation to accepted, and preserved all four earlier acceptance proofs. Phase 0 now has 3 accepted, 8 in progress, 1 blocked and 5 planned requirements.",
+      "verification": "The reviewed implementation passed all 29 driver qualification cases with none ignored, both actual database restart checkpoints, 97.81% driver-library coverage and all 14 CI jobs in run 44327591957. The full original criterion and exact qualified profile are recorded with the owner decision; acceptance is explicit, not inferred from CI.",
+      "limitations": "This accepts the full Phase 0 driver/transaction gate, not the whole phase or a production directory server. Native AD identity/schema/ACL integration, service/key custody and domain recovery/capacity retain their separate Phase 1/3/4 gates. All 60 product/client conformance scenarios remain unrun.",
+      "source_revision": "49abca719c43082e4e9af30c5bc960d2b714f1b0",
+      "sources": [
+        {
+          "path": "docs/validation/p00-15.md",
+          "label": "Owner decision and full criterion packet"
+        }
+      ],
+      "problems": [
+        "I05",
+        "I26",
+        "I35"
+      ]
     }
   ],
   "problems": [
@@ -2024,7 +2165,7 @@
     },
     {
       "id": "I05",
-      "title": "SQL recovery and Rust driver candidates pass; native directory storage remains unqualified",
+      "title": "Qualified driver profile available; native AD directory storage still needs implementation",
       "status": "open",
       "kind": "design",
       "phases": [
@@ -2039,29 +2180,25 @@
         "P01-02",
         "P01-03"
       ],
-      "detail": "The PostgreSQL 18.7 SQL experiment retains transaction/process-crash evidence. A separate Rust candidate now exercises SCRAM, binding, commit/rollback and real error/deadline/cancel cases, including prevention of false acknowledgments after failed SQL statements. LDAP still has no native directory storage or credential persistence.",
+      "detail": "P00-15 driver/transaction qualification is complete and explicitly owner-accepted, including typed bounds, dropped futures, real durable-reply loss and Rust-client process recovery. The native AD identity/schema/ACL/store and domain formats remain separate implementation obligations; the fixture is not a directory server.",
       "resolution": "",
-      "next_action": "Review ADR 0007 and qualify typed authorized native operations, bounded reads/pools, ambiguous-commit recovery/idempotency and dropped-future safety before production driver acceptance. Complete identity/schema/ACL, host/disk/backup/upgrade, key custody and AD conflict/RID/FSMO/restore/GPO contracts before valuable credentials or multi-controller writes.",
+      "next_action": "Integrate the owner-accepted driver profile into P01-02/P01-03/P01-11/P01-12 with native identity/schema/ACL and durable journal semantics. Service/key custody, domain replication/backup/upgrade and production capacity retain their separate gates.",
       "sources": [
         {
-          "path": "docs/adr/0003-postgresql-directory-state.md",
-          "label": "0003-postgresql-directory-state.md"
+          "path": "docs/validation/p00-15.md",
+          "label": "p00-15.md"
         },
         {
-          "path": "docs/adr/0004-synthetic-postgresql-state-experiment.md",
-          "label": "0004-synthetic-postgresql-state-experiment.md"
+          "path": "native/babel-store-driver-lab/src/lib.rs",
+          "label": "lib.rs"
         },
         {
-          "path": "docs/adr/0007-postgresql-driver-qualification.md",
-          "label": "0007-postgresql-driver-qualification.md"
-        },
-        {
-          "path": "native/babel-store-driver-lab/tests/database.rs",
-          "label": "database.rs"
+          "path": "docs/phases/phase-01.md",
+          "label": "phase-01.md"
         }
       ],
       "provenance": "Design blocker, not an implemented storage defect.",
-      "source_revision": "32c80310d3a19a9b4ed522a2e9f8974c8ef5ed7f"
+      "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142"
     },
     {
       "id": "I06",
@@ -2474,18 +2611,14 @@
         "P00-14",
         "P00-15"
       ],
-      "detail": "Bounded LDAP, synthetic PostgreSQL transactions, Rustls/ring TLS and tokio-postgres/Tokio storage candidates now have limited executable evidence. Production library/interface selection and key/client/fault handling remain unqualified; Kerberos/PAC and DNS/SMB/RPC choices are still open.",
+      "detail": "The owner explicitly validated the full P00-15 driver/transaction gate on 18 November 2026. TLS/channel/key integration, Kerberos/PAC and DNS/SMB/RPC decisions remain open at their own gates; native store implementation is tracked by I05.",
       "resolution": "",
-      "next_action": "Review the TLS and storage candidate ADRs, then qualify production auth/channel/key boundaries and typed bounded native storage with ambiguous-commit and cancellation/recovery evidence. Separately select/test Kerberos/PAC and other transports with exact features/rights/advisories and platform/reference evidence.",
-      "source_revision": "32c80310d3a19a9b4ed522a2e9f8974c8ef5ed7f",
+      "next_action": "Continue P00-13/P00-14 and transport qualification. Preserve the accepted driver profile and its qualification cases while implementing the native store under Phase 1; changes to transport/pool/stack/profile require requalification.",
+      "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142",
       "sources": [
         {
-          "path": "docs/adr/0006-tls-qualification-lab.md",
-          "label": "0006-tls-qualification-lab.md"
-        },
-        {
-          "path": "docs/adr/0007-postgresql-driver-qualification.md",
-          "label": "0007-postgresql-driver-qualification.md"
+          "path": "docs/validation/p00-15.md",
+          "label": "p00-15.md"
         },
         {
           "path": "docs/phase-00-security-and-dependencies.md",
@@ -2739,8 +2872,79 @@
         }
       ],
       "provenance": "Observed with the real pinned database and Rust driver, then protected by executable helper regressions. This is a development correctness finding, not a GitHub setup incident or an upstream vulnerability claim."
+    },
+    {
+      "id": "I34",
+      "title": "Acceptance-only meter hid Phase 0 activity and recent implementations",
+      "status": "resolved",
+      "kind": "dashboard-usability",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-08",
+        "P00-10"
+      ],
+      "detail": "The live site was correctly deployed after PR #26 and contained the Rust-driver increment. Phase 0 nevertheless looked unchanged because its bar represented only accepted requirements (2/17); 9 active requirements and recent work were buried in collapsed details. The header also displayed an older evidence baseline instead of the artifact build revision.",
+      "resolution": "Added explicit status counts/segments alongside acceptance, visible recent work and source-backed explanations on active phase pages, corresponding GitHub report summaries, and actual build identification. Browser/report regressions preserve acceptance totals and ensure shared preparation does not start future phases.",
+      "next_action": "Maintain explicit requirement states and work evidence in each development PR. Keep activity, acceptance, related preparation and recorded CI baseline distinct; do not turn counts into effort percentages or infer acceptance from CI.",
+      "source_revision": "5463fb55119f1f89841c5ea645bd9ebcefd8a8f6",
+      "sources": [
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "dashboard.spec.ts"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "tests/test_dashboard_delivery.py",
+          "label": "test_dashboard_delivery.py"
+        }
+      ],
+      "provenance": "Observed in the actual published f42815d dashboard data and reproduced against main. This is a development usability defect; CI and Pages publication had succeeded."
+    },
+    {
+      "id": "I35",
+      "title": "Abandoned futures, durable reply loss and native-client recovery left P00-15 unfinished",
+      "status": "resolved",
+      "kind": "development-correctness",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-15"
+      ],
+      "detail": "The first candidate only handled its own timers and lost connections before commit. Dropping the caller's commit future could leave an uncertain session reusable; no real post-commit response was withheld, typed bounded operations were absent, and process recovery had only been tested through psql. Later product gates also obscured the original Phase 0 exit criteria.",
+      "resolution": "Implemented armed operation guards and a typed default interface with bounded results. Real COMMIT-response withholding plus independent state observation proves durable receipt recovery without duplicate effects. Added mandatory owned SIGKILL/restart checkpoints before commit and after acknowledged commit, with state checked before retry. A full criterion packet completes P00-15; the owner explicitly validated the entire Phase 0 gate on 18 November 2026; later AD integration/keys/domain recovery remain their actual separate requirements.",
+      "next_action": "Preserve the owner-accepted invariants while implementing the native directory store. Any new transport/pool/stack/profile needs requalification. Acceptance of this Phase 0 gate does not accept later product features or client conformance.",
+      "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142",
+      "sources": [
+        {
+          "path": "docs/validation/p00-15.md",
+          "label": "p00-15.md"
+        },
+        {
+          "path": "native/babel-store-driver-lab/src/lib.rs",
+          "label": "lib.rs"
+        },
+        {
+          "path": "native/babel-store-driver-lab/tests/database.rs",
+          "label": "database.rs"
+        },
+        {
+          "path": "scripts/qualify_store_driver.py",
+          "label": "qualify_store_driver.py"
+        }
+      ],
+      "provenance": "Concrete missing driver semantics were closed with actual database, reply-loss and process-crash tests. This is development correctness and completion of a requirement, not a GitHub setup incident."
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "Phase 0: TLS and PostgreSQL driver candidates have real qualification tests. Track implementation and gaps across 130 capabilities. Native storage, client labs, capacity and response work remain open. Four accepted scopes are unchanged; all 60 conformance cases remain unrun."
+  "focus_summary": "P00-15 is owner-accepted for its full driver/transaction gate: 29 passing cases, bounded writes, cancellation, durable receipt recovery and real database restarts. Phase 0 has 3 accepted requirements. Native AD integration and all 60 client scenarios remain unqualified."
 }

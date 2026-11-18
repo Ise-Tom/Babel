@@ -134,9 +134,9 @@ source-backed work and blockers. Shared design/tooling never automatically claim
 functional implementation or starts a later phase. No new owner acceptance is
 recorded; the four previously accepted requirement scopes remain unchanged.
 
-## Rust PostgreSQL driver candidate
+## Earlier Rust PostgreSQL driver candidate
 
-P00-15 now has a [real async Rust driver qualification experiment](adr/0007-postgresql-driver-qualification.md)
+The earlier P00-15 increment introduced a [real async Rust driver qualification experiment](adr/0007-postgresql-driver-qualification.md)
 against the owned PostgreSQL 18 lab. It tests binding, SCRAM rejection, limited
 database privileges, commit/rollback, failed/deferred transactions, serialization,
 lock/statement/client deadlines, explicit cancellation and connection loss.
@@ -148,6 +148,21 @@ commit outcomes and discards expired/lost connections without automatic retry.
 The required CI adds a separate real-database driver job and 90% library coverage
 gate, scenario-completeness checks and retained source/version/isolation/cleanup
 evidence. Reviewed Unicode data terms and actual dependency notices are included.
-This is a candidate experiment, not native directory storage, production driver
-selection, schema/ACL or capacity acceptance. P00-15 and I05/I26 remain open;
-all 60 client conformance scenarios and four accepted scopes are unchanged.
+That candidate increment did not close P00-15. The completed qualification and
+subsequent owner decision are recorded below. I05/I26 retain their remaining
+native integration and dependency obligations; all 60 client scenarios remain unrun.
+
+## P00-15 full-gate acceptance — 18 November 2026
+
+The [full driver/transaction validation packet](validation/p00-15.md) now addresses
+every original P00-15 criterion. The selected stack has a typed default API,
+streaming result bounds, cancellation-safe transaction ownership, durable receipt
+replay with reauthorization, actual COMMIT reply-loss evidence and two coordinated
+PostgreSQL process-crash recoveries. These close the gaps left by the candidate
+increment. After reviewing the full packet and [passing 14-job CI](https://github.com/Ise-Tom/Babel/actions/runs/44327591957),
+the owner explicitly answered **“Validate P00-15”** on 18 November 2026. This
+accepts the entire original Phase 0 gate and selected profile. Phase 0 now has
+**3 accepted, 8 in progress, 1 blocked and 5 planned requirements**. The four
+earlier acceptance proofs remain unchanged. Later native directory/key/backup/
+capacity gates remain under their actual Phase 1/3/4 requirements; neither
+Phase 0 as a whole nor production AD compatibility is accepted.

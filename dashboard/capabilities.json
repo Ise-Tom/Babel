@@ -94,7 +94,7 @@
     "OPS-01": {
       "status": "planned",
       "category": "experiment",
-      "scope": "Synthetic PostgreSQL recovery, a Rust driver candidate and workload tools support qualification; native directory operations are not implemented.",
+      "scope": "The Phase 0 PostgreSQL driver/transaction review is complete and explicitly owner-accepted; selected bounded typed writes, receipt recovery and process-crash evidence support native implementation. Native directory backup/restore/upgrade operations are not implemented.",
       "implemented": [],
       "missing": [
         "Native directory backup/restore and upgrade",
@@ -105,7 +105,8 @@
         "W27",
         "W28",
         "W40",
-        "W44"
+        "W44",
+        "W46"
       ],
       "blockers": [
         "I04",
@@ -128,7 +129,8 @@
         "W16",
         "W18",
         "W38",
-        "W41"
+        "W41",
+        "W45"
       ],
       "blockers": [],
       "acceptance": null
