@@ -44,31 +44,32 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T15:53:32\+01:00.
+GitHub metadata checked: 2026-11-18T16:01:51\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#27 · Complete P00-15 storage-driver transaction and recovery qualification](<https://github.com/Ise-Tom/Babel/pull/27>)
 
-**In review · Pending merge · CI: success** · Head 1e6928e
+**In review · Pending merge · CI: in\_progress** · Head f188278
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
 
 **PR description (untrusted text):**
 
-    P00-15 remained in progress because the driver candidate did not handle caller-dropped futures, bounded typed writes, real post-commit reply loss or native-client process recovery. This change closes those gaps and submits the **entire original Phase 0 storage-driver/transaction gate** for validation: [criterion-by-criterion packet](https://github.com/Ise-Tom/Babel/blob/8d21b7b83a76bd45f9564f7a44f7e144c50c9142/docs/validation/p00-15.md).
+    P00-15 remained in progress because the driver candidate did not handle caller-dropped futures, bounded typed writes, real post-commit reply loss or native-client process recovery. This change closes those gaps. On 18 November 2026 the project owner explicitly answered **“Validate P00-15”**, accepting the **entire original Phase 0 storage-driver/transaction gate**: [criterion-by-criterion packet](https://github.com/Ise-Tom/Babel/blob/8d21b7b83a76bd45f9564f7a44f7e144c50c9142/docs/validation/p00-15.md).
     
     - Select tokio-postgres 0.7.18/Tokio 1.54.1 for the local PostgreSQL/Unix/SCRAM/no-pool profile. The normal API accepts typed, bounded create/rename operations; generic SQL and raw transaction entry compile only for qualification tests. Streaming reads enforce row/column/retained-field-byte limits, with statement/parameter limits.
     - Arm connection guards before polling operations. Dropped query, BEGIN, mutation, rollback or COMMIT futures poison and close the session; uncertain connections cannot be reused. Failed statements cannot become successful commit acknowledgments.
     - Bind actor/request identity to exact bounded payload and durable receipt. Concurrent duplicates commit once, conflicting reuse fails, and a revoked fixture actor cannot retrieve an old receipt through retry.
     - Withhold the actual server COMMIT response through a private bounded relay, independently observe committed state/journal/audit/receipt, then prove lost-reply and dropped-caller recovery without repeating effects.
     - Actually SIGKILL/restart the owned database at mandatory Rust checkpoints before commit and after confirmed commit. Verify staged state before the first kill; verify committed state after restart **before any retry**, so retry cannot mask lost data. Missing controller checkpoints fail independently of the Rust exit code.
-    - Move P00-15 from in progress to **Ready for validation** with pinned full exit evidence. Phase 0 now has **8 in progress, 1 ready, 1 blocked, 5 planned, 2 accepted**. Preserve all four acceptance proofs, only Phases 0/1 active and all 60 unrun AD/client scenarios. Record W46 and resolved correctness/qualification gap I35. The earlier activity-display fix remains included.
+    - Record P00-15 as **accepted** with pinned full exit evidence and the [explicit dated owner decision](https://github.com/Ise-Tom/Babel/blob/49abca719c43082e4e9af30c5bc960d2b714f1b0/docs/validation/p00-15.md). Phase 0 now has **3 accepted, 8 in progress, 1 blocked and 5 planned**. Preserve all four prior acceptance proofs, only Phases 0/1 active and all 60 unrun AD/client scenarios. Record W46/W47 and resolved correctness/qualification gap I35. The validation-ready state remains available for future completed work awaiting review. The earlier activity-display fix remains included.
     
-    Local validation: **29/29 qualification cases pass**, including both real database-process recoveries; driver-library coverage is **97.81% (312/319)**. All 160 repository tests pass at 99% branch-inclusive tooling coverage; all 34 desktop/mobile browser checks and six build/security tests pass. All-feature Clippy, strict types/lint, Bandit, workflow checks and both locked dependency graph audits pass. Hosted [CI run 44327591957](https://github.com/Ise-Tom/Babel/actions/runs/44327591957) passed all 14 jobs on `1e6928e92ca89bc101daae061cfaa54db144742e`. Downloaded evidence independently confirms all 29 qualification cases, both real SIGKILL/restart checkpoints, 97.81% driver-library coverage, fixture isolation/cleanup and retained dependency notices. The PR is mergeable; P00-15 is technically complete and ready for owner validation.
+    Local validation: **29/29 qualification cases pass**, including both real database-process recoveries; driver-library coverage is **97.81% (312/319)**. All 160 repository tests pass at 99% branch-inclusive tooling coverage; all 34 desktop/mobile browser checks and six build/security tests pass. All-feature Clippy, strict types/lint, Bandit, workflow checks and both locked dependency graph audits pass. Hosted [CI run 44327591957](https://github.com/Ise-Tom/Babel/actions/runs/44327591957) passed all 14 jobs on `1e6928e92ca89bc101daae061cfaa54db144742e`. Downloaded evidence independently confirms all 29 qualification cases, both real SIGKILL/restart checkpoints, 97.81% driver-library coverage, fixture isolation/cleanup and retained dependency notices. P00-15 is technically complete and explicitly owner-accepted. The acceptance-ledger update is undergoing a fresh full CI run; the linked run is the passing implementation evidence reviewed by the owner.
     
-    P00-15's original requirement is unchanged. Its driver-selection/transaction-review criteria are complete; owner validation is pending. Native AD identity/schema/ACL/store and real journal integration remain P01-02/P01-03/P01-11/P01-12; service/key provisioning is P01-09/P01-14, and domain/host/disk/backup/upgrade/capacity qualification remains Phase 3/4. The fixture identities and actor switch are not AD semantics/authentication. This does not accept those later requirements or production release, and introduces no valuable directory credentials or stable AD formats. No new phase is started. The dashboard's validation queue never implies owner acceptance.
+    P00-15's original requirement is unchanged. Its full driver-selection/transaction-review gate is complete and owner-validated; the selected profile is `pg18-local-unix-scram-no-pool-v1`. Native AD identity/schema/ACL/store and real journal integration remain P01-02/P01-03/P01-11/P01-12; service/key provisioning is P01-09/P01-14, and domain/host/disk/backup/upgrade/capacity qualification remains Phase 3/4. The fixture identities and actor switch are not AD semantics/authentication. This does not accept those later requirements or production release, and introduces no valuable directory credentials or stable AD formats. No new phase is started. The dashboard's validation queue never implies owner acceptance.
+    
     
 
 **Changed files:**
@@ -111,7 +112,7 @@ GitHub metadata checked: 2026-11-18T15:53:32\+01:00.
 
 **Limits and remaining work:** This is dashboard visibility and traceability work, not new native AD behavior or acceptance. Requirement counts and status segments are not effort/completion percentages. Work linked to a planned phase remains preparation. Pages receives the UI change after merge and successful trusted deployment; proposed work is visible separately in the GitHub report. Four accepted scopes remain unchanged and all 60 conformance scenarios stay unrun.
 
-**PR-head evidence:** [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/dashboard/src/main.ts>) · [dashboard/src/style.css](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/dashboard/src/style.css>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/dashboard/tests/dashboard.spec.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/scripts/render_dashboard.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/tests/test_dashboard_delivery.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/project-dashboard.md>)
+**PR-head evidence:** [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/dashboard/src/main.ts>) · [dashboard/src/style.css](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/dashboard/src/style.css>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/dashboard/tests/dashboard.spec.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/scripts/render_dashboard.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/tests/test_dashboard_delivery.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/docs/project-dashboard.md>)
 
 
 #### Proposed W46 · Complete the P00-15 storage driver and transaction qualification gate
@@ -124,35 +125,48 @@ GitHub metadata checked: 2026-11-18T15:53:32\+01:00.
 
 **Limits and remaining work:** This completes the entire stated Phase 0 P00-15 library/transaction review, submitted for owner validation. It does not accept later native AD storage or a production release. Native GUID/SID/schema/ACL integration, service provisioning, credential/key custody and domain/host/disk/backup/upgrade/capacity qualification retain their actual Phase 1/3/4 gates. The fixed fixture identities and actor switch are not AD semantics/authentication. All 60 client conformance scenarios remain unrun; existing accepted proofs are unchanged.
 
-**PR-head evidence:** [docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/validation/p00-15.md>) · [docs/adr/0007-postgresql-driver-qualification.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/adr/0007-postgresql-driver-qualification.md>) · [native/babel-store-driver-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/src/lib.rs>) · [native/babel-store-driver-lab/src/mutation.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/src/mutation.rs>) · [native/babel-store-driver-lab/tests/database.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/tests/database.rs>) · [native/babel-store-driver-lab/tests/support/mod.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/tests/support/mod.rs>) · [native/babel-store-driver-lab/tests/fixture.sql](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/tests/fixture.sql>) · [scripts/qualify\_store\_driver.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/scripts/qualify_store_driver.py>) · [tests/test\_store\_driver\_harness.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/tests/test_store_driver_harness.py>)
+**PR-head evidence:** [docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/docs/validation/p00-15.md>) · [docs/adr/0007-postgresql-driver-qualification.md](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/docs/adr/0007-postgresql-driver-qualification.md>) · [native/babel-store-driver-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/native/babel-store-driver-lab/src/lib.rs>) · [native/babel-store-driver-lab/src/mutation.rs](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/native/babel-store-driver-lab/src/mutation.rs>) · [native/babel-store-driver-lab/tests/database.rs](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/native/babel-store-driver-lab/tests/database.rs>) · [native/babel-store-driver-lab/tests/support/mod.rs](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/native/babel-store-driver-lab/tests/support/mod.rs>) · [native/babel-store-driver-lab/tests/fixture.sql](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/native/babel-store-driver-lab/tests/fixture.sql>) · [scripts/qualify\_store\_driver.py](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/scripts/qualify_store_driver.py>) · [tests/test\_store\_driver\_harness.py](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/tests/test_store_driver_harness.py>)
+
+
+#### Proposed W47 · Record owner validation of the full P00-15 Phase 0 gate
+
+**Requirements:** P00-15
+
+**How it was done:** The project owner explicitly answered “Validate P00-15” after reviewing the complete criterion packet and passing CI. Recorded the dated decision in the source-pinned packet and acceptance ledger, changed P00-15 from ready for validation to accepted, and preserved all four earlier acceptance proofs. Phase 0 now has 3 accepted, 8 in progress, 1 blocked and 5 planned requirements.
+
+**Recorded validation:** The reviewed implementation passed all 29 driver qualification cases with none ignored, both actual database restart checkpoints, 97.81% driver-library coverage and all 14 CI jobs in run 44327591957. The full original criterion and exact qualified profile are recorded with the owner decision; acceptance is explicit, not inferred from CI.
+
+**Limits and remaining work:** This accepts the full Phase 0 driver/transaction gate, not the whole phase or a production directory server. Native AD identity/schema/ACL integration, service/key custody and domain recovery/capacity retain their separate Phase 1/3/4 gates. All 60 product/client conformance scenarios remain unrun.
+
+**PR-head evidence:** [docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/docs/validation/p00-15.md>)
 
 #### Proposed problem update: I05 · Qualified driver profile available; native AD directory storage still needs implementation
 
 **Proposed status:** open
 
-P00-15 now has complete driver/transaction qualification, including typed bounds, dropped futures, real durable-reply loss and Rust-client process recovery. The native AD identity/schema/ACL/store and domain formats remain separate implementation obligations; the fixture is not a directory server.
+P00-15 driver/transaction qualification is complete and explicitly owner-accepted, including typed bounds, dropped futures, real durable-reply loss and Rust-client process recovery. The native AD identity/schema/ACL/store and domain formats remain separate implementation obligations; the fixture is not a directory server.
 
 **Resolution:** Still open
 
-**Next action:** Validate the completed P00-15 packet, then integrate the selected profile into P01-02/P01-03/P01-11/P01-12 with native identity/schema/ACL and durable journal semantics. Service/key custody, domain replication/backup/upgrade and production capacity retain their separate gates.
+**Next action:** Integrate the owner-accepted driver profile into P01-02/P01-03/P01-11/P01-12 with native identity/schema/ACL and durable journal semantics. Service/key custody, domain replication/backup/upgrade and production capacity retain their separate gates.
 
 **Provenance:** Design blocker, not an implemented storage defect.
 
-[docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/validation/p00-15.md>) · [native/babel-store-driver-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/src/lib.rs>) · [docs/phases/phase-01.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/phases/phase-01.md>)
+[docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/docs/validation/p00-15.md>) · [native/babel-store-driver-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/native/babel-store-driver-lab/src/lib.rs>) · [docs/phases/phase-01.md](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/docs/phases/phase-01.md>)
 
 #### Proposed problem update: I26 · Production TLS/Kerberos/storage/transport libraries need qualification
 
 **Proposed status:** open
 
-P00-15 driver/transaction review is complete and ready for owner validation. TLS/channel/key integration, Kerberos/PAC and DNS/SMB/RPC decisions remain open at their own gates; native store implementation is tracked by I05. Later product obligations no longer keep the completed Phase 0 driver review in progress.
+The owner explicitly validated the full P00-15 driver/transaction gate on 18 November 2026. TLS/channel/key integration, Kerberos/PAC and DNS/SMB/RPC decisions remain open at their own gates; native store implementation is tracked by I05.
 
 **Resolution:** Still open
 
-**Next action:** Review P00-15&\#x27;s full exit packet and validate the selected stack/profile. Continue P00-13/P00-14 and transport qualification; implement the native store under Phase 1 rather than treating unimplemented product features as unfinished driver-selection work.
+**Next action:** Continue P00-13/P00-14 and transport qualification. Preserve the accepted driver profile and its qualification cases while implementing the native store under Phase 1; changes to transport/pool/stack/profile require requalification.
 
 **Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
 
-[docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/validation/p00-15.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/phase-00-security-and-dependencies.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/decisions.md>)
+[docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/docs/validation/p00-15.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/docs/phase-00-security-and-dependencies.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/docs/decisions.md>)
 
 #### Proposed problem update: I34 · Acceptance-only meter hid Phase 0 activity and recent implementations
 
@@ -166,7 +180,7 @@ The live site was correctly deployed after PR \#26 and contained the Rust-driver
 
 **Provenance:** Observed in the actual published f42815d dashboard data and reproduced against main. This is a development usability defect; CI and Pages publication had succeeded.
 
-[dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/dashboard/tests/dashboard.spec.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/scripts/render_dashboard.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/tests/test_dashboard_delivery.py>)
+[dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/dashboard/tests/dashboard.spec.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/scripts/render_dashboard.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/tests/test_dashboard_delivery.py>)
 
 #### Proposed problem update: I35 · Abandoned futures, durable reply loss and native-client recovery left P00-15 unfinished
 
@@ -174,13 +188,13 @@ The live site was correctly deployed after PR \#26 and contained the Rust-driver
 
 The first candidate only handled its own timers and lost connections before commit. Dropping the caller&\#x27;s commit future could leave an uncertain session reusable; no real post-commit response was withheld, typed bounded operations were absent, and process recovery had only been tested through psql. Later product gates also obscured the original Phase 0 exit criteria.
 
-**Resolution:** Implemented armed operation guards and a typed default interface with bounded results. Real COMMIT-response withholding plus independent state observation proves durable receipt recovery without duplicate effects. Added mandatory owned SIGKILL/restart checkpoints before commit and after acknowledged commit, with state checked before retry. A full criterion packet now completes P00-15 and requests owner validation; later AD integration/keys/domain recovery remain their actual separate requirements.
+**Resolution:** Implemented armed operation guards and a typed default interface with bounded results. Real COMMIT-response withholding plus independent state observation proves durable receipt recovery without duplicate effects. Added mandatory owned SIGKILL/restart checkpoints before commit and after acknowledged commit, with state checked before retry. A full criterion packet completes P00-15; the owner explicitly validated the entire Phase 0 gate on 18 November 2026; later AD integration/keys/domain recovery remain their actual separate requirements.
 
-**Next action:** Validate the full P00-15 packet, then preserve these tested invariants while implementing the native directory store. Any new transport/pool/stack/profile needs requalification. Do not turn validation readiness into automatic acceptance or product conformance.
+**Next action:** Preserve the owner-accepted invariants while implementing the native directory store. Any new transport/pool/stack/profile needs requalification. Acceptance of this Phase 0 gate does not accept later product features or client conformance.
 
 **Provenance:** Concrete missing driver semantics were closed with actual database, reply-loss and process-crash tests. This is development correctness and completion of a requirement, not a GitHub setup incident.
 
-[docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/validation/p00-15.md>) · [native/babel-store-driver-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/src/lib.rs>) · [native/babel-store-driver-lab/tests/database.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/tests/database.rs>) · [scripts/qualify\_store\_driver.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/scripts/qualify_store_driver.py>)
+[docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/docs/validation/p00-15.md>) · [native/babel-store-driver-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/native/babel-store-driver-lab/src/lib.rs>) · [native/babel-store-driver-lab/tests/database.rs](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/native/babel-store-driver-lab/tests/database.rs>) · [scripts/qualify\_store\_driver.py](<https://github.com/Ise-Tom/Babel/blob/f188278abf09d2469bb73155badd07c832ca8385/scripts/qualify_store_driver.py>)
 
 
 </details>
