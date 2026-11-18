@@ -44,7 +44,7 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T09:09:58\+01:00.
+GitHub metadata checked: 2026-11-18T09:10:22\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -67,7 +67,7 @@ GitHub metadata checked: 2026-11-18T09:09:58\+01:00.
     
     Dashboard work records W32–W37 map implementation/design, verification, limitations and immutable source evidence to P00 requirements. Development problem IDs stay stable. Licensed Windows/Mac infrastructure, exact compatibility builds/cases, production dependencies, security response exercises and specification/rights qualification remain visible (I04/I05/I25–I28). GitHub hosting/billing/permission/approval setup history remains in operational docs/Git history instead of the problem list. Existing owner-accepted P01 scopes remain unchanged. The owner explicitly accepted P00-08 for the current version-1 schema/tooling and approved P00-09 for the workload/method on 18 November 2026; reviewer/date/pinned evidence and limits are recorded. No product conformance, capacity/SLO results or whole Phase 0 acceptance is implied.
     
-    Validation: 118 repository tests passed with 99% combined tooling coverage and 100% statement/branch coverage for the new validator; all 24 desktop/mobile browser checks and six dashboard build/security-lint checks passed. Strict types, Ruff, Bandit, actionlint, Zizmor, design/dashboard/lab integrity, component scope and local documentation links passed. Hosted CI for the current PR head is recorded separately after it runs.
+    Validation: 118 repository tests passed with 99% combined tooling coverage and 100% statement/branch coverage for the new validator; all 24 desktop/mobile browser checks and six dashboard build/security-lint checks passed. Strict types, Ruff, Bandit, actionlint, Zizmor, design/dashboard/lab integrity, component scope and local documentation links passed. All 13 hosted CI jobs passed for current head c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e: https://github.com/Ise-Tom/Babel/actions/runs/44264291247 . GitHub reports the PR merge state CLEAN, with no required review approval.
     
     No merge, release/tag, new infrastructure purchase, Pages deployment or cloud-environment publication is performed by opening this PR. The existing GitHub report automation displays the PR proposals separately from main totals; the interactive Pages site changes after merge and successful main deployment.
 
