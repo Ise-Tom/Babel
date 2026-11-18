@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T11:42:44\+01:00.
+GitHub metadata checked: 2026-11-18T11:44:05\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#25 · Phase 0: qualify a TLS candidate and track capability implementations](<https://github.com/Ise-Tom/Babel/pull/25>)
 
-**In review · Pending merge · CI: in\_progress** · Head 6ae8422
+**In review · Pending merge · CI: pending** · Head 3a076d1
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -125,7 +125,7 @@ GitHub metadata checked: 2026-11-18T11:42:44\+01:00.
 
 **Limits and remaining work:** This is project development tooling, not domain administration UI/API or product conformance. Claims still require human review and maintenance. No full capability acceptance, additional requirement acceptance or later phase activity is inferred. Pages receives the change only after merge and successful trusted deployment; open-PR increments appear separately in the GitHub report.
 
-**PR-head evidence:** [dashboard/capabilities.json](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/dashboard/capabilities.json>) · [scripts/capability\_tracker.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/scripts/capability_tracker.py>) · [tests/test\_capabilities.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/tests/test_capabilities.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/dashboard/tests/dashboard.spec.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/scripts/render_dashboard.py>) · [docs/capability-tracker.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/capability-tracker.md>)
+**PR-head evidence:** [dashboard/capabilities.json](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/dashboard/capabilities.json>) · [scripts/capability\_tracker.py](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/scripts/capability_tracker.py>) · [tests/test\_capabilities.py](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/tests/test_capabilities.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/dashboard/tests/dashboard.spec.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/scripts/render_dashboard.py>) · [docs/capability-tracker.md](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/docs/capability-tracker.md>)
 
 
 #### Proposed W42 · Qualify a bounded Rustls/ring TLS candidate with independent enforcement tests
@@ -138,7 +138,7 @@ GitHub metadata checked: 2026-11-18T11:42:44\+01:00.
 
 **Limits and remaining work:** Qualification experiment only: no LDAP/StartTLS/SASL/EPA integration, AD authentication, production key custody/revocation/rotation/HSM/provider-loss or load qualification. Generic exporter agreement is not Windows channel-binding conformance. No Windows/macOS host was used; all 60 conformance cases remain unrun. Ring uses native C/assembly; this is not all-memory-safe or FIPS validation. No owner acceptance is inferred.
 
-**PR-head evidence:** [docs/adr/0006-tls-qualification-lab.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/adr/0006-tls-qualification-lab.md>) · [native/babel-tls-lab/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/native/babel-tls-lab/Cargo.toml>) · [native/babel-tls-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/native/babel-tls-lab/src/lib.rs>) · [native/babel-tls-lab/tests/handshake.rs](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/native/babel-tls-lab/tests/handshake.rs>) · [native/babel-tls-lab/tests/interop\_tls.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/native/babel-tls-lab/tests/interop_tls.py>) · [fuzz/fuzz\_targets/tls\_record.rs](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/fuzz/fuzz_targets/tls_record.rs>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/.github/workflows/native.yml>)
+**PR-head evidence:** [docs/adr/0006-tls-qualification-lab.md](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/docs/adr/0006-tls-qualification-lab.md>) · [native/babel-tls-lab/Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/native/babel-tls-lab/Cargo.toml>) · [native/babel-tls-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/native/babel-tls-lab/src/lib.rs>) · [native/babel-tls-lab/tests/handshake.rs](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/native/babel-tls-lab/tests/handshake.rs>) · [native/babel-tls-lab/tests/interop\_tls.py](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/native/babel-tls-lab/tests/interop_tls.py>) · [fuzz/fuzz\_targets/tls\_record.rs](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/fuzz/fuzz_targets/tls_record.rs>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/.github/workflows/native.yml>)
 
 
 #### Proposed W43 · Retain and verify actual license notices in experimental native archives
@@ -151,7 +151,7 @@ GitHub metadata checked: 2026-11-18T11:42:44\+01:00.
 
 **Limits and remaining work:** Experimental Linux x86\_64 lab archive only. Rust reference notices may list components not linked; this is not complete binary-link analysis, legal clearance, protocol/fixture rights or product-distribution acceptance. Notice verification checks retained bytes, not legal interpretation or provenance by itself.
 
-**PR-head evidence:** [scripts/collect\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/scripts/collect_native_notices.py>) · [tests/test\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/tests/test_native_notices.py>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/.github/workflows/native.yml>) · [deny.toml](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/deny.toml>) · [docs/adr/0006-tls-qualification-lab.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/adr/0006-tls-qualification-lab.md>)
+**PR-head evidence:** [scripts/collect\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/scripts/collect_native_notices.py>) · [tests/test\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/tests/test_native_notices.py>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/.github/workflows/native.yml>) · [deny.toml](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/deny.toml>) · [docs/adr/0006-tls-qualification-lab.md](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/docs/adr/0006-tls-qualification-lab.md>)
 
 #### Proposed problem update: I26 · Production TLS/Kerberos/storage/transport libraries need qualification
 
@@ -165,7 +165,7 @@ Rust and bounded LDAP safeguards, PostgreSQL synthetic transactions and now a st
 
 **Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
 
-[docs/adr/0006-tls-qualification-lab.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/adr/0006-tls-qualification-lab.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/phase-00-security-and-dependencies.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/decisions.md>)
+[docs/adr/0006-tls-qualification-lab.md](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/docs/adr/0006-tls-qualification-lab.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/docs/phase-00-security-and-dependencies.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/docs/decisions.md>)
 
 #### Proposed problem update: I31 · Capability associations lacked an explicit implementation tracker
 
@@ -179,7 +179,7 @@ Phase work and broad feature associations could not show which subset of a globa
 
 **Provenance:** Development implementation/tooling gap observed in the repository and verified with executable tests; not a GitHub setup incident.
 
-[docs/capability-tracker.md](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/docs/capability-tracker.md>) · [scripts/capability\_tracker.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/scripts/capability_tracker.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/dashboard/src/main.ts>) · [tests/test\_capabilities.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/tests/test_capabilities.py>)
+[docs/capability-tracker.md](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/docs/capability-tracker.md>) · [scripts/capability\_tracker.py](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/scripts/capability_tracker.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/dashboard/src/main.ts>) · [tests/test\_capabilities.py](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/tests/test_capabilities.py>)
 
 #### Proposed problem update: I32 · Internal native binary archive did not carry actual third-party notice texts
 
@@ -193,7 +193,7 @@ The previous LDAP lab had no external runtime crate dependencies. The added TLS 
 
 **Provenance:** Development implementation/tooling gap observed in the repository and verified with executable tests; not a GitHub setup incident.
 
-[scripts/collect\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/scripts/collect_native_notices.py>) · [tests/test\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/tests/test_native_notices.py>) · [deny.toml](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/deny.toml>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/6ae842252c3c5d4a49adac12f0f5a12936184227/.github/workflows/native.yml>)
+[scripts/collect\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/scripts/collect_native_notices.py>) · [tests/test\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/tests/test_native_notices.py>) · [deny.toml](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/deny.toml>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/3a076d13d929dce1092f96c646f36add252486e6/.github/workflows/native.yml>)
 
 
 </details>
