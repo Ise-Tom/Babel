@@ -330,3 +330,14 @@ All current 60 scenarios remain unrun. `--require-ready` intentionally fails on
 current metadata; no empty Windows job is added to imply a lab exists. Regression
 tests use explicitly synthetic temporary fixtures, never published product results.
 See [Phase 0 progress](phase-00-progress.md) for the schema, limitations and gaps.
+
+## Synthetic target-scale dataset integrity
+
+The required repository job generates the full owner-approved synthetic workload
+with the actual checked-out `GITHUB_SHA`, then independently audits its files,
+counts, distributions and graph relationships. Generation/audit errors fail CI.
+Only the manifest and verification summary are retained in a pinned official
+artifact action; payload files stay in runner temporary storage. This is fixture
+integrity evidence, not a native load benchmark or real-client test. The new tools
+use existing stdlib Python build/type/lint/coverage/security gates without adding
+runtime dependencies. See [the fixture contract](synthetic-workload.md).

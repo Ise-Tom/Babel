@@ -2,8 +2,8 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-18",
-    "commit": "b370e40473b8b53d763838cfa7ed1b0f1d10d6f0",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44264722469",
+    "commit": "b0c105d13ea9d36ee6a49a67cd7d1a0e10f367bc",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44270898143",
     "ci_result": "passed",
     "checks_passed": 13,
     "pull_requests": [
@@ -96,9 +96,14 @@
         "number": 22,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 23,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Verified main snapshot: PR #22 is merged and all 13 main CI jobs passed for b370e40. Four requirement scopes are owner-accepted; no phase is accepted. The current PR corrects phase activity and refines composite requirements; shared preparation is not later-phase execution."
+    "note": "Verified main snapshot: PR #23 is merged and all 13 main CI jobs passed for b0c105d. Only Phases 0 and 1 are active; 274 requirements have variable phase sizes. Four owner-accepted scopes remain unchanged. The current PR adds reproducible synthetic dataset tooling, not server-capacity or client-conformance evidence."
   },
   "requirements": {
     "P00-01": {
@@ -140,7 +145,7 @@
     },
     "P00-09": {
       "status": "accepted",
-      "note": "Owner approved the proposed target workload and measurement method: 10k users, 10k computers, 2k groups, three sites/six DCs, mixed traffic and fault/soak/resource/cost accounting. Capacity and production SLOs remain unmeasured and unqualified.",
+      "note": "The owner-approved engineering method now has a deterministic generator and independent fixture auditor. Full-size data was generated/audited twice with byte-identical artifacts. The approval remains the workload/method scope; no token encoder, native load/capacity or production SLO is qualified.",
       "acceptance": {
         "reviewer": "Project owner (explicit approval in this conversation)",
         "date": "2026-11-18",
@@ -1652,6 +1657,44 @@
       "problems": [
         "I14"
       ]
+    },
+    {
+      "id": "W40",
+      "title": "Generate and independently audit reproducible target-scale synthetic data",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-09"
+      ],
+      "how": "Added stdlib Python tooling with fixed namespace/hash-based sampling, exact site/payload/direct-membership distributions, synthetic GUID/SID/DN and ACL/GPO labels, disjoint depth-1/3/8 group chains and separate cycle/over-budget inputs. An independent bounded auditor checks artifact hashes, relationships/counts, reference consistency, duplicate identities/edges, graph shape and explicit unmeasured fields. Required CI generates/audits the full profile and retains only manifest/summary.",
+      "verification": "136 local repository tests pass at 99% tooling coverage; both new modules have 100% statement/branch coverage. Full profile generated and audited twice at source 521dfe82f6d32db979185084b2a6e0a8dac2e02a; all four files are byte-identical. Both audits report 22,150 objects, 254,000 direct plus 12 nested edges and max effective group count 111. Local manifest SHA-256: 9409b80dd69a5d762d52c8c01c324802990c3314a7e8bc3a60ae8bef556a901f. Objects/memberships are 35,440,934/32,005,476 bytes. Strict types/lint, Bandit, workflow and canonical checks pass.",
+      "limitations": "Synthetic logical fixture schema only: no credentials, domain/schema import, real ACL/GPO/SYSVOL behavior, AD RID allocator, endpoint provisioning, client denial tests or native load. Token bytes, index/storage expansion, throughput and latency remain null/unmeasured. Negative graph shape is verified, not actual server rejection. Existing method acceptance is not expanded; all 60 conformance scenarios remain unrun.",
+      "source_revision": "521dfe82f6d32db979185084b2a6e0a8dac2e02a",
+      "sources": [
+        {
+          "path": "scripts/generate_workload.py",
+          "label": "generate_workload.py"
+        },
+        {
+          "path": "scripts/check_workload.py",
+          "label": "check_workload.py"
+        },
+        {
+          "path": "tests/test_workload.py",
+          "label": "test_workload.py"
+        },
+        {
+          "path": "docs/synthetic-workload.md",
+          "label": "synthetic-workload.md"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "label": "ci.yml"
+        }
+      ],
+      "problems": [
+        "I30"
+      ]
     }
   ],
   "problems": [
@@ -2345,8 +2388,43 @@
         }
       ],
       "provenance": "Reproduced against merged main: Phases 5 and 10 were in_progress while all their requirements were planned; the corrected model has only Phases 0 and 1 active."
+    },
+    {
+      "id": "I30",
+      "title": "Approved workload lacked reproducible target-scale fixtures and independent integrity checks",
+      "status": "resolved",
+      "kind": "development-tooling",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-09"
+      ],
+      "detail": "The owner-approved workload specified counts/distributions and faults but had no executable seeded dataset. Future storage/load tests could therefore use inconsistent memberships/payloads or mistake self-reported hashes/counts for structural correctness.",
+      "resolution": "Implemented a bounded streaming generator and independent relational/artifact auditor, including semantic tamper tests after rehashing. Two full generations/audits produced byte-identical artifacts with exact approved distributions. Tests cover failed writes, no overwrite/symlinks, duplicate/missing references, false runtime claims and acyclic graphs with wrong nesting profiles. Required CI runs full generation/audit and keeps small evidence artifacts.",
+      "next_action": "Use the versioned dataset in future qualified storage/protocol/load runners and retain source/seed/input manifests. Add actual encoder/storage/resource/client measurements before claiming runtime capacity; do not relabel fixture graph validation as AD conformance.",
+      "source_revision": "521dfe82f6d32db979185084b2a6e0a8dac2e02a",
+      "sources": [
+        {
+          "path": "docs/synthetic-workload.md",
+          "label": "synthetic-workload.md"
+        },
+        {
+          "path": "scripts/generate_workload.py",
+          "label": "generate_workload.py"
+        },
+        {
+          "path": "scripts/check_workload.py",
+          "label": "check_workload.py"
+        },
+        {
+          "path": "tests/test_workload.py",
+          "label": "test_workload.py"
+        }
+      ],
+      "provenance": "Actual local generator/auditor executions and negative integrity tests at the pinned source; no service, Windows/Mac host or real directory was contacted."
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "Only Phases 0 and 1 have active requirements. Later-phase design/licensing/CI links are related preparation and do not start execution. Composite requirements now have separate stable acceptance obligations with variable phase sizes. The four accepted scopes remain unchanged; all 60 conformance scenarios are unrun."
+  "focus_summary": "Phase 0 now has reproducible owner-target synthetic data: 22,150 logical objects and 254,012 membership edges, with full-size audit and byte-identical replay. Real storage/protocol/load runners, licensed client labs, production libraries and security-response qualification remain open. Four accepted scopes are unchanged; all 60 conformance scenarios remain unrun. Only Phases 0 and 1 are active."
 }

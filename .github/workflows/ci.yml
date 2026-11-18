@@ -48,6 +48,22 @@ jobs:
           ruff format --check scripts tests experiments/postgres_store native/babel-ldap/tests/smoke_ldap.py
           ruff check scripts tests experiments/postgres_store native/babel-ldap/tests/smoke_ldap.py
           mypy
+      - name: Generate and independently audit the full synthetic workload fixture
+        run: |
+          mkdir -p reports
+          python scripts/generate_workload.py --profile full --seed babel-phase0-v1 \
+            --source-revision "$GITHUB_SHA" --output "$RUNNER_TEMP/babel-synthetic-workload"
+          python scripts/check_workload.py --dataset "$RUNNER_TEMP/babel-synthetic-workload" \
+            | tee reports/workload-verification.json
+          cp "$RUNNER_TEMP/babel-synthetic-workload/manifest.json" reports/workload-manifest.json
+      - name: Preserve synthetic workload manifest and audit summary
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: synthetic-workload-evidence
+          path: |
+            reports/workload-manifest.json
+            reports/workload-verification.json
+          retention-days: 14
       - name: Source archive smoke test
         run: |
           python scripts/package_source.py --tag v0.0.0-alpha.0 --output "$RUNNER_TEMP/babel-source"

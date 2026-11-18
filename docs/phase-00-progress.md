@@ -18,7 +18,7 @@ are still proposed test targets at the selected level.
 | P00-06 | Apache-2.0/DCO owner decision retained; protocol/specification rights review explicitly versioned | Pin specification revisions and finish distribution/reference-fixture obligations |
 | P00-07 | Named current owner, Tier 0 boundaries, boundary-to-threat/evidence ownership and intake exercise procedure | Actual private intake exercise, backup security contact and incident drill; no fictitious contact or test |
 | P00-08 | [Executable validator](../scripts/check_conformance.py) and [evidence inventory](../lab/conformance-evidence.json), included in CI | Real artifacts, exact platforms/specs and reviewer disposition; no structural check is product evidence |
-| P00-09 | [Mixed workload/fault method](phase-00-workload.md), hardware and measurement/cost accounting | Owner review, implementation, measured runs and SLO ratification; no invented benchmark |
+| P00-09 | [Mixed workload/fault method](phase-00-workload.md), hardware and measurement/cost accounting | Method approved and dataset tooling implemented; load runner, real hosts, measured runs and SLO ratification remain |
 | P00-10 | [Recovery/scope governance](phase-00-governance.md), irreversible transition examples and exception rules | Exercise transitions once implemented; independent production assessment remains separate from solo PR review |
 
 ## Client coverage
@@ -102,3 +102,12 @@ platform profiles (P00-12), TLS/Kerberos/storage dependency review (P00-13–P00
 specification/fixture rights (P00-16) and intake/backup response exercise (P00-17).
 These were bundled into P00-01/P00-04/P00-06/P00-07. Their separate acceptance
 obligations remain unqualified; the two explicitly accepted scopes above are unchanged.
+
+## Synthetic dataset implementation
+
+The [generator/auditor](synthetic-workload.md) now implements the owner-approved
+workload's seeded data inputs. Full-profile CI validates 22,150 logical objects,
+254,000 direct and 12 nested membership edges, exact site/payload distributions
+and separate negative graph inputs. This is development tooling under P00-09; the
+owner's acceptance remains the engineering method scope, not measured capacity.
+No native server, GPO/ACL semantics, token encoder or client conformance is accepted.
