@@ -85,3 +85,12 @@ apply. The validator's synthetic test fixtures are not checked-in product eviden
 Phase 0 remains in progress. No whole requirement or phase acceptance is inferred
 from documents, tests of the validator or a green CI run. The dashboard keeps
 user-accepted P01 scopes unchanged and records granular Phase 0 work separately.
+
+## Explicit owner scope acceptance — 18 November 2026
+
+The owner accepted **P00-08 for the current version-1 schema/traceability tooling**
+and **P00-09 for the proposed workload/measurement method** after reviewing their
+linked scopes in this conversation. These are design/tooling acceptances: all 60
+conformance cases remain unrun and capacity/SLOs unmeasured. Other Phase 0
+requirements and whole-phase acceptance remain outstanding. The dashboard records
+reviewer/date, pinned implementation/proposal evidence and these limits.

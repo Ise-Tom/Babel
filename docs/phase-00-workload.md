@@ -1,6 +1,7 @@
 # Phase 0 workload and measurement contract
 
-Status: proposed engineering method, **not benchmark results**. The owner target
+Status: **engineering method approved by the owner on 18 November 2026**, not
+benchmark results or production SLO ratification. The owner target
 is 10,000 identities / three sites. The existing [requirements](requirements.md)
 remain the normative provisional SLOs; measurements and an ADR must ratify them.
 
@@ -14,7 +15,8 @@ Allocate 40%/35%/25% of users and computers across three sites. Use 100 OUs,
 with recorded proportions 20%/50%/25%/5%. Include acyclic nesting depths 1/3/8 and
 separate explicit cycle/over-budget denial fixtures. Report total membership edges,
 attribute byte distributions, maximum token size and index/storage expansion.
-Those distributions are proposals; a generator must validate them before any run.
+Those distributions are approved engineering inputs; a generator must validate
+them before any run.
 
 Payloads include 0.5/2/8 KiB non-secret object attributes (70%/25%/5%), bounded
 paged searches and declared inherited/delegated ACL patterns. Secrets, if later

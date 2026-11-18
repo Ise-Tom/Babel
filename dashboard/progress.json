@@ -125,12 +125,22 @@
       "note": "Ise-Tom is named accountable development owner for Tier 0 boundaries and threat evidence. Security-intake/incident exercises, backup response coverage and independent production assessment are not qualified."
     },
     "P00-08": {
-      "status": "in_progress",
-      "note": "CI validates a versioned compatibility/evidence inventory with digest binding, honest outcomes, exact executed-run metadata and artifact integrity. All 60 declared conformance scenarios are unrun; the readiness check intentionally fails. No acceptance is inferred."
+      "status": "accepted",
+      "note": "Current version-1 compatibility/evidence schema and traceability tooling accepted by the owner. All 60 product conformance scenarios remain unrun; no AD compatibility, future schema expansion or whole-phase acceptance is implied.",
+      "acceptance": {
+        "reviewer": "Project owner (explicit approval in this conversation)",
+        "date": "2026-11-18",
+        "evidence": "The project owner explicitly answered “Accept this schema/tooling scope” in this conversation on 18 November 2026. Scope: current version-1 schema and traceability implementation in PR #22, not client compatibility or phase acceptance. Implementation/tests pinned to b98dac7d33b20bef1ab6ccfb4a295f40d2330500: https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/scripts/check_conformance.py ; https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/tests/test_conformance.py . 118 local repository tests passed; all 60 conformance scenarios are explicitly unrun."
+      }
     },
     "P00-09": {
-      "status": "in_progress",
-      "note": "A concrete synthetic dataset, mixed open-loop traffic, cold/warm/fault/soak profiles and measurement/cost method are proposed. No capacity run, procurement or production SLO ratification is claimed."
+      "status": "accepted",
+      "note": "Owner approved the proposed target workload and measurement method: 10k users, 10k computers, 2k groups, three sites/six DCs, mixed traffic and fault/soak/resource/cost accounting. Capacity and production SLOs remain unmeasured and unqualified.",
+      "acceptance": {
+        "reviewer": "Project owner (explicit approval in this conversation)",
+        "date": "2026-11-18",
+        "evidence": "The project owner explicitly answered “Approve the workload/method scope” in this conversation on 18 November 2026. This accepts the Phase 0 engineering method only, not measured capacity or production SLO ratification. Reviewed proposal pinned to https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/docs/phase-00-workload.md ; tracked in https://github.com/Ise-Tom/Babel/pull/22 . No benchmark or infrastructure procurement was performed."
+      }
     },
     "P00-10": {
       "status": "in_progress",
@@ -1327,7 +1337,7 @@
         "P00-10"
       ],
       "how": "Implemented a stdlib validator with exact matrix digest binding, unique complete positive/negative cases, known references and distinct passed/failed/skipped/unsupported/unrun outcomes. Executed passes need exact profiles/builds/source/tool/time metadata, retained file hashes and every declared comparison. A separate readiness mode blocks unqualified or unaccepted evidence.",
-      "verification": "118 repository tests pass at 99% combined tooling coverage; all statements/branches in the new validator are covered. Tests reject stale digests, fabricated/partial passes, scope loss, wrong results, changed assertions, unsafe artifact paths/symlinks, missing review and skipped/unrun qualification. Current readiness fails as expected; no Windows job was fabricated.",
+      "verification": "118 repository tests pass at 99% combined tooling coverage; all statements/branches in the new validator are covered. Tests reject stale digests, fabricated/partial passes, scope loss, wrong results, changed assertions, unsafe artifact paths/symlinks, missing review and skipped/unrun qualification. Current readiness fails as expected; no Windows job was fabricated. The owner explicitly accepted the current schema/tooling scope on 18 November 2026; this does not accept the unrun product scenarios.",
       "limitations": "Schema validation cannot authenticate evidence, prove redaction, validate assertion semantics or replace trusted execution/human review. All current 60 product scenarios remain unrun; temporary synthetic unit fixtures are not product evidence.",
       "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
       "sources": [
@@ -1427,8 +1437,8 @@
         "P00-09"
       ],
       "how": "Specified seeded synthetic 10k-user/10k-computer/2k-group distributions, six-DC/three-site topology, mixed successful/denied authentication/read/write traffic, open-loop overload accounting, cold/warm/burst/soak phases, WAN/DC/site/clock/storage/key/audit faults, per-site histograms and hardware/cost manifests.",
-      "verification": "Cross-checked rates, topology, network/failure and provisional SLO values against requirements.md; documentation integrity passes. No benchmark output or infrastructure cost was invented.",
-      "limitations": "The generator/load runner and actual hosts are not implemented or allocated; workload distributions need review and measured SLO ratification. SQL microbenchmarks or simulated login cannot replace native protocol/client load.",
+      "verification": "Cross-checked rates, topology, network/failure and provisional SLO values against requirements.md; documentation integrity passes. No benchmark output or infrastructure cost was invented. The owner explicitly approved the workload/measurement method on 18 November 2026, without accepting capacity or SLO results.",
+      "limitations": "The generator/load runner and actual hosts are not implemented or allocated. The engineering method is owner-approved; measured SLO ratification remains outstanding. SQL microbenchmarks or simulated login cannot replace native protocol/client load.",
       "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
       "sources": [
         {
@@ -2134,5 +2144,5 @@
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "Phase 0 now has a Windows/Linux/macOS compatibility inventory, executable evidence-integrity checks and worked state/security/workload/recovery contracts. All 60 initial conformance scenarios remain unrun; exact builds, licensed labs, production dependencies and security-response qualification remain open. Problems track development activity only."
+  "focus_summary": "Phase 0: the owner accepted the current evidence-schema/tooling scope (P00-08) and approved the workload/measurement method (P00-09). All 60 Windows/Linux/macOS conformance scenarios remain unrun. Exact builds, licensed labs, production dependencies, specification/rights and security-response qualification remain open; no phase is accepted. Problems track development activity only."
 }
