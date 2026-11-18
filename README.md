@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T14:52:50\+01:00.
+GitHub metadata checked: 2026-11-18T15:44:45\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#27 · Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>)
 
-**In review · Pending merge · CI: success** · Head 9ee1545
+**In review · Pending merge · CI: in\_progress** · Head 1e6928e
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -70,14 +70,33 @@ GitHub metadata checked: 2026-11-18T14:52:50\+01:00.
 
 **Changed files:**
 
+- Cargo.lock
 - dashboard/capabilities.json
 - dashboard/progress.json
+- dashboard/src/index.html
 - dashboard/src/main.ts
 - dashboard/src/style.css
+- dashboard/src/types.ts
 - dashboard/tests/dashboard.spec.ts
+- docs/adr/0007-postgresql-driver-qualification.md
+- docs/ci-cd.md
+- docs/decisions.md
+- docs/phase-00-progress.md
+- docs/phase-00-security-and-dependencies.md
 - docs/project-dashboard.md
+- docs/validation/p00-15.md
+- native/babel-store-driver-lab/Cargo.toml
+- native/babel-store-driver-lab/src/lib.rs
+- native/babel-store-driver-lab/src/mutation.rs
+- native/babel-store-driver-lab/tests/database.rs
+- native/babel-store-driver-lab/tests/fixture.sql
+- native/babel-store-driver-lab/tests/support/mod.rs
+- scripts/build\_dashboard.py
+- scripts/qualify\_store\_driver.py
 - scripts/render\_dashboard.py
+- tests/test\_dashboard.py
 - tests/test\_dashboard\_delivery.py
+- tests/test\_store\_driver\_harness.py
 
 #### Proposed W45 · Make phase activity and recent work visible separately from acceptance
 
@@ -89,7 +108,48 @@ GitHub metadata checked: 2026-11-18T14:52:50\+01:00.
 
 **Limits and remaining work:** This is dashboard visibility and traceability work, not new native AD behavior or acceptance. Requirement counts and status segments are not effort/completion percentages. Work linked to a planned phase remains preparation. Pages receives the UI change after merge and successful trusted deployment; proposed work is visible separately in the GitHub report. Four accepted scopes remain unchanged and all 60 conformance scenarios stay unrun.
 
-**PR-head evidence:** [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/dashboard/src/main.ts>) · [dashboard/src/style.css](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/dashboard/src/style.css>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/dashboard/tests/dashboard.spec.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/scripts/render_dashboard.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/tests/test_dashboard_delivery.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/docs/project-dashboard.md>)
+**PR-head evidence:** [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/dashboard/src/main.ts>) · [dashboard/src/style.css](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/dashboard/src/style.css>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/dashboard/tests/dashboard.spec.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/scripts/render_dashboard.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/tests/test_dashboard_delivery.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/project-dashboard.md>)
+
+
+#### Proposed W46 · Complete the P00-15 storage driver and transaction qualification gate
+
+**Requirements:** P00-15
+
+**How it was done:** Closed the candidate increment&\#x27;s technical gaps in the existing component. Added a typed default create/rename path over atomic state/journal/audit/actor-request-payload receipts; generic SQL/transaction entry is qualification-only. Streaming results and statement/parameter inputs have explicit budgets. Armed RAII guards poison and close sessions on caller-dropped futures for query/BEGIN/mutation/rollback/COMMIT. A bounded private relay withholds the actual PostgreSQL commit reply; an independent connection verifies committed effects before recovery. The controller now SIGKILLs/restarts its owned database at two mandatory Rust checkpoints and rejects missing checkpoint accounting. Added a complete criterion-by-criterion P00-15 exit packet and a validation-ready state requiring pinned evidence, separate from owner acceptance.
+
+**Recorded validation:** All 29 qualification cases pass with none ignored; driver library line coverage is 97.81% \(312/319\). Tests prove actual committed state exists after restart before any retry, staged state is absent after a pre-commit kill, lost durable replies and dropped commit futures recover exactly one effect, concurrent duplicate requests commit once, changed payload/revoked actors are denied, and over-budget or abandoned operations cannot reuse their connection. Both real process-crash checkpoints completed. All 160 repository tests pass at 99% tooling coverage; 34 desktop/mobile browser checks and six build/security tests pass. Strict types, all-feature Clippy, Bandit, workflow checks and root/fuzz locked graph audits pass.
+
+**Limits and remaining work:** This completes the entire stated Phase 0 P00-15 library/transaction review, submitted for owner validation. It does not accept later native AD storage or a production release. Native GUID/SID/schema/ACL integration, service provisioning, credential/key custody and domain/host/disk/backup/upgrade/capacity qualification retain their actual Phase 1/3/4 gates. The fixed fixture identities and actor switch are not AD semantics/authentication. All 60 client conformance scenarios remain unrun; existing accepted proofs are unchanged.
+
+**PR-head evidence:** [docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/validation/p00-15.md>) · [docs/adr/0007-postgresql-driver-qualification.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/adr/0007-postgresql-driver-qualification.md>) · [native/babel-store-driver-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/src/lib.rs>) · [native/babel-store-driver-lab/src/mutation.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/src/mutation.rs>) · [native/babel-store-driver-lab/tests/database.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/tests/database.rs>) · [native/babel-store-driver-lab/tests/support/mod.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/tests/support/mod.rs>) · [native/babel-store-driver-lab/tests/fixture.sql](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/tests/fixture.sql>) · [scripts/qualify\_store\_driver.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/scripts/qualify_store_driver.py>) · [tests/test\_store\_driver\_harness.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/tests/test_store_driver_harness.py>)
+
+#### Proposed problem update: I05 · Qualified driver profile available; native AD directory storage still needs implementation
+
+**Proposed status:** open
+
+P00-15 now has complete driver/transaction qualification, including typed bounds, dropped futures, real durable-reply loss and Rust-client process recovery. The native AD identity/schema/ACL/store and domain formats remain separate implementation obligations; the fixture is not a directory server.
+
+**Resolution:** Still open
+
+**Next action:** Validate the completed P00-15 packet, then integrate the selected profile into P01-02/P01-03/P01-11/P01-12 with native identity/schema/ACL and durable journal semantics. Service/key custody, domain replication/backup/upgrade and production capacity retain their separate gates.
+
+**Provenance:** Design blocker, not an implemented storage defect.
+
+[docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/validation/p00-15.md>) · [native/babel-store-driver-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/src/lib.rs>) · [docs/phases/phase-01.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/phases/phase-01.md>)
+
+#### Proposed problem update: I26 · Production TLS/Kerberos/storage/transport libraries need qualification
+
+**Proposed status:** open
+
+P00-15 driver/transaction review is complete and ready for owner validation. TLS/channel/key integration, Kerberos/PAC and DNS/SMB/RPC decisions remain open at their own gates; native store implementation is tracked by I05. Later product obligations no longer keep the completed Phase 0 driver review in progress.
+
+**Resolution:** Still open
+
+**Next action:** Review P00-15&\#x27;s full exit packet and validate the selected stack/profile. Continue P00-13/P00-14 and transport qualification; implement the native store under Phase 1 rather than treating unimplemented product features as unfinished driver-selection work.
+
+**Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
+
+[docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/validation/p00-15.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/phase-00-security-and-dependencies.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/decisions.md>)
 
 #### Proposed problem update: I34 · Acceptance-only meter hid Phase 0 activity and recent implementations
 
@@ -103,7 +163,21 @@ The live site was correctly deployed after PR \#26 and contained the Rust-driver
 
 **Provenance:** Observed in the actual published f42815d dashboard data and reproduced against main. This is a development usability defect; CI and Pages publication had succeeded.
 
-[dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/dashboard/tests/dashboard.spec.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/scripts/render_dashboard.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/9ee1545ca91b773618a171385b58e93f09ca14f9/tests/test_dashboard_delivery.py>)
+[dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/dashboard/tests/dashboard.spec.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/scripts/render_dashboard.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/tests/test_dashboard_delivery.py>)
+
+#### Proposed problem update: I35 · Abandoned futures, durable reply loss and native-client recovery left P00-15 unfinished
+
+**Proposed status:** resolved
+
+The first candidate only handled its own timers and lost connections before commit. Dropping the caller&\#x27;s commit future could leave an uncertain session reusable; no real post-commit response was withheld, typed bounded operations were absent, and process recovery had only been tested through psql. Later product gates also obscured the original Phase 0 exit criteria.
+
+**Resolution:** Implemented armed operation guards and a typed default interface with bounded results. Real COMMIT-response withholding plus independent state observation proves durable receipt recovery without duplicate effects. Added mandatory owned SIGKILL/restart checkpoints before commit and after acknowledged commit, with state checked before retry. A full criterion packet now completes P00-15 and requests owner validation; later AD integration/keys/domain recovery remain their actual separate requirements.
+
+**Next action:** Validate the full P00-15 packet, then preserve these tested invariants while implementing the native directory store. Any new transport/pool/stack/profile needs requalification. Do not turn validation readiness into automatic acceptance or product conformance.
+
+**Provenance:** Concrete missing driver semantics were closed with actual database, reply-loss and process-crash tests. This is development correctness and completion of a requirement, not a GitHub setup incident.
+
+[docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/docs/validation/p00-15.md>) · [native/babel-store-driver-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/src/lib.rs>) · [native/babel-store-driver-lab/tests/database.rs](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/native/babel-store-driver-lab/tests/database.rs>) · [scripts/qualify\_store\_driver.py](<https://github.com/Ise-Tom/Babel/blob/1e6928e92ca89bc101daae061cfaa54db144742e/scripts/qualify_store_driver.py>)
 
 
 </details>
@@ -140,6 +214,8 @@ ADR 0005 specifies stable identity, authorization order and worked rename/collis
 
 **Acceptance evidence required:** Design review covers rename, DN collision, ACL inheritance, nested groups, concurrent updates and durable acknowledgment boundaries.
 
+**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W12: Threat model and open decision register; W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments; W34: Specify stable state and worked replication/recovery invariants. See the [implementation journal](#implementation-journal).
 
 ### P00-03
@@ -152,6 +228,8 @@ ADR 0005 works through attribute/link conflicts, partitions, cursor commits, tom
 
 **Acceptance evidence required:** Worked partition/delete/conflict/rollback examples specify observable outcomes and map to MS-ADTS/MS-DRSR.
 
+**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W12: Threat model and open decision register; W34: Specify stable state and worked replication/recovery invariants. See the [implementation journal](#implementation-journal).
 
 ### P00-04
@@ -163,6 +241,8 @@ Rust/parser safeguards and a standalone Rustls/ring candidate are qualified for 
 **Associated features:** [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/f42815d5a3132f56dbdf4dafde220b8b0939d7f6/docs/requirements.md>); [SEC-08: Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion](<https://github.com/Ise-Tom/Babel/blob/f42815d5a3132f56dbdf4dafde220b8b0939d7f6/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/f42815d5a3132f56dbdf4dafde220b8b0939d7f6/docs/requirements.md>)
 
 **Acceptance evidence required:** Record supported platforms, alternatives, license/advisory maintenance and locked build/fuzz/security jobs.
+
+**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W01: Native Rust workspace and reproducible builds; W27: Record PostgreSQL selection and a reviewable native state contract; W35: Map security ownership and dependency/rights qualification gaps; W39: Refine phase requirements by independent acceptance obligations; W42: Qualify a bounded Rustls/ring TLS candidate with independent enforcement tests. See the [implementation journal](#implementation-journal).
 
@@ -280,6 +360,8 @@ ADR 0006 and a bounded Rustls 0.23.46/ring 0.17.14 mutual-TLS lab now have certi
 
 **Acceptance evidence required:** Review exact versions/features, key custody, certificate, downgrade, channel-binding and provider-loss cases; no custom cryptography.
 
+**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W42: Qualify a bounded Rustls/ring TLS candidate with independent enforcement tests. See the [implementation journal](#implementation-journal).
 
 ### P00-14
@@ -292,6 +374,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Review AES/PAC/replay/delegation support, licenses, FFI/unsafe boundaries and upstream maintenance; generic Kerberos is not AD conformance.
 
+**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P00-15
@@ -303,6 +387,8 @@ ADR 0007 now has tokio-postgres 0.7.18/Tokio 1.54.1 candidate evidence: real SCR
 **Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/f42815d5a3132f56dbdf4dafde220b8b0939d7f6/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/f42815d5a3132f56dbdf4dafde220b8b0939d7f6/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/f42815d5a3132f56dbdf4dafde220b8b0939d7f6/docs/requirements.md>); [SEC-08: Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion](<https://github.com/Ise-Tom/Babel/blob/f42815d5a3132f56dbdf4dafde220b8b0939d7f6/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/f42815d5a3132f56dbdf4dafde220b8b0939d7f6/docs/requirements.md>)
 
 **Acceptance evidence required:** Review versions, parameterization, cancellation, commit/error mapping and recovery before credentials or stable formats persist.
+
+**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W44: Qualify an async PostgreSQL driver and prevent false transaction acknowledgments. See the [implementation journal](#implementation-journal).
 
@@ -366,6 +452,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Preserve GUID/SID on rename and reject DN collisions, invalid classes and matching-rule violations.
 
+**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
 ### P01-03
@@ -377,6 +465,8 @@ PostgreSQL backend and local transaction/journal contract are merged. The SQL tr
 **Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/f42815d5a3132f56dbdf4dafde220b8b0939d7f6/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/f42815d5a3132f56dbdf4dafde220b8b0939d7f6/docs/requirements.md>)
 
 **Acceptance evidence required:** Commit-boundary kills recover old or new complete state; never acknowledge an undurable mutation.
+
+**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
