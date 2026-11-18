@@ -44,7 +44,7 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T14:52:13\+01:00.
+GitHub metadata checked: 2026-11-18T14:52:50\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -63,9 +63,10 @@ GitHub metadata checked: 2026-11-18T14:52:13\+01:00.
     - Expose phase status totals and the three newest source-backed work records above collapsed requirements. Give the GitHub report the same visible counts/recent summaries.
     - Identify the artifact's actual build in the header and label the separate recorded CI baseline in the footer. Record W45 and resolved development usability defect I34; update the verified main baseline to merged PR #26. Preserve all four owner acceptance proofs and all 60 unrun conformance scenarios.
     
-    Validation: 32 desktop/mobile browser checks, including new activity/acceptance/build/recent-work regressions and automated WCAG 2.2 AA-tagged checks; six build/security tests; 157 repository tests at 99% branch-inclusive tooling coverage. All 18 cards still fit the tested desktop viewport; mobile overflow, strict types/lint, Bandit and workflow checks pass. Hosted CI must pass on this PR head before merge.
+    Validation: 32 desktop/mobile browser checks, including new activity/acceptance/build/recent-work regressions and automated WCAG 2.2 AA-tagged checks; six build/security tests; 157 repository tests at 99% branch-inclusive tooling coverage. All 18 cards still fit the tested desktop viewport; mobile overflow, strict types/lint, Bandit and workflow checks pass. Hosted [CI run 44317449757](https://github.com/Ise-Tom/Babel/actions/runs/44317449757) passed all 14 jobs on `9ee1545ca91b773618a171385b58e93f09ca14f9`, including the 32 desktop/mobile browser checks and required native/security gates.
     
     This changes reporting, not native server behavior or acceptance state. No new dependencies, external requests, CSP exceptions or deployment permissions are introduced. Pages updates after merge and successful trusted deployment; the PR-aware GitHub report shows this proposal separately meanwhile.
+    
 
 **Changed files:**
 
