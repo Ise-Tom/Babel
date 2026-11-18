@@ -44,7 +44,7 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T17:51:27\+01:00.
+GitHub metadata checked: 2026-11-18T17:51:54\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -64,7 +64,7 @@ GitHub metadata checked: 2026-11-18T17:51:27\+01:00.
     - Required CI validates the versioned contract, cross-checks the compatibility matrix and refuses unqualified level advertisement. Retain source revision, exact contract/matrix SHA-256, UTC check time and all six worked change families as `phase0-contract-evidence`.
     - Update the dashboard and capability tracker in this PR: W48/W49, resolved development gaps I36/I37, full packets pinned to their implementation source. Phase 0 becomes **3 accepted, 2 ready for validation, 7 in progress, 1 blocked, 4 planned**. All five existing acceptance proofs remain unchanged; only Phases 0/1 are active.
     
-    Validation: **172 repository tests pass**, **99% combined statement/branch coverage**, **100% coverage of the new checker**, **34 desktop/mobile browser checks** and six dashboard build/security checks pass. Strict types/lint, design/docs/conformance integrity, Bandit, Zizmor and actionlint pass. Hosted full CI is pending.
+    Validation: **172 repository tests pass**, **99% combined statement/branch coverage**, **100% coverage of the new checker**, **34 desktop/mobile browser checks** and six dashboard build/security checks pass. Strict types/lint, design/docs/conformance integrity, Bandit, Zizmor and actionlint pass. Hosted [CI run 44351294880](https://github.com/Ise-Tom/Babel/actions/runs/44351294880) passes **all 14 jobs** on PR head `2d246d8bff848d49d7ce762316b1fb4733a3b75e` (tested merge `a9e192e4f8e65ab1b7a1083ee41eec51975eb96b`). Downloaded evidence independently matches both input digests and all six change families. The hosted dashboard artifact confirms both pinned ready-for-validation packets and the exact 3 accepted / 2 ready / 7 active / 1 blocked / 4 planned Phase 0 counts.
     
     These are complete Phase 0 **design** gates, whose original requirements ask for profiles, review and recovery examples. The checker validates record consistency; it does not authenticate reviewer/prose claims or authorize/perform a live directory transition. All 60 product/client conformance scenarios and actual native domain recovery remain unrun at their own implementation gates. No exception is active. No whole-phase or full product capability acceptance is inferred. Rollback of this tooling does not mutate directory data; future runtime migrations still require their reviewed coherent recovery procedures.
 
