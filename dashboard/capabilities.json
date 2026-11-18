@@ -83,7 +83,8 @@
         "W13",
         "W23",
         "W30",
-        "W43"
+        "W43",
+        "W44"
       ],
       "blockers": [
         "I27"
@@ -93,7 +94,7 @@
     "OPS-01": {
       "status": "planned",
       "category": "experiment",
-      "scope": "Synthetic PostgreSQL recovery experiments and workload tools support planning; native directory operations are not implemented.",
+      "scope": "Synthetic PostgreSQL recovery, a Rust driver candidate and workload tools support qualification; native directory operations are not implemented.",
       "implemented": [],
       "missing": [
         "Native directory backup/restore and upgrade",
@@ -103,7 +104,8 @@
       "work_items": [
         "W27",
         "W28",
-        "W40"
+        "W40",
+        "W44"
       ],
       "blockers": [
         "I04",
