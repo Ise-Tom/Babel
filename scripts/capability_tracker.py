@@ -107,6 +107,8 @@ def enrich(
             )
         if claim["status"] in {"planned", "prototype", "partial"}:
             require(bool(missing), "Unqualified capability gaps must remain visible")
+        else:
+            require(not missing, "Implemented capability cannot retain declared gaps")
         proof = claim["acceptance"]
         if proof is not None:
             require(

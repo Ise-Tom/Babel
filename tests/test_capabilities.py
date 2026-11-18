@@ -86,6 +86,7 @@ class CapabilityTracker(unittest.TestCase):
             {"scope": ""},
             {"status": "complete"},
             {"category": "production-ready"},
+            {"status": "implemented"},
         ):
             self.data["claims"] = {"AD-04": {**self.claim, **change}}
             with self.subTest(change=change), self.assertRaises(ValueError):

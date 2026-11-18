@@ -36,7 +36,8 @@ contract as a gap. Add an explicit claim only when it improves the information:
 Non-planned claims require implemented behavior and an implementation work record.
 The work supplies how it was built, actual validation, limitations and pinned
 source files. Planned claims cannot assert implemented behavior. Incomplete
-claims must list gaps. Full acceptance requires product category, implemented
+claims must list gaps; implemented claims cannot retain declared gaps.
+Full acceptance requires product category, implemented
 state, no remaining gaps and the normal reviewer/date/evidence proof. CI validates
 these structural rules; it cannot establish that a claim is true by itself.
 
