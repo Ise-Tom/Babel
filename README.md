@@ -44,7 +44,7 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T15:48:41\+01:00.
+GitHub metadata checked: 2026-11-18T15:53:32\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -66,9 +66,10 @@ GitHub metadata checked: 2026-11-18T15:48:41\+01:00.
     - Actually SIGKILL/restart the owned database at mandatory Rust checkpoints before commit and after confirmed commit. Verify staged state before the first kill; verify committed state after restart **before any retry**, so retry cannot mask lost data. Missing controller checkpoints fail independently of the Rust exit code.
     - Move P00-15 from in progress to **Ready for validation** with pinned full exit evidence. Phase 0 now has **8 in progress, 1 ready, 1 blocked, 5 planned, 2 accepted**. Preserve all four acceptance proofs, only Phases 0/1 active and all 60 unrun AD/client scenarios. Record W46 and resolved correctness/qualification gap I35. The earlier activity-display fix remains included.
     
-    Local validation: **29/29 qualification cases pass**, including both real database-process recoveries; driver-library coverage is **97.81% (312/319)**. All 160 repository tests pass at 99% branch-inclusive tooling coverage; all 34 desktop/mobile browser checks and six build/security tests pass. All-feature Clippy, strict types/lint, Bandit, workflow checks and both locked dependency graph audits pass. Hosted CI must pass on this PR head before merge.
+    Local validation: **29/29 qualification cases pass**, including both real database-process recoveries; driver-library coverage is **97.81% (312/319)**. All 160 repository tests pass at 99% branch-inclusive tooling coverage; all 34 desktop/mobile browser checks and six build/security tests pass. All-feature Clippy, strict types/lint, Bandit, workflow checks and both locked dependency graph audits pass. Hosted [CI run 44327591957](https://github.com/Ise-Tom/Babel/actions/runs/44327591957) passed all 14 jobs on `1e6928e92ca89bc101daae061cfaa54db144742e`. Downloaded evidence independently confirms all 29 qualification cases, both real SIGKILL/restart checkpoints, 97.81% driver-library coverage, fixture isolation/cleanup and retained dependency notices. The PR is mergeable; P00-15 is technically complete and ready for owner validation.
     
     P00-15's original requirement is unchanged. Its driver-selection/transaction-review criteria are complete; owner validation is pending. Native AD identity/schema/ACL/store and real journal integration remain P01-02/P01-03/P01-11/P01-12; service/key provisioning is P01-09/P01-14, and domain/host/disk/backup/upgrade/capacity qualification remains Phase 3/4. The fixture identities and actor switch are not AD semantics/authentication. This does not accept those later requirements or production release, and introduces no valuable directory credentials or stable AD formats. No new phase is started. The dashboard's validation queue never implies owner acceptance.
+    
 
 **Changed files:**
 
