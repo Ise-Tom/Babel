@@ -92,3 +92,11 @@ RAM, storage/filesystem/flush policy, OS/kernel/packages, images/digests, VM-hou
 Windows licensing rights, storage/egress and actual currency/unit prices. No cost
 estimate is asserted until a real host/provider is selected. Published artifacts
 must be redacted and bound to source/contract/dataset revisions.
+
+## Executable fixture tooling
+
+The [synthetic dataset generator and auditor](synthetic-workload.md) implement the
+seeded object, site, payload, membership and graph-fixture inputs. Required CI
+generates/audits the full profile and retains its manifest. This adds reproducible
+data, not a load harness, actual clients or measured production SLOs. Token bytes
+and storage/index expansion remain unmeasured until their real implementations exist.
