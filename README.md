@@ -44,11 +44,120 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T09:17:41\+01:00.
+GitHub metadata checked: 2026-11-18T09:36:25\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#23 · Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>)
+
+**In review · Pending merge · CI: in\_progress** · Head fca2b35
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    The dashboard marked Phases 5 and 10 in progress even though every requirement in those phases was planned. A fallback promoted any phase with a linked work record, so shared licensing, CI and source-prerelease preparation looked like phase execution. Also, the earlier quota fix removed validator restrictions but left the authored ten-row template intact across all phases.
+    
+    Phase status now follows explicit requirement activity/acceptance. Linking design or implementation preparation cannot start a phase. The UI/report label these links as related records, and planned requirements explain the difference. The current model has only Phases 0 and 1 active; whole-phase acceptance still requires every current requirement plus a separate exit approval.
+    
+    All 18 phase specifications refine composite acceptance obligations into independently verifiable requirements. Original IDs retain their primary responsibility, with explicit per-document parent-to-split trace lists. Examples include separate AS/TGS/PAC/delegation cases, schema/object ACLs, installation versus post-reboot health, and device isolation versus mass-response authority. There are 274 current requirements (12–24 per phase), derived from canonical rows rather than a quota. Phase 0 has 17, Phase 1 has 16, AD interoperability has 24 and first production release has 12. The existing capability scope is preserved; 94 split acceptance obligations are not 94 added features or an effort estimate.
+    
+    The four owner-accepted P00/P01 scopes are unchanged. New split rows remain planned until explicitly assigned activity/evidence. Work records preserve historical links; W38/W39 and I14/I29 explain the correction and limits without starting later-phase execution. Dashboard tests derive totals and retain unequal/noncontiguous requirement coverage; obsolete ten-item roadmap ranges are removed.
+    
+    Validation: 119 repository tests pass at 99% combined tooling coverage; 26 desktop/mobile browser checks and six dashboard build/security-lint tests pass. New regressions verify shared design/implementation records do not start later phases and explicitly active requirements do. Strict types, Ruff, Bandit, actionlint, Zizmor, component scope and design/doc/dashboard integrity pass. Compatibility inventory remains 60 unrun scenarios; no product compatibility/capacity acceptance is claimed. Current hosted CI is recorded separately when complete.
+    
+    The main/Pages dashboard will reflect the corrected activity and counts after merge and successful trusted deployment. The GitHub report displays this PR's proposed changes separately from main totals. No merge, tag/release, infrastructure purchase or cloud-environment publication is performed by opening this PR.
+
+**Changed files:**
+
+- README.md
+- dashboard/associations.json
+- dashboard/progress.json
+- dashboard/src/main.ts
+- dashboard/tests/dashboard.spec.ts
+- docs/phase-00-progress.md
+- docs/phases/README.md
+- docs/phases/phase-00.md
+- docs/phases/phase-01.md
+- docs/phases/phase-02.md
+- docs/phases/phase-03.md
+- docs/phases/phase-04.md
+- docs/phases/phase-05.md
+- docs/phases/phase-06.md
+- docs/phases/phase-07.md
+- docs/phases/phase-08.md
+- docs/phases/phase-09.md
+- docs/phases/phase-10.md
+- docs/phases/phase-11.md
+- docs/phases/phase-12.md
+- docs/phases/phase-13.md
+- docs/phases/phase-14.md
+- docs/phases/phase-15.md
+- docs/phases/phase-16.md
+- docs/phases/phase-17.md
+- docs/project-dashboard.md
+- docs/requirements.md
+- docs/roadmap.md
+- scripts/build\_dashboard.py
+- scripts/render\_dashboard.py
+- tests/test\_dashboard.py
+
+#### Proposed W38 · Separate actual phase execution from related preparation
+
+**Requirements:** P00-08, P00-10
+
+**How it was done:** Removed work-link promotion of planned phases. Explicit requirement activity/acceptance determines phase status; phase cards/report label related records and planned rows explain preparatory links. Shared work remains traceable without implying execution.
+
+**Recorded validation:** 119 repository tests pass at 99% tooling coverage. All 26 desktop/mobile browser tests and six build/security-lint tests pass, including real-model Phases 5/10 planned, exactly two active phases, and explicit activity fixtures. Strict types/lint, Bandit, actionlint/Zizmor and design/doc/evidence checks pass.
+
+**Limits and remaining work:** No product functionality, phase acceptance or later-phase execution is introduced. Four owner-accepted requirement scopes remain exactly unchanged. Public dashboards reflect this code after merge and trusted deployment.
+
+**PR-head evidence:** [scripts/build\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/scripts/build_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/dashboard/src/main.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/scripts/render_dashboard.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/tests/test_dashboard.py>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/dashboard/tests/dashboard.spec.ts>)
+
+
+#### Proposed W39 · Refine phase requirements by independent acceptance obligations
+
+**Requirements:** P00-01, P00-04, P00-06, P00-07, P01-02, P01-03, P01-04, P01-05, P01-08, P01-09, P02-01, P02-02, P02-03, P02-04, P02-05, P02-06, P02-07, P02-08, P02-09, P03-03, P03-04, P03-07, P03-08, P03-09, P03-10, P04-01, P04-04, P04-07, P05-03, P05-08, P06-02, P06-08, P06-09, P07-01, P07-04, P07-06, P07-07, P07-09, P08-01, P08-02, P08-03, P08-04, P08-05, P08-08, P08-10, P09-02, P09-05, P09-07, P09-09, P10-01, P10-03, P10-06, P10-07, P11-02, P11-03, P11-04, P11-08, P11-09, P12-03, P12-04, P12-05, P12-06, P12-07, P12-09, P13-02, P13-06, P13-09, P14-01, P14-05, P14-06, P14-08, P14-10, P15-03, P15-07, P15-09, P16-01, P16-02, P16-04, P16-05, P16-06, P16-07, P16-10, P17-02, P17-04, P17-08, P17-09
+
+**How it was done:** Reviewed composite requirements across all 18 phases. Original IDs retain their primary responsibility; 94 additional stable IDs carry separately verifiable obligations, with parent-to-split trace lists in each canonical document. Preserved original capability coverage and all accepted scopes. Updated feature associations, roadmap references and quota-based tests.
+
+**Recorded validation:** Design/model validation covers 274 current requirements and all 130 existing global capabilities. Actual phase sizes range from 12 to 24; examples are 17 Phase 0, 16 Phase 1, 24 AD interoperability and 12 first production release. Unequal-size/export/browser regressions pass.
+
+**Limits and remaining work:** This is requirement design/refinement, not new product work or 94 new features. Counts are not effort estimates. New split rows remain planned until explicitly assigned activity/evidence; legacy work links are retained for historical traceability. No later phase is started and no new acceptance is inferred.
+
+**PR-head evidence:** [docs/phases/README.md](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/docs/phases/README.md>) · [docs/phases/phase-00.md](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/docs/phases/phase-00.md>) · [docs/phases/phase-02.md](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/docs/phases/phase-02.md>) · [docs/phases/phase-05.md](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/docs/phases/phase-05.md>) · [dashboard/associations.json](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/dashboard/associations.json>)
+
+#### Proposed problem update: I14 · Fixed requirement quotas and ambiguous substep acceptance labels
+
+**Proposed status:** resolved
+
+The earlier repair removed validator quotas but left every authored phase at ten broad rows and some tests at a fixed total. Independently testable obligations remained bundled, so actual roadmap granularity still looked uniform.
+
+**Resolution:** Refined composite obligations in all 18 canonical phase documents, retaining primary original IDs and tracing split obligations to new stable IDs. Counts now follow the actual rows \(12–24 per phase\); acceptance scopes are unchanged. Dashboard/export tests derive totals and exercise unequal phase sizes.
+
+**Next action:** Keep counts tied to independent acceptance obligations, never a quota or effort percentage; update canonical traceability and explicit acceptance when scope changes.
+
+**Provenance:** Project owner requested acceptance questions and said substep counts need not be linear; no separate GitHub issue was created.
+
+[docs/phases/README.md](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/docs/phases/README.md>) · [scripts/check\_design.py](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/scripts/check_design.py>) · [scripts/build\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/scripts/build_dashboard.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/tests/test_dashboard.py>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/dashboard/tests/dashboard.spec.ts>)
+
+#### Proposed problem update: I29 · Shared preparation incorrectly started later phases
+
+**Proposed status:** resolved
+
+The dashboard promoted a planned phase to in\_progress when any work record linked to it, including shared licensing, CI and source-prerelease preparation. This incorrectly started Phases 5 and 10 without active requirements.
+
+**Resolution:** Removed promotion based on work links. Explicit active/accepted requirement state drives phase activity, with separate whole-phase acceptance. UI/report call these related records and planned requirements explain preparation. Python/browser regressions verify shared design/implementation records do not start future phases.
+
+**Next action:** Keep preparatory traceability separate from execution. Start a later phase only by explicitly recording actual requirement activity and evidence; do not infer it from a shared work item.
+
+**Provenance:** Reproduced against merged main: Phases 5 and 10 were in\_progress while all their requirements were planned; the corrected model has only Phases 0 and 1 active.
+
+[scripts/build\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/scripts/build_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/dashboard/src/main.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/scripts/render_dashboard.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/tests/test_dashboard.py>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/fca2b359df7a8e47d726be9ba81bed1bd5b937b3/dashboard/tests/dashboard.spec.ts>)
+
+
+</details>
 
 
 ## Phase 00
@@ -69,6 +178,8 @@ Owner selected the 2016 initial domain/forest baseline with explicit non-Windows
 **Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [AD-10: Domain/forest functional levels and FSMO role ownership, transfer and failure recovery](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** Reviewed matrix maps every AD requirement to expected positive/negative behavior and an owner; unknown/unsupported operations stay visible.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients; W33: Enforce versioned conformance evidence integrity in CI. See the [implementation journal](#implementation-journal).
 
@@ -106,6 +217,8 @@ The bounded Rust lab is qualified within its existing scope. A dependency qualif
 
 **Acceptance evidence required:** ADR records alternatives, supported platforms, license/CVE maintenance and locked build/fuzz/security jobs; no custom crypto accepted.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W01: Native Rust workspace and reproducible builds; W27: Record PostgreSQL selection and a reviewable native state contract; W35: Map security ownership and dependency/rights qualification gaps. See the [implementation journal](#implementation-journal).
 
 ### P00-05
@@ -130,6 +243,8 @@ Apache-2.0 and DCO are selected and merged. Specification revision/use rights, r
 
 **Acceptance evidence required:** Owner decision and dependency obligations recorded before source distribution; missing decisions block release rather than receiving invented terms.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W25: Apply owner-selected Apache-2.0 license and DCO contribution terms; W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients; W35: Map security ownership and dependency/rights qualification gaps. See the [implementation journal](#implementation-journal).
 
 ### P00-07
@@ -141,6 +256,8 @@ Ise-Tom is named accountable development owner for Tier 0 boundaries and threat 
 **Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [SEC-09: Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** Private report route and backup security contacts exercised; every boundary has misuse cases and review responsibility.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W12: Threat model and open decision register; W35: Map security ownership and dependency/rights qualification gaps. See the [implementation journal](#implementation-journal).
 
@@ -155,6 +272,8 @@ Current version-1 compatibility/evidence schema and traceability tooling accepte
 **Acceptance evidence required:** Evidence records commit, test/client/spec revision, requirement, outcome and redacted artifacts; skipped/unrun are never passing.
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-18. The project owner explicitly answered “Accept this schema/tooling scope” in this conversation on 18 November 2026. Scope: current version-1 schema and traceability implementation in PR \#22, not client compatibility or phase acceptance. Implementation/tests pinned to b98dac7d33b20bef1ab6ccfb4a295f40d2330500: https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/scripts/check\_conformance.py ; https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/tests/test\_conformance.py . 118 local repository tests passed; all 60 conformance scenarios are explicitly unrun.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W10: Required native and repository CI gates; W11: Complete phase specifications and traceability; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W18: Open-PR-aware private progress reporting; W33: Enforce versioned conformance evidence integrity in CI; W37: Make Phase 0 recovery, scope and acceptance governance concrete. See the [implementation journal](#implementation-journal).
 
@@ -182,6 +301,8 @@ Solo development governance and worked schema/key/restore/functional-level/stora
 
 **Acceptance evidence required:** Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI; W33: Enforce versioned conformance evidence integrity in CI; W34: Specify stable state and worked replication/recovery invariants; W37: Make Phase 0 recovery, scope and acceptance governance concrete. See the [implementation journal](#implementation-journal).
 
 </details>
@@ -208,6 +329,8 @@ Current native LDAP component development safeguards accepted by the project own
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-17. Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: development safeguards for the current native LDAP component, not the full server or future components. PR \#16 and its 12-job successful CI run: https://github.com/Ise-Tom/Babel/pull/16 ; https://github.com/Ise-Tom/Babel/actions/runs/44152161324 . Merged main cd6ad149870a05db4ab2a4f7fbca3e4d461af848 also passed all 12 jobs in run 44153995669.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W01: Native Rust workspace and reproducible builds; W02: Bounded BER / LDAP decoder; W06: Independent client and packaged-binary checks; W07: Property tests and core coverage gate; W08: Sanitizer fuzz smoke; W09: Native dependency, license and SBOM checks; W10: Required native and repository CI gates; W13: Tested source and lab archive packaging; W17: Bounded LDAP RootDSE filter discovery; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W29: Verify owner-applied repository protections and security settings; W31: Adapt development governance to the sole maintainer without bypassing CI. See the [implementation journal](#implementation-journal).
 
 ### P01-02
@@ -219,6 +342,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** Property tests preserve IDs on rename and reject collisions, invalid schema writes and unauthorized inherited/nested access.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments. See the [implementation journal](#implementation-journal).
 
@@ -232,6 +357,8 @@ The owner-selected PostgreSQL backend and local transaction/journal contract are
 
 **Acceptance evidence required:** Kill/restart at each commit boundary yields either the old or new complete state and never acknowledges an undurable successful write.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments. See the [implementation journal](#implementation-journal).
 
 ### P01-04
@@ -244,6 +371,8 @@ Loopback read-only RootDSE discovery and bounded presence/objectClass equality/b
 
 **Acceptance evidence required:** Real client probes and negative paging/filter/referral tests pass; RootDSE success is not counted as domain join.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W02: Bounded BER / LDAP decoder; W03: Read-only RootDSE queries; W05: TCP framing and session budgets; W06: Independent client and packaged-binary checks; W17: Bounded LDAP RootDSE filter discovery. See the [implementation journal](#implementation-journal).
 
 ### P01-05
@@ -255,6 +384,8 @@ Credential rejection is implemented; real Kerberos/password/key behavior awaits 
 **Associated features:** [AD-03: Kerberos AS/TGS, service principals, PAC validation, time synchronization, cross-service SSO, constrained delegation, and trust authentication](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [IAM-01: Complete identity and password administration: create/disable/delete/restore accounts, user-driven password change, authorized admin reset, expiry/lockout and fine-grained password policies, with delegated permissions and audit](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** Positive/denied bind and AS/TGS flows, replay/expiry/downgrade and password redaction tests pass for declared operations.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W04: Credential rejection and safe diagnostics. See the [implementation journal](#implementation-journal).
 
@@ -292,6 +423,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Create/disable/reset/group workflows succeed only with correct rights; API and UI denied-operation cases produce matching audit evidence.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P01-09
@@ -303,6 +436,8 @@ Lab limits and diagnostics are tested; TLS, Linux service lifecycle and producti
 **Associated features:** [PLAT-02: Repeatable Linux installation, service supervision, reboot recovery, upgrade and removal that preserves directory data by default](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [SEC-04: TLS 1.2 minimum, TLS 1.3 preferred; certificate identity validation and rotation; trust roots managed explicitly](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** Clean install/reboot, invalid DNS/time/certificate and least-privilege file/port tests yield actionable errors without bypassing verification.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W04: Credential rejection and safe diagnostics; W05: TCP framing and session budgets. See the [implementation journal](#implementation-journal).
 
@@ -317,6 +452,8 @@ Project owner accepted the current prototype’s scope inventory and limitation 
 **Acceptance evidence required:** Each public operation has a tested/unsupported status; lab credentials and incomplete protocol behavior cannot be promoted as a production release.
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-17. Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: documentation, tests and CLI label the current prototype as a loopback-only LDAP discovery lab and disclose missing production/domain functionality. Evidence pinned to merged main: https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phase-01-progress.md ; https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/native/babel-ldap/src/main.rs . This accepts scope reporting, not those missing features or production readiness.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W17: Bounded LDAP RootDSE filter discovery; W18: Open-PR-aware private progress reporting; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes. See the [implementation journal](#implementation-journal).
 
@@ -342,6 +479,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Synthetic import/export and reference queries compare IDs, object attributes, ACLs and schema; incompatible operations have explicit failures.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P02-02
@@ -353,6 +492,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [IAM-01: Complete identity and password administration: create/disable/delete/restore accounts, user-driven password change, authorized admin reset, expiry/lockout and fine-grained password policies, with delegated permissions and audit](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [SEC-07: Rate limiting resistant to distributed abuse, password policy and breached-password checks without leaking passwords, safe recovery and lockout visibility](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** User/admin changes, history/lockout/expiry, disable/delete/restore and denied actions pass through every supported protocol/API path.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -366,6 +507,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Real client/service AS/TGS and delegation cases pass; replay, wrong key, invalid PAC, expired tickets and weak-encryption downgrade are rejected.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P02-04
@@ -377,6 +520,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-04: LDAPv3/LDAPS, AD schema and controls, paging, referrals, ACL filtering, and global catalog](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** RSAT and LDAP clients agree with the reference for selected controls; unauthorized attributes never appear in search or error output.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -390,6 +535,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Signed updates, stale records, wrong-site discovery and DNS failure tests produce the declared outcomes on supported clients.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P02-06
@@ -401,6 +548,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-08: Required Netlogon, SAMR, LSA, SMB and DCE/RPC behavior for domain membership and administration](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [SEC-02: Secure defaults: LDAP signing/channel binding where supported, encrypted simple binds, SMB signing, signed/sealed Netlogon; no anonymous sensitive reads or SMB1](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** Client join/rejoin, secure-channel reset and service-account operations pass; signing/sealing and least-privilege rejection are verified.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -414,6 +563,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Actual resultant policy and scripts match the reference; filesystem and directory permissions/versions remain reconciled after failures.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P02-08
@@ -426,6 +577,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Unsupported levels are rejected; role handoff, failed holder and schema upgrade tests preserve a recoverable authoritative state.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P02-09
@@ -437,6 +590,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-09: Forest/domain trusts, cross-domain authorization, migration and coexistence with existing AD](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** Two reference forests exercise permitted/denied cross-domain access, trust removal and a rehearsed migration/recovery path.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -498,6 +653,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Model-based tests cover modify/modify, move/rename, group membership, delete/modify and tombstone/lingering-object conflicts.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P03-04
@@ -509,6 +666,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-10: Domain/forest functional levels and FSMO role ownership, transfer and failure recovery](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** Lose one DC or site, transfer/seize a role through the supported procedure and demonstrate correct client discovery and surviving authentication.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -546,6 +705,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Recover at full dataset size in an isolated clean environment without the original domain or a sole directory-held recovery key.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P03-08
@@ -557,6 +718,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** Fault-drill reports measure DC &lt;=60 s failover and full-domain &lt;=1 h RPO/&lt;=4 h RTO; exceeded targets block qualification.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -570,6 +733,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Test invalid/expired certificates, lost issuer and interrupted rotation; preserve intended authentication without accepting compromised old keys indefinitely.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P03-10
@@ -581,6 +746,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** Disk-full, queue pressure, clock fault, 24-hour partition/rejoin and process kill have bounded memory/retries and auditable data-loss outcomes.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -605,6 +772,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [SEC-08: Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** Report covers protocol, keys, admin UI/API, replication, supply chain and restore; findings have owners, retests and explicit dispositions.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -642,6 +811,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** 24-hour soak and DC/site failures show bounded queues/storage, no unexplained credential/data corruption and documented degraded behavior.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P04-05
@@ -677,6 +848,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** WCAG 2.2 AA audit and manual assistive-technology journeys pass for the administration surface; unsupported settings are never silently discarded.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -762,6 +935,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Consumer verification rejects modified bytes, wrong signer, expired/untrusted metadata and replayed unsupported releases.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P05-04
@@ -822,6 +997,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Runbooks identify irreversible transitions and expected RPO/RTO; exercises recover safely without replaying incompatible schema/key state.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P05-09
@@ -833,6 +1010,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** No self-approved high-risk publication or privileged fork runner; platform limitations are disclosed, never treated as enforced protection.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI. See the [implementation journal](#implementation-journal).
 
@@ -881,6 +1060,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** Synthetic fault injection produces timely actionable alerts; cached offline login and missing telemetry do not count as online service success.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -954,6 +1135,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Daily/periodic scans actually run, stale results alert, signatures stay verified and urgent advisories do not wait for routine schedules.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P06-09
@@ -965,6 +1148,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/requirements.md>)
 
 **Acceptance evidence required:** Separate contacts, signing recovery and backup custody restore operations without a single absent administrator or failed domain provider.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1002,6 +1187,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Origin/replay/unauthorized enrollment tests fail; multiple factors, replacement and recovery are audited with no SMS-only Tier 0 bypass.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P07-02
@@ -1038,6 +1225,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Qualified LAPS/gMSA/keytab retrieval, rotation, offline behavior and denied readers pass; secrets never appear in logs or broad inventory.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P07-05
@@ -1062,6 +1251,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Results match actual ACL/trust/nested-group decisions; unauthorized viewers cannot enumerate protected relationships.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P07-07
@@ -1073,6 +1264,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [D-01: GPO version history, diffs, independent approval and staged OU rollout](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>); [D-02: Effective policy preview, precedence and resultant-policy troubleshooting](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>); [D-03: Tested hardening templates for Windows and Linux](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>); [D-04: Policy integrity/drift detection, safe script distribution and privileged policy ownership](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Version/SYSVOL consistency, out-of-band edits and resultant-policy comparisons are validated; revert restores real client behavior.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1097,6 +1290,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [L-02: Policy simulation and explainable access decisions](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>); [L-03: Safe bulk operations with scope preview, dry run, idempotency and compensating actions](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>); [L-04: Accessible secure enrollment/recovery and understandable authentication errors](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>); [L-05: Security exception register and policy-as-code change review](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Expired grants/exceptions fail closed; keyboard/screen-reader and policy-simulation journeys include safe bulk-change previews.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1134,6 +1329,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Real supported clients pass valid mapping/rotation and reject invalid templates, SAN escalation, expired/revoked certificates and weak mappings.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P08-02
@@ -1145,6 +1342,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [C-06: Signed, versioned provisioning integrations such as SCIM and an external secrets manager](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>); [J-01: OIDC/OAuth2 and SAML federation through separately qualified modules](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Issuer/audience, nonce/state/PKCE where applicable, malicious attributes, duplicate events and cross-organization mix-ups are tested; unknown claims grant no privilege.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1158,6 +1357,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Spoofed/stale/missing posture and provider outage behavior match approved policy; no raw posture flag grants Tier 0 membership.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P08-04
@@ -1170,6 +1371,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Expiry forecasting, safe overlap, CA/CRL/OCSP failure and renewal tests produce accurate status without disabling verification.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P08-05
@@ -1181,6 +1384,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [G-01: Structured, correlated audit export to SIEM/syslog with externally protected storage](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>); [G-05: Investigation views: identity timeline, effective permissions and configuration history](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Schema/version/provenance, gap detection, redaction and denied-reader tests pass; root-controlled local files are not claimed tamper-proof.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1218,6 +1423,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** LDAP/UI/API attribute denials, purpose-scoped exports, deletion/hold and residency policy tests pass without breaking required discovery.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P08-09
@@ -1241,6 +1448,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [L-01: Security posture dashboard with actionable, evidence-backed findings](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Reports show freshness, unsupported/unknown state, rule quality, provider dependencies and mixed-load overhead; a module outage does not stop core domain auth.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1278,6 +1487,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Ticket-signing double rotation, service/machine/trust/admin keys and downstream effects are sequenced and verified in an isolated lab.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P09-03
@@ -1314,6 +1525,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Supported key operations, latency, outage, backup/custody and provider recovery are tested; unsupported AD verifiers/keys are explicitly excluded.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P09-06
@@ -1338,6 +1551,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Independent recovery works after directory/provider loss and reconciles revoked identities, key epochs and directory/SYSVOL consistency.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P09-08
@@ -1361,6 +1576,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [H-05: Tested response playbooks and tabletop exercises](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Tabletops plus technical drills record response time, operator mistakes, evidence retained and follow-up fixes.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1398,6 +1615,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Independent rebuilds compare bytes or documented nondeterminism; SBOM/provenance/commit/artifact identities align and license notices are reviewed.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P10-02
@@ -1421,6 +1640,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [K-03: Longer parser/protocol fuzzing, sanitizers, differential and state-machine tests](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** LDAP/RPC/Kerberos/DNS/policy inputs exercise bounded parsers with sanitizer/property regressions; failures yield minimized tracked cases.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1458,6 +1679,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Published program scope, safe-harbor/disclosure handling and funded remediation produce retested findings without exposing active secrets.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P10-07
@@ -1469,6 +1692,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [K-06: Hardened release governance and maintainer continuity](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Loss/compromise of one signer/reviewer cannot silently publish a trusted update; emergency process and audit remain usable.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1493,6 +1718,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [K-06: Hardened release governance and maintainer continuity](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Actual required-check/review/ref/environment protections are verified where supported; unavailable private-repo features remain explicit release risks.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI. See the [implementation journal](#implementation-journal).
 
@@ -1542,6 +1769,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Replay/cloned tokens, wrong device identities and revoked certificates fail; enrollment/rotation/rescue are audited without embedded domain-admin secrets.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P11-03
@@ -1554,6 +1783,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Compare actual OS/native package tools and reboot state; missing/stale/unknown/unsupported observations remain distinguishable.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P11-04
@@ -1565,6 +1796,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [PATCH-02: Trusted patch/vulnerability catalog with dependencies, supersedence and known issues](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Vendor signatures/backports/prerequisites and known-issue fixtures yield correct applicable/not-applicable results beyond version-string matching.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1614,6 +1847,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Poisoned cache/metadata, wrong recipient and signature failures are rejected; relay possession of payload never authorizes installation.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P11-09
@@ -1625,6 +1860,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [PATCH-13: Compliance dashboards, remediation SLAs, exception register and report export](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Fields/roles/retention are documented; 10k fleet simulation plus representative real endpoints reports freshness, resource and storage overhead.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1686,6 +1923,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** DST/time-zone, sleep/offline devices, active sessions, grace/deferral and forced reboot scenarios match explicit approved policy.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P12-04
@@ -1697,6 +1936,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [PATCH-07: Preflight disk/power/network checks, dependency handling and application/service-aware installation](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Blocked devices are reported separately; competing native transactions and unsupported reboot suppression are not overridden silently.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1710,6 +1951,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Vendor signatures plus approved digests survive retries/proxies; tamper, replay, incomplete files and quota failures block installation.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P12-06
@@ -1722,6 +1965,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Expired/cancelled jobs cannot run after reconnect; duplicate IDs and lost replies cannot cause repeated install or arbitrary command execution.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P12-07
@@ -1733,6 +1978,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [PATCH-10: Independent post-install verification of installed version, reboot completion and service health](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Native version/state and health checks confirm remediation; exit zero, downloaded content or offline silence alone never counts as verified.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1757,6 +2004,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [PATCH-12: Emergency remediation and risk-based prioritization](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/patch-management-roadmap.md>)
 
 **Acceptance evidence required:** Known-exploited/exposed asset priority is explainable; override scope, expiry, independent approval and audit prevent unlimited emergency privilege.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1806,6 +2055,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Connected/stale/offline/unsupported categories are explicit; p95 ack and &gt;=99% inventory targets exclude neither unexplained failures nor hidden missing agents.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P13-03
@@ -1854,6 +2105,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Role/target/approval/audit behavior agrees across clients; connector outages and duplicate tickets cannot grant new execution rights.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P13-07
@@ -1890,6 +2143,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Supported old/new combinations preserve identity and job semantics; staged signed-agent rollout pauses bad versions and retains recovery.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P13-10
@@ -1925,6 +2180,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [REMOTE-01: Authenticated desktop and terminal sessions to enrolled, authorized devices](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Real Windows sessions and Linux headless/X11/Wayland cases have a versioned supported/unsupported matrix and tested maintained protocol engines.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -1974,6 +2231,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Denied channels cannot be reenabled through protocol/API bypass; locked screens, user switching and OS security prompts remain enforced.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P14-06
@@ -1985,6 +2244,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [REMOTE-05: Secure brokering and prompt revocation](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Certificate/recipient failures close connections; NAT/proxy and relay compromise tests document who can see session content and protect credential custody.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -2010,6 +2271,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Notice, policy, access/retention and sensitive-input boundaries are tested; no covert sessions or indiscriminate credential/key logging is allowed.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P14-09
@@ -2033,6 +2296,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [REMOTE-01: Authenticated desktop and terminal sessions to enrolled, authorized devices](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/endpoint-operations-roadmap.md>); [REMOTE-05: Secure brokering and prompt revocation](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Published concurrency/bitrate/latency plus compromised-operator/broker rescue tests pass without affecting identity or emergency recovery paths.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -2082,6 +2347,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Real Windows reparse and Linux symlink/rename race tests cannot escape allowed directories or overwrite privileged startup/system files.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P15-04
@@ -2130,6 +2397,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Full disk, expired/cancelled jobs and abandoned staged data remain bounded; reconnect revalidates authority before continuing.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P15-08
@@ -2153,6 +2422,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [FILE-05: Content policy, separate execution and audit](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Operator/device/path/digest/outcome are auditable without raw contents; uploading never grants access to user files or unsolicited endpoint surveillance.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -2190,6 +2461,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Per-device identity/revocation, staged signed updates and authorized rescue/uninstall pass; module rights are isolated from support and patch executors.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P16-02
@@ -2201,6 +2474,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [EDR-02: OS-specific endpoint telemetry](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Process lineage/hashes, network, file and selected persistence/security events match fixture ground truth; unavailable sources/blind spots are explicit.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -2226,6 +2501,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Labeled malicious/benign synthetic scenarios measure precision/recall and alert delay; costly/untrusted rules cannot exhaust endpoint resources.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P16-05
@@ -2237,6 +2514,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [EDR-04: Investigation and privacy-scoped evidence collection](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Case/timeline/collection actions require scope and audit; evidence hashes/provenance/retention and denied-reader tests pass without blanket memory/credential extraction.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -2250,6 +2529,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Wrong process generation, expired/replayed jobs, protected system targets and unauthorized analysts are rejected; quarantine limitations are documented.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P16-07
@@ -2261,6 +2542,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [EDR-05: Authorized response: stop/quarantine malicious processes/files and isolate a device](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/endpoint-operations-roadmap.md>); [EDR-07: SIEM/SOAR integration and safe automated response](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Narrow authenticated rescue paths survive isolation; two-person/mass-action limits and false-positive tests prevent fleet/DC lockout; release-from-isolation is rehearsed.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -2298,6 +2581,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Real endpoint performance, false positives/negatives, benign safety and SIEM/SOAR connector replay/authorization tests pass before enforcement is enabled.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 </details>
@@ -2334,6 +2619,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** 50 desktop/100 terminal/250 transfer and EDR steady/burst profiles publish CPU/RAM/disk/IOPS/network/retention sizing, cost and endpoint overhead.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P17-03
@@ -2357,6 +2644,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/patch-management-roadmap.md>); [EDR-08: Offline operation and resilience under telemetry/provider outages](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** 24-hour partition, clock/DNS faults, full disks, expired issuers and 10k reconnect preserve authorization, bounded queues and truthful unknown state.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -2406,6 +2695,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Notice/consent/recording/evidence retention and accessible triage/patch/support journeys pass; missing data cannot appear as healthy/compliant.
 
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P17-09
@@ -2417,6 +2708,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [PATCH-09: Durable campaign orchestration and disconnected endpoint recovery](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/patch-management-roadmap.md>); [EDR-01: Dedicated installed sensor/agent module with secure enrollment and update lifecycle](<https://github.com/Ise-Tom/Babel/blob/b370e40473b8b53d763838cfa7ed1b0f1d10d6f0/docs/endpoint-operations-roadmap.md>)
 
 **Acceptance evidence required:** Signed artifacts, SBOM/provenance, staged agent upgrades/version skew and supported Linux/Windows packages pass with defined rollback/forward-recovery.
+
+**Pending PR proposals:** [\#23: Fix phase activity and replace the ten-requirement template](<https://github.com/Ise-Tom/Babel/pull/23>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
