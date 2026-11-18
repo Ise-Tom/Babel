@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
+GitHub metadata checked: 2026-11-18T09:07:37\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#22 · Build Phase 0 compatibility evidence and focus problems on development](<https://github.com/Ise-Tom/Babel/pull/22>)
 
-**In review · Pending merge · CI: in\_progress** · Head fa79908
+**In review · Pending merge · CI: queued** · Head c8eac0a
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -105,7 +105,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** Checks run, but GitHub merge protection is not enforced on the current private-repository plan. Passing CI does not establish AD compatibility or production readiness.
 
-**PR-head evidence:** [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/.github/workflows/ci.yml>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/.github/workflows/native.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/check_ci_scope.py>)
+**PR-head evidence:** [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/.github/workflows/ci.yml>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/.github/workflows/native.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/check_ci_scope.py>)
 
 
 #### Proposed W16 · Compact interactive interface and verified static-hosting workflow
@@ -118,7 +118,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** A configured workflow is not a live site. Pages is not enabled and no in-chat preview route was established.
 
-**PR-head evidence:** [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/dashboard/src/main.ts>) · [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/.github/workflows/dashboard-pages.yml>) · [scripts/check\_pages\_source.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/check_pages_source.py>)
+**PR-head evidence:** [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/dashboard/src/main.ts>) · [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/.github/workflows/dashboard-pages.yml>) · [scripts/check\_pages\_source.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/check_pages_source.py>)
 
 
 #### Proposed W20 · Scope-based phase sizes and explicit owner acceptance reviews
@@ -131,7 +131,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** Two scoped requirements \(P01-01 and P01-10\) are accepted by explicit owner answers on 2026-11-17. These approval records are proposed in PR \#18 until merge; the main baseline count updates after merge. The current baseline retains 180 requirements, and full AD functionality and Phase 1 acceptance remain outstanding. Future components must satisfy their own safeguards.
 
-**PR-head evidence:** [scripts/check\_design.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/check_design.py>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/render_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/dashboard/tests/dashboard.spec.ts>) · [tests/test\_design.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/tests/test_design.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/tests/test_dashboard.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/project-dashboard.md>)
+**PR-head evidence:** [scripts/check\_design.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/check_design.py>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/render_dashboard.py>) · [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/dashboard/src/main.ts>) · [dashboard/tests/dashboard.spec.ts](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/dashboard/tests/dashboard.spec.ts>) · [tests/test\_design.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/tests/test_design.py>) · [tests/test\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/tests/test_dashboard.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/project-dashboard.md>)
 
 
 #### Proposed W21 · Support public repository dashboard publication and prepare visibility transition
@@ -144,7 +144,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** Owner explicitly authorized public visibility, but GitHub rejected the integration’s private=false request with HTTP 403. The repository remains private and hosted CI is still blocked by billing. This PR must merge before default-branch publication supports public visibility. No license was invented and no paid capacity was purchased.
 
-**PR-head evidence:** [scripts/publish\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/publish_dashboard.py>) · [scripts/collect\_pr\_progress.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/collect_pr_progress.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/tests/test_dashboard_delivery.py>) · [tests/test\_pr\_progress.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/tests/test_pr_progress.py>) · [.github/workflows/dashboard-publish.yml](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/.github/workflows/dashboard-publish.yml>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/project-dashboard.md>)
+**PR-head evidence:** [scripts/publish\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/publish_dashboard.py>) · [scripts/collect\_pr\_progress.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/collect_pr_progress.py>) · [tests/test\_dashboard\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/tests/test_dashboard_delivery.py>) · [tests/test\_pr\_progress.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/tests/test_pr_progress.py>) · [.github/workflows/dashboard-publish.yml](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/.github/workflows/dashboard-publish.yml>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/project-dashboard.md>)
 
 
 #### Proposed W23 · Verify Pages archives and minimize privileged deployment operations
@@ -157,7 +157,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** These stronger deployment changes await PR merge and a successful main workflow run. The integration cannot mutate admin settings \(HTTP 403\). The job-token Pages configuration step must succeed and read back correctly; no success is claimed in advance. Required review, private vulnerability reporting and other owner settings remain explicit actions. GitHub Pages does not support arbitrary security response headers.
 
-**PR-head evidence:** [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/.github/workflows/dashboard-pages.yml>) · [.github/workflows/dashboard.yml](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/.github/workflows/dashboard.yml>) · [scripts/check\_pages\_source.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/check_pages_source.py>) · [scripts/verify\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/verify_pages_artifact.py>) · [tests/test\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/tests/test_pages_artifact.py>) · [tests/test\_pages\_deployment.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/tests/test_pages_deployment.py>) · [dashboard/build.mjs](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/dashboard/build.mjs>) · [dashboard/src/index.html](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/dashboard/src/index.html>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/.github/CODEOWNERS>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/check_ci_scope.py>) · [tests/test\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/tests/test_delivery.py>) · [dashboard/src/style.css](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/dashboard/src/style.css>)
+**PR-head evidence:** [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/.github/workflows/dashboard-pages.yml>) · [.github/workflows/dashboard.yml](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/.github/workflows/dashboard.yml>) · [scripts/check\_pages\_source.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/check_pages_source.py>) · [scripts/verify\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/verify_pages_artifact.py>) · [tests/test\_pages\_artifact.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/tests/test_pages_artifact.py>) · [tests/test\_pages\_deployment.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/tests/test_pages_deployment.py>) · [dashboard/build.mjs](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/dashboard/build.mjs>) · [dashboard/src/index.html](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/dashboard/src/index.html>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/.github/CODEOWNERS>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/check_ci_scope.py>) · [tests/test\_delivery.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/tests/test_delivery.py>) · [dashboard/src/style.css](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/dashboard/src/style.css>)
 
 
 #### Proposed W24 · Verify correct Pages settings without administration writes
@@ -170,7 +170,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** The patch does not grant repository administration access or claim a deployment already succeeded. Missing/insecure settings and failed reads still block publication.
 
-**PR-head evidence:** [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/.github/workflows/dashboard-pages.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/github-security-settings.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/project-dashboard.md>)
+**PR-head evidence:** [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/.github/workflows/dashboard-pages.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/github-security-settings.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/project-dashboard.md>)
 
 
 #### Proposed W28 · Run real PostgreSQL synthetic transaction and process-crash experiments
@@ -183,7 +183,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** Proposed for review; hosted verification must pass on the PR head before merge. This is an isolated SQL experiment, not native directory storage, authentication/Windows ACL, real SID allocation, backup/upgrade, physical power-loss proof, credential protection, AD replication or capacity acceptance. The future Rust driver and production packaging remain unselected/unqualified.
 
-**PR-head evidence:** [experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
+**PR-head evidence:** [experiments/postgres\_store/Dockerfile](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/experiments/postgres_store/Dockerfile>) · [experiments/postgres\_store/experiment.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/experiments/postgres_store/experiment.py>) · [experiments/postgres\_store/schema.sql](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/experiments/postgres_store/schema.sql>) · [experiments/postgres\_store/test\_store.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/experiments/postgres_store/test_store.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/.github/workflows/ci.yml>) · [docs/adr/0004-synthetic-postgresql-state-experiment.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/adr/0004-synthetic-postgresql-state-experiment.md>)
 
 
 #### Proposed W29 · Verify owner-applied repository protections and security settings
@@ -196,7 +196,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** Team approval is not sustainable for the sole maintainer and is being replaced for development, without claiming independent review. Source-release remains absent \(I22\). Main acceptance totals change after merge, not from PR proposals.
 
-**PR-head evidence:** [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/.github/CODEOWNERS>)
+**PR-head evidence:** [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/github-security-settings.md>) · [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/github-main-ruleset.json>) · [.github/CODEOWNERS](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/.github/CODEOWNERS>)
 
 
 #### Proposed W30 · Validate existing source-release protections before draft source prereleases
@@ -209,7 +209,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** The source-release environment is still absent. The workflow change is proposed for review and has not been executed as hosted release code. It assumes the reviewed release workflow and does not replace owner-controlled release-tag creation or platform protection.
 
-**PR-head evidence:** [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/github-security-settings.md>)
+**PR-head evidence:** [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/tests/test_release_environment.py>) · [.github/workflows/release.yml](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/.github/workflows/release.yml>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/github-security-settings.md>)
 
 
 #### Proposed W31 · Adapt development governance to the sole maintainer without bypassing CI
@@ -222,7 +222,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** Implementation is proposed in PR \#21. Live owner-applied solo rules are verified and I24 is resolved. This is owner review plus CI, not independent review; future production security qualification remains required. Source-release is still absent; no release/tag/merge/deployment was triggered.
 
-**PR-head evidence:** [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/github-main-ruleset.json>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/github-security-settings.md>) · [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/tests/test_release_environment.py>)
+**PR-head evidence:** [docs/github-main-ruleset.json](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/github-main-ruleset.json>) · [docs/github-security-settings.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/github-security-settings.md>) · [scripts/check\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/check_release_environment.py>) · [tests/test\_release\_environment.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/tests/test_release_environment.py>)
 
 
 #### Proposed W32 · Inventory the initial 2016 AD profile and Windows/Linux/macOS clients
@@ -235,7 +235,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** Exact patched builds, wire-operation/control/error decomposition, specification revisions and rights remain pending. No real-client compatibility or full requirement acceptance is claimed.
 
-**PR-head evidence:** [lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/lab/compatibility.json>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/phase-00-progress.md>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/windows-reference-lab.md>)
+**PR-head evidence:** [lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/lab/compatibility.json>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/phase-00-progress.md>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/windows-reference-lab.md>)
 
 
 #### Proposed W33 · Enforce versioned conformance evidence integrity in CI
@@ -244,11 +244,11 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **How it was done:** Implemented a stdlib validator with exact matrix digest binding, unique complete positive/negative cases, known references and distinct passed/failed/skipped/unsupported/unrun outcomes. Executed passes need exact profiles/builds/source/tool/time metadata, retained file hashes and every declared comparison. A separate readiness mode blocks unqualified or unaccepted evidence.
 
-**Recorded validation:** 118 repository tests pass at 99% combined tooling coverage; all statements/branches in the new validator are covered. Tests reject stale digests, fabricated/partial passes, scope loss, wrong results, changed assertions, unsafe artifact paths/symlinks, missing review and skipped/unrun qualification. Current readiness fails as expected; no Windows job was fabricated.
+**Recorded validation:** 118 repository tests pass at 99% combined tooling coverage; all statements/branches in the new validator are covered. Tests reject stale digests, fabricated/partial passes, scope loss, wrong results, changed assertions, unsafe artifact paths/symlinks, missing review and skipped/unrun qualification. Current readiness fails as expected; no Windows job was fabricated. The owner explicitly accepted the current schema/tooling scope on 18 November 2026; this does not accept the unrun product scenarios.
 
 **Limits and remaining work:** Schema validation cannot authenticate evidence, prove redaction, validate assertion semantics or replace trusted execution/human review. All current 60 product scenarios remain unrun; temporary synthetic unit fixtures are not product evidence.
 
-**PR-head evidence:** [scripts/check\_conformance.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/check_conformance.py>) · [tests/test\_conformance.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/tests/test_conformance.py>) · [lab/conformance-evidence.json](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/lab/conformance-evidence.json>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/.github/workflows/ci.yml>)
+**PR-head evidence:** [scripts/check\_conformance.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/check_conformance.py>) · [tests/test\_conformance.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/tests/test_conformance.py>) · [lab/conformance-evidence.json](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/lab/conformance-evidence.json>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/.github/workflows/ci.yml>)
 
 
 #### Proposed W34 · Specify stable state and worked replication/recovery invariants
@@ -261,7 +261,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** No native identity/ACL/replication implementation or Windows reference model evidence is introduced. The existing local SQL experiment does not establish AD metadata, replication or credential durability.
 
-**PR-head evidence:** [docs/adr/0005-directory-and-replication-invariants.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/adr/0005-directory-and-replication-invariants.md>) · [docs/adr/0003-postgresql-directory-state.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/adr/0003-postgresql-directory-state.md>)
+**PR-head evidence:** [docs/adr/0005-directory-and-replication-invariants.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/adr/0005-directory-and-replication-invariants.md>) · [docs/adr/0003-postgresql-directory-state.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/adr/0003-postgresql-directory-state.md>)
 
 
 #### Proposed W35 · Map security ownership and dependency/rights qualification gaps
@@ -274,7 +274,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** Backup response coverage, intake/incident exercises and independent production assessment remain open. Solo diff/CI review does not provide independent security review or separation of duty.
 
-**PR-head evidence:** [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/phase-00-security-and-dependencies.md>) · [docs/threat-model.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/threat-model.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/decisions.md>)
+**PR-head evidence:** [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/phase-00-security-and-dependencies.md>) · [docs/threat-model.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/threat-model.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/decisions.md>)
 
 
 #### Proposed W36 · Define a reproducible target-scale mixed workload and fault method
@@ -283,11 +283,11 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **How it was done:** Specified seeded synthetic 10k-user/10k-computer/2k-group distributions, six-DC/three-site topology, mixed successful/denied authentication/read/write traffic, open-loop overload accounting, cold/warm/burst/soak phases, WAN/DC/site/clock/storage/key/audit faults, per-site histograms and hardware/cost manifests.
 
-**Recorded validation:** Cross-checked rates, topology, network/failure and provisional SLO values against requirements.md; documentation integrity passes. No benchmark output or infrastructure cost was invented.
+**Recorded validation:** Cross-checked rates, topology, network/failure and provisional SLO values against requirements.md; documentation integrity passes. No benchmark output or infrastructure cost was invented. The owner explicitly approved the workload/measurement method on 18 November 2026, without accepting capacity or SLO results.
 
-**Limits and remaining work:** The generator/load runner and actual hosts are not implemented or allocated; workload distributions need review and measured SLO ratification. SQL microbenchmarks or simulated login cannot replace native protocol/client load.
+**Limits and remaining work:** The generator/load runner and actual hosts are not implemented or allocated. The engineering method is owner-approved; measured SLO ratification remains outstanding. SQL microbenchmarks or simulated login cannot replace native protocol/client load.
 
-**PR-head evidence:** [docs/phase-00-workload.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/phase-00-workload.md>) · [docs/requirements.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/requirements.md>)
+**PR-head evidence:** [docs/phase-00-workload.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/phase-00-workload.md>) · [docs/requirements.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/requirements.md>)
 
 
 #### Proposed W37 · Make Phase 0 recovery, scope and acceptance governance concrete
@@ -300,7 +300,7 @@ GitHub metadata checked: 2026-11-18T09:05:53\+01:00.
 
 **Limits and remaining work:** These are reviewable transition contracts; no runtime migration, clean-domain restore or whole Phase 0 acceptance is demonstrated. GitHub setup history remains in operational documentation/Git history rather than the problem list.
 
-**PR-head evidence:** [docs/phase-00-governance.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/phase-00-governance.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/project-dashboard.md>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/phase-00-progress.md>)
+**PR-head evidence:** [docs/phase-00-governance.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/phase-00-governance.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/project-dashboard.md>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/phase-00-progress.md>)
 
 #### Proposed problem update: I04 · Licensed Windows/Mac lab hosts and real cross-platform client evidence are missing
 
@@ -314,7 +314,7 @@ The existing six-VM isolated Windows reference definition is prepared but no hos
 
 **Provenance:** Explicitly outstanding; no Windows test is marked passed.
 
-[lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/phase-00-progress.md>)
+[lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/phase-00-progress.md>)
 
 #### Proposed problem update: I25 · Exact compatibility builds and detailed wire cases remain unqualified
 
@@ -328,7 +328,7 @@ The initial profile and 30 operation families are explicit, but exact Windows/Li
 
 **Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
 
-[lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/lab/compatibility.json>) · [lab/conformance-evidence.json](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/lab/conformance-evidence.json>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/phase-00-progress.md>)
+[lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/lab/compatibility.json>) · [lab/conformance-evidence.json](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/lab/conformance-evidence.json>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/phase-00-progress.md>)
 
 #### Proposed problem update: I26 · Production TLS/Kerberos/storage/transport libraries need qualification
 
@@ -342,7 +342,7 @@ Rust is qualified for the bounded LDAP lab and PostgreSQL for a synthetic local 
 
 **Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
 
-[docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/phase-00-security-and-dependencies.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/decisions.md>)
+[docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/phase-00-security-and-dependencies.md>) · [docs/decisions.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/decisions.md>)
 
 #### Proposed problem update: I27 · Security response coverage and Tier 0 incident exercises remain unqualified
 
@@ -356,7 +356,7 @@ The current owner and threat boundaries are explicit, but no backup response con
 
 **Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
 
-[docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/phase-00-security-and-dependencies.md>) · [SECURITY.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/SECURITY.md>)
+[docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/phase-00-security-and-dependencies.md>) · [SECURITY.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/SECURITY.md>)
 
 #### Proposed problem update: I28 · Specification revisions, interpretation and use rights need review
 
@@ -370,7 +370,7 @@ The matrix references public protocol documents without copying their content, b
 
 **Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
 
-[lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/lab/compatibility.json>) · [docs/adr/0005-directory-and-replication-invariants.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/adr/0005-directory-and-replication-invariants.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/fa79908b9eaf965585de1e1c28d32f1805eee3ab/docs/phase-00-security-and-dependencies.md>)
+[lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/lab/compatibility.json>) · [docs/adr/0005-directory-and-replication-invariants.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/adr/0005-directory-and-replication-invariants.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/c8eac0ad9b13ee36fbae6af1d7a0b7bb4079aa3e/docs/phase-00-security-and-dependencies.md>)
 
 
 </details>
