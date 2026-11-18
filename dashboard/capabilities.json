@@ -69,7 +69,8 @@
         "Scoped CI permissions, required quality/security gates and source inventory",
         "Pinned dependencies, secret/advisory/license scans and SBOM",
         "Verified source/dashboard artifacts and prerelease preflight",
-        "Actual project/runtime-crate/Rust-library notice packaging and extraction verification"
+        "Actual project/runtime-crate/Rust-library notice packaging and extraction verification",
+        "Source-bound Phase 0 change/recovery review and expiry/baseline consistency checks"
       ],
       "missing": [
         "Production Linux service hardening",
@@ -84,7 +85,8 @@
         "W23",
         "W30",
         "W43",
-        "W44"
+        "W44",
+        "W48"
       ],
       "blockers": [
         "I27"
@@ -94,7 +96,7 @@
     "OPS-01": {
       "status": "planned",
       "category": "experiment",
-      "scope": "The Phase 0 PostgreSQL driver/transaction review is complete and explicitly owner-accepted; selected bounded typed writes, receipt recovery and process-crash evidence support native implementation. Native directory backup/restore/upgrade operations are not implemented.",
+      "scope": "The P00-15 driver/transaction foundation is owner-accepted; the complete six-transition P00-10 governance contract now has enforced CI consistency and awaits review. Native directory backup/restore/upgrade operations remain unimplemented.",
       "implemented": [],
       "missing": [
         "Native directory backup/restore and upgrade",
@@ -106,7 +108,8 @@
         "W28",
         "W40",
         "W44",
-        "W46"
+        "W46",
+        "W48"
       ],
       "blockers": [
         "I04",
@@ -154,6 +157,26 @@
       ],
       "blockers": [
         "I26"
+      ],
+      "acceptance": null
+    },
+    "AD-01": {
+      "status": "planned",
+      "category": "product",
+      "scope": "The 2016 domain/forest creation/transition design and its CI consistency checks are complete for owner review (P00-11). Native AD object/domain creation, level transitions and client interoperability are not implemented.",
+      "implemented": [],
+      "missing": [
+        "Native domain/forest creation and qualified functional-level behavior",
+        "Stable GUID/SID/schema/ACL and account/group/password semantics",
+        "Client/reference denied-operation and recycle/restore qualification"
+      ],
+      "work_items": [
+        "W49"
+      ],
+      "blockers": [
+        "I04",
+        "I05",
+        "I25"
       ],
       "acceptance": null
     }

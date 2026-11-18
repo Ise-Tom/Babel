@@ -39,6 +39,7 @@ class ComponentScope(unittest.TestCase):
                     ".github/workflows/ci.yml",
                     "requirements-ci.txt",
                     "lab/windows-reference.toml",
+                    "lab/phase0-contract.json",
                     "experiments/postgres_store/schema.sql",
                     "experiments/postgres_store/experiment.py",
                 ],

@@ -6,7 +6,7 @@ clients**. This is a scope decision, not compatibility acceptance. The 2025
 functional level is not advertised by this initial profile; Server 2025 clients
 are still proposed test targets at the selected level.
 
-## Work delivered in this change
+## Requirement history and remaining evidence
 
 | Requirement | Concrete result | Remaining exit evidence |
 | --- | --- | --- |
@@ -19,7 +19,8 @@ are still proposed test targets at the selected level.
 | P00-07 | Named current owner, Tier 0 boundaries, boundary-to-threat/evidence ownership and intake exercise procedure | Actual private intake exercise, backup security contact and incident drill; no fictitious contact or test |
 | P00-08 | [Executable validator](../scripts/check_conformance.py) and [evidence inventory](../lab/conformance-evidence.json), included in CI | Real artifacts, exact platforms/specs and reviewer disposition; no structural check is product evidence |
 | P00-09 | [Mixed workload/fault method](phase-00-workload.md), hardware and measurement/cost accounting | Method approved and dataset tooling implemented; load runner, real hosts, measured runs and SLO ratification remain |
-| P00-10 | [Recovery/scope governance](phase-00-governance.md), irreversible transition examples and exception rules | Exercise transitions once implemented; independent production assessment remains separate from solo PR review |
+| P00-10 | [Complete criterion packet](validation/p00-10.md): six reviewed-design transition examples, source/digest-bound CI checker and exception/invalidation controls | Explicit owner validation of the full Phase 0 design gate; runtime transitions retain their implementation gates |
+| P00-11 | [Complete functional-level profile](functional-level-profile.md): 2016/2016 Linux-hosted creation contract, level/OS distinction, incompatibilities and transition refusal | Explicit owner validation of the full Phase 0 design gate; exact builds, native behavior and client runs remain separate |
 
 ## Client coverage
 
@@ -166,3 +167,18 @@ accepts the entire original Phase 0 gate and selected profile. Phase 0 now has
 earlier acceptance proofs remain unchanged. Later native directory/key/backup/
 capacity gates remain under their actual Phase 1/3/4 requirements; neither
 Phase 0 as a whole nor production AD compatibility is accepted.
+
+
+## Completed functional-profile and governance exit packets
+
+P00-10 and P00-11 now have complete Phase 0 design packets for owner validation:
+[upgrade/recovery/scope governance](validation/p00-10.md) and
+[domain/forest functional profile](validation/p00-11.md). The original requirements
+are unchanged. Six worked interrupted transitions cover schema, keys, domain
+restore, functional levels, storage and GPO; CI now rejects missing recovery and
+invalidation material, expired exceptions, baseline waivers and false outcomes.
+The Linux-hosted 2016/2016 creation profile preserves Windows/Linux/macOS clients
+and explicitly refuses unqualified advertisements or level transitions. Immutable
+reference review distinguishes 2025 DC operating systems from the 2025 level and
+records a stale-source conflict. Both gates await explicit owner validation;
+actual upgrades, domain recovery and all 60 client conformance cases remain unrun.

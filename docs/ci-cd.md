@@ -12,7 +12,7 @@ runs cancel superseded runs; releases wait for their own full CI invocation.
 
 | Job | Executable gate |
 | --- | --- |
-| Repository checks | Reject unsupported source/build trees and symlinks, all 18 phase specifications and requirement traceability, local Markdown links, Ruff formatting/lint, strict mypy, source-archive smoke test and checksum verification |
+| Repository checks | Reject unsupported source/build trees and symlinks, all 18 phase specifications and requirement traceability, source/digest-bound Phase 0 functional-level and recovery-governance contracts, local Markdown links, Ruff formatting/lint, strict mypy, source-archive smoke test and checksum verification |
 | Tests (3.12), Tests (3.13) | Existing utility/integrity tests plus source-packaging and CI-scope regression tests; minimum 90% combined statement/branch coverage of callable script code |
 | Static security and dependency audit | Bandit on all shipped Python tools, offline Zizmor workflow-security checks, strict pip-audit of the complete locked CI dependency graph; known advisories block regardless of severity |
 | Workflow lint | actionlint, including shell analysis when provided by the runner |
