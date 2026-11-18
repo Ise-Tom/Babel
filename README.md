@@ -44,29 +44,31 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T15:45:09\+01:00.
+GitHub metadata checked: 2026-11-18T15:48:18\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-### [\#27 · Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>)
+### [\#27 · Complete P00-15 storage-driver transaction and recovery qualification](<https://github.com/Ise-Tom/Babel/pull/27>)
 
-**In review · Pending merge · CI: in\_progress** · Head 1e6928e
+**In review · Pending merge · CI: success** · Head 1e6928e
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
 
 **PR description (untrusted text):**
 
-    The live dashboard already contained PR #26 and W44, but Phase 0 looked unchanged: its only bar showed 2/17 accepted requirements while 9 active requirements and recent implementations were hidden in collapsed details. The header also showed an older evidence baseline rather than the actual published build.
+    P00-15 remained in progress because the driver candidate did not handle caller-dropped futures, bounded typed writes, real post-commit reply loss or native-client process recovery. This change closes those gaps and submits the **entire original Phase 0 storage-driver/transaction gate** for validation: [criterion-by-criterion packet](https://github.com/Ise-Tom/Babel/blob/8d21b7b83a76bd45f9564f7a44f7e144c50c9142/docs/validation/p00-15.md).
     
-    - Show explicit accepted/in-progress/blocked/planned status segments and active counts on phase cards. Keep related preparation separate; shared records never start future phases and counts are not effort percentages.
-    - Expose phase status totals and the three newest source-backed work records above collapsed requirements. Give the GitHub report the same visible counts/recent summaries.
-    - Identify the artifact's actual build in the header and label the separate recorded CI baseline in the footer. Record W45 and resolved development usability defect I34; update the verified main baseline to merged PR #26. Preserve all four owner acceptance proofs and all 60 unrun conformance scenarios.
+    - Select tokio-postgres 0.7.18/Tokio 1.54.1 for the local PostgreSQL/Unix/SCRAM/no-pool profile. The normal API accepts typed, bounded create/rename operations; generic SQL and raw transaction entry compile only for qualification tests. Streaming reads enforce row/column/retained-field-byte limits, with statement/parameter limits.
+    - Arm connection guards before polling operations. Dropped query, BEGIN, mutation, rollback or COMMIT futures poison and close the session; uncertain connections cannot be reused. Failed statements cannot become successful commit acknowledgments.
+    - Bind actor/request identity to exact bounded payload and durable receipt. Concurrent duplicates commit once, conflicting reuse fails, and a revoked fixture actor cannot retrieve an old receipt through retry.
+    - Withhold the actual server COMMIT response through a private bounded relay, independently observe committed state/journal/audit/receipt, then prove lost-reply and dropped-caller recovery without repeating effects.
+    - Actually SIGKILL/restart the owned database at mandatory Rust checkpoints before commit and after confirmed commit. Verify staged state before the first kill; verify committed state after restart **before any retry**, so retry cannot mask lost data. Missing controller checkpoints fail independently of the Rust exit code.
+    - Move P00-15 from in progress to **Ready for validation** with pinned full exit evidence. Phase 0 now has **8 in progress, 1 ready, 1 blocked, 5 planned, 2 accepted**. Preserve all four acceptance proofs, only Phases 0/1 active and all 60 unrun AD/client scenarios. Record W46 and resolved correctness/qualification gap I35. The earlier activity-display fix remains included.
     
-    Validation: 32 desktop/mobile browser checks, including new activity/acceptance/build/recent-work regressions and automated WCAG 2.2 AA-tagged checks; six build/security tests; 157 repository tests at 99% branch-inclusive tooling coverage. All 18 cards still fit the tested desktop viewport; mobile overflow, strict types/lint, Bandit and workflow checks pass. Hosted [CI run 44317449757](https://github.com/Ise-Tom/Babel/actions/runs/44317449757) passed all 14 jobs on `9ee1545ca91b773618a171385b58e93f09ca14f9`, including the 32 desktop/mobile browser checks and required native/security gates.
+    Local validation: **29/29 qualification cases pass**, including both real database-process recoveries; driver-library coverage is **97.81% (312/319)**. All 160 repository tests pass at 99% branch-inclusive tooling coverage; all 34 desktop/mobile browser checks and six build/security tests pass. All-feature Clippy, strict types/lint, Bandit, workflow checks and both locked dependency graph audits pass. Hosted CI must pass on this PR head before merge.
     
-    This changes reporting, not native server behavior or acceptance state. No new dependencies, external requests, CSP exceptions or deployment permissions are introduced. Pages updates after merge and successful trusted deployment; the PR-aware GitHub report shows this proposal separately meanwhile.
-    
+    P00-15's original requirement is unchanged. Its driver-selection/transaction-review criteria are complete; owner validation is pending. Native AD identity/schema/ACL/store and real journal integration remain P01-02/P01-03/P01-11/P01-12; service/key provisioning is P01-09/P01-14, and domain/host/disk/backup/upgrade/capacity qualification remains Phase 3/4. The fixture identities and actor switch are not AD semantics/authentication. This does not accept those later requirements or production release, and introduces no valuable directory credentials or stable AD formats. No new phase is started. The dashboard's validation queue never implies owner acceptance.
 
 **Changed files:**
 
@@ -214,7 +216,7 @@ ADR 0005 specifies stable identity, authorization order and worked rename/collis
 
 **Acceptance evidence required:** Design review covers rename, DN collision, ACL inheritance, nested groups, concurrent updates and durable acknowledgment boundaries.
 
-**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#27: Complete P00-15 storage-driver transaction and recovery qualification](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W12: Threat model and open decision register; W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments; W34: Specify stable state and worked replication/recovery invariants. See the [implementation journal](#implementation-journal).
 
@@ -228,7 +230,7 @@ ADR 0005 works through attribute/link conflicts, partitions, cursor commits, tom
 
 **Acceptance evidence required:** Worked partition/delete/conflict/rollback examples specify observable outcomes and map to MS-ADTS/MS-DRSR.
 
-**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#27: Complete P00-15 storage-driver transaction and recovery qualification](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W12: Threat model and open decision register; W34: Specify stable state and worked replication/recovery invariants. See the [implementation journal](#implementation-journal).
 
@@ -242,7 +244,7 @@ Rust/parser safeguards and a standalone Rustls/ring candidate are qualified for 
 
 **Acceptance evidence required:** Record supported platforms, alternatives, license/advisory maintenance and locked build/fuzz/security jobs.
 
-**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#27: Complete P00-15 storage-driver transaction and recovery qualification](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W01: Native Rust workspace and reproducible builds; W27: Record PostgreSQL selection and a reviewable native state contract; W35: Map security ownership and dependency/rights qualification gaps; W39: Refine phase requirements by independent acceptance obligations; W42: Qualify a bounded Rustls/ring TLS candidate with independent enforcement tests. See the [implementation journal](#implementation-journal).
 
@@ -294,7 +296,7 @@ Current version-1 compatibility/evidence schema and traceability tooling accepte
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-18. The project owner explicitly answered “Accept this schema/tooling scope” in this conversation on 18 November 2026. Scope: current version-1 schema and traceability implementation in PR \#22, not client compatibility or phase acceptance. Implementation/tests pinned to b98dac7d33b20bef1ab6ccfb4a295f40d2330500: https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/scripts/check\_conformance.py ; https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/tests/test\_conformance.py . 118 local repository tests passed; all 60 conformance scenarios are explicitly unrun.
 
-**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#27: Complete P00-15 storage-driver transaction and recovery qualification](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W10: Required native and repository CI gates; W11: Complete phase specifications and traceability; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W18: Open-PR-aware private progress reporting; W33: Enforce versioned conformance evidence integrity in CI; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence. See the [implementation journal](#implementation-journal).
 
@@ -322,7 +324,7 @@ Solo development governance and worked schema/key/restore/functional-level/stora
 
 **Acceptance evidence required:** Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact.
 
-**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#27: Complete P00-15 storage-driver transaction and recovery qualification](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI; W33: Enforce versioned conformance evidence integrity in CI; W34: Specify stable state and worked replication/recovery invariants; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence. See the [implementation journal](#implementation-journal).
 
@@ -360,7 +362,7 @@ ADR 0006 and a bounded Rustls 0.23.46/ring 0.17.14 mutual-TLS lab now have certi
 
 **Acceptance evidence required:** Review exact versions/features, key custody, certificate, downgrade, channel-binding and provider-loss cases; no custom cryptography.
 
-**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#27: Complete P00-15 storage-driver transaction and recovery qualification](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W42: Qualify a bounded Rustls/ring TLS candidate with independent enforcement tests. See the [implementation journal](#implementation-journal).
 
@@ -374,7 +376,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Review AES/PAC/replay/delegation support, licenses, FFI/unsafe boundaries and upstream maintenance; generic Kerberos is not AD conformance.
 
-**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#27: Complete P00-15 storage-driver transaction and recovery qualification](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -388,7 +390,7 @@ ADR 0007 now has tokio-postgres 0.7.18/Tokio 1.54.1 candidate evidence: real SCR
 
 **Acceptance evidence required:** Review versions, parameterization, cancellation, commit/error mapping and recovery before credentials or stable formats persist.
 
-**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#27: Complete P00-15 storage-driver transaction and recovery qualification](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W44: Qualify an async PostgreSQL driver and prevent false transaction acknowledgments. See the [implementation journal](#implementation-journal).
 
@@ -452,7 +454,7 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Preserve GUID/SID on rename and reject DN collisions, invalid classes and matching-rule violations.
 
-**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#27: Complete P00-15 storage-driver transaction and recovery qualification](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
@@ -466,7 +468,7 @@ PostgreSQL backend and local transaction/journal contract are merged. The SQL tr
 
 **Acceptance evidence required:** Commit-boundary kills recover old or new complete state; never acknowledge an undurable mutation.
 
-**Pending PR proposals:** [\#27: Show phase activity and recent work separately from acceptance](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
+**Pending PR proposals:** [\#27: Complete P00-15 storage-driver transaction and recovery qualification](<https://github.com/Ise-Tom/Babel/pull/27>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
