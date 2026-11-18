@@ -2,8 +2,8 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-18",
-    "commit": "58c3668d466b104f7f37e0d1eb63c063124812e8",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44196083299",
+    "commit": "b370e40473b8b53d763838cfa7ed1b0f1d10d6f0",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44264722469",
     "ci_result": "passed",
     "checks_passed": 13,
     "pull_requests": [
@@ -91,14 +91,19 @@
         "number": 21,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 22,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Verified published main snapshot: PR #21 is merged and all 13 main CI jobs passed for 58c3668. The loopback LDAP lab and synthetic PostgreSQL experiment remain limited prototypes. New Phase 0 contract/evidence work is proposed separately from main acceptance totals; no phase is accepted."
+    "note": "Verified main snapshot: PR #22 is merged and all 13 main CI jobs passed for b370e40. Four requirement scopes are owner-accepted; no phase is accepted. The current PR corrects phase activity and refines composite requirements; shared preparation is not later-phase execution."
   },
   "requirements": {
     "P00-01": {
       "status": "in_progress",
-      "note": "Owner selected the 2016 initial domain/forest baseline with explicit non-Windows clients. The versioned matrix has 30 operation families across Windows/Linux/macOS; exact builds/spec revisions and detailed wire/control/error cases remain unqualified."
+      "note": "The protocol-operation inventory is drafted. Functional-level profile and exact platform pins now have separate P00-11/P00-12 acceptance; detailed positive/negative wire/control/error coverage remains unqualified."
     },
     "P00-02": {
       "status": "in_progress",
@@ -110,7 +115,7 @@
     },
     "P00-04": {
       "status": "in_progress",
-      "note": "The bounded Rust lab is qualified within its existing scope. A dependency qualification register now separates that evidence from unselected/unqualified production TLS, Kerberos/PAC, parser/transport and Rust storage dependencies."
+      "note": "Rust/toolchain and parser safeguards are qualified only for the bounded lab subset. Broader platform qualification remains; TLS, Kerberos/PAC and storage-driver decisions have separate P00-13–P00-15 acceptance."
     },
     "P00-05": {
       "status": "blocked",
@@ -118,11 +123,11 @@
     },
     "P00-06": {
       "status": "in_progress",
-      "note": "Apache-2.0 and DCO are selected and merged. Specification revision/use rights, reference fixtures and future production dependency distribution obligations remain explicitly pending."
+      "note": "The owner-selected Apache-2.0 and DCO are implemented; explicit acceptance of this requirement scope is not recorded. Protocol/specification/fixture rights remain separately unqualified under P00-16."
     },
     "P00-07": {
       "status": "in_progress",
-      "note": "Ise-Tom is named accountable development owner for Tier 0 boundaries and threat evidence. Security-intake/incident exercises, backup response coverage and independent production assessment are not qualified."
+      "note": "Ise-Tom and Tier 0 threat/review boundaries are documented; their security design is not independently assessed. Intake and backup response exercises now have separate P00-17 acceptance."
     },
     "P00-08": {
       "status": "accepted",
@@ -161,7 +166,7 @@
     },
     "P01-04": {
       "status": "in_progress",
-      "note": "Loopback read-only RootDSE discovery and bounded presence/objectClass equality/boolean filters are implemented and tested. DNS, real directory queries and Windows discovery evidence remain unqualified."
+      "note": "Loopback bounded RootDSE discovery/filter reads are implemented and tested; directory reads, controls and real-client qualification remain open. DNS discovery is separately tracked in P01-13."
     },
     "P01-05": {
       "status": "blocked",
@@ -173,7 +178,7 @@
     },
     "P01-09": {
       "status": "in_progress",
-      "note": "Lab limits and diagnostics are tested; TLS, Linux service lifecycle and production privileges are not."
+      "note": "Lab packaging/limits/diagnostics are tested; production Linux service lifecycle and privilege boundaries are unqualified. Certificate/TLS configuration is separately tracked in P01-16."
     },
     "P01-10": {
       "status": "accepted",
@@ -1485,6 +1490,168 @@
         "I05",
         "I25"
       ]
+    },
+    {
+      "id": "W38",
+      "title": "Separate actual phase execution from related preparation",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-08",
+        "P00-10"
+      ],
+      "how": "Removed work-link promotion of planned phases. Explicit requirement activity/acceptance determines phase status; phase cards/report label related records and planned rows explain preparatory links. Shared work remains traceable without implying execution.",
+      "verification": "119 repository tests pass at 99% tooling coverage. All 26 desktop/mobile browser tests and six build/security-lint tests pass, including real-model Phases 5/10 planned, exactly two active phases, and explicit activity fixtures. Strict types/lint, Bandit, actionlint/Zizmor and design/doc/evidence checks pass.",
+      "limitations": "No product functionality, phase acceptance or later-phase execution is introduced. Four owner-accepted requirement scopes remain exactly unchanged. Public dashboards reflect this code after merge and trusted deployment.",
+      "source_revision": "794345f04c36a8be4811a56183a0462a985780e8",
+      "sources": [
+        {
+          "path": "scripts/build_dashboard.py",
+          "label": "build_dashboard.py"
+        },
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "tests/test_dashboard.py",
+          "label": "test_dashboard.py"
+        },
+        {
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "dashboard.spec.ts"
+        }
+      ],
+      "problems": [
+        "I29"
+      ]
+    },
+    {
+      "id": "W39",
+      "title": "Refine phase requirements by independent acceptance obligations",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-01",
+        "P00-04",
+        "P00-06",
+        "P00-07",
+        "P01-02",
+        "P01-03",
+        "P01-04",
+        "P01-05",
+        "P01-08",
+        "P01-09",
+        "P02-01",
+        "P02-02",
+        "P02-03",
+        "P02-04",
+        "P02-05",
+        "P02-06",
+        "P02-07",
+        "P02-08",
+        "P02-09",
+        "P03-03",
+        "P03-04",
+        "P03-07",
+        "P03-08",
+        "P03-09",
+        "P03-10",
+        "P04-01",
+        "P04-04",
+        "P04-07",
+        "P05-03",
+        "P05-08",
+        "P06-02",
+        "P06-08",
+        "P06-09",
+        "P07-01",
+        "P07-04",
+        "P07-06",
+        "P07-07",
+        "P07-09",
+        "P08-01",
+        "P08-02",
+        "P08-03",
+        "P08-04",
+        "P08-05",
+        "P08-08",
+        "P08-10",
+        "P09-02",
+        "P09-05",
+        "P09-07",
+        "P09-09",
+        "P10-01",
+        "P10-03",
+        "P10-06",
+        "P10-07",
+        "P11-02",
+        "P11-03",
+        "P11-04",
+        "P11-08",
+        "P11-09",
+        "P12-03",
+        "P12-04",
+        "P12-05",
+        "P12-06",
+        "P12-07",
+        "P12-09",
+        "P13-02",
+        "P13-06",
+        "P13-09",
+        "P14-01",
+        "P14-05",
+        "P14-06",
+        "P14-08",
+        "P14-10",
+        "P15-03",
+        "P15-07",
+        "P15-09",
+        "P16-01",
+        "P16-02",
+        "P16-04",
+        "P16-05",
+        "P16-06",
+        "P16-07",
+        "P16-10",
+        "P17-02",
+        "P17-04",
+        "P17-08",
+        "P17-09"
+      ],
+      "how": "Reviewed composite requirements across all 18 phases. Original IDs retain their primary responsibility; 94 additional stable IDs carry separately verifiable obligations, with parent-to-split trace lists in each canonical document. Preserved original capability coverage and all accepted scopes. Updated feature associations, roadmap references and quota-based tests.",
+      "verification": "Design/model validation covers 274 current requirements and all 130 existing global capabilities. Actual phase sizes range from 12 to 24; examples are 17 Phase 0, 16 Phase 1, 24 AD interoperability and 12 first production release. Unequal-size/export/browser regressions pass.",
+      "limitations": "This is requirement design/refinement, not new product work or 94 new features. Counts are not effort estimates. New split rows remain planned until explicitly assigned activity/evidence; legacy work links are retained for historical traceability. No later phase is started and no new acceptance is inferred.",
+      "source_revision": "794345f04c36a8be4811a56183a0462a985780e8",
+      "sources": [
+        {
+          "path": "docs/phases/README.md",
+          "label": "README.md"
+        },
+        {
+          "path": "docs/phases/phase-00.md",
+          "label": "phase-00.md"
+        },
+        {
+          "path": "docs/phases/phase-02.md",
+          "label": "phase-02.md"
+        },
+        {
+          "path": "docs/phases/phase-05.md",
+          "label": "phase-05.md"
+        },
+        {
+          "path": "dashboard/associations.json",
+          "label": "associations.json"
+        }
+      ],
+      "problems": [
+        "I14"
+      ]
     }
   ],
   "problems": [
@@ -1862,38 +2029,30 @@
         "P01-01",
         "P01-10"
       ],
-      "detail": "The design validator forced exactly ten sequential requirements per phase, while the report called those broad contracts substeps. Zero recorded acceptances made implemented increments hard to distinguish from owner-reviewed scope.",
-      "resolution": "Removed the fixed quota, clarified requirement/increment labels and documented scoped owner acceptance questions. The owner answered “Accept this scope” for P01-01 and P01-10; both carry reviewer/date/evidence records. Unequal-size regression tests pass. Phase acceptance remains outstanding.",
-      "next_action": "Merge the reviewed acceptance records after required checks can run; continue decomposing future work according to scope and dependencies while preserving requirement coverage.",
-      "source_revision": "fbf7cbd89be80e0f18f2464296deb4ad08383ca3",
+      "detail": "The earlier repair removed validator quotas but left every authored phase at ten broad rows and some tests at a fixed total. Independently testable obligations remained bundled, so actual roadmap granularity still looked uniform.",
+      "resolution": "Refined composite obligations in all 18 canonical phase documents, retaining primary original IDs and tracing split obligations to new stable IDs. Counts now follow the actual rows (12–24 per phase); acceptance scopes are unchanged. Dashboard/export tests derive totals and exercise unequal phase sizes.",
+      "next_action": "Keep counts tied to independent acceptance obligations, never a quota or effort percentage; update canonical traceability and explicit acceptance when scope changes.",
+      "source_revision": "794345f04c36a8be4811a56183a0462a985780e8",
       "sources": [
+        {
+          "path": "docs/phases/README.md",
+          "label": "README.md"
+        },
         {
           "path": "scripts/check_design.py",
           "label": "check_design.py"
         },
         {
-          "path": "scripts/render_dashboard.py",
-          "label": "render_dashboard.py"
-        },
-        {
-          "path": "dashboard/src/main.ts",
-          "label": "main.ts"
-        },
-        {
-          "path": "dashboard/tests/dashboard.spec.ts",
-          "label": "dashboard.spec.ts"
-        },
-        {
-          "path": "tests/test_design.py",
-          "label": "test_design.py"
+          "path": "scripts/build_dashboard.py",
+          "label": "build_dashboard.py"
         },
         {
           "path": "tests/test_dashboard.py",
           "label": "test_dashboard.py"
         },
         {
-          "path": "docs/project-dashboard.md",
-          "label": "project-dashboard.md"
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "dashboard.spec.ts"
         }
       ],
       "provenance": "Project owner requested acceptance questions and said substep counts need not be linear; no separate GitHub issue was created."
@@ -2141,8 +2300,53 @@
         }
       ],
       "provenance": "Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting."
+    },
+    {
+      "id": "I29",
+      "title": "Shared preparation incorrectly started later phases",
+      "status": "resolved",
+      "kind": "dashboard-state-bug",
+      "phases": [
+        0,
+        1,
+        5,
+        10
+      ],
+      "requirements": [
+        "P00-08",
+        "P00-10",
+        "P05-09",
+        "P10-09"
+      ],
+      "detail": "The dashboard promoted a planned phase to in_progress when any work record linked to it, including shared licensing, CI and source-prerelease preparation. This incorrectly started Phases 5 and 10 without active requirements.",
+      "resolution": "Removed promotion based on work links. Explicit active/accepted requirement state drives phase activity, with separate whole-phase acceptance. UI/report call these related records and planned requirements explain preparation. Python/browser regressions verify shared design/implementation records do not start future phases.",
+      "next_action": "Keep preparatory traceability separate from execution. Start a later phase only by explicitly recording actual requirement activity and evidence; do not infer it from a shared work item.",
+      "source_revision": "794345f04c36a8be4811a56183a0462a985780e8",
+      "sources": [
+        {
+          "path": "scripts/build_dashboard.py",
+          "label": "build_dashboard.py"
+        },
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "tests/test_dashboard.py",
+          "label": "test_dashboard.py"
+        },
+        {
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "dashboard.spec.ts"
+        }
+      ],
+      "provenance": "Reproduced against merged main: Phases 5 and 10 were in_progress while all their requirements were planned; the corrected model has only Phases 0 and 1 active."
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "Phase 0: the owner accepted the current evidence-schema/tooling scope (P00-08) and approved the workload/measurement method (P00-09). All 60 Windows/Linux/macOS conformance scenarios remain unrun. Exact builds, licensed labs, production dependencies, specification/rights and security-response qualification remain open; no phase is accepted. Problems track development activity only."
+  "focus_summary": "Only Phases 0 and 1 have active requirements. Later-phase design/licensing/CI links are related preparation and do not start execution. Composite requirements now have separate stable acceptance obligations with variable phase sizes. The four accepted scopes remain unchanged; all 60 conformance scenarios are unrun."
 }
