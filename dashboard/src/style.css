@@ -784,3 +784,17 @@ dialog .button {
 
 .capability-card>summary h2 { margin: 0; font-size: 13px; }
 .capability-card .text-link { display: inline-flex; align-items: center; min-height: 28px; margin: 4px 0 10px; }
+
+.status-strip { display: flex; gap: 1px; height: 5px; margin-bottom: 8px; border-radius: 4px; overflow: hidden; }
+.status-unit { flex: 1; min-width: 0; }
+.status-unit.accepted,.legend-item.accepted::before { background: #36754f; }
+.status-unit.in_progress,.legend-item.in_progress::before { background: #3e789f; }
+.status-unit.blocked,.legend-item.blocked::before { background: #9a6c1a; }
+.status-unit.planned,.legend-item.planned::before { background: #7c8b80; }
+.status-legend { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; font-size: 10px; color: var(--muted); }
+.legend-item { display: inline-flex; gap: 4px; align-items: center; }
+.legend-item::before { content: ""; width: 7px; height: 7px; border-radius: 2px; }
+.phase-activity { margin-bottom: 20px; }
+.activity-counts { font-size: 13px; font-weight: 650; margin-bottom: 5px; }
+.phase-activity>p.muted { font-size: 11px; }
+.phase-activity>h2 { font-size: 16px; margin: 16px 0 8px; }

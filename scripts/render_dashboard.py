@@ -190,18 +190,24 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
         "",
         "## Phase board",
         "",
-        "| Phase | Status | Accepted requirements | Related work records |",
-        "| --- | --- | --- | --- |",
+        "| Phase | Status | Accepted requirements | In progress | Blocked | Planned "
+        "| Related work records |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
     ]
     for phase in phases:
         number = phase["id"]
         count = sum(step["status"] == "accepted" for step in phase["steps"])
+        activity = [
+            sum(step["status"] == state for step in phase["steps"])
+            for state in ("in_progress", "blocked", "planned")
+        ]
         increments = sum(
             any(r.startswith(f"P{number:02}-") for r in item["requirements"]) for item in work
         )
         lines.append(
             f"| [{number:02} · {escaped(phase['title'])}](#phase-{number:02}) "
-            f"| {LABELS[phase['status']]} | {count}/{len(phase['steps'])} | {increments} |"
+            f"| {LABELS[phase['status']]} | {count}/{len(phase['steps'])} "
+            f"| {activity[0]} | {activity[1]} | {activity[2]} | {increments} |"
         )
     lines.extend(open_pr_section(data))
     for phase in phases:
@@ -215,6 +221,26 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
                 "",
                 link("Canonical design and dependencies", phase["url"]),
                 "",
+            ]
+        )
+        counts = [
+            f"{sum(s['status'] == state for s in phase['steps'])} {LABELS[state].lower()}"
+            for state in ("in_progress", "blocked", "planned", "accepted")
+        ]
+        lines.extend(["**Requirement status:** " + " · ".join(counts), ""])
+        related = [
+            w for w in work if any(r.startswith(f"P{number:02}-") for r in w["requirements"])
+        ]
+        if phase["status"] != "planned" and related:
+            lines.extend(["**Recent recorded work:**", ""])
+            for item in reversed(related[-3:]):
+                lines.append(
+                    f"- {escaped(item['id'])} · {escaped(item['title'])} — "
+                    + link("source evidence", item["sources"][0]["url"])
+                )
+            lines.append("")
+        lines.extend(
+            [
                 "<details>",
                 f"<summary>{len(phase['steps'])} requirements, "
                 "associated features and evidence</summary>",

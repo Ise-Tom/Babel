@@ -232,3 +232,30 @@ test('capability filters, empty state, deep links and history work independently
   await expect(page.getByLabel('Implementation status', { exact: true })).toHaveValue('all');
   await expect(page.locator('.capability-card[open]')).toHaveCount(0);
 });
+
+test('phase activity and recent work are visible separately from acceptance and baseline', async ({ page }, info) => {
+  const facts = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  const current = facts.phases[0]; if (!current) throw new Error('Missing Phase 0');
+  const active = current.steps.filter(s => s.status === 'in_progress').length;
+  const accepted = current.steps.filter(s => s.status === 'accepted').length;
+  const related = facts.workItems.filter(w => w.requirements.some(id => current.steps.some(s => s.id === id)));
+  const card = page.getByTestId('phase-card-0');
+  await expect(card).toContainText(`${active} in progress`);
+  await expect(card).toContainText(`${accepted}/${current.steps.length} accepted`);
+  await expect(card.getByRole('img')).toHaveAttribute('aria-label', new RegExp(`${active} in progress`));
+  await expect(card.locator('.status-unit')).toHaveCount(current.steps.length);
+  await expect(page.locator('#snapshot-short')).toHaveText(`Dashboard build ${facts.buildRevision.slice(0, 7)}`);
+  await phase(page, 0);
+  const activity = page.getByRole('region', { name: 'Phase activity', exact: true });
+  await expect(activity).toContainText(`${active} in progress`);
+  await expect(activity).toContainText(`${current.steps.filter(s => s.status === 'blocked').length} blocked`);
+  await expect(activity.locator('.work-card')).toHaveCount(Math.min(3, related.length));
+  const latest = related.at(-1); if (!latest) throw new Error('Missing actual phase work');
+  await expect(activity.locator('.work-card').first()).toContainText(latest.id);
+  await activity.locator('.work-card').first().locator(':scope > summary').click();
+  await expect(activity).toContainText(latest.verification);
+  await page.screenshot({ path: resolve('..', `reports/phase-activity-${info.project.name}.png`), fullPage: false });
+  expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
+  await phase(page, 5);
+  await expect(page.getByRole('region', { name: 'Phase activity', exact: true }).locator('.work-card')).toHaveCount(0);
+});

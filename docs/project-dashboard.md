@@ -32,6 +32,14 @@ open individually. Design and acceptance details remain available on demand.
 Cards can be opened anywhere, keyboard focus moves to the selected page, and
 mobile layouts use two columns plus the direct phase picker.
 
+Phase cards show acceptance and active requirement counts separately. Their
+colored strips show explicit requirement states (accepted/in progress/blocked/
+planned), not completion or effort percentages. Active phase pages expose the
+latest three recorded increments above the requirement details. Shared preparation
+does not start planned phases. The header identifies the artifact's actual build;
+the footer labels the separately recorded CI evidence baseline. The GitHub report
+also displays state counts and recent work outside collapsed requirement lists.
+
 The **Capabilities** tab adds a searchable implementation tracker for all 130
 global contracts, with explicit prototype/partial/planned state, stage, actual
 implemented behavior, missing behavior and evidence/blocker links. Related
