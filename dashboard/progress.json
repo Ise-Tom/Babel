@@ -2645,5 +2645,5 @@
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "Phase 0 now includes a standalone Rustls/ring candidate with independent certificate/protocol enforcement, scoped exporter/property/fuzz/coverage evidence and actual native archive notices. The dashboard tracks all 130 capabilities with implementation subsets, gaps and source-backed work. Production LDAP/TLS integration, Kerberos/storage/transport choices, exact licensed client labs, capacity and response qualification remain open. Four accepted scopes are unchanged; all 60 conformance scenarios remain unrun. Only Phases 0 and 1 are active."
+  "focus_summary": "Phase 0: Rustls/ring candidate tested; native archives retain actual license notices. The tracker shows implementation and gaps for all 130 capabilities. Production integration, real-client labs, capacity and response qualification remain open. Four accepted scopes are unchanged; all 60 conformance cases remain unrun."
 }
