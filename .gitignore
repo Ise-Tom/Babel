@@ -23,3 +23,7 @@ coverage.xml
 /dashboard/dist/
 /dashboard/test-results/
 /dashboard/playwright-report/
+
+/fuzz/corpus/tls_record/*
+!/fuzz/corpus/tls_record/empty-record
+!/fuzz/corpus/tls_record/plaintext

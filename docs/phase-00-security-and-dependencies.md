@@ -46,7 +46,7 @@ coverage remain gates even though daily development uses solo approvals.
 | Component | Current decision / alternatives | Qualification required before broader use |
 | --- | --- | --- |
 | Native toolchain/parser | Rust 1.100.0 and existing locked bounded LDAP parser lab; memory safety does not remove logic/DoS risk | Existing Clippy/property/fuzz/coverage/audit jobs qualify only the lab subset; review target OS and unsafe dependencies on expansion |
-| TLS | Not selected for production; evaluate maintained Rustls/provider integration against supported client policy and platform/key custody | Exact versions/features/licenses, TLS/channel-binding/expiry/downgrade and provider-failure tests; no custom cryptography |
+| TLS | [ADR 0006](adr/0006-tls-qualification-lab.md): Rustls 0.23.46/ring 0.17.14 standalone Linux lab candidate, with real OpenSSL/certificate/fuzz tests and retained notices; production selection remains pending | LDAP/SASL channel binding, real OS clients, revocation/rotation/key custody, provider faults and production concurrency; no custom cryptography |
 | Kerberos/PAC | Production library/backend not selected; compare maintained library bindings versus a reviewed memory-safe implementation boundary | AES, PAC, replay/delegation/PKINIT scope, dependency lifetime/FFI safety and real Windows/Linux/macOS conformance; do not infer AD support from MIT Kerberos alone |
 | PostgreSQL | Owner selected backend family; PostgreSQL 18.7/official psql synthetic local experiment exists | Rust driver/version and transaction/cancellation/parameterization/error semantics, host/disk/backup/upgrade and credential key custody remain open |
 | DNS/SMB/RPC | Production parsers/transports not selected; reuse reviewed libraries where suitable without requiring Samba | Exact supported operation/encoding/signing/sealing matrix, adversarial bounds, licenses and fuzz/reference evidence |
@@ -59,6 +59,12 @@ maintenance/EOL/support policy, transitive features, unsafe/FFI/crypto/provider
 surface, alternatives and a removal/upgrade plan. A green current advisory scan
 is time-bound evidence, not a lifetime security guarantee. Existing SBOM/license
 jobs cover their registered scope only.
+
+The internal native archive now retains actual project, selected runtime-crate
+and Rust-library notice texts with a digest manifest and extraction verification.
+This closes the former lab-binary notice-packaging gap for that artifact; it does
+not finish protocol/fixture rights, binary-link analysis or product distribution
+qualification. See ADR 0006 for the reviewed permissive terms and exact boundary.
 
 The project license is Apache-2.0 with DCO, as selected by the owner. The protocol
 matrix lists public reference locations **without copying specification text**;

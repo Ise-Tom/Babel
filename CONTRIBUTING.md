@@ -16,6 +16,12 @@ report reads proposed work from open PRs and labels it pending merge;
 it never adds those proposals to main-branch acceptance totals. Public static
 artifacts do not include private PR descriptions or proposal overlays.
 
+Update `dashboard/capabilities.json` whenever implemented functional scope changes.
+Record the implemented subset, missing behavior, supporting work IDs and blockers;
+keep experiments and engineering tools distinct from product features. Unlisted
+capabilities stay planned. See the [tracker guide](docs/capability-tracker.md).
+Requirement acceptance never automatically accepts a complete capability.
+
 Run the commands in the [README](README.md). CI requires formatting, lint,
 strict types, security/dependency scans and at least 90% combined statement/branch
 coverage for repository tools. New source/build trees fail the scope gate until

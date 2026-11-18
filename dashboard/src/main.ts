@@ -1,4 +1,4 @@
-import type { Board, Phase, Problem, Source, Status, Step, Work } from './types';
+import type { Board, CapabilityStatus, Feature, Phase, Problem, Source, Status, Step, Work } from './types';
 
 function get<T extends HTMLElement = HTMLElement>(id: string): T {
   const element = document.getElementById(id);
@@ -23,23 +23,30 @@ const names: Record<Status, string> = { planned: 'Planned', in_progress: 'In pro
 function badge(status: Status | 'implemented' | 'open' | 'resolved', label?: string): HTMLElement {
   return el('span', `badge ${status}`, label ?? (Object.hasOwn(names, status) ? names[status as Status] : status === 'implemented' ? 'Implemented increment' : status === 'resolved' ? 'Resolved' : 'Open'));
 }
-interface State { view: 'overview' | 'phase' | 'log'; phase: number | null; q: string; status: Status | 'all'; step: string | null }
+const capabilityNames: Record<CapabilityStatus, string> = { planned: 'Planned', prototype: 'Prototype', partial: 'Partial implementation', implemented: 'Implemented (unqualified)' };
+const categoryNames = { product: 'Product capability', runtime_lab: 'Runtime lab', experiment: 'Qualification experiment', engineering: 'Engineering tooling' };
+interface State { view: 'overview' | 'phase' | 'log' | 'capabilities'; phase: number | null; q: string; status: Status | 'all'; step: string | null; capability: string | null; capabilityStatus: CapabilityStatus | 'all' }
 function readState(): State {
   const params = new URLSearchParams(location.hash.slice(1));
   const phase = params.has('phase') ? Number(params.get('phase')) : null;
   const valid = phase !== null && Number.isInteger(phase) && phase >= 0 && phase < board.phases.length;
   const selected = params.get('status') ?? 'all';
-  return { view: valid ? 'phase' : params.get('view') === 'log' ? 'log' : 'overview', phase: valid ? phase : null,
+  const capabilityStatus = params.get('capability_status') ?? 'all';
+  const capability = params.get('capability');
+  return { view: valid ? 'phase' : params.get('view') === 'log' ? 'log' : params.get('view') === 'capabilities' ? 'capabilities' : 'overview', phase: valid ? phase : null,
+    capability: capability && featureMap.has(capability) ? capability : null, capabilityStatus: Object.hasOwn(capabilityNames, capabilityStatus) ? capabilityStatus as CapabilityStatus : 'all',
     q: params.get('q') ?? '', status: Object.hasOwn(names, selected) ? selected as Status : 'all', step: params.get('step') };
 }
 let state = readState();
 let issueStatus: 'all' | 'open' | 'resolved' = 'all';
 function navigate(change: Partial<State>, push = true): void {
   const pageChanged = (change.view !== undefined && change.view !== state.view) || (change.phase !== undefined && change.phase !== state.phase);
-  state = { ...state, step: null, ...change };
+  state = { ...state, step: null, capability: null, ...change };
   const params = new URLSearchParams();
   if (state.view === 'phase' && state.phase !== null) params.set('phase', String(state.phase));
-  if (state.view === 'log') params.set('view', 'log');
+  if (state.view === 'log' || state.view === 'capabilities') params.set('view', state.view);
+  if (state.capability) params.set('capability', state.capability);
+  if (state.capabilityStatus !== 'all') params.set('capability_status', state.capabilityStatus);
   if (state.q) params.set('q', state.q);
   if (state.status !== 'all') params.set('status', state.status);
   if (state.step) params.set('step', state.step);
@@ -77,6 +84,7 @@ function showFeature(id: string): void {
   body.append(el('div', 'eyebrow', 'ASSOCIATED CAPABILITY'), el('code', 'feature-code', id), el('h2', '', feature.title));
   body.querySelector('h2')?.setAttribute('id', 'feature-title');
   body.append(el('p', '', 'This is a requirement association, not an implementation claim.'), el('h3', '', 'Acceptance evidence required'), el('p', '', feature.verification), link('Open canonical feature contract →', feature.url, 'text-link'));
+  body.append(el('p', 'step-note', `${capabilityNames[feature.implementation.status]} · ${categoryNames[feature.implementation.category]}. ${feature.implementation.scope}`), button('View implementation tracker →', 'button primary', () => { get<HTMLDialogElement>('feature-dialog').close(); openCapability(id); }));
   get<HTMLDialogElement>('feature-dialog').showModal();
 }
 function sources(items: Source[]): HTMLElement {
@@ -117,7 +125,7 @@ function stats(): HTMLElement {
   }
   return result;
 }
-function reset(): HTMLElement { return button('Clear filters', 'button secondary', () => navigate({ q: '', status: 'all' }, false)); }
+function reset(): HTMLElement { return button('Clear filters', 'button secondary', () => navigate({ q: '', status: 'all', capabilityStatus: 'all' }, false)); }
 function empty(text: string): HTMLElement {
   const result = el('div', 'empty'); result.append(el('h3', '', 'No matches'), el('p', '', text), reset()); return result;
 }
@@ -190,7 +198,7 @@ function phaseView(phase: Phase): HTMLElement {
   return result;
 }
 function logView(): HTMLElement {
-  const result = el('div'); result.append(header('IMPLEMENTATION JOURNAL', 'Evidence, decisions & lessons', 'Recorded work explains what was built, how it was verified, and its limits. Resolved setup issues are retained alongside open blockers.'), notice());
+  const result = el('div'); result.append(header('IMPLEMENTATION JOURNAL', 'Evidence, decisions & lessons', 'Recorded work explains what was built, how it was verified, and its limits. Development incidents are retained alongside open blockers.'), notice());
   const work = board.workItems.filter(item => matches([item.id, item.title, item.how, item.verification, ...item.requirements].join(' ')));
   result.append(el('h2', 'section-heading', `Recorded increments (${work.length})`));
   for (const item of work) {
@@ -209,8 +217,43 @@ function logView(): HTMLElement {
   if (!work.length && !problems.length) result.append(empty('No implementation record or problem matches this search.'));
   return result;
 }
+function openCapability(id: string): void { navigate({ view: 'capabilities', phase: null, capability: id, capabilityStatus: 'all', q: '', status: 'all' }); }
+function capabilityDetail(feature: Feature): HTMLElement {
+  const body = el('div', 'requirement-body'); const claim = feature.implementation;
+  body.append(el('p', 'step-note', claim.scope), el('p', 'muted', `${categoryNames[claim.category]}. ${claim.acceptance ? 'Explicit capability acceptance is recorded below.' : 'No full capability acceptance is recorded.'}`));
+  for (const [heading, items] of [['Implemented subset', claim.implemented], ['Missing or unqualified', claim.missing]] as const) {
+    body.append(el('h3', '', heading));
+    if (!items.length) body.append(el('p', 'muted', heading === 'Implemented subset' ? 'No functional implementation is claimed.' : 'No missing behavior is declared; validation and acceptance still require review.'));
+    const list = el('ul'); for (const item of items) list.append(el('li', '', item)); body.append(list);
+  }
+  body.append(el('h3', '', 'Implementation and validation evidence'));
+  for (const id of claim.work_items) { const item = board.workItems.find(w => w.id === id); if (item) body.append(workCard(item)); }
+  if (!claim.work_items.length) body.append(el('p', 'muted', 'No direct implementation evidence is recorded.'));
+  if (claim.acceptance) body.append(el('p', 'step-note', `${claim.acceptance.reviewer} · ${claim.acceptance.date}: ${claim.acceptance.evidence}`));
+  body.append(el('h3', '', 'Contract and related requirements'), el('p', '', feature.verification), link('Open canonical capability contract →', feature.url, 'text-link'));
+  const related = el('div', 'chips'); for (const id of feature.requirements) related.append(button(id, 'chip', () => openStep(id))); body.append(related);
+  const preparation = el('details', 'design-notes'); preparation.append(el('summary', '', 'Related preparation (not an implementation claim)'));
+  for (const id of feature.supportingWork.filter(id => !claim.work_items.includes(id))) { const item = board.workItems.find(w => w.id === id); if (item) preparation.append(button(`${id} · ${item.title}`, 'chip', () => navigate({ view: 'log', phase: null, q: id, status: 'all' }))); }
+  body.append(preparation);
+  for (const id of claim.blockers) { const issue = board.problems.find(p => p.id === id); if (issue) body.append(issueCard(issue)); }
+  return body;
+}
+function capabilityView(): HTMLElement {
+  const result = el('div'); result.append(header('CAPABILITY TRACKER', 'Capabilities & implementations', 'Inspect functional scope, code evidence and missing behavior. Design, tooling and passing CI do not establish a completed product capability.'));
+  const summary = el('p', 'notice'); summary.textContent = `${board.features.length} capabilities · ${board.features.filter(f => f.implementation.status !== 'planned').length} with scoped code claims · ${board.features.filter(f => f.implementation.acceptance).length} fully accepted. Lab and engineering claims remain explicitly scoped; these counts are not completion percentages.`; result.append(summary);
+  const visible = board.features.filter(feature => (state.capabilityStatus === 'all' || feature.implementation.status === state.capabilityStatus) && matches([feature.id, feature.title, feature.implementation.scope, ...feature.implementation.implemented, ...feature.implementation.missing, ...feature.requirements].join(' ')));
+  result.append(el('p', 'muted', `${visible.length} of ${board.features.length} capabilities shown`));
+  if (!visible.length) result.append(empty('No capabilities match the current search and implementation status.'));
+  for (const feature of visible) {
+    const card = el('details', 'capability-card'); card.id = `capability-${feature.id}`; card.dataset.testid = card.id;
+    const head = el('summary'); head.append(el('code', 'step-code', feature.id), el('h2', 'step-title', feature.title), el('span', `badge ${feature.implementation.status}`, capabilityNames[feature.implementation.status])); if (feature.implementation.category !== 'product') head.append(el('span', 'capability-category', categoryNames[feature.implementation.category])); card.append(head);
+    let loaded = false; card.addEventListener('toggle', () => { if (card.open && !loaded) { loaded = true; card.append(capabilityDetail(feature)); } });
+    result.append(card);
+  }
+  return result;
+}
 function renderNav(): void {
-  for (const [id, view] of [['overview-tab', 'overview'], ['log-tab', 'log']]) {
+  for (const [id, view] of [['overview-tab', 'overview'], ['capabilities-tab', 'capabilities'], ['log-tab', 'log']]) {
     const tab = get(id ?? ''); if (state.view === view) tab.setAttribute('aria-current', 'page'); else tab.removeAttribute('aria-current');
   }
 }
@@ -218,26 +261,31 @@ function render(): void {
   renderNav();
   get<HTMLInputElement>('search').value = state.q;
   get<HTMLSelectElement>('status').value = state.status;
-  get('status-field').hidden = state.view === 'log';
+  get('status-field').hidden = state.view === 'log' || state.view === 'capabilities';
+  get('capability-status-field').hidden = state.view !== 'capabilities';
+  get<HTMLSelectElement>('capability-status').value = state.capabilityStatus;
   get<HTMLSelectElement>('mobile-phase').value = state.view === 'phase' ? `phase:${state.phase}` : state.view;
   const current = board.phases.find(phase => phase.id === state.phase);
-  get('content').replaceChildren(state.view === 'log' ? logView() : state.view === 'phase' && current ? phaseView(current) : overview());
-  get('announcer').textContent = state.view === 'phase' && current ? `Phase ${current.id}: ${filtered(current).length} requirements shown` : state.view === 'log' ? 'Implementation journal displayed' : 'Delivery phase board displayed';
+  get('content').replaceChildren(state.view === 'capabilities' ? capabilityView() : state.view === 'log' ? logView() : state.view === 'phase' && current ? phaseView(current) : overview());
+  get('announcer').textContent = state.view === 'phase' && current ? `Phase ${current.id}: ${filtered(current).length} requirements shown` : state.view === 'capabilities' ? `Capability tracker: ${get('content').querySelectorAll('.capability-card').length} capabilities shown` : state.view === 'log' ? 'Implementation journal displayed' : 'Delivery phase board displayed';
+  if (state.view === 'capabilities' && state.capability) { const target = document.getElementById(`capability-${state.capability}`); if (target instanceof HTMLDetailsElement) { target.open = true; target.scrollIntoView({ block: 'start' }); } }
   if (state.step && /^P\d{2}-\d{2}$/.test(state.step)) {
     const target = document.getElementById(`step-${state.step}`);
     if (target instanceof HTMLDetailsElement) { target.open = true; target.scrollIntoView({ block: 'start' }); }
   }
 }
 get('overview-tab').addEventListener('click', () => navigate({ view: 'overview', phase: null }));
+get('capabilities-tab').addEventListener('click', () => navigate({ view: 'capabilities', phase: null, q: '', status: 'all', capabilityStatus: 'all' }));
+get<HTMLSelectElement>('capability-status').addEventListener('change', event => navigate({ capabilityStatus: (event.target as HTMLSelectElement).value as State['capabilityStatus'] }, false));
 get('log-tab').addEventListener('click', () => navigate({ view: 'log', phase: null }));
 get<HTMLInputElement>('search').addEventListener('input', event => navigate({ q: (event.target as HTMLInputElement).value }, false));
 get<HTMLSelectElement>('status').addEventListener('change', event => navigate({ status: (event.target as HTMLSelectElement).value as State['status'] }, false));
 get('close-dialog').addEventListener('click', () => get<HTMLDialogElement>('feature-dialog').close());
 const picker = get<HTMLSelectElement>('mobile-phase');
-for (const [value, label] of [['overview', 'Phase board'], ['log', 'Implementation & issues'], ...board.phases.map(p => [`phase:${p.id}`, `${String(p.id).padStart(2, '0')} · ${p.title}`])]) {
+for (const [value, label] of [['overview', 'Phase board'], ['capabilities', 'Capabilities'], ['log', 'Implementation & issues'], ...board.phases.map(p => [`phase:${p.id}`, `${String(p.id).padStart(2, '0')} · ${p.title}`])]) {
   const option = el('option', '', label); option.value = value ?? ''; picker.append(option);
 }
-picker.addEventListener('change', () => picker.value.startsWith('phase:') ? navigate({ view: 'phase', phase: Number(picker.value.split(':')[1]) }) : navigate({ view: picker.value as 'overview' | 'log', phase: null }));
+picker.addEventListener('change', () => picker.value.startsWith('phase:') ? navigate({ view: 'phase', phase: Number(picker.value.split(':')[1]) }) : navigate({ view: picker.value as 'overview' | 'log' | 'capabilities', phase: null }));
 get('download').addEventListener('click', () => {
   const url = URL.createObjectURL(new Blob([JSON.stringify(board, null, 2)], { type: 'application/json' }));
   const anchor = el('a'); anchor.href = url; anchor.download = `babel-progress-${board.snapshot.date}.json`; anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);

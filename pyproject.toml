@@ -1,4 +1,4 @@
-# Configuration for repository tooling; no application language has been selected.
+# Python tooling configuration; native protocol labs use Rust.
 [tool.ruff]
 target-version = "py312"
 line-length = 100
@@ -12,7 +12,7 @@ select = ["E", "F", "I", "UP", "B"]
 [tool.mypy]
 python_version = "3.12"
 strict = true
-files = ["scripts", "native/babel-ldap/tests/smoke_ldap.py", "experiments/postgres_store/experiment.py"]
+files = ["scripts", "native/babel-ldap/tests/smoke_ldap.py", "native/babel-tls-lab/tests/interop_tls.py", "experiments/postgres_store/experiment.py"]
 
 [tool.coverage.run]
 branch = true

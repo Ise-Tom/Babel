@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "claims": {
+    "AD-04": {
+      "status": "prototype",
+      "category": "runtime_lab",
+      "scope": "Read-only loopback LDAP RootDSE discovery lab; not an AD directory service.",
+      "implemented": ["Bounded BER/LDAP request decoding and TCP framing", "Read-only RootDSE and bounded presence/objectClass equality/boolean filters", "Credential rejection, connection/session budgets and safe errors"],
+      "missing": ["Stored directory entries and attribute-level access checks", "Authentication and password operations", "TLS/LDAPS integration", "AD controls, paging/referrals and global catalog", "Windows/Linux/macOS directory conformance"],
+      "work_items": ["W02", "W03", "W04", "W05", "W06", "W07", "W08", "W17"],
+      "blockers": ["I04", "I05", "I25", "I26"],
+      "acceptance": null
+    },
+    "SEC-08": {
+      "status": "prototype",
+      "category": "runtime_lab",
+      "scope": "Input and session limits for the current loopback LDAP component only.",
+      "implemented": ["Bounded LDAP filter depth, node/value and frame/session budgets", "Malformed-input, negative/property tests and sanitizer fuzz smoke"],
+      "missing": ["Stored-query/index cost controls", "Kerberos, DNS, RPC and replication limits", "Distributed resource exhaustion qualification"],
+      "work_items": ["W02", "W05", "W07", "W08", "W17"],
+      "blockers": ["I25", "I26"],
+      "acceptance": null
+    },
+    "SEC-10": {
+      "status": "partial",
+      "category": "engineering",
+      "scope": "Development supply-chain and CI safeguards; production services/update/recovery are unqualified.",
+      "implemented": ["Scoped CI permissions, required quality/security gates and source inventory", "Pinned dependencies, secret/advisory/license scans and SBOM", "Verified source/dashboard artifacts and prerelease preflight"],
+      "missing": ["Production Linux service hardening", "Signed product update and installer qualification", "Exercised security response and domain restore"],
+      "work_items": ["W01", "W09", "W10", "W13", "W23", "W30"],
+      "blockers": ["I27"],
+      "acceptance": null
+    },
+    "OPS-01": {
+      "status": "planned",
+      "category": "experiment",
+      "scope": "Synthetic PostgreSQL recovery experiments and workload tools support planning; native directory operations are not implemented.",
+      "implemented": [],
+      "missing": ["Native directory backup/restore and upgrade", "Domain credential/key rotation", "Product health, audit export and measured capacity"],
+      "work_items": ["W27", "W28", "W40"],
+      "blockers": ["I04", "I05"],
+      "acceptance": null
+    },
+    "UX-01": {
+      "status": "planned",
+      "category": "engineering",
+      "scope": "The project dashboard is development tooling; the domain administration UI/API/CLI are not implemented.",
+      "implemented": [],
+      "missing": ["Delegated domain administration API and CLI", "Identity/password/GPO operator UI", "Product accessibility and administrator journey qualification"],
+      "work_items": ["W14", "W16", "W18", "W38"],
+      "blockers": [],
+      "acceptance": null
+    }
+  }
+}

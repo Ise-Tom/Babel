@@ -58,7 +58,7 @@ a document-consistency gate, not proof of protocol/security correctness. See the
 
 The [scope guard](../scripts/check_ci_scope.py) deliberately supports this
 repository's docs, workflow definitions, Python tooling and the explicitly
-registered native/babel-ldap plus fuzz components. Unregistered native components
+registered native/babel-ldap and native/babel-tls-lab plus fuzz components. Unregistered native components
 and other-language files still fail. New application
 source/manifests, Dockerfiles or scripts in another language fail until the
 contributor adds locked build/lint/type/unit/integration/security/dependency
@@ -199,13 +199,15 @@ does not update toolchain or installed CLI pins automatically. No untrusted
 build cache, fork secret or privileged runner is introduced.
 
 Core coverage is >=90% lines, excluding test/CLI-dispatch files; the actual
-instrumented service is exercised by the independent client. The PR fuzzer runs
+instrumented services are exercised by independent LDAP/OpenSSL clients. A separate
+TLS-library 90% gate prevents existing LDAP coverage from masking TLS gaps. The PR fuzzer runs
 up to 20k iterations/20 seconds with 16-KiB input/512-MiB RSS bounds; schedules use
-200k iterations/120 seconds. Both decode/respond and transport framing are fuzzed.
+200k iterations/120 seconds per target. LDAP decode/respond/framing and the Rustls
+server record state machine have separate fuzz targets.
 Crashes retain synthetic reproductions; no production credentials enter corpora.
 
 Cargo audit/license/source policy includes development/build dependencies for the
-core and fuzz graphs. MIT/Apache/NCSA cover current development dependencies;
+core and fuzz graphs. MIT/Apache/NCSA/ISC/BSD-3-Clause cover current dependencies;
 NCSA is required by the libFuzzer harness. Apache-2.0 is now selected for Babel, including the native and fuzz packages.
 License checks include unpublished workspace packages; the former private-package
 exemption is disabled. `publish = false` still prevents registry publication.
@@ -213,12 +215,17 @@ Source prereleases require the project license and normal release gates; product
 releases additionally require the remaining rights and conformance reviews. Duplicate versions are warnings, while unknown/yanked or
 advised dependencies, unapproved licenses/sources and wildcard dependencies fail.
 Native SBOM is a source Cargo.lock inventory including test/fuzz dependencies,
-not a claim those dependencies are present in the zero-runtime-dependency lab
-binary or that all product licensing decisions have been approved.
+not a claim those dependencies are all linked into the lab binaries or that all
+product licensing decisions have been approved. Rustls/provider terms and remaining
+production obligations are recorded in [ADR 0006](adr/0006-tls-qualification-lab.md).
 
-The lab-binary tar/checksum is a 14-day CI artifact visible to repository readers, not a production
-release/installer. No native source change completes Phase 1 as a whole. Windows
-join/authentication, storage/ACL, DNS, TLS and GPO remain explicit future gates.
+`babel-protocol-labs-linux-x86_64.tar` contains both lab binaries and actual project,
+selected runtime-crate and Rust-library notices. A manifest preserves SHA-256 and
+byte counts; extraction verifies notice bytes and reruns both independent probes.
+The tar/checksum and TLS version/outcome/coverage evidence are 14-day CI artifacts
+visible to repository readers, not a production release/installer. No native source
+change completes Phase 1 as a whole. Windows join/authentication, storage/ACL, DNS,
+LDAP TLS/SASL integration and GPO remain explicit future gates.
 
 ## Project dashboard gate
 

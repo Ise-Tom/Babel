@@ -330,14 +330,48 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
         [
             "## Feature catalog",
             "",
-            "| Feature | Capability | Acceptance evidence |",
-            "| --- | --- | --- |",
+            "Implementation states are explicit scoped claims. "
+            "Related requirements, design and CI do not imply completion. "
+            "Full capability acceptance is separate from scoped requirement acceptance.",
+            "",
+            "| Feature | Capability | Implementation | Scope | Acceptance evidence |",
+            "| --- | --- | --- | --- | --- |",
         ]
     )
     for feature in features.values():
         lines.append(
             f"| {link(feature['id'], feature['url'])} | {escaped(feature['title'])} "
+            f"| {escaped(feature['implementation']['status'])} "
+            f"| {escaped(feature['implementation']['scope'])} "
             f"| {escaped(feature['verification'])} |"
+        )
+    for feature in features.values():
+        claim = feature["implementation"]
+        if not claim["work_items"]:
+            continue
+        lines.extend(
+            [
+                "",
+                f"### {escaped(feature['id'])} implementation scope",
+                "",
+                escaped(claim["scope"]),
+                "",
+                f"**State:** {escaped(claim['status'])} · {escaped(claim['category'])}",
+                "",
+                "**Implemented subset:** "
+                + (
+                    "; ".join(escaped(v) for v in claim["implemented"])
+                    or "No product behavior claimed"
+                ),
+                "",
+                "**Missing/unqualified:** " + "; ".join(escaped(v) for v in claim["missing"]),
+                "",
+                "**Evidence:** "
+                + "; ".join(f"{escaped(w)} (implementation journal)" for w in claim["work_items"]),
+                "",
+                "Full capability acceptance: "
+                + ("explicit review recorded" if claim["acceptance"] else "not recorded"),
+            ]
         )
     lines.extend(
         [
