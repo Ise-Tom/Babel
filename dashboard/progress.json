@@ -2,8 +2,8 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-18",
-    "commit": "b0c105d13ea9d36ee6a49a67cd7d1a0e10f367bc",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44270898143",
+    "commit": "2e2b4baccb3a1c6769e698a9e926ff46f6ea9407",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44275572074",
     "ci_result": "passed",
     "checks_passed": 13,
     "pull_requests": [
@@ -101,9 +101,14 @@
         "number": 23,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 24,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Verified main snapshot: PR #23 is merged and all 13 main CI jobs passed for b0c105d. Only Phases 0 and 1 are active; 274 requirements have variable phase sizes. Four owner-accepted scopes remain unchanged. The current PR adds reproducible synthetic dataset tooling, not server-capacity or client-conformance evidence."
+    "note": "Verified main snapshot: PR #24 is merged and all 13 main CI jobs passed for 2e2b4ba. Only Phases 0 and 1 are active; 274 requirements have variable phase sizes. Four owner-accepted scopes remain unchanged. The current PR adds explicit capability tracking, standalone TLS candidate qualification and actual native notice packaging; no AD compatibility, production TLS or capacity acceptance is inferred."
   },
   "requirements": {
     "P00-01": {
@@ -120,7 +125,7 @@
     },
     "P00-04": {
       "status": "in_progress",
-      "note": "Rust/toolchain and parser safeguards are qualified only for the bounded lab subset. Broader platform qualification remains; TLS, Kerberos/PAC and storage-driver decisions have separate P00-13–P00-15 acceptance."
+      "note": "Rust/parser safeguards and a standalone Rustls/ring candidate are qualified for limited lab scopes. Production dependency selection and platform qualification remain open; TLS, Kerberos/PAC and storage-driver decisions retain separate P00-13–P00-15 acceptance."
     },
     "P00-05": {
       "status": "blocked",
@@ -128,7 +133,7 @@
     },
     "P00-06": {
       "status": "in_progress",
-      "note": "The owner-selected Apache-2.0 and DCO are implemented; explicit acceptance of this requirement scope is not recorded. Protocol/specification/fixture rights remain separately unqualified under P00-16."
+      "note": "Owner-selected Apache-2.0/DCO retained. Internal native archives now bundle actual project, selected runtime dependency and Rust-library notice texts with byte verification and extracted probes. Explicit requirement acceptance is not recorded; protocol/fixture rights and product distribution remain separately unqualified under P00-16."
     },
     "P00-07": {
       "status": "in_progress",
@@ -193,6 +198,10 @@
         "date": "2026-11-17",
         "evidence": "Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: documentation, tests and CLI label the current prototype as a loopback-only LDAP discovery lab and disclose missing production/domain functionality. Evidence pinned to merged main: https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phase-01-progress.md ; https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/native/babel-ldap/src/main.rs . This accepts scope reporting, not those missing features or production readiness."
       }
+    },
+    "P00-13": {
+      "status": "in_progress",
+      "note": "ADR 0006 and a bounded Rustls 0.23.46/ring 0.17.14 mutual-TLS lab now have certificate/identity/protocol/property/OpenSSL/fuzz and separate coverage evidence. This qualifies a candidate experiment only; production selection, LDAP/SASL channel binding, client compatibility, revocation/rotation/key custody, provider faults and load remain open."
     }
   },
   "phase_acceptance": {},
@@ -1695,6 +1704,138 @@
       "problems": [
         "I30"
       ]
+    },
+    {
+      "id": "W41",
+      "title": "Track all global capabilities with explicit implementation scope and evidence",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-08",
+        "P00-10"
+      ],
+      "how": "Added a sparse versioned claim register over all 130 canonical capabilities, planned defaults, strict references, explicit stage/status, implemented and missing behavior and separate full-capability acceptance. The interactive tab supports search/status filters, lazy details, direct links, mobile navigation, work/source/blocker links and related preparation. The GitHub report renders the same claims. Documentation requires same-PR updates without inferring delivery from related work or accepted requirement subsets.",
+      "verification": "150 repository tests pass at 99% combined statement/branch coverage; the tracker validator has 100%. All 30 desktop/mobile browser tests and six build/security tests pass, including capability navigation, missing scope, immutable evidence, filters/deep links, no horizontal overflow and WCAG 2.2 AA-tagged automated checks. Strict TypeScript/lint and canonical/docs validation pass.",
+      "limitations": "This is project development tooling, not domain administration UI/API or product conformance. Claims still require human review and maintenance. No full capability acceptance, additional requirement acceptance or later phase activity is inferred. Pages receives the change only after merge and successful trusted deployment; open-PR increments appear separately in the GitHub report.",
+      "source_revision": "37df14a3507b8468f7e7246b17f7490265e3b0fd",
+      "sources": [
+        {
+          "path": "dashboard/capabilities.json",
+          "label": "capabilities.json"
+        },
+        {
+          "path": "scripts/capability_tracker.py",
+          "label": "capability_tracker.py"
+        },
+        {
+          "path": "tests/test_capabilities.py",
+          "label": "test_capabilities.py"
+        },
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "dashboard.spec.ts"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "docs/capability-tracker.md",
+          "label": "capability-tracker.md"
+        }
+      ],
+      "problems": [
+        "I31"
+      ]
+    },
+    {
+      "id": "W42",
+      "title": "Qualify a bounded Rustls/ring TLS candidate with independent enforcement tests",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-04",
+        "P00-13"
+      ],
+      "how": "Implemented a standalone loopback, one-session Rustls 0.23.46/ring 0.17.14 experiment with explicit client CA, mandatory client certificates, server verification by an independent OpenSSL client, TLS 1.2/1.3 AES-GCM/ECDHE suites, no early data/tickets/cache, bounded DER/wire/application buffers and monotonic deadlines. Added certificate/identity/time/purpose failures, tampering, scoped exporter prerequisites, property tests, a TLS-record sanitizer fuzzer and separate library coverage gate. ADR 0006 compares provider alternatives, actual license terms and unqualified production obligations.",
+      "verification": "Seven Rust TLS tests pass, including 64-case generated-record checks; the existing 28 LDAP tests pass. Nineteen OpenSSL methods pass against release, instrumented and extracted binaries using OpenSSL 3.5.7. TLS library line coverage is 93.23%; combined native coverage is 94.21%. TLS and LDAP sanitizer targets each complete 20,000 local iterations with no crash. Formatting/Clippy, both locked graph advisory/license/source audits, Bandit and workflow analysis pass.",
+      "limitations": "Qualification experiment only: no LDAP/StartTLS/SASL/EPA integration, AD authentication, production key custody/revocation/rotation/HSM/provider-loss or load qualification. Generic exporter agreement is not Windows channel-binding conformance. No Windows/macOS host was used; all 60 conformance cases remain unrun. Ring uses native C/assembly; this is not all-memory-safe or FIPS validation. No owner acceptance is inferred.",
+      "source_revision": "37df14a3507b8468f7e7246b17f7490265e3b0fd",
+      "sources": [
+        {
+          "path": "docs/adr/0006-tls-qualification-lab.md",
+          "label": "0006-tls-qualification-lab.md"
+        },
+        {
+          "path": "native/babel-tls-lab/Cargo.toml",
+          "label": "Cargo.toml"
+        },
+        {
+          "path": "native/babel-tls-lab/src/lib.rs",
+          "label": "lib.rs"
+        },
+        {
+          "path": "native/babel-tls-lab/tests/handshake.rs",
+          "label": "handshake.rs"
+        },
+        {
+          "path": "native/babel-tls-lab/tests/interop_tls.py",
+          "label": "interop_tls.py"
+        },
+        {
+          "path": "fuzz/fuzz_targets/tls_record.rs",
+          "label": "tls_record.rs"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        }
+      ],
+      "problems": [
+        "I26"
+      ]
+    },
+    {
+      "id": "W43",
+      "title": "Retain and verify actual license notices in experimental native archives",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-06"
+      ],
+      "how": "Added a fail-closed collector for actual nested LICENSE/COPYING/COPYRIGHT/NOTICE and declared license files in the selected normal/runtime Cargo dependency closure, plus project LICENSE/NOTICE/DCO and Rust library copyright/referenced terms. Preserved versions/SPDX and per-file SHA-256/size in a manifest. Native CI packages both binaries with notices, extracts/verifies the archive and reruns independent LDAP and TLS probes; full development/fuzz graph license and advisory checks remain mandatory.",
+      "verification": "Eight notice tests pass, covering nested and explicit terms, normal-vs-dev closure, graph cycles/unknown roots, missing/linked/empty terms, traversal and same-size digest tampering. Actual local archive contains notices for 11 selected runtime crates and 40 retained files totaling 1,738,841 bytes; post-extraction notice verification and both protocol probes pass. Root tooling coverage remains 99%.",
+      "limitations": "Experimental Linux x86_64 lab archive only. Rust reference notices may list components not linked; this is not complete binary-link analysis, legal clearance, protocol/fixture rights or product-distribution acceptance. Notice verification checks retained bytes, not legal interpretation or provenance by itself.",
+      "source_revision": "37df14a3507b8468f7e7246b17f7490265e3b0fd",
+      "sources": [
+        {
+          "path": "scripts/collect_native_notices.py",
+          "label": "collect_native_notices.py"
+        },
+        {
+          "path": "tests/test_native_notices.py",
+          "label": "test_native_notices.py"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        },
+        {
+          "path": "deny.toml",
+          "label": "deny.toml"
+        },
+        {
+          "path": "docs/adr/0006-tls-qualification-lab.md",
+          "label": "0006-tls-qualification-lab.md"
+        }
+      ],
+      "problems": [
+        "I32"
+      ]
     }
   ],
   "problems": [
@@ -2266,13 +2407,20 @@
         0
       ],
       "requirements": [
-        "P00-04"
+        "P00-04",
+        "P00-13",
+        "P00-14",
+        "P00-15"
       ],
-      "detail": "Rust is qualified for the bounded LDAP lab and PostgreSQL for a synthetic local experiment. Production TLS/provider, Kerberos/PAC, Rust store driver and DNS/SMB/RPC choices and their maintenance/license/FFI/security behavior are not qualified.",
+      "detail": "Rust and bounded LDAP safeguards, PostgreSQL synthetic transactions and now a standalone Rustls/ring TLS candidate have executable lab evidence. Production TLS/key custody/client integration, Kerberos/PAC, native store driver and DNS/SMB/RPC remain unqualified.",
       "resolution": "",
-      "next_action": "Review alternatives with exact versions/features/rights/advisories, then add targeted build/fuzz/negative/reference/failure evidence before admitting production use; do not implement custom cryptography.",
-      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
+      "next_action": "Review the TLS candidate ADR and qualify LDAP/SASL/client/revocation/rotation/provider-fault boundaries before production use. Separately select and test Kerberos/PAC, storage driver and other transports with exact versions/features/rights/advisories and runtime failure/reference evidence.",
+      "source_revision": "37df14a3507b8468f7e7246b17f7490265e3b0fd",
       "sources": [
+        {
+          "path": "docs/adr/0006-tls-qualification-lab.md",
+          "label": "0006-tls-qualification-lab.md"
+        },
         {
           "path": "docs/phase-00-security-and-dependencies.md",
           "label": "phase-00-security-and-dependencies.md"
@@ -2423,8 +2571,79 @@
         }
       ],
       "provenance": "Actual local generator/auditor executions and negative integrity tests at the pinned source; no service, Windows/Mac host or real directory was contacted."
+    },
+    {
+      "id": "I31",
+      "title": "Capability associations lacked an explicit implementation tracker",
+      "status": "resolved",
+      "kind": "development-tooling",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-08",
+        "P00-10"
+      ],
+      "detail": "Phase work and broad feature associations could not show which subset of a global capability actually existed or distinguish supporting tools from product functionality.",
+      "resolution": "Added an explicit 130-capability tracker with scoped claims, implemented/missing behavior, work/evidence/blocker links and separate full-capability acceptance. Planned defaults and validation prevent shared design/tooling or accepted requirement subsets from automatically claiming delivery.",
+      "next_action": "Maintain claims with every functional-scope change and review actual behavior; do not infer product acceptance from a green dashboard check.",
+      "source_revision": "37df14a3507b8468f7e7246b17f7490265e3b0fd",
+      "sources": [
+        {
+          "path": "docs/capability-tracker.md",
+          "label": "capability-tracker.md"
+        },
+        {
+          "path": "scripts/capability_tracker.py",
+          "label": "capability_tracker.py"
+        },
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": "tests/test_capabilities.py",
+          "label": "test_capabilities.py"
+        }
+      ],
+      "provenance": "Development implementation/tooling gap observed in the repository and verified with executable tests; not a GitHub setup incident."
+    },
+    {
+      "id": "I32",
+      "title": "Internal native binary archive did not carry actual third-party notice texts",
+      "status": "resolved",
+      "kind": "development-packaging",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-06"
+      ],
+      "detail": "The previous LDAP lab had no external runtime crate dependencies. The added TLS stack introduces copyright/permission/disclaimer obligations that an SPDX SBOM alone does not retain in the binary archive.",
+      "resolution": "Reviewed ISC/BSD-3-Clause terms alongside Apache/MIT and bundled actual nested runtime-source license files, project terms and Rust-library notices. Added a per-file digest manifest, extraction verification and both packaged executable probes; no audit findings are ignored.",
+      "next_action": "Re-review actual notices on dependency/provider/toolchain changes and expand platform/product distribution analysis before publishing product packages; specification/fixture rights remain open.",
+      "source_revision": "37df14a3507b8468f7e7246b17f7490265e3b0fd",
+      "sources": [
+        {
+          "path": "scripts/collect_native_notices.py",
+          "label": "collect_native_notices.py"
+        },
+        {
+          "path": "tests/test_native_notices.py",
+          "label": "test_native_notices.py"
+        },
+        {
+          "path": "deny.toml",
+          "label": "deny.toml"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        }
+      ],
+      "provenance": "Development implementation/tooling gap observed in the repository and verified with executable tests; not a GitHub setup incident."
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "Phase 0 now has reproducible owner-target synthetic data: 22,150 logical objects and 254,012 membership edges, with full-size audit and byte-identical replay. Real storage/protocol/load runners, licensed client labs, production libraries and security-response qualification remain open. Four accepted scopes are unchanged; all 60 conformance scenarios remain unrun. Only Phases 0 and 1 are active."
+  "focus_summary": "Phase 0 now includes a standalone Rustls/ring candidate with independent certificate/protocol enforcement, scoped exporter/property/fuzz/coverage evidence and actual native archive notices. The dashboard tracks all 130 capabilities with implementation subsets, gaps and source-backed work. Production LDAP/TLS integration, Kerberos/storage/transport choices, exact licensed client labs, capacity and response qualification remain open. Four accepted scopes are unchanged; all 60 conformance scenarios remain unrun. Only Phases 0 and 1 are active."
 }
