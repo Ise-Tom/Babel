@@ -44,11 +44,103 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T17:42:06\+01:00.
+GitHub metadata checked: 2026-11-18T17:47:44\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#28 · Complete Phase 0 functional-profile and recovery-governance gates](<https://github.com/Ise-Tom/Babel/pull/28>)
+
+**In review · Pending merge · CI: in\_progress** · Head 2d246d8
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    Phase 0 had an owner-selected 2016 baseline and prose recovery guidance, but no complete level/transition contract or enforced complete change/exception records. Complete the **original P00-10 and P00-11 Phase 0 design gates**, with full criterion packets ready for explicit owner validation:
+    
+    - [P00-10 — upgrade/recovery/scope governance](https://github.com/Ise-Tom/Babel/blob/380d564183b9217acbde16476658fe003cf72338/docs/validation/p00-10.md): six worked schema/key/domain-restore/level/storage/GPO changes, forward checkpoints, interruptions, recovery controls, all impact classes, review ownership and evidence invalidation/reruns. UTC exception expiry is exclusive; baseline, unknown and phase-gate waivers and false runtime passes fail.
+    - [P00-11 — domain/forest functional profile](https://github.com/Ise-Tom/Babel/blob/380d564183b9217acbde16476658fe003cf72338/docs/validation/p00-11.md): Linux-hosted 2016/2016 creation design, Windows/Linux/macOS clients, DC OS versus functional-level distinctions, inherited/optional/2025/FRS/coexistence/rollback review and explicit unsupported transition behavior. Two immutable MicrosoftDocs revisions record a real source conflict: the upgrade article’s no-levels-since-2016 sentence loses precedence to the current level table’s 2025 profile.
+    - Required CI validates the versioned contract, cross-checks the compatibility matrix and refuses unqualified level advertisement. Retain source revision, exact contract/matrix SHA-256, UTC check time and all six worked change families as `phase0-contract-evidence`.
+    - Update the dashboard and capability tracker in this PR: W48/W49, resolved development gaps I36/I37, full packets pinned to their implementation source. Phase 0 becomes **3 accepted, 2 ready for validation, 7 in progress, 1 blocked, 4 planned**. All five existing acceptance proofs remain unchanged; only Phases 0/1 are active.
+    
+    Validation: **172 repository tests pass**, **99% combined statement/branch coverage**, **100% coverage of the new checker**, **34 desktop/mobile browser checks** and six dashboard build/security checks pass. Strict types/lint, design/docs/conformance integrity, Bandit, Zizmor and actionlint pass. Hosted full CI is pending.
+    
+    These are complete Phase 0 **design** gates, whose original requirements ask for profiles, review and recovery examples. The checker validates record consistency; it does not authenticate reviewer/prose claims or authorize/perform a live directory transition. All 60 product/client conformance scenarios and actual native domain recovery remain unrun at their own implementation gates. No exception is active. No whole-phase or full product capability acceptance is inferred. Rollback of this tooling does not mutate directory data; future runtime migrations still require their reviewed coherent recovery procedures.
+
+**Changed files:**
+
+- .github/workflows/ci.yml
+- dashboard/capabilities.json
+- dashboard/progress.json
+- dashboard/tests/dashboard.spec.ts
+- docs/ci-cd.md
+- docs/functional-level-profile.md
+- docs/phase-00-governance.md
+- docs/phase-00-progress.md
+- docs/validation/p00-10.md
+- docs/validation/p00-11.md
+- lab/phase0-contract.json
+- scripts/check\_ci\_scope.py
+- scripts/check\_phase0\_contract.py
+- tests/test\_delivery.py
+- tests/test\_phase0\_contract.py
+
+#### Proposed W48 · Complete recovery/scope governance with enforced design-contract checks
+
+**Requirements:** P00-10
+
+**How it was done:** Added a versioned contract and strict planning checker with six complete worked schema/key/domain-restore/functional-level/storage/GPO records. Each contains owner/scope/requirements, all five impact classes, interruption and recovery controls, evidence invalidation/reruns and proposed review. Exceptions require named operation/client/site, owner/control/review, UTC activation/expiry and production impact; baseline/unknown/phase-gate waivers and rewriting observed outcomes fail. Required CI validates the contract and retains source/contract/matrix digest/time evidence. Prepared the complete original P00-10 criterion packet.
+
+**Recorded validation:** All 172 repository tests pass at 99% combined statement/branch coverage. The new checker has 100% statement/branch coverage. Negative tests reject omitted controls, false runtime passes, partial invalidation, unreviewed exceptions, expiry at its exact boundary, unknown IDs, protected baseline/phase-gate waivers and mutable/duplicate references. Strict mypy/Ruff and Bandit/workflow lint/security checks pass.
+
+**Limits and remaining work:** This implements planning consistency checks and completes the Phase 0 design gate; it neither authenticates prose/reviewer claims nor performs/authorizes a live migration or recovery. No current exception is active. Actual native migration, key/domain recovery and independent production review remain their own gates. Owner validation is pending; all five existing acceptance proofs are preserved.
+
+**PR-head evidence:** [docs/validation/p00-10.md](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/docs/validation/p00-10.md>) · [docs/phase-00-governance.md](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/docs/phase-00-governance.md>) · [lab/phase0-contract.json](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/lab/phase0-contract.json>) · [scripts/check\_phase0\_contract.py](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/scripts/check_phase0_contract.py>) · [tests/test\_phase0\_contract.py](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/tests/test_phase0_contract.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/.github/workflows/ci.yml>)
+
+
+#### Proposed W49 · Complete the Linux-hosted 2016 domain/forest functional-level contract
+
+**Requirements:** P00-11
+
+**How it was done:** Fixed the initial 2016-domain/2016-forest profile with fresh-forest creation design and explicit transition/refusal/failure review. Distinguished functional levels from reference DC OS and Windows/Linux/macOS member clients. Reviewed inherited/optional security features, 2025-level additions, FRS/DFSR, coexistence and conditional rollback. Pinned two immutable MicrosoftDocs revisions and resolved their contradictory no-levels-since-2016 sentence using the current level table. Required CI rejects matrix/profile/client drift and unqualified advertised levels. Submitted the complete original P00-11 criterion packet.
+
+**Recorded validation:** The same 172-test run and 100%-covered planning checker exercise fresh 2016/2016 design, unsupported create/raise/lower/coexist combinations, forest/domain mismatch, exact matrix cross-binding, removed non-Windows clients, false advertisements and reference pins. Public upstream source revisions were read on 18 November 2026. The compatibility inventory still accounts for exactly 60 unrun product scenarios.
+
+**Limits and remaining work:** The checker returns design\_only or unsupported, never an executable deployment approval. Native RootDSE level advertising, actual creation/transitions, inherited feature semantics, Windows coexistence and client behavior are unimplemented/unqualified. Exact builds and licensed hosts remain P00-12/P00-05, operation decomposition P00-01. No full product capability or later phase is started or accepted.
+
+**PR-head evidence:** [docs/validation/p00-11.md](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/docs/validation/p00-11.md>) · [docs/functional-level-profile.md](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/docs/functional-level-profile.md>) · [lab/phase0-contract.json](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/lab/phase0-contract.json>) · [scripts/check\_phase0\_contract.py](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/scripts/check_phase0_contract.py>) · [tests/test\_phase0\_contract.py](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/tests/test_phase0_contract.py>) · [lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/lab/compatibility.json>)
+
+#### Proposed problem update: I36 · Functional-level scope lacked a complete transition contract and current reference precedence
+
+**Proposed status:** resolved
+
+The owner-selected 2016 baseline did not yet distinguish current Windows DC OS support from functional levels or enumerate unsupported transition/optional-feature behavior. The pinned upgrade article also says no levels were added since 2016, contradicting the current functional-level table’s 2025 profile.
+
+**Resolution:** Completed the 2016/2016 Linux-hosted design, preserved Windows/Linux/macOS clients, reviewed inherited/optional/2025/FRS/coexistence/rollback boundaries, and documented current-table precedence. CI checks exact matrix/profile consistency, immutable distinct references and the empty advertised-level set. The full design packet is ready for owner validation.
+
+**Next action:** Owner review of the complete P00-11 design gate; qualify actual native levels/features/clients and exact platforms under their separate requirements before advertisement.
+
+**Provenance:** Concrete design/reference conflict found by reading the current upstream source revisions; not a GitHub setup issue.
+
+[docs/functional-level-profile.md](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/docs/functional-level-profile.md>) · [docs/validation/p00-11.md](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/docs/validation/p00-11.md>)
+
+#### Proposed problem update: I37 · Recovery governance lacked enforced complete review and exception records
+
+**Proposed status:** resolved
+
+The earlier prose outlined transitions but had no versioned complete records or CI guard against omitted recovery controls, expired exceptions, unknown/baseline waivers and observations being relabeled passed. Future design changes could drift without a source-bound consistency report.
+
+**Resolution:** Implemented all six worked transition records, the strict source/digest-bound checker and required CI artifact. Added negative tests for recovery, evidence invalidation, review material, exact UTC expiry, unknown/phase-gate/baseline waivers and false outcomes. Completed the original Phase 0 governance criterion packet.
+
+**Next action:** Owner review of P00-10; preserve the review contract and implement/test real runtime state machines at their native phase gates. Passing record structure does not authenticate review identity or prove recovery.
+
+**Provenance:** Development design-integrity gap resolved with concrete CI/tooling and full criterion evidence; not an account/hosting incident.
+
+[docs/phase-00-governance.md](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/docs/phase-00-governance.md>) · [scripts/check\_phase0\_contract.py](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/scripts/check_phase0_contract.py>) · [tests/test\_phase0\_contract.py](<https://github.com/Ise-Tom/Babel/blob/2d246d8bff848d49d7ce762316b1fb4733a3b75e/tests/test_phase0_contract.py>)
+
+
+</details>
 
 
 ## Phase 00
@@ -190,6 +282,8 @@ Solo development governance and worked schema/key/restore/functional-level/stora
 
 **Acceptance evidence required:** Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact.
 
+**Pending PR proposals:** [\#28: Complete Phase 0 functional-profile and recovery-governance gates](<https://github.com/Ise-Tom/Babel/pull/28>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI; W33: Enforce versioned conformance evidence integrity in CI; W34: Specify stable state and worked replication/recovery invariants; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence; W45: Make phase activity and recent work visible separately from acceptance. See the [implementation journal](#implementation-journal).
 
 ### P00-11
@@ -201,6 +295,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/d535d816d2071e0d5d33a321412525f59b371db7/docs/requirements.md>); [AD-10: Domain/forest functional levels and FSMO role ownership, transfer and failure recovery](<https://github.com/Ise-Tom/Babel/blob/d535d816d2071e0d5d33a321412525f59b371db7/docs/requirements.md>); [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/d535d816d2071e0d5d33a321412525f59b371db7/docs/requirements.md>)
 
 **Acceptance evidence required:** Review supported levels, transitions and incompatible behavior; do not advertise unqualified levels.
+
+**Pending PR proposals:** [\#28: Complete Phase 0 functional-profile and recovery-governance gates](<https://github.com/Ise-Tom/Babel/pull/28>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
