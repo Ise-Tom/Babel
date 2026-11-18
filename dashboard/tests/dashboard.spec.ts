@@ -267,12 +267,13 @@ test('completed exit work can await validation without being accepted', async ({
   step.status = 'ready_for_validation'; step.acceptance = null;
   step.validation = { scope: 'Full driver exit review', packet: { path: 'docs/validation/p00-15.md', label: 'Exit packet', url: `https://github.com/Ise-Tom/Babel/blob/${facts.buildRevision}/docs/validation/p00-15.md` } };
   await page.setContent(await htmlFor(facts));
-  await expect(page.getByTestId('phase-card-0').locator('.badge')).toHaveText('1 ready');
+  const ready = current.steps.filter(s => s.status === 'ready_for_validation').length;
+  await expect(page.getByTestId('phase-card-0').locator('.badge')).toHaveText(`${ready} ready`);
   const accepted = current.steps.filter(s => s.status === 'accepted').length;
   await expect(page.getByTestId('phase-card-0')).toContainText(`${accepted}/${current.steps.length} accepted`);
   await phase(page, 0);
   await page.getByLabel('Requirement status', { exact: true }).selectOption('ready_for_validation');
-  await expect(page.locator('.requirement')).toHaveCount(1);
+  await expect(page.locator('.requirement')).toHaveCount(ready);
   const item = page.getByTestId('P00-15'); await item.locator(':scope > summary').click();
   await expect(item).toContainText('EXIT CRITERIA COMPLETE');
   await expect(item.getByRole('link', { name: 'Review exit criteria and evidence' })).toBeVisible();

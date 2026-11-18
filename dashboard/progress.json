@@ -2,8 +2,8 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-18",
-    "commit": "f42815d5a3132f56dbdf4dafde220b8b0939d7f6",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44313568549",
+    "commit": "d535d816d2071e0d5d33a321412525f59b371db7",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44348312817",
     "ci_result": "passed",
     "checks_passed": 14,
     "pull_requests": [
@@ -116,9 +116,14 @@
         "number": 26,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 27,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Verified main baseline: PR #26 is merged and f42815d passed all 14 CI jobs with a successful Pages deployment. This PR completes P00-15 technical qualification and records the owner’s explicit validation of its full Phase 0 gate, alongside the earlier display fix. The four prior accepted proofs are preserved; no AD/client or capacity acceptance is inferred."
+    "note": "Verified main baseline: PR #27 merged and d535d81 passed all 14 CI jobs, recording the owner-accepted full P00-15 gate. This PR completes the original P00-10/P00-11 Phase 0 design gates and submits their pinned packets for owner validation. All five prior accepted proofs are unchanged; native recovery/client evidence remains unrun."
   },
   "requirements": {
     "P00-01": {
@@ -168,8 +173,16 @@
       }
     },
     "P00-10": {
-      "status": "in_progress",
-      "note": "Solo development governance and worked schema/key/restore/functional-level/storage/GPO transitions are documented. Runtime recovery exercises and explicit requirement/phase review remain outstanding."
+      "status": "ready_for_validation",
+      "note": "The full Phase 0 upgrade/recovery/scope-governance design gate is complete. Six worked transitions define forward checkpoints, interruption, kind-specific recovery and invalidation. Required CI checks owner/review material, UTC expiry, baseline/phase-gate waiver rejection and unchanged unrun observations; its report binds the source and input digests. Explicit owner validation remains pending. Runtime recovery remains its actual implementation gates.",
+      "validation": {
+        "scope": "Full original P00-10 Phase 0 governance design gate, including review/recovery examples and owner/expiry/production-impact exception policy; not runtime recovery.",
+        "source_revision": "380d564183b9217acbde16476658fe003cf72338",
+        "packet": {
+          "path": "docs/validation/p00-10.md",
+          "label": "P00-10 full criterion packet"
+        }
+      }
     },
     "P01-01": {
       "status": "accepted",
@@ -228,6 +241,18 @@
         "reviewer": "Project owner (explicit validation in this conversation)",
         "date": "2026-11-18",
         "evidence": "The project owner explicitly answered “Validate P00-15” in this conversation on 18 November 2026. This validates the entire original Phase 0 gate: driver/version review, parameterization, cancellation, commit/error handling and recovery, for profile pg18-local-unix-scram-no-pool-v1. Reviewed implementation and full criterion packet: https://github.com/Ise-Tom/Babel/blob/8d21b7b83a76bd45f9564f7a44f7e144c50c9142/docs/validation/p00-15.md . All 29 cases pass, with actual lost commit replies, two database process restarts and 97.81% driver-library line coverage; all 14 CI jobs pass: https://github.com/Ise-Tom/Babel/actions/runs/44327591957 . Recorded decision: https://github.com/Ise-Tom/Babel/blob/49abca719c43082e4e9af30c5bc960d2b714f1b0/docs/validation/p00-15.md . Native AD storage, credential/key custody, domain recovery/capacity, the 60 unrun client scenarios and whole-phase acceptance remain separate gates."
+      }
+    },
+    "P00-11": {
+      "status": "ready_for_validation",
+      "note": "The full Phase 0 functional-level design gate is complete: Linux-hosted 2016 domain/2016 forest creation profile, reference DC OS versus client OS distinction, inherited/optional/2025 incompatibilities and explicit refusal of unimplemented transitions. Immutable source review resolves a stale 2025-level statement. CI binds the matrix, preserves non-Windows clients and rejects false level advertisements. Owner validation is pending; no native level/client conformance is claimed.",
+      "validation": {
+        "scope": "Full original P00-11 Phase 0 level/transition/incompatibility design gate; no native functional-level or client-conformance acceptance.",
+        "source_revision": "380d564183b9217acbde16476658fe003cf72338",
+        "packet": {
+          "path": "docs/validation/p00-11.md",
+          "label": "P00-11 full criterion packet"
+        }
       }
     }
   },
@@ -2047,6 +2072,90 @@
         "I26",
         "I35"
       ]
+    },
+    {
+      "id": "W48",
+      "title": "Complete recovery/scope governance with enforced design-contract checks",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10"
+      ],
+      "how": "Added a versioned contract and strict planning checker with six complete worked schema/key/domain-restore/functional-level/storage/GPO records. Each contains owner/scope/requirements, all five impact classes, interruption and recovery controls, evidence invalidation/reruns and proposed review. Exceptions require named operation/client/site, owner/control/review, UTC activation/expiry and production impact; baseline/unknown/phase-gate waivers and rewriting observed outcomes fail. Required CI validates the contract and retains source/contract/matrix digest/time evidence. Prepared the complete original P00-10 criterion packet.",
+      "verification": "All 172 repository tests pass at 99% combined statement/branch coverage. The new checker has 100% statement/branch coverage. Negative tests reject omitted controls, false runtime passes, partial invalidation, unreviewed exceptions, expiry at its exact boundary, unknown IDs, protected baseline/phase-gate waivers and mutable/duplicate references. Strict mypy/Ruff and Bandit/workflow lint/security checks pass.",
+      "limitations": "This implements planning consistency checks and completes the Phase 0 design gate; it neither authenticates prose/reviewer claims nor performs/authorizes a live migration or recovery. No current exception is active. Actual native migration, key/domain recovery and independent production review remain their own gates. Owner validation is pending; all five existing acceptance proofs are preserved.",
+      "source_revision": "380d564183b9217acbde16476658fe003cf72338",
+      "sources": [
+        {
+          "path": "docs/validation/p00-10.md",
+          "label": "p00-10.md"
+        },
+        {
+          "path": "docs/phase-00-governance.md",
+          "label": "phase-00-governance.md"
+        },
+        {
+          "path": "lab/phase0-contract.json",
+          "label": "phase0-contract.json"
+        },
+        {
+          "path": "scripts/check_phase0_contract.py",
+          "label": "check_phase0_contract.py"
+        },
+        {
+          "path": "tests/test_phase0_contract.py",
+          "label": "test_phase0_contract.py"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "label": "ci.yml"
+        }
+      ],
+      "problems": [
+        "I37"
+      ]
+    },
+    {
+      "id": "W49",
+      "title": "Complete the Linux-hosted 2016 domain/forest functional-level contract",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-11"
+      ],
+      "how": "Fixed the initial 2016-domain/2016-forest profile with fresh-forest creation design and explicit transition/refusal/failure review. Distinguished functional levels from reference DC OS and Windows/Linux/macOS member clients. Reviewed inherited/optional security features, 2025-level additions, FRS/DFSR, coexistence and conditional rollback. Pinned two immutable MicrosoftDocs revisions and resolved their contradictory no-levels-since-2016 sentence using the current level table. Required CI rejects matrix/profile/client drift and unqualified advertised levels. Submitted the complete original P00-11 criterion packet.",
+      "verification": "The same 172-test run and 100%-covered planning checker exercise fresh 2016/2016 design, unsupported create/raise/lower/coexist combinations, forest/domain mismatch, exact matrix cross-binding, removed non-Windows clients, false advertisements and reference pins. Public upstream source revisions were read on 18 November 2026. The compatibility inventory still accounts for exactly 60 unrun product scenarios.",
+      "limitations": "The checker returns design_only or unsupported, never an executable deployment approval. Native RootDSE level advertising, actual creation/transitions, inherited feature semantics, Windows coexistence and client behavior are unimplemented/unqualified. Exact builds and licensed hosts remain P00-12/P00-05, operation decomposition P00-01. No full product capability or later phase is started or accepted.",
+      "source_revision": "380d564183b9217acbde16476658fe003cf72338",
+      "sources": [
+        {
+          "path": "docs/validation/p00-11.md",
+          "label": "p00-11.md"
+        },
+        {
+          "path": "docs/functional-level-profile.md",
+          "label": "functional-level-profile.md"
+        },
+        {
+          "path": "lab/phase0-contract.json",
+          "label": "phase0-contract.json"
+        },
+        {
+          "path": "scripts/check_phase0_contract.py",
+          "label": "check_phase0_contract.py"
+        },
+        {
+          "path": "tests/test_phase0_contract.py",
+          "label": "test_phase0_contract.py"
+        },
+        {
+          "path": "lab/compatibility.json",
+          "label": "compatibility.json"
+        }
+      ],
+      "problems": [
+        "I36"
+      ]
     }
   ],
   "problems": [
@@ -2943,8 +3052,66 @@
         }
       ],
       "provenance": "Concrete missing driver semantics were closed with actual database, reply-loss and process-crash tests. This is development correctness and completion of a requirement, not a GitHub setup incident."
+    },
+    {
+      "id": "I36",
+      "title": "Functional-level scope lacked a complete transition contract and current reference precedence",
+      "status": "resolved",
+      "kind": "development-qualification",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-11"
+      ],
+      "detail": "The owner-selected 2016 baseline did not yet distinguish current Windows DC OS support from functional levels or enumerate unsupported transition/optional-feature behavior. The pinned upgrade article also says no levels were added since 2016, contradicting the current functional-level table’s 2025 profile.",
+      "resolution": "Completed the 2016/2016 Linux-hosted design, preserved Windows/Linux/macOS clients, reviewed inherited/optional/2025/FRS/coexistence/rollback boundaries, and documented current-table precedence. CI checks exact matrix/profile consistency, immutable distinct references and the empty advertised-level set. The full design packet is ready for owner validation.",
+      "next_action": "Owner review of the complete P00-11 design gate; qualify actual native levels/features/clients and exact platforms under their separate requirements before advertisement.",
+      "source_revision": "380d564183b9217acbde16476658fe003cf72338",
+      "sources": [
+        {
+          "path": "docs/functional-level-profile.md",
+          "label": "Functional-level profile"
+        },
+        {
+          "path": "docs/validation/p00-11.md",
+          "label": "Full criterion packet"
+        }
+      ],
+      "provenance": "Concrete design/reference conflict found by reading the current upstream source revisions; not a GitHub setup issue."
+    },
+    {
+      "id": "I37",
+      "title": "Recovery governance lacked enforced complete review and exception records",
+      "status": "resolved",
+      "kind": "development-qualification",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-10"
+      ],
+      "detail": "The earlier prose outlined transitions but had no versioned complete records or CI guard against omitted recovery controls, expired exceptions, unknown/baseline waivers and observations being relabeled passed. Future design changes could drift without a source-bound consistency report.",
+      "resolution": "Implemented all six worked transition records, the strict source/digest-bound checker and required CI artifact. Added negative tests for recovery, evidence invalidation, review material, exact UTC expiry, unknown/phase-gate/baseline waivers and false outcomes. Completed the original Phase 0 governance criterion packet.",
+      "next_action": "Owner review of P00-10; preserve the review contract and implement/test real runtime state machines at their native phase gates. Passing record structure does not authenticate review identity or prove recovery.",
+      "source_revision": "380d564183b9217acbde16476658fe003cf72338",
+      "sources": [
+        {
+          "path": "docs/phase-00-governance.md",
+          "label": "Governance contract"
+        },
+        {
+          "path": "scripts/check_phase0_contract.py",
+          "label": "Enforced planning checks"
+        },
+        {
+          "path": "tests/test_phase0_contract.py",
+          "label": "Negative regression tests"
+        }
+      ],
+      "provenance": "Development design-integrity gap resolved with concrete CI/tooling and full criterion evidence; not an account/hosting incident."
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "P00-15 is owner-accepted for its full driver/transaction gate: 29 passing cases, bounded writes, cancellation, durable receipt recovery and real database restarts. Phase 0 has 3 accepted requirements. Native AD integration and all 60 client scenarios remain unqualified."
+  "focus_summary": "Two more Phase 0 gates are complete for review: recovery/scope governance (P00-10) and the Linux-hosted 2016 functional profile (P00-11), with enforced CI contracts. P00-15 stays accepted; actual domain recovery and all 60 client scenarios remain unrun."
 }
