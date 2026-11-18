@@ -1714,10 +1714,10 @@
         "P00-08",
         "P00-10"
       ],
-      "how": "Added a sparse versioned claim register over all 130 canonical capabilities, planned defaults, strict references, explicit stage/status, implemented and missing behavior and separate full-capability acceptance. The interactive tab supports search/status filters, lazy details, direct links, mobile navigation, work/source/blocker links and related preparation. The GitHub report renders the same claims. Documentation requires same-PR updates without inferring delivery from related work or accepted requirement subsets.",
+      "how": "Added a sparse versioned claim register over all 130 canonical capabilities, planned defaults, strict references, explicit stage/status, implemented and missing behavior and separate full-capability acceptance. The interactive tab supports search/status filters, lazy details, direct links, mobile navigation, work/source/blocker links and related preparation. The GitHub report renders the same claims. Documentation requires same-PR updates without inferring delivery from related work or accepted requirement subsets. Implemented claims cannot retain declared gaps; implementation and acceptance have separate labels. The focus summary stays compact so all 18 phase cards remain visible in the tested desktop viewport.",
       "verification": "150 repository tests pass at 99% combined statement/branch coverage; the tracker validator has 100%. All 30 desktop/mobile browser tests and six build/security tests pass, including capability navigation, missing scope, immutable evidence, filters/deep links, no horizontal overflow and WCAG 2.2 AA-tagged automated checks. Strict TypeScript/lint and canonical/docs validation pass.",
       "limitations": "This is project development tooling, not domain administration UI/API or product conformance. Claims still require human review and maintenance. No full capability acceptance, additional requirement acceptance or later phase activity is inferred. Pages receives the change only after merge and successful trusted deployment; open-PR increments appear separately in the GitHub report.",
-      "source_revision": "37df14a3507b8468f7e7246b17f7490265e3b0fd",
+      "source_revision": "a3c58b409f362dd6ccb0e5999572620f17652b15",
       "sources": [
         {
           "path": "dashboard/capabilities.json",
@@ -2587,7 +2587,7 @@
       "detail": "Phase work and broad feature associations could not show which subset of a global capability actually existed or distinguish supporting tools from product functionality.",
       "resolution": "Added an explicit 130-capability tracker with scoped claims, implemented/missing behavior, work/evidence/blocker links and separate full-capability acceptance. Planned defaults and validation prevent shared design/tooling or accepted requirement subsets from automatically claiming delivery.",
       "next_action": "Maintain claims with every functional-scope change and review actual behavior; do not infer product acceptance from a green dashboard check.",
-      "source_revision": "37df14a3507b8468f7e7246b17f7490265e3b0fd",
+      "source_revision": "a3c58b409f362dd6ccb0e5999572620f17652b15",
       "sources": [
         {
           "path": "docs/capability-tracker.md",
