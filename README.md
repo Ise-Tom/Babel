@@ -44,11 +44,74 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T09:56:53\+01:00.
+GitHub metadata checked: 2026-11-18T10:19:34\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#24 · Implement reproducible target-scale synthetic workload fixtures](<https://github.com/Ise-Tom/Babel/pull/24>)
+
+**In review · Pending merge · CI: in\_progress** · Head 4c3f4f5
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    Phase 0’s approved workload had no executable seeded dataset, so future storage/protocol/load tests could silently use different object, payload and membership distributions. This PR adds reproducible synthetic fixture generation and an independent integrity/relationship auditor, then runs the full owner-target profile in required CI.
+    
+    The full profile produces 10,000 enabled users, 10,000 computers, 2,000 groups, 100 OUs and 50 logical policy records (22,150 objects). Site allocation is exactly 40%/35%/25%; direct memberships and payload sizes follow the approved proportions. It includes 254,000 direct and 12 nested edges with disjoint depths 1/3/8. Cycle and over-budget inputs are separate from the normal graph. A small smoke profile supports fast tests.
+    
+    The stdlib generator uses fixed namespace/hash-based ordering and bounded unique sampling, streams data to a fresh directory, refuses overwrite/symlinks and writes its manifest last. The independent auditor validates file hashes/sizes/counts, versions/input bindings, GUID/SID/name uniqueness, OU/site relationships, exact distributions, normal-graph acyclicity/chain profiles and negative-input shape. Tests alter semantics and rehash artifacts to ensure hash consistency alone cannot pass invalid data.
+    
+    Required repository CI generates and audits the full fixture at the actual checked-out GITHUB_SHA. Only its small manifest and verification summary are retained; large payload files stay in runner temporary storage. Existing Python type/lint/coverage/security gates cover both tools without new dependencies. W40/I30 record implementation, actual evidence and limitations in the dashboard; only Phases 0 and 1 are active and the four accepted requirement scopes are preserved.
+    
+    Validation: 136 local repository tests pass at 99% combined tooling coverage; both new modules have 100% statement/branch coverage. Two full-profile CLI generations/audits at source 521dfe82f6d32db979185084b2a6e0a8dac2e02a produced byte-identical copies of all four files. Both report 22,150 objects, 254,000 direct/12 nested edges and maximum effective group count 111. Manifest SHA-256: 9409b80dd69a5d762d52c8c01c324802990c3314a7e8bc3a60ae8bef556a901f. Object/membership files are 35,440,934/32,005,476 bytes. Ruff, strict mypy, Bandit, actionlint, Zizmor and canonical scope/design/doc/dashboard/conformance checks pass. Current hosted CI is recorded after completion.
+    
+    These are logical synthetic fixture records, not an AD import, native schema/ACL/GPO implementation, credential store, RID allocator, token encoder or benchmark. No directory, Windows/Mac client or endpoint was contacted. Token bytes, database/index expansion, throughput and latency remain null/unmeasured. Negative graph shape is checked; server denial is unrun. All 60 conformance scenarios remain unrun, and existing P00-09 acceptance stays limited to the engineering method.
+    
+    No merge, release/tag, infrastructure purchase or cloud-environment publication is performed by this PR. The GitHub report shows proposals separately from main totals; Pages changes after merge and successful trusted deployment.
+
+**Changed files:**
+
+- .github/workflows/ci.yml
+- README.md
+- dashboard/progress.json
+- docs/ci-cd.md
+- docs/phase-00-progress.md
+- docs/phase-00-workload.md
+- docs/synthetic-workload.md
+- scripts/check\_workload.py
+- scripts/generate\_workload.py
+- tests/test\_workload.py
+
+#### Proposed W40 · Generate and independently audit reproducible target-scale synthetic data
+
+**Requirements:** P00-09
+
+**How it was done:** Added stdlib Python tooling with fixed namespace/hash-based sampling, exact site/payload/direct-membership distributions, synthetic GUID/SID/DN and ACL/GPO labels, disjoint depth-1/3/8 group chains and separate cycle/over-budget inputs. An independent bounded auditor checks artifact hashes, relationships/counts, reference consistency, duplicate identities/edges, graph shape and explicit unmeasured fields. Required CI generates/audits the full profile and retains only manifest/summary.
+
+**Recorded validation:** 136 local repository tests pass at 99% tooling coverage; both new modules have 100% statement/branch coverage. Full profile generated and audited twice at source 521dfe82f6d32db979185084b2a6e0a8dac2e02a; all four files are byte-identical. Both audits report 22,150 objects, 254,000 direct plus 12 nested edges and max effective group count 111. Local manifest SHA-256: 9409b80dd69a5d762d52c8c01c324802990c3314a7e8bc3a60ae8bef556a901f. Objects/memberships are 35,440,934/32,005,476 bytes. Strict types/lint, Bandit, workflow and canonical checks pass.
+
+**Limits and remaining work:** Synthetic logical fixture schema only: no credentials, domain/schema import, real ACL/GPO/SYSVOL behavior, AD RID allocator, endpoint provisioning, client denial tests or native load. Token bytes, index/storage expansion, throughput and latency remain null/unmeasured. Negative graph shape is verified, not actual server rejection. Existing method acceptance is not expanded; all 60 conformance scenarios remain unrun.
+
+**PR-head evidence:** [scripts/generate\_workload.py](<https://github.com/Ise-Tom/Babel/blob/4c3f4f5af60c862558a62de30e41abf802f9ea37/scripts/generate_workload.py>) · [scripts/check\_workload.py](<https://github.com/Ise-Tom/Babel/blob/4c3f4f5af60c862558a62de30e41abf802f9ea37/scripts/check_workload.py>) · [tests/test\_workload.py](<https://github.com/Ise-Tom/Babel/blob/4c3f4f5af60c862558a62de30e41abf802f9ea37/tests/test_workload.py>) · [docs/synthetic-workload.md](<https://github.com/Ise-Tom/Babel/blob/4c3f4f5af60c862558a62de30e41abf802f9ea37/docs/synthetic-workload.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/4c3f4f5af60c862558a62de30e41abf802f9ea37/.github/workflows/ci.yml>)
+
+#### Proposed problem update: I30 · Approved workload lacked reproducible target-scale fixtures and independent integrity checks
+
+**Proposed status:** resolved
+
+The owner-approved workload specified counts/distributions and faults but had no executable seeded dataset. Future storage/load tests could therefore use inconsistent memberships/payloads or mistake self-reported hashes/counts for structural correctness.
+
+**Resolution:** Implemented a bounded streaming generator and independent relational/artifact auditor, including semantic tamper tests after rehashing. Two full generations/audits produced byte-identical artifacts with exact approved distributions. Tests cover failed writes, no overwrite/symlinks, duplicate/missing references, false runtime claims and acyclic graphs with wrong nesting profiles. Required CI runs full generation/audit and keeps small evidence artifacts.
+
+**Next action:** Use the versioned dataset in future qualified storage/protocol/load runners and retain source/seed/input manifests. Add actual encoder/storage/resource/client measurements before claiming runtime capacity; do not relabel fixture graph validation as AD conformance.
+
+**Provenance:** Actual local generator/auditor executions and negative integrity tests at the pinned source; no service, Windows/Mac host or real directory was contacted.
+
+[docs/synthetic-workload.md](<https://github.com/Ise-Tom/Babel/blob/4c3f4f5af60c862558a62de30e41abf802f9ea37/docs/synthetic-workload.md>) · [scripts/generate\_workload.py](<https://github.com/Ise-Tom/Babel/blob/4c3f4f5af60c862558a62de30e41abf802f9ea37/scripts/generate_workload.py>) · [scripts/check\_workload.py](<https://github.com/Ise-Tom/Babel/blob/4c3f4f5af60c862558a62de30e41abf802f9ea37/scripts/check_workload.py>) · [tests/test\_workload.py](<https://github.com/Ise-Tom/Babel/blob/4c3f4f5af60c862558a62de30e41abf802f9ea37/tests/test_workload.py>)
+
+
+</details>
 
 
 ## Phase 00
@@ -169,6 +232,8 @@ Owner approved the proposed target workload and measurement method: 10k users, 1
 **Acceptance evidence required:** Reviewed load model includes mixed successful/denied requests, cold cache, WAN loss/latency, partial outages and hardware costs.
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-18. The project owner explicitly answered “Approve the workload/method scope” in this conversation on 18 November 2026. This accepts the Phase 0 engineering method only, not measured capacity or production SLO ratification. Reviewed proposal pinned to https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/docs/phase-00-workload.md ; tracked in https://github.com/Ise-Tom/Babel/pull/22 . No benchmark or infrastructure procurement was performed.
+
+**Pending PR proposals:** [\#24: Implement reproducible target-scale synthetic workload fixtures](<https://github.com/Ise-Tom/Babel/pull/24>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W12: Threat model and open decision register; W36: Define a reproducible target-scale mixed workload and fault method. See the [implementation journal](#implementation-journal).
 
