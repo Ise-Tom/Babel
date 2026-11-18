@@ -277,10 +277,6 @@ def build(root: Path, revision: str) -> dict[str, Any]:
                     any(step["id"] in item["requirements"] for item in work),
                     "Accepted requirement needs implementation/explanation record",
                 )
-        if phase["status"] == "planned" and any(
-            any(r.startswith(f"P{phase['id']:02}-") for r in item["requirements"]) for item in work
-        ):
-            phase["status"] = "in_progress"
     return {
         "schemaVersion": 1,
         "buildRevision": revision,

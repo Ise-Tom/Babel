@@ -30,16 +30,32 @@ marked provisional require a reviewed ADR before their feature's production rele
 
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
-| P10-01 | Produce independently verifiable reproducible artifacts and inventories. | Independent rebuilds compare bytes or documented nondeterminism; SBOM/provenance/commit/artifact identities align and license notices are reviewed. |
+| P10-01 | Produce independently verifiable reproducible artifacts. | Independent rebuilds compare bytes or explicitly reviewed nondeterminism for identical source/toolchain inputs. |
 | P10-02 | Protect update channels from wrong signer, rollback and freeze. | Expired/version-replayed metadata and malicious mirrors fail verification; signing-key compromise and offline update recovery are rehearsed. |
-| P10-03 | Maintain multi-protocol parser/state-machine fuzz campaigns. | LDAP/RPC/Kerberos/DNS/policy inputs exercise bounded parsers with sanitizer/property regressions; failures yield minimized tracked cases. |
+| P10-03 | Maintain bounded multi-protocol fuzz campaigns. | LDAP/RPC/Kerberos/DNS/policy parsers and state machines have maintained sanitizer/property campaigns and resource budgets. |
 | P10-04 | Differentially test protocol semantics against a licensed reference. | Versioned selected operations compare real outputs/state effects; divergence is triaged, not accepted solely because a second implementation matches. |
 | P10-05 | Apply focused formal/property analysis to high-risk invariants. | Models for authorization, grant expiry, replication conflict and key transitions state assumptions and find/reject known counterexamples. |
-| P10-06 | Run recurring independent assessments and coordinated research intake. | Published program scope, safe-harbor/disclosure handling and funded remediation produce retested findings without exposing active secrets. |
-| P10-07 | Require two-person sensitive release decisions and maintainer continuity. | Loss/compromise of one signer/reviewer cannot silently publish a trusted update; emergency process and audit remain usable. |
+| P10-06 | Run recurring independent assessment and remediation retests. | Scoped assessments produce owned findings and independently verified fixes without exposing active secrets. |
+| P10-07 | Require independent sensitive update/release decisions. | One compromised signer/reviewer cannot silently publish trusted high-risk updates; exact-scope approval and audit are enforced. |
 | P10-08 | Keep accessible posture, policy-as-code and operator education current. | Freshness/uncertainty, safe previews and exception expiry are tested; new operators complete privileged and emergency runbooks without hidden knowledge. |
 | P10-09 | Monitor governance and platform enforcement limitations. | Actual required-check/review/ref/environment protections are verified where supported; unavailable private-repo features remain explicit release risks. |
 | P10-10 | Publish recurring security assurance evidence without certification overclaims. | Reports include test/model scope, failures, skips, unsupported platforms and residual risks; a green scanner suite is never labeled proof of security. |
+| P10-11 | Align SBOM, provenance, artifact identity and distribution obligations. | Inventories/build/source/artifact digests agree and required notices/consumer verification metadata remain complete. |
+| P10-12 | Minimize fuzz failures and retain regression corpora. | Qualifying failures yield tracked minimized reproducers and regression tests; suppressions cannot erase unresolved findings. |
+| P10-13 | Operate coordinated research intake and safe-harbor disclosure. | Published authorized scope, private intake, disclosure coordination and funded remediation are exercised and maintained. |
+| P10-14 | Rehearse maintainer continuity and emergency release recovery. | Loss of a signer/reviewer has a usable independently controlled recovery process without removing consumer trust protections. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P10-01`: separately verify `P10-11`.
+- `P10-03`: separately verify `P10-12`.
+- `P10-06`: separately verify `P10-13`.
+- `P10-07`: separately verify `P10-14`.
 
 ## Evidence and exit
 

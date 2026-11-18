@@ -1,6 +1,6 @@
 # Project progress dashboard
 
-A read-only engineering dashboard for all 18 phases and 180 requirements. It is
+A read-only engineering dashboard for all 18 phases and their canonical requirements. It is
 separate from the future product administration UI: it cannot create accounts,
 change passwords, deploy patches or operate endpoints. Viewing needs no API token;
 evidence links open the repository normally. The automated publisher uses its
@@ -262,3 +262,15 @@ GitHub account, billing, repository permissions, review settings and Pages setup
 are excluded. Operational setup remains in the [GitHub settings guide](github-security-settings.md)
 and Git history; removing those entries does not mean an unresolved setting was fixed.
 Existing development problem IDs stay stable and are not renumbered.
+
+## Phase execution versus related preparation
+
+Phase status follows explicit requirement activity/acceptance. Merely linking a
+license, design, CI or source-prerelease record never starts a phase. Phase cards
+count **related records**, and planned requirements explain when shared preparation
+is present. This keeps useful traceability without claiming product work has begun.
+
+Requirements are read from the canonical phase tables, whose composite obligations
+have been split by independent acceptance evidence. There is no ten-item quota or
+hardcoded total in dashboard/export tests. Existing accepted scopes are preserved;
+refinement adds no automatic acceptance and starts no later phase.

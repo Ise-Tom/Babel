@@ -35,15 +35,35 @@ marked provisional require a reviewed ADR before their feature's production rele
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
 | P01-01 | Add actual native source only with locked build, lint, types, unit/property tests and fuzz smoke. | The scope guard is extended in the same reviewed PR; clean Linux build plus malformed-input regression corpus passes. |
-| P01-02 | Implement stable identity/schema/ACL primitives before account mutations. | Property tests preserve IDs on rename and reject collisions, invalid schema writes and unauthorized inherited/nested access. |
-| P01-03 | Implement a transactionally durable store and versioned recovery journal. | Kill/restart at each commit boundary yields either the old or new complete state and never acknowledges an undurable successful write. |
-| P01-04 | Implement the declared DNS/LDAP discovery/read subset with bounded results. | Real client probes and negative paging/filter/referral tests pass; RootDSE success is not counted as domain join. |
-| P01-05 | Integrate reviewed authentication, password changes and principal-key lifecycle. | Positive/denied bind and AS/TGS flows, replay/expiry/downgrade and password redaction tests pass for declared operations. |
+| P01-02 | Implement stable identity and schema primitives before mutations. | Preserve GUID/SID on rename and reject DN collisions, invalid classes and matching-rule violations. |
+| P01-03 | Implement a transactionally durable local store. | Commit-boundary kills recover old or new complete state; never acknowledge an undurable mutation. |
+| P01-04 | Implement the declared bounded LDAP discovery/read subset. | Real probes and negative paging/filter/referral tests pass; RootDSE is not domain join. |
+| P01-05 | Integrate reviewed authentication and initial bind/AS/TGS flows. | Positive/denied authentication, replay, expiry and downgrade tests pass without credential disclosure. |
 | P01-06 | Implement computer-account membership and secure-channel rollover. | A supported Windows client joins, logs in and rotates its machine password; unsigned/unauthorized membership requests fail. |
 | P01-07 | Implement an initial GPO/SYSVOL delivery path with ACL/version consistency. | A Windows client applies and reverts a declared policy; interrupted writes recover without silently serving contradictory versions. |
-| P01-08 | Provide delegated account/group/password administration through API/CLI and a minimal UI. | Create/disable/reset/group workflows succeed only with correct rights; API and UI denied-operation cases produce matching audit evidence. |
-| P01-09 | Package Linux services with bounded privilege, certificate configuration and health checks. | Clean install/reboot, invalid DNS/time/certificate and least-privilege file/port tests yield actionable errors without bypassing verification. |
+| P01-08 | Provide delegated account/group/password administration through API/CLI. | Create/disable/reset/group actions require correct rights with consistent denied-action audit. |
+| P01-09 | Package constrained Linux services and lifecycle health checks. | Clean install/reboot, DNS/time prerequisites and least-privilege file/port tests yield safe actionable errors. |
 | P01-10 | Label and inventory development limitations. | Each public operation has a tested/unsupported status; lab credentials and incomplete protocol behavior cannot be promoted as a production release. |
+| P01-11 | Implement ordered ACL, inheritance and nested-group authorization. | Allowed/denied tests cover ACE order, object/parent rights, inheritance, group cycles and bounded expansion before writes. |
+| P01-12 | Implement versioned journal recovery and durable retry receipts. | State/journal/audit/idempotency commit together; lost replies and replay cannot skip committed changes or repeat mutations. |
+| P01-13 | Implement DNS discovery and eligible DC locator records. | Clients discover only eligible DCs; stale/invalid records and unsupported updates fail explicitly. |
+| P01-14 | Implement password changes and principal-key lifecycle. | Authorized/denied password operations enforce policy; key custody, rotation and redaction precede valuable credential storage. |
+| P01-15 | Provide the minimal delegated administration UI. | Accessible UI journeys use the same authorized core operations; allowed/denied results agree with API/CLI. |
+| P01-16 | Implement certificate configuration and TLS failure handling. | Missing/expired/untrusted certificates and unsafe channel settings stop affected operations without disabling verification. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P01-02`: separately verify `P01-11`.
+- `P01-03`: separately verify `P01-12`.
+- `P01-04`: separately verify `P01-13`.
+- `P01-05`: separately verify `P01-14`.
+- `P01-08`: separately verify `P01-15`.
+- `P01-09`: separately verify `P01-16`.
 
 ## Evidence and exit
 

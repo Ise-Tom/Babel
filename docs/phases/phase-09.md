@@ -31,15 +31,31 @@ marked provisional require a reviewed ADR before their feature's production rele
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
 | P09-01 | Implement typed response workflows with scoped approvals and idempotency. | Disable/quarantine/trust/key actions reject wrong scope, replay, expired approval and unauthorized API calls; execution and cancellation are audited. |
-| P09-02 | Rehearse complete domain-compromise credential recovery. | Ticket-signing double rotation, service/machine/trust/admin keys and downstream effects are sequenced and verified in an isolated lab. |
+| P09-02 | Rehearse domain ticket-signing credential recovery. | Double rotation and downstream ticket validity are sequenced and verified in an isolated compromise-recovery drill. |
 | P09-03 | Quarantine and safely reintroduce suspect replicas. | A compromised/stale replica cannot contaminate clean state; evidence preservation, trust revocation, role recovery and controlled reenrollment are exercised. |
 | P09-04 | Qualify read-only branch and password-cache exposure profiles. | Exact RODC/password-replication semantics, permitted caches, theft blast radius and credential reset behavior pass; writable state is never labeled read-only. |
-| P09-05 | Qualify HSM/TPM/KMS integration per key class. | Supported key operations, latency, outage, backup/custody and provider recovery are tested; unsupported AD verifiers/keys are explicitly excluded. |
+| P09-05 | Qualify HSM/TPM/KMS operations per key class. | Exact supported operations, provider latency limits and unsupported verifier/key types are documented and tested. |
 | P09-06 | Apply least-privilege host/service and network exposure profiles. | Capabilities, systemd sandboxing, LSM policies, RPC ranges and update paths pass functional/denied tests without a privileged-container default. |
-| P09-07 | Maintain clean-room/offline backup recovery with split custody. | Independent recovery works after directory/provider loss and reconciles revoked identities, key epochs and directory/SYSVOL consistency. |
+| P09-07 | Maintain coherent clean-room/offline recovery artifacts. | Backups bind directory/SYSVOL/key/replica metadata and reconcile revoked identities and security epochs. |
 | P09-08 | Provide safe degraded modes for security-service outages. | MFA/audit/KMS/CA failures have explicit per-operation behavior; no silent auth bypass, unbounded audit flood or hidden evidence loss occurs. |
-| P09-09 | Exercise ransomware, insider, maintainer and provider compromise playbooks. | Tabletops plus technical drills record response time, operator mistakes, evidence retained and follow-up fixes. |
+| P09-09 | Exercise ransomware and insider response. | Tabletop/technical containment and restore drills retain response time, operator mistakes, evidence and retested follow-ups. |
 | P09-10 | Validate compartmentalization under malicious and resource-exhaustion scenarios. | Noisy response/relay/query workloads cannot exceed approved blast radius or violate authentication SLOs without an explicit failed qualification. |
+| P09-11 | Rehearse service/machine/trust/admin credential recovery. | Class-specific rotations reconcile exposed/revoked state and downstream clients without retaining compromised authority. |
+| P09-12 | Qualify key-provider outage, backup and custody recovery. | Provider loss/restoration preserve required key custody and availability without plaintext fallback or unreviewed replacement authority. |
+| P09-13 | Prove split-custody recovery independent of the failed domain. | Required shares/contacts/keys work through an approved procedure after domain/provider loss without a single unrestricted custodian. |
+| P09-14 | Exercise maintainer and external-provider compromise response. | Signer/maintainer/provider compromise has tested revocation, independent recovery and owned disclosure/remediation. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P09-02`: separately verify `P09-11`.
+- `P09-05`: separately verify `P09-12`.
+- `P09-07`: separately verify `P09-13`.
+- `P09-09`: separately verify `P09-14`.
 
 ## Evidence and exit
 

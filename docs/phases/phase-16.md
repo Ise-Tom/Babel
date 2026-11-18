@@ -30,16 +30,38 @@ marked provisional require a reviewed ADR before their feature's production rele
 
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
-| P16-01 | Ship a dedicated securely enrolled signed sensor/agent module. | Per-device identity/revocation, staged signed updates and authorized rescue/uninstall pass; module rights are isolated from support and patch executors. |
-| P16-02 | Qualify supported telemetry on real endpoint OS/kernel builds. | Process lineage/hashes, network, file and selected persistence/security events match fixture ground truth; unavailable sources/blind spots are explicit. |
+| P16-01 | Enroll a dedicated sensor module with isolated authority. | Per-device identity/revocation and module boundaries prevent unrestricted patch/support credential reuse. |
+| P16-02 | Implement supported native telemetry sources. | Process/network/file and selected persistence/security sources use the exact declared OS/kernel interfaces. |
 | P16-03 | Preserve stable event/process provenance and loss visibility. | PID reuse, clock changes, reconnect duplicates, reordered events and buffer overflow cannot silently corrupt identity or claim complete healthy telemetry. |
-| P16-04 | Implement signed/versioned bounded detection and indicator rules. | Labeled malicious/benign synthetic scenarios measure precision/recall and alert delay; costly/untrusted rules cannot exhaust endpoint resources. |
-| P16-05 | Provide privacy-scoped investigation and evidence collection. | Case/timeline/collection actions require scope and audit; evidence hashes/provenance/retention and denied-reader tests pass without blanket memory/credential extraction. |
-| P16-06 | Implement typed authorized process/file containment and quarantine. | Wrong process generation, expired/replayed jobs, protected system targets and unauthorized analysts are rejected; quarantine limitations are documented. |
-| P16-07 | Provide recoverable device isolation and bounded automated response. | Narrow authenticated rescue paths survive isolation; two-person/mass-action limits and false-positive tests prevent fleet/DC lockout; release-from-isolation is rehearsed. |
+| P16-04 | Verify and execute bounded signed/versioned detection and indicator rules. | Untrusted/costly rules cannot bypass signing/version policy or exhaust endpoint CPU/memory. |
+| P16-05 | Provide scoped investigation and collection actions. | Case/timeline/collection permissions are audited and denied across unauthorized assets without blanket credential/memory extraction. |
+| P16-06 | Contain the authorized process generation safely. | PID reuse, protected targets and expired/replayed/wrong-scope actions fail with generation-aware receipts. |
+| P16-07 | Implement recoverable network isolation. | Narrow authenticated rescue survives isolation and release is rehearsed on actual endpoints. |
 | P16-08 | Operate offline buffering and trusted cached rules safely. | Disk/memory quotas, encryption/access controls, sequence gaps and reconnect backpressure preserve visibility; outages do not stall domain login or fill disks indefinitely. |
 | P16-09 | Detect sensor tamper and define realistic protection boundaries. | Stopped/stale sensors, changed policy and signer failure alert with provenance; root/kernel control is not claimed containable by local tamper protection. |
-| P16-10 | Qualify detection/prevention behavior and external response integrations. | Real endpoint performance, false positives/negatives, benign safety and SIEM/SOAR connector replay/authorization tests pass before enforcement is enabled. |
+| P16-10 | Qualify prevention safety and endpoint overhead. | Supported enforcement, benign-safety and real performance cases meet declared limits before enabling prevention. |
+| P16-11 | Sign, stage, recover and uninstall the sensor securely. | Signed updates, authorized rescue/uninstall and staged rollback/forward-recovery work without stealth persistence. |
+| P16-12 | Qualify telemetry ground truth and platform blind spots. | Real fixtures compare events/lineage/hashes against truth; missing sources and unsupported builds remain visible. |
+| P16-13 | Measure labeled detection quality and alert delay. | Versioned malicious/benign scenarios publish precision/recall, latency and false positives/negatives; missing signals are not clean results. |
+| P16-14 | Preserve evidence provenance, integrity and retention. | Artifacts retain hashes/source/custody and authorized retention; tampered/incomplete evidence and unauthorized readers are rejected. |
+| P16-15 | Quarantine and recover files under separate authority. | Quarantine/release preserves provenance/scope and documents prior-execution limits and protected-file recovery. |
+| P16-16 | Bound automated and mass-response blast radius. | Independent high-impact approvals and false-positive tests prevent fleet/DC lockout or unrestricted authority from one detection. |
+| P16-17 | Integrate SIEM/SOAR without replaying response authority. | Duplicate/forged/replayed connector actions and stale external grants cannot bypass typed native response controls. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P16-01`: separately verify `P16-11`.
+- `P16-02`: separately verify `P16-12`.
+- `P16-04`: separately verify `P16-13`.
+- `P16-05`: separately verify `P16-14`.
+- `P16-06`: separately verify `P16-15`.
+- `P16-07`: separately verify `P16-16`.
+- `P16-10`: separately verify `P16-17`.
 
 ## Evidence and exit
 

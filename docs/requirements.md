@@ -7,7 +7,7 @@ no complete production capacity/protocol/security requirement below is claimed
 accepted from that partial evidence.
 
 The [18 phase specifications](phases/README.md) define the complete conception,
-interfaces/state, security/failure behavior and 180 verifiable phase requirements.
+interfaces/state, security/failure behavior and independently verifiable phase requirements.
 They trace all 130 core/security/patch/endpoint capability IDs. This document is
 the first-production baseline; later modules retain their own normative contracts.
 No roadmap phase may silently remove a baseline function or replace executable

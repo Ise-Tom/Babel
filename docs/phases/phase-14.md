@@ -30,16 +30,34 @@ marked provisional require a reviewed ADR before their feature's production rele
 
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
-| P14-01 | Qualify actual desktop and terminal behavior by supported OS/session type. | Real Windows sessions and Linux headless/X11/Wayland cases have a versioned supported/unsupported matrix and tested maintained protocol engines. |
+| P14-01 | Qualify actual desktop sessions by supported endpoint platform. | Real Windows/Linux desktops including X11/Wayland have exact build/engine and unsupported-behavior evidence. |
 | P14-02 | Require unique authenticated devices and scoped operator MFA/step-up. | Wrong-device, replayed/expired tokens and stolen low-privilege accounts cannot open a session or reuse a privileged endpoint credential. |
 | P14-03 | Provide visible attended consent and immediate disconnect. | Denied/expired/misleading requests fail; local user sees operator identity and can terminate a session without a remote approval. |
 | P14-04 | Gate unattended support separately with time/device boundaries. | No implicit permission from domain membership or patch role; expired device/operator grants fail and administrative access is audited. |
-| P14-05 | Separate terminal/elevation/clipboard/transfer/recording permissions. | Denied channels cannot be reenabled through protocol/API bypass; locked screens, user switching and OS security prompts remain enforced. |
-| P14-06 | Authenticate and encrypt broker/relay transport with explicit trust. | Certificate/recipient failures close connections; NAT/proxy and relay compromise tests document who can see session content and protect credential custody. |
+| P14-05 | Separate terminal, clipboard, transfer and recording channels. | Denied channels cannot be reenabled through protocol/API bypass or unrelated support grants. |
+| P14-06 | Authenticate and encrypt broker/session transport. | Certificate, recipient and session-binding failures close connections while protecting device/operator credentials. |
 | P14-07 | Enforce bounded revocation and outage session policy. | A connected session loses authority within a configured, tested <=60 s revocation target; offline/broker-failed cases follow explicit safe expiry rules. |
-| P14-08 | Govern recording and support privacy. | Notice, policy, access/retention and sensitive-input boundaries are tested; no covert sessions or indiscriminate credential/key logging is allowed. |
+| P14-08 | Govern recording purpose, access and retention. | Recordings have explicit reader policy, expiry/deletion and protected evidence custody. |
 | P14-09 | Handle reconnect, concurrent operators and privilege changes safely. | Session identity and consent are revalidated; no unnoticed takeover, indefinitely cached grant or unintended concurrent control survives switching/restart. |
-| P14-10 | Qualify relay capacity and support compromise recovery. | Published concurrency/bitrate/latency plus compromised-operator/broker rescue tests pass without affecting identity or emergency recovery paths. |
+| P14-10 | Qualify relay concurrency, bitrate and latency. | Real-session load publishes bounded resource/capacity limits without starving identity traffic. |
+| P14-11 | Qualify terminal and headless access independently. | Real Windows/Linux terminal cases have declared engines and identity boundaries; desktop tests cannot qualify headless access. |
+| P14-12 | Enforce elevation, lock-screen and OS security prompts. | Switching users and elevating require scoped authority/consent; remote support cannot suppress native security boundaries. |
+| P14-13 | Qualify relay trust, content visibility and NAT/proxy paths. | Compromised relay tests document content visibility and prevent impersonation or silent encryption weakening. |
+| P14-14 | Enforce recording notice, consent and sensitive-input boundaries. | Users see accurate recording policy; covert capture and indiscriminate credential/key logging fail tests. |
+| P14-15 | Recover from compromised operators or support brokers. | Revocation, termination and independent rescue regain control without depending on the compromised broker. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P14-01`: separately verify `P14-11`.
+- `P14-05`: separately verify `P14-12`.
+- `P14-06`: separately verify `P14-13`.
+- `P14-08`: separately verify `P14-14`.
+- `P14-10`: separately verify `P14-15`.
 
 ## Evidence and exit
 

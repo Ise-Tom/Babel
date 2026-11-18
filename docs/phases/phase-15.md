@@ -32,14 +32,28 @@ marked provisional require a reviewed ADR before their feature's production rele
 | --- | --- | --- |
 | P15-01 | Authorize exact file content, device scope, destination and expiry. | Target/digest/path changes require renewed approval; upload-only and cross-group operators cannot gain execution, patch or retrieval rights. |
 | P15-02 | Protect staging and source/recipient authenticity. | Wrong sender/device, tampered metadata, unauthenticated hash substitution and untrusted TLS are rejected; staged confidential files are access-restricted. |
-| P15-03 | Validate destinations at open/finalization without traversal/race bypass. | Real Windows reparse and Linux symlink/rename race tests cannot escape allowed directories or overwrite privileged startup/system files. |
+| P15-03 | Validate destination scope and lexical/canonical paths. | Traversal, encoded paths and privileged startup/system destinations fail before accepting upload. |
 | P15-04 | Apply explicit ownership, ACL and overwrite policy. | Default deny for privileged locations; approved overwrite preserves declared permissions and cannot convert a data upload into executable persistence. |
 | P15-05 | Provide resumable bounded authenticated transfers. | Corrupt/reordered/replayed chunks, offset overflow, connection loss and retries cannot finalize incorrect or unauthorized content. |
 | P15-06 | Finalize atomically where supported and report verified receipt. | Partial files are never treated as delivered; unsupported atomic behavior is visible and staged fallback is tested with interrupted finalization. |
-| P15-07 | Enforce quotas, bandwidth, cancellation and stale-content cleanup. | Full disk, expired/cancelled jobs and abandoned staged data remain bounded; reconnect revalidates authority before continuing. |
+| P15-07 | Bound transfer disk, memory and bandwidth usage. | Quotas, full disk and excessive chunks/concurrency cannot exhaust endpoints/controllers or violate directory resource bounds. |
 | P15-08 | Apply explicit file-content and malware policy without automatic execution. | Type/size/scanning failures block according to policy; detection limits are documented and uploads cannot silently launch installers/scripts. |
-| P15-09 | Provide privacy-safe audit and separate retrieval policy. | Operator/device/path/digest/outcome are auditable without raw contents; uploading never grants access to user files or unsolicited endpoint surveillance. |
+| P15-09 | Provide privacy-safe file-delivery audit. | Operator/device/path/digest/outcome is auditable without raw contents or unrelated user data. |
 | P15-10 | Qualify transfer recovery and mixed-load resource isolation. | Concurrent representative real filesystem transfers survive agent/controller restarts and malicious paths without directory SLO regression. |
+| P15-11 | Defeat filesystem symlink/reparse/rename races. | Real Windows/Linux open/finalization races cannot escape the approved directory or substitute privileged overwrite targets. |
+| P15-12 | Enforce cancellation, expiry and abandoned staging cleanup. | Cancelled/expired jobs cannot resume after reconnect; stale partial content is removed within a stated deadline. |
+| P15-13 | Authorize endpoint file retrieval independently from upload. | Upload-only operators cannot read user files; retrieval requires separate scope/privacy policy and denied-operation evidence. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P15-03`: separately verify `P15-11`.
+- `P15-07`: separately verify `P15-12`.
+- `P15-09`: separately verify `P15-13`.
 
 ## Evidence and exit
 

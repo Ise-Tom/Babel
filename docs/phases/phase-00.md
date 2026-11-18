@@ -32,16 +32,35 @@ marked provisional require a reviewed ADR before their feature's production rele
 
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
-| P00-01 | Define supported protocol operations, functional levels and exact Windows/Linux client editions/builds. | Reviewed matrix maps every AD requirement to expected positive/negative behavior and an owner; unknown/unsupported operations stay visible. |
+| P00-01 | Define the protocol-operation matrix and operation ownership. | Every AD operation maps to expected positive/negative behavior and an owner; unknown operations remain visible. |
 | P00-02 | Define stable identities, authorization order, schema rules and local commit semantics. | Design review covers rename, DN collision, ACL inheritance, nested groups, concurrent updates and durable acknowledgment boundaries. |
 | P00-03 | Define attribute replication/versioning and restore epochs before fixing a disk format. | Worked partition/delete/conflict/rollback examples specify observable outcomes and map to MS-ADTS/MS-DRSR. |
-| P00-04 | Choose a memory-safe toolchain and reviewed TLS/Kerberos/storage/parser dependencies. | ADR records alternatives, supported platforms, license/CVE maintenance and locked build/fuzz/security jobs; no custom crypto accepted. |
+| P00-04 | Qualify the memory-safe toolchain and parser baseline. | Record supported platforms, alternatives, license/advisory maintenance and locked build/fuzz/security jobs. |
 | P00-05 | Provide a disposable Windows reference and Linux host lab with reproducible DNS/time. | Two fresh deployments run discovery probes, isolate egress, clean up resources and publish exact image/build identifiers. |
-| P00-06 | Establish project license, contributor terms and specification-use review. | Owner decision and dependency obligations recorded before source distribution; missing decisions block release rather than receiving invented terms. |
-| P00-07 | Establish Tier 0 identities, review ownership, vulnerability intake and an initial threat register. | Private report route and backup security contacts exercised; every boundary has misuse cases and review responsibility. |
+| P00-06 | Establish the project license and contributor terms. | Record owner license/DCO decisions, contribution terms and third-party notice/redistribution obligations before distribution; do not invent certification. |
+| P00-07 | Establish Tier 0 boundaries, review ownership and threats. | Every boundary has misuse cases and accountable review; solo development review is not independent production assessment. |
 | P00-08 | Version the compatibility/evidence schema and requirement traceability. | Evidence records commit, test/client/spec revision, requirement, outcome and redacted artifacts; skipped/unrun are never passing. |
 | P00-09 | Approve the target workload, fault profiles and performance measurement method. | Reviewed load model includes mixed successful/denied requests, cold cache, WAN loss/latency, partial outages and hardware costs. |
 | P00-10 | Specify upgrade, recovery and scope-change governance. | Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact. |
+| P00-11 | Define the domain/forest functional-level profile. | Review supported levels, transitions and incompatible behavior; do not advertise unqualified levels. |
+| P00-12 | Pin exact Windows, Linux and macOS platform profiles. | Edition, architecture, OS/build, package and image identifiers are explicit; missing profiles cannot qualify compatibility. |
+| P00-13 | Qualify the TLS library/provider and channel boundary. | Review exact versions/features, key custody, certificate, downgrade, channel-binding and provider-loss cases; no custom cryptography. |
+| P00-14 | Qualify Kerberos/PAC dependencies and cryptographic maintenance. | Review AES/PAC/replay/delegation support, licenses, FFI/unsafe boundaries and upstream maintenance; generic Kerberos is not AD conformance. |
+| P00-15 | Qualify the storage driver and transactional interface. | Review versions, parameterization, cancellation, commit/error mapping and recovery before credentials or stable formats persist. |
+| P00-16 | Review specification and reference-fixture use rights. | Pin document revisions and use/redistribution obligations separately from project licensing; unclear image/fixture rights block distribution. |
+| P00-17 | Exercise private vulnerability intake and backup response coverage. | A synthetic private intake drill and real backup contact demonstrate receipt/escalation; no contact, SLA or exercise is invented. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P00-01`: separately verify `P00-11`, `P00-12`.
+- `P00-04`: separately verify `P00-13`, `P00-14`, `P00-15`.
+- `P00-06`: separately verify `P00-16`.
+- `P00-07`: separately verify `P00-17`.
 
 ## Evidence and exit
 

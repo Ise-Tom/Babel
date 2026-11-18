@@ -32,14 +32,26 @@ marked provisional require a reviewed ADR before their feature's production rele
 | --- | --- | --- |
 | P05-01 | Release only artifacts built from the reviewed tested commit. | Package digest, SBOM and provenance resolve to the same source/build identity; rebuilding during production promotion is prohibited. |
 | P05-02 | Enforce release licensing, dependency notices and support metadata. | Approved license/obligations and supported-version matrix ship with artifacts; missing notices or unclear redistribution rights block publication. |
-| P05-03 | Sign and verify artifacts/installer metadata through scoped identities. | Consumer verification rejects modified bytes, wrong signer, expired/untrusted metadata and replayed unsupported releases. |
+| P05-03 | Sign artifact and installer metadata through scoped identities. | Signer/trust custody and artifacts resolve to reviewed tested source without broad release credentials. |
 | P05-04 | Gate publication on the complete readiness/evidence bundle. | Every Phase 0–4 baseline gate has current passing evidence; skipped client/capacity/security acceptance does not count as a pass. |
 | P05-05 | Rehearse clean install and supported upgrade/migration paths. | Fresh Linux hosts and prior supported versions preserve identities, permissions, keys and policy state; incompatible downgrade is rejected. |
 | P05-06 | Promote exact artifacts through isolated staging with functional checks. | Domain join/login/password/GPO/replication/restore smoke tests pass before production approval, with synthetic credentials and scoped access. |
 | P05-07 | Serialize production rollout by fault domain with explicit abort criteria. | Canary/DC rollout preserves remaining authentication/DNS service; induced health/convergence failure pauses expansion and alerts the operator. |
-| P05-08 | Provide tested rollback, forward-fix or restore per migration class. | Runbooks identify irreversible transitions and expected RPO/RTO; exercises recover safely without replaying incompatible schema/key state. |
+| P05-08 | Rehearse compatible package rollback per migration class. | Runbooks identify reversible changes; rollback restores service without replaying incompatible data or key state. |
 | P05-09 | Require independent sensitive-release approval and audit the decision. | No self-approved high-risk publication or privileged fork runner; platform limitations are disclosed, never treated as enforced protection. |
 | P05-10 | Publish operator/security/support guides and known limitations. | A new operator verifies/install/updates/restores using shipped docs; unsupported levels/clients and disclosure contacts are explicit. |
+| P05-11 | Qualify consumer verification and signed-metadata replay rejection. | Consumers reject changed bytes, wrong signers, expired/untrusted metadata and replayed unsupported releases. |
+| P05-12 | Rehearse forward-fix or restore for irreversible transitions. | Schema/key/state changes with no safe downgrade recover through tested forward-fix/coherent restore with explicit RPO/RTO. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P05-03`: separately verify `P05-11`.
+- `P05-08`: separately verify `P05-12`.
 
 ## Evidence and exit
 

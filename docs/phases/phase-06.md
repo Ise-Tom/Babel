@@ -31,15 +31,29 @@ marked provisional require a reviewed ADR before their feature's production rele
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
 | P06-01 | Maintain explicit supported versions and security-update commitments. | Published matrix identifies release support/EOL and upgrade paths; advisory intake reaches accountable maintainers. |
-| P06-02 | Monitor online authentication, DNS/time, replication, certificates and capacity. | Synthetic fault injection produces timely actionable alerts; cached offline login and missing telemetry do not count as online service success. |
+| P06-02 | Monitor real online authentication, DNS and time. | Online fault probes alert accurately; cached offline login or missing telemetry cannot count as service success. |
 | P06-03 | Operate vulnerability triage and coordinated disclosure. | Exercises prove private report receipt, severity/impact assessment, patch/mitigation tracking and secure publication without premature sensitive details. |
 | P06-04 | Run regular independent backup verification and restore drills. | Quarterly full-dataset isolated restores meet <=1 h RPO/<=4 h RTO and include credentials, SYSVOL and recovery-key access. |
 | P06-05 | Manage expiry and security exception debt. | Certificate/key/legacy-protocol exceptions have owners and expiry; expired/unowned exceptions cannot silently continue. |
 | P06-06 | Provide privacy-safe support diagnostics. | Export is explicitly scoped/redacted and access-audited; credential material, arbitrary user data and complete environments are excluded. |
 | P06-07 | Keep capacity and reliability reports with meaningful error budgets. | Monthly site-level availability and growth trends include exclusions/outages and remediation; breaches generate owned corrective work. |
-| P06-08 | Maintain dependency/tool/signing updates and reproducible update checks. | Daily/periodic scans actually run, stale results alert, signatures stay verified and urgent advisories do not wait for routine schedules. |
-| P06-09 | Rehearse maintainer/provider loss and emergency service recovery. | Separate contacts, signing recovery and backup custody restore operations without a single absent administrator or failed domain provider. |
+| P06-08 | Maintain recurring dependency/tool advisory scans and remediation. | Scheduled scans actually run; stale results alert and urgent advisories receive owned out-of-cycle remediation. |
+| P06-09 | Rehearse contact/maintainer and provider service-loss response. | An absent administrator or unavailable provider has an owned tested escalation and service-recovery path. |
 | P06-10 | Decommission data and versions through controlled retention policy. | Removal preserves required evidence/backup holds while preventing indefinite unnecessary identity data retention; migrations are auditable. |
+| P06-11 | Monitor replica freshness, certificate expiry and capacity. | Injected replica/certificate/resource faults produce owned actionable alerts with explicit stale/unknown and observation gaps. |
+| P06-12 | Maintain signing trust and reproducible update verification. | Signing/key/tool changes preserve consumer verification and rebuild checks; replay or expiry is not bypassed to ship. |
+| P06-13 | Rehearse independent signing and backup-custody recovery. | Recovered authority works without a failed domain/provider or sole unavailable maintainer and remains auditable. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P06-02`: separately verify `P06-11`.
+- `P06-08`: separately verify `P06-12`.
+- `P06-09`: separately verify `P06-13`.
 
 ## Evidence and exit
 

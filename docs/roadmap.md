@@ -7,31 +7,31 @@ functional levels and recoverable multi-site replication. No Samba runtime is
 required. Reviewed libraries remain allowed; no custom cryptography is planned.
 
 Every phase now has a complete [design/requirements specification](phases/README.md).
-All 180 phase requirements refine and trace the 130 existing global capability
+The phase requirements refine and trace the 130 existing global capability
 IDs. Existing CI now also checks the bounded Rust LDAP lab slice; full domain and
 endpoint acceptance remains outstanding. See [progress](phase-01-progress.md). Dates, staffing, cost and
 production readiness require the decisions and evidence listed below.
 
 | Phase | Design, scope and requirements | Delivery boundary |
 | --- | --- | --- |
-| 00 | [Contract, native-core design and laboratory — P00-01 through P00-10](phases/phase-00.md) | First production core contract |
-| 01 | [Native core and end-to-end development slice — P01-01 through P01-10](phases/phase-01.md) | First production core contract |
-| 02 | [Complete directory and AD interoperability contract — P02-01 through P02-10](phases/phase-02.md) | First production core contract |
-| 03 | [Multi-site replication, durability and recovery — P03-01 through P03-10](phases/phase-03.md) | First production core contract |
-| 04 | [Security, capacity and administrator qualification — P04-01 through P04-10](phases/phase-04.md) | First production core contract |
-| 05 | [First production release and controlled deployment — P05-01 through P05-10](phases/phase-05.md) | First production core contract |
-| 06 | [Sustained operations and maintenance — P06-01 through P06-10](phases/phase-06.md) | Ongoing operations / advanced security |
-| 07 | [Strong identity and privileged administration — P07-01 through P07-10](phases/phase-07.md) | Ongoing operations / advanced security |
-| 08 | [Posture, certificate/federation services and detection — P08-01 through P08-10](phases/phase-08.md) | Ongoing operations / advanced security |
-| 09 | [Containment, key custody and compromise resilience — P09-01 through P09-10](phases/phase-09.md) | Ongoing operations / advanced security |
-| 10 | [Continuous security assurance and trusted delivery — P10-01 through P10-10](phases/phase-10.md) | Ongoing operations / advanced security |
-| 11 | [Endpoint inventory and patch-control foundation — P11-01 through P11-10](phases/phase-11.md) | Later endpoint services with separate release gates |
-| 12 | [Controlled patch campaigns and verified installation — P12-01 through P12-10](phases/phase-12.md) | Later endpoint services with separate release gates |
-| 13 | [Production patch fleet, compliance and resilience — P13-01 through P13-10](phases/phase-13.md) | Later endpoint services with separate release gates |
-| 14 | [Remote desktop and terminal access — P14-01 through P14-10](phases/phase-14.md) | Later endpoint services with separate release gates |
-| 15 | [General server-to-device file delivery — P15-01 through P15-10](phases/phase-15.md) | Later endpoint services with separate release gates |
-| 16 | [Native endpoint detection and response — P16-01 through P16-10](phases/phase-16.md) | Later endpoint services with separate release gates |
-| 17 | [Joint fleet qualification and endpoint service release — P17-01 through P17-10](phases/phase-17.md) | Later endpoint services with separate release gates |
+| 00 | [Contract, native-core design and laboratory](phases/phase-00.md) | First production core contract |
+| 01 | [Native core and end-to-end development slice](phases/phase-01.md) | First production core contract |
+| 02 | [Complete directory and AD interoperability contract](phases/phase-02.md) | First production core contract |
+| 03 | [Multi-site replication, durability and recovery](phases/phase-03.md) | First production core contract |
+| 04 | [Security, capacity and administrator qualification](phases/phase-04.md) | First production core contract |
+| 05 | [First production release and controlled deployment](phases/phase-05.md) | First production core contract |
+| 06 | [Sustained operations and maintenance](phases/phase-06.md) | Ongoing operations / advanced security |
+| 07 | [Strong identity and privileged administration](phases/phase-07.md) | Ongoing operations / advanced security |
+| 08 | [Posture, certificate/federation services and detection](phases/phase-08.md) | Ongoing operations / advanced security |
+| 09 | [Containment, key custody and compromise resilience](phases/phase-09.md) | Ongoing operations / advanced security |
+| 10 | [Continuous security assurance and trusted delivery](phases/phase-10.md) | Ongoing operations / advanced security |
+| 11 | [Endpoint inventory and patch-control foundation](phases/phase-11.md) | Later endpoint services with separate release gates |
+| 12 | [Controlled patch campaigns and verified installation](phases/phase-12.md) | Later endpoint services with separate release gates |
+| 13 | [Production patch fleet, compliance and resilience](phases/phase-13.md) | Later endpoint services with separate release gates |
+| 14 | [Remote desktop and terminal access](phases/phase-14.md) | Later endpoint services with separate release gates |
+| 15 | [General server-to-device file delivery](phases/phase-15.md) | Later endpoint services with separate release gates |
+| 16 | [Native endpoint detection and response](phases/phase-16.md) | Later endpoint services with separate release gates |
+| 17 | [Joint fleet qualification and endpoint service release](phases/phase-17.md) | Later endpoint services with separate release gates |
 
 ## Delivery and dependency rules
 

@@ -32,14 +32,34 @@ marked provisional require a reviewed ADR before their feature's production rele
 | --- | --- | --- |
 | P03-01 | Authenticate and authorize replication membership and secret access. | Unknown, revoked and insufficiently privileged replicas cannot read credential changes or alter membership; every enrollment is audited. |
 | P03-02 | Apply change data and replication cursors atomically and idempotently. | Duplicate/reordered/interrupted exchanges do not lose acknowledged local transactions or skip unapplied remote changes. |
-| P03-03 | Resolve concurrent attribute/object changes and deletion/recreation consistently. | Model-based tests cover modify/modify, move/rename, group membership, delete/modify and tombstone/lingering-object conflicts. |
-| P03-04 | Handle topology, naming contexts and role ownership under node loss. | Lose one DC or site, transfer/seize a role through the supported procedure and demonstrate correct client discovery and surviving authentication. |
+| P03-03 | Resolve concurrent scalar attribute and object naming changes. | Modify/modify and move/rename converge under qualified metadata rules despite reordered delivery. |
+| P03-04 | Handle replication topology and naming contexts under loss. | Discovery and replication respect eligible sites/context boundaries during node/site loss and rejoin. |
 | P03-05 | Expose replication freshness and revocation uncertainty. | A partition causes visible stale/unknown warnings with measured convergence; UI/API never claims instant global disable during disconnection. |
 | P03-06 | Protect against unsupported rollback and stale replica reintroduction. | Restore old snapshots with conflicting invocation/progress metadata; reject/quarantine unsafe joins and follow a tested recovery path. |
-| P03-07 | Create encrypted coherent directory/SYSVOL backups with independent custody. | Recover at full dataset size in an isolated clean environment without the original domain or a sole directory-held recovery key. |
-| P03-08 | Meet declared recovery and failover objectives. | Fault-drill reports measure DC <=60 s failover and full-domain <=1 h RPO/<=4 h RTO; exceeded targets block qualification. |
-| P03-09 | Rotate TLS, Kerberos/service/trust keys with explicit overlap and expiry handling. | Test invalid/expired certificates, lost issuer and interrupted rotation; preserve intended authentication without accepting compromised old keys indefinitely. |
-| P03-10 | Recover cleanly from resource and network exhaustion. | Disk-full, queue pressure, clock fault, 24-hour partition/rejoin and process kill have bounded memory/retries and auditable data-loss outcomes. |
+| P03-07 | Create coherent encrypted directory/SYSVOL/key-metadata backups. | Manifests bind directory, policy, keys and replica epochs and reject partial/inconsistent snapshots. |
+| P03-08 | Meet the online DC/client failover objective. | Fault drills measure DNS/DC failover <=60 seconds; offline cached login is not online service recovery. |
+| P03-09 | Rotate TLS certificates and issuer trust safely. | Expiry, issuer loss and interrupted overlap reject unsafe trust without verification bypass. |
+| P03-10 | Recover from local storage, process and queue exhaustion. | Disk-full, queue pressure and kills have bounded retries/memory and complete journal/audit outcomes. |
+| P03-11 | Resolve linked membership, deletion/recycle and lingering-object conflicts. | Add/remove/delete/modify and tombstone-expiry cases converge without privilege resurrection or orphaned link authority. |
+| P03-12 | Recover role/RID authority under transfer and seizure. | No duplicate holder/allocator survives recovery; a stale former owner cannot silently resume authoritative writes. |
+| P03-13 | Restore full backups in a clean room with independent custody. | Recovery at target size works without the original domain or a sole directory-held key and verifies identity/ACL/policy/replica state. |
+| P03-14 | Meet whole-domain disaster-recovery RPO/RTO. | Full-domain drills at target size prove RPO <=1 hour and RTO <=4 hours; breaches block qualification. |
+| P03-15 | Rotate Kerberos, service, machine and trust credentials. | Actual clients verify intended overlap/rotation; compromised old keys do not remain valid indefinitely and recovery is explicit. |
+| P03-16 | Recover from prolonged partitions, clock faults and degraded WAN. | A 24-hour partition/rejoin, asymmetric loss and skew retain bounded queues and publish stale-state/convergence/data-loss outcomes. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P03-03`: separately verify `P03-11`.
+- `P03-04`: separately verify `P03-12`.
+- `P03-07`: separately verify `P03-13`.
+- `P03-08`: separately verify `P03-14`.
+- `P03-09`: separately verify `P03-15`.
+- `P03-10`: separately verify `P03-16`.
 
 ## Evidence and exit
 

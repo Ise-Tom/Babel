@@ -170,6 +170,8 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
         f"{len(work)} recorded increments · "
         f"{sum(p['status'] == 'open' for p in problems)} open problems**",
         "",
+        "Shared preparation links do not start a phase. "
+        "Status follows explicit requirement activity and acceptance. "
         "Implemented increments can be narrower than their parent requirement. "
         "Acceptance is recorded after an explicit owner review of the stated scope, evidence "
         "and limits. Requirement and increment counts can differ between phases and are not "
@@ -188,7 +190,7 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
         "",
         "## Phase board",
         "",
-        "| Phase | Status | Accepted requirements | Recorded increments |",
+        "| Phase | Status | Accepted requirements | Related work records |",
         "| --- | --- | --- | --- |",
     ]
     for phase in phases:

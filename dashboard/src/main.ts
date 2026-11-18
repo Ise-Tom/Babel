@@ -108,7 +108,7 @@ function stats(): HTMLElement {
   const result = el('section', 'stats'); result.setAttribute('aria-label', 'Snapshot summary');
   const values: [string, number, string][] = [
     ['Delivery phases', board.phases.length, `${board.phases.filter(p => p.status === 'accepted').length} accepted`],
-    ['In progress', board.phases.filter(p => p.status === 'in_progress').length, 'Phases with recorded activity'],
+    ['In progress', board.phases.filter(p => p.status === 'in_progress').length, 'Phases with active or accepted requirements'],
     ['Recorded increments', board.workItems.length, 'Code and design artifacts'],
     ['Open issues', board.problems.filter(p => p.status === 'open').length, 'Decisions and external blockers'],
   ];
@@ -136,7 +136,7 @@ function overview(): HTMLElement {
     const top = el('div', 'card-heading'); top.append(el('span', 'phase-number', String(phase.id).padStart(2, '0')), badge(phase.status));
     const accepted = phase.steps.filter(step => step.status === 'accepted').length;
     const increments = board.workItems.filter(item => item.requirements.some(id => phase.steps.some(step => step.id === id))).length;
-    card.append(top, el('h3', '', phase.title), el('p', 'phase-caption', `${accepted}/${phase.steps.length} accepted · ${increments} increments`));
+    card.append(top, el('h3', '', phase.title), el('p', 'phase-caption', `${accepted}/${phase.steps.length} accepted · ${increments} related records`));
     const progress = el('progress'); progress.max = phase.steps.length; progress.value = accepted; progress.setAttribute('aria-label', `Phase ${phase.id}: ${accepted} of ${phase.steps.length} requirements accepted`); card.append(progress);
     if (state.q || state.status !== 'all') card.append(el('span', 'match-count', `${filtered(phase).length} matching requirements`));
     const open = button('Review phase →', 'phase-open', () => navigate({ view: 'phase', phase: phase.id }));
@@ -151,7 +151,8 @@ function requirement(step: Step): HTMLDetailsElement {
   const body = el('div', 'requirement-body'); body.append(el('p', 'step-note', step.note), el('div', 'section-label', 'ASSOCIATED FEATURES'), chips(step.features), el('div', 'section-label', step.status === 'accepted' ? 'ACCEPTANCE EVIDENCE' : 'ACCEPTANCE STILL REQUIRED'), el('p', '', step.verification));
   if (step.acceptance) body.append(el('p', 'step-note', `Accepted by ${step.acceptance.reviewer} on ${step.acceptance.date}. ${step.acceptance.evidence}`));
   const work = workFor(step);
-  body.append(el('h3', '', 'Implementation & evidence'));
+  if (step.status === 'planned' && work.length) body.append(el('p', 'muted', 'Related preparation is recorded below. This requirement remains planned; links to shared work do not start a phase.'));
+  body.append(el('h3', '', 'Related work & evidence'));
   if (!work.length) body.append(el('p', 'muted', 'No implemented increment is recorded for this requirement.'));
   for (const item of work) body.append(workCard(item));
   const issues = problemFor(step);

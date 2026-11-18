@@ -30,16 +30,47 @@ marked provisional require a reviewed ADR before their feature's production rele
 
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
-| P02-01 | Complete domain/forest lifecycle, naming contexts and schema/object semantics. | Synthetic import/export and reference queries compare IDs, object attributes, ACLs and schema; incompatible operations have explicit failures. |
-| P02-02 | Complete account and password lifecycle, fine-grained policy and delegated recovery. | User/admin changes, history/lockout/expiry, disable/delete/restore and denied actions pass through every supported protocol/API path. |
-| P02-03 | Complete Kerberos/PAC, SPN and delegation behavior for the supported matrix. | Real client/service AS/TGS and delegation cases pass; replay, wrong key, invalid PAC, expired tickets and weak-encryption downgrade are rejected. |
-| P02-04 | Complete LDAP controls, GC, paging/referrals and attribute-level authorization. | RSAT and LDAP clients agree with the reference for selected controls; unauthorized attributes never appear in search or error output. |
-| P02-05 | Complete secure DNS updates, DC locator and site/subnet discovery. | Signed updates, stale records, wrong-site discovery and DNS failure tests produce the declared outcomes on supported clients. |
-| P02-06 | Complete SMB/RPC/Netlogon, SAMR and LSA membership/administration paths. | Client join/rejoin, secure-channel reset and service-account operations pass; signing/sealing and least-privilege rejection are verified. |
-| P02-07 | Complete GPO/SYSVOL creation, inheritance/filtering and supported delivery/replication semantics. | Actual resultant policy and scripts match the reference; filesystem and directory permissions/versions remain reconciled after failures. |
-| P02-08 | Implement qualified domain/forest functional levels and FSMO transfer/seizure semantics. | Unsupported levels are rejected; role handoff, failed holder and schema upgrade tests preserve a recoverable authoritative state. |
-| P02-09 | Complete trusts and migration/coexistence with SID filtering and selective authentication. | Two reference forests exercise permitted/denied cross-domain access, trust removal and a rehearsed migration/recovery path. |
+| P02-01 | Complete domain/forest lifecycle and naming contexts. | Reference creation/removal and queries preserve forest/domain boundaries and reject incompatible transitions. |
+| P02-02 | Complete account lifecycle through supported protocol/API paths. | Create/disable/delete/restore and membership changes preserve identity, rights and audit across supported clients. |
+| P02-03 | Complete Kerberos AS/TGS, SPNs and service authentication. | Real flows enforce declared encryption/time policy and reject replay, expiry, wrong keys and downgrade. |
+| P02-04 | Complete LDAP controls, paging and referrals. | RSAT/LDAP clients agree with reference continuation/referral/control semantics; unsupported controls fail explicitly. |
+| P02-05 | Complete authenticated secure DNS updates. | Signed authorized updates work; unsigned/replayed/wrong-owner changes and stale-record substitution fail. |
+| P02-06 | Complete protected Netlogon membership and secure-channel paths. | Join/rejoin, machine-secret rollover and reset verify signing/sealing, identity and least privilege. |
+| P02-07 | Complete GPO objects, linking, inheritance and filtering. | Actual Windows resultant policy/script selection matches reference behavior and denies unauthorized edits. |
+| P02-08 | Implement qualified functional levels and schema transitions. | Unsupported levels and interrupted incompatible changes cannot leave false capability advertisements. |
+| P02-09 | Complete forest/domain trusts and cross-domain authorization. | Two reference forests verify creation/removal, SID filtering, selective authentication and denied access. |
 | P02-10 | Publish an operation-level compatibility report without unsupported universal-OS claims. | Every AD contract row has real-client evidence with exact builds/spec revisions and no unexplained failure, skip or unrun acceptance case. |
+| P02-11 | Complete schema/class/attribute matching semantics. | Reference import/export and mutations compare encodings, matching rules and invalid-class/value rejection. |
+| P02-12 | Complete stable identity and object security-descriptor semantics. | Reference ACL/object tests preserve GUID/SID through rename/restore and verify inherited/object-specific allowed and denied access. |
+| P02-13 | Complete password history, expiry, lockout and fine-grained policy. | User/admin changes enforce effective policy; weak passwords and inconsistent protocol enforcement are rejected. |
+| P02-14 | Complete delegated password recovery authorization. | Authorized recovery works; impersonation, enumeration and unauthorized reset/group escalation fail with redacted audit. |
+| P02-15 | Complete PAC construction and validation. | Real service/reference cases verify signatures and required authorization data; forged/malformed/mismatched PACs fail. |
+| P02-16 | Complete supported constrained-delegation behavior. | Permitted delegation succeeds; unintended audiences, unapproved targets and escalation variants fail on actual services. |
+| P02-17 | Complete global catalog and partial attribute sets. | Cross-domain searches return authorized partial attributes with correct naming-context and freshness behavior. |
+| P02-18 | Complete attribute-level LDAP authorization and error filtering. | Protected attributes/existence do not leak through results, errors, paging or referrals. |
+| P02-19 | Complete site/subnet placement, DC locator and discovery failover. | Real clients select eligible sites/DCs and recover from stale DNS, wrong-site answers and server loss within declared bounds. |
+| P02-20 | Complete SAMR/LSA and required administrative RPC operations. | Supported RSAT/service-account calls agree with reference; unauthorized enumeration, escalation and unsupported opnums fail. |
+| P02-21 | Complete required SMB transport and share protection. | Supported negotiation/signing/sealing and share access pass; downgrade, wrong recipient and unauthorized reads/writes fail. |
+| P02-22 | Complete SYSVOL ACL/version consistency and qualified delivery. | Directory/filesystem permissions and versions reconcile after failure; actual policy files arrive through declared delivery/replication. |
+| P02-23 | Implement FSMO/RID ownership, transfer and seizure. | Handoff, failed-holder recovery and RID range tests prevent duplicate authority/allocation and preserve recoverable state. |
+| P02-24 | Complete migration and coexistence with rehearsed recovery. | Identity/permission/key mappings preserve cutover behavior; interrupted migration recovers without duplicate principals or credential exposure. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P02-01`: separately verify `P02-11`, `P02-12`.
+- `P02-02`: separately verify `P02-13`, `P02-14`.
+- `P02-03`: separately verify `P02-15`, `P02-16`.
+- `P02-04`: separately verify `P02-17`, `P02-18`.
+- `P02-05`: separately verify `P02-19`.
+- `P02-06`: separately verify `P02-20`, `P02-21`.
+- `P02-07`: separately verify `P02-22`.
+- `P02-08`: separately verify `P02-23`.
+- `P02-09`: separately verify `P02-24`.
 
 ## Evidence and exit
 
