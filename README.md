@@ -44,7 +44,7 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T11:49:46\+01:00.
+GitHub metadata checked: 2026-11-18T11:51:06\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -64,9 +64,10 @@ GitHub metadata checked: 2026-11-18T11:49:46\+01:00.
     - Package actual project/runtime dependency/Rust-library copyright and license texts alongside both lab binaries. Verify digests after extraction and rerun both independent probes. Keep full development/fuzz graph advisory and license audits. ISC/BSD-3-Clause policy additions follow review of actual source terms; no advisories are ignored.
     - Record W41–W43, resolved development gaps I31/I32 and the remaining I26 qualification gap with immutable implementation evidence. Update the verified main snapshot to merged PR #24. Four owner-accepted requirement scopes are unchanged, only Phases 0/1 are active, and all 60 conformance scenarios remain unrun.
     
-    Validation completed locally: 150 repository tests, 99% combined statement/branch coverage; 30 desktop/mobile browser tests including automated WCAG 2.2 AA-tagged checks; six dashboard build/security tests; strict types/lint, Clippy, workflow/security and both locked dependency graph audits. Seven new TLS and 28 existing LDAP Rust tests pass; TLS library coverage is 93.23%, combined native 94.21%. Both sanitizer fuzz targets completed 20,000 iterations. Both extracted binaries and 40 retained notice files passed verification. Hosted checks must pass on this PR head before merge.
+    Validation completed locally: 150 repository tests, 99% combined statement/branch coverage; 30 desktop/mobile browser tests including automated WCAG 2.2 AA-tagged checks; six dashboard build/security tests; strict types/lint, Clippy, workflow/security and both locked dependency graph audits. Seven new TLS and 28 existing LDAP Rust tests pass; TLS library coverage is 93.23%, combined native 94.21%. Both sanitizer fuzz targets completed 20,000 iterations. Both extracted binaries and 40 retained notice files passed verification. Hosted [CI run 44288458060](https://github.com/Ise-Tom/Babel/actions/runs/44288458060) passed all 13 jobs on `b154d2f2582a192c378e3751a331276389c7e119`. Retained reports confirm all 19 OpenSSL 3.0.13 methods pass against release, instrumented and extracted binaries; coverage is 93.23% TLS / 94.21% combined native. Both hosted sanitizer targets completed 20,000 iterations. The downloaded native archive checksum and all 40 notice files were independently verified.
     
     This is qualification tooling, not LDAP/StartTLS/SASL integration, Windows compatibility, production key custody/rotation/revocation/provider-fault handling, measured capacity or phase acceptance. No domain, schema or credential migration is introduced. Reverting removes the independent lab/tracker without changing LDAP runtime state. The Pages interface updates after merge and successful trusted deployment; proposed work appears separately in the GitHub PR-aware report.
+    
 
 **Changed files:**
 
