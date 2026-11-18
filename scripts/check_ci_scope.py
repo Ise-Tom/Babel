@@ -52,6 +52,7 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
                         "dashboard/build.d.mts",
                         "dashboard/progress.json",
                         "dashboard/associations.json",
+                        "dashboard/capabilities.json",
                     }
                     or (
                         len(path.parts) > 2
@@ -61,18 +62,28 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
                 )
             )
             or (
-                path.parts[:2] == ("native", "babel-ldap")
+                path.parts[:2] in {("native", "babel-ldap"), ("native", "babel-tls-lab")}
                 and (
-                    name == "native/babel-ldap/Cargo.toml"
+                    name in {"native/babel-ldap/Cargo.toml", "native/babel-tls-lab/Cargo.toml"}
                     or (
                         len(path.parts) >= 4
                         and path.parts[2] in {"src", "tests"}
                         and path.suffix == ".rs"
                     )
-                    or name == "native/babel-ldap/tests/smoke_ldap.py"
+                    or name
+                    in {
+                        "native/babel-ldap/tests/smoke_ldap.py",
+                        "native/babel-tls-lab/tests/interop_tls.py",
+                    }
                 )
             )
-            or name in {"fuzz/Cargo.toml", "fuzz/Cargo.lock", "fuzz/fuzz_targets/ldap_frame.rs"}
+            or name
+            in {
+                "fuzz/Cargo.toml",
+                "fuzz/Cargo.lock",
+                "fuzz/fuzz_targets/ldap_frame.rs",
+                "fuzz/fuzz_targets/tls_record.rs",
+            }
             or name
             in {
                 "fuzz/corpus/ldap_frame/anonymous-bind",
@@ -80,6 +91,8 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
                 "fuzz/corpus/ldap_frame/oversized",
                 "fuzz/corpus/ldap_frame/rootdse",
                 "fuzz/corpus/ldap_frame/rootdse-filter",
+                "fuzz/corpus/tls_record/empty-record",
+                "fuzz/corpus/tls_record/plaintext",
             }
             or (path.parts[0] == "docs" and path.suffix == ".md")
             or name == "docs/github-main-ruleset.json"

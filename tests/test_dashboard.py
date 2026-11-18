@@ -20,7 +20,7 @@ class DashboardModel(unittest.TestCase):
         self.root = Path(self.temporary.name)
         shutil.copytree(ROOT / "docs", self.root / "docs")
         (self.root / "dashboard").mkdir()
-        for name in ("progress.json", "associations.json"):
+        for name in ("progress.json", "associations.json", "capabilities.json"):
             shutil.copy2(ROOT / "dashboard" / name, self.root / "dashboard" / name)
         self.progress = json.loads((self.root / "dashboard/progress.json").read_text())
         for item in self.progress["work_items"] + self.progress["problems"]:

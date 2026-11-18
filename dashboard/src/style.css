@@ -765,3 +765,22 @@ dialog .button {
   .phase-grid { grid-template-columns: repeat(3,1fr); }
   body { background: white; }
 }
+
+.capability-card { margin: 9px 0; border: 1px solid var(--border); border-radius: 8px; background: white; scroll-margin-top: 16px; }
+.capability-card>summary { display: grid; grid-template-columns: 72px minmax(0,1fr) auto; gap: 12px; align-items: start; padding: 15px; cursor: pointer; list-style: none; }
+.capability-card[open]>summary { border-bottom: 1px solid var(--border); background: #f8faf5; }
+.capability-card .requirement-body li { margin-bottom: 7px; }
+.capability-card .design-notes .chip { margin: 6px; }
+.badge.prototype { color: #275378; background: #e6eef7; }
+.badge.partial { color: #785008; background: #fff0da; }
+@media(max-width:760px) {
+  .sidebar { flex-wrap: wrap; }
+  .sidebar nav { width: 100%; justify-content: space-between; }
+  .capability-card>summary { grid-template-columns: 66px minmax(0,1fr); gap: 6px 9px; }
+  .capability-card>summary .badge { grid-column: 2; justify-self: start; }
+}
+
+.capability-category { grid-column: 2; font-size: 10px; color: var(--muted); }
+
+.capability-card>summary h2 { margin: 0; font-size: 13px; }
+.capability-card .text-link { display: inline-flex; align-items: center; min-height: 28px; margin: 4px 0 10px; }

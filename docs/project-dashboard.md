@@ -32,6 +32,11 @@ open individually. Design and acceptance details remain available on demand.
 Cards can be opened anywhere, keyboard focus moves to the selected page, and
 mobile layouts use two columns plus the direct phase picker.
 
+The **Capabilities** tab adds a searchable implementation tracker for all 130
+global contracts, with explicit prototype/partial/planned state, stage, actual
+implemented behavior, missing behavior and evidence/blocker links. Related
+preparatory work does not imply delivery. See the [maintenance and state guide](capability-tracker.md).
+
 The interactive build is a single static HTML file. Public static hosting has
 been approved for the dashboard; repository visibility is an owner setting. The Pages
 workflow below publishes only the tested HTML build. The GitHub-rendered report

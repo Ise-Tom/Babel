@@ -4,7 +4,10 @@ yanked = "deny"
 [licenses]
 include-dev = true
 include-build = true
-allow = ["MIT", "Apache-2.0", "NCSA"]
+allow = ["MIT", "Apache-2.0", "NCSA", "ISC", "BSD-3-Clause"]
+# ISC is required by reviewed ring/webpki/untrusted TLS-lab dependencies.
+# BSD-3-Clause covers subtle; retain notice/disclaimer and non-endorsement terms.
+# Retain their actual copyright/permission notices; this does not clear protocol/image rights.
 # NCSA covers the libFuzzer development harness; retain upstream notices.
 # Babel is Apache-2.0; audit unpublished workspace packages as well.
 private = { ignore = false }

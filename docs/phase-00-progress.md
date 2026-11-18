@@ -111,3 +111,25 @@ workload's seeded data inputs. Full-profile CI validates 22,150 logical objects,
 and separate negative graph inputs. This is development tooling under P00-09; the
 owner's acceptance remains the engineering method scope, not measured capacity.
 No native server, GPO/ACL semantics, token encoder or client conformance is accepted.
+
+## TLS candidate and capability tracking
+
+P00-13 now has an executable [Rustls/ring qualification experiment](adr/0006-tls-qualification-lab.md).
+It implements bounded loopback mutual TLS, positive TLS 1.2/1.3 exchanges,
+certificate/identity/time/purpose and obsolete-protocol rejection tests, exporter
+prerequisite checks, a dedicated malformed-record sanitizer fuzzer and a separate
+90% library coverage gate. Nineteen independent OpenSSL test methods run against
+the real release process. These are transport qualification tests; LDAP/SASL
+integration, Windows/Linux/macOS clients, revocation/key custody/provider-fault
+and production load remain outstanding. All 60 conformance scenarios stay unrun.
+
+P00-06 now includes actual notice retention for internal native lab archives,
+including selected runtime dependencies and the Rust library bundle, with
+post-extraction byte verification and both binaries retested. This does not finish
+the separate P00-16 specification/reference-fixture rights obligation.
+
+The [capability tracker](capability-tracker.md) exposes all 130 global capability
+contracts with explicit implementation state, stage, implemented/missing behavior,
+source-backed work and blockers. Shared design/tooling never automatically claims
+functional implementation or starts a later phase. No new owner acceptance is
+recorded; the four previously accepted requirement scopes remain unchanged.

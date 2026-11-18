@@ -10,11 +10,21 @@ cargo-fuzz = true
 
 [dependencies]
 libfuzzer-sys = "=0.4.13"
+babel-tls-lab = { path = "../native/babel-tls-lab", version = "=0.1.0" }
+rustls = { version = "=0.23.46", default-features = false, features = ["std", "ring", "tls12"] }
+rcgen = { version = "=0.14.10", default-features = false, features = ["ring"] }
 babel-ldap = { path = "../native/babel-ldap", version = "=0.1.0" }
 
 [[bin]]
 name = "ldap_frame"
 path = "fuzz_targets/ldap_frame.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "tls_record"
+path = "fuzz_targets/tls_record.rs"
 test = false
 doc = false
 bench = false

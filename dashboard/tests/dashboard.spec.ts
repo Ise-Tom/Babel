@@ -199,3 +199,36 @@ test('shared future-phase preparation stays planned and activity counts are expl
   await planned.locator(':scope > summary').click();
   await expect(planned).toContainText('This requirement remains planned');
 });
+
+test('capability tracker exposes explicit implementation, missing scope and source evidence', async ({ page }, info) => {
+  const facts = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  await page.getByRole('button', { name: '◇ Capabilities', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Capabilities & implementations', exact: true })).toBeVisible();
+  await expect(page.locator('.capability-card')).toHaveCount(facts.features.length);
+  await page.getByRole('searchbox').fill('AD-04');
+  const card = page.getByTestId('capability-AD-04'); await card.locator(':scope > summary').click();
+  await expect(card).toContainText('Prototype'); await expect(card).toContainText('RootDSE');
+  await expect(card).toContainText('Missing or unqualified'); await expect(card).toContainText('No full capability acceptance');
+  await expect(card.locator('.source-links a').first()).toHaveAttribute('href', /https:\/\/github.com\/Ise-Tom\/Babel\/blob\/[a-f0-9]{40}\//);
+  await page.screenshot({ path: resolve('..', `reports/capabilities-${info.project.name}.png`), fullPage: false });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+  expect(result.violations).toEqual([]);
+});
+
+test('capability filters, empty state, deep links and history work independently of phase status', async ({ page }) => {
+  await page.goto(`${file}#view=capabilities&capability=AD-04`);
+  await expect(page.getByTestId('capability-AD-04')).toHaveAttribute('open', '');
+  await expect(page.getByTestId('capability-AD-04')).toContainText('Implemented subset');
+  await page.getByRole('searchbox').fill('AD-04');
+  await page.getByLabel('Implementation status', { exact: true }).selectOption('planned');
+  await expect(page.getByRole('heading', { name: 'No matches', exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Clear filters', exact: true }).click();
+  await page.getByRole('searchbox').fill('UX-01');
+  await page.getByTestId('capability-UX-01').locator(':scope > summary').click();
+  await expect(page.getByTestId('capability-UX-01')).toContainText('domain administration UI/API/CLI are not implemented');
+  await expect(page.getByTestId('capability-UX-01').locator(':scope > summary .badge')).toHaveText('Planned');
+  await page.goto(`${file}#view=capabilities&capability=constructor&capability_status=constructor`);
+  await expect(page.getByLabel('Implementation status', { exact: true })).toHaveValue('all');
+  await expect(page.locator('.capability-card[open]')).toHaveCount(0);
+});

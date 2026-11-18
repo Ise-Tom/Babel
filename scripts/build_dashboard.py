@@ -115,7 +115,7 @@ def build(root: Path, revision: str) -> dict[str, Any]:
             pr.get("state") in {"open", "closed", "merged"} and type(pr.get("draft")) is bool,
             "Invalid PR state",
         )
-    features: dict[str, dict[str, str]] = {}
+    features: dict[str, dict[str, Any]] = {}
     for filename in GLOBAL_SOURCES:
         content = (root / "docs" / filename).read_text()
         for identifier, title, verification in re.findall(
@@ -277,6 +277,9 @@ def build(root: Path, revision: str) -> dict[str, Any]:
                     any(step["id"] in item["requirements"] for item in work),
                     "Accepted requirement needs implementation/explanation record",
                 )
+    from capability_tracker import enrich
+
+    enrich(root, features, phases, work, problems, acceptance)
     return {
         "schemaVersion": 1,
         "buildRevision": revision,
