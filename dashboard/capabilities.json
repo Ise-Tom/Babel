@@ -128,7 +128,8 @@
         "W16",
         "W18",
         "W38",
-        "W41"
+        "W41",
+        "W45"
       ],
       "blockers": [],
       "acceptance": null

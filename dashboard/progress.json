@@ -2,10 +2,10 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-18",
-    "commit": "685758b59c354c6a95e3b6fdd838bdd43f52b06b",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44304413862",
+    "commit": "f42815d5a3132f56dbdf4dafde220b8b0939d7f6",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44313568549",
     "ci_result": "passed",
-    "checks_passed": 13,
+    "checks_passed": 14,
     "pull_requests": [
       {
         "number": 4,
@@ -111,9 +111,14 @@
         "number": 25,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 26,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Verified main snapshot: PR #25 is merged and all 13 main CI jobs passed for 685758b. The capability tracker is part of main. Only Phases 0 and 1 are active; 274 requirements and four owner-accepted scopes are unchanged. The current PR qualifies a Rust PostgreSQL driver candidate with real synthetic cases; native directory storage, AD conformance and capacity are not accepted."
+    "note": "Verified main snapshot: PR #26 is merged and all 14 main CI jobs passed for f42815d; Pages deployment succeeded. Phase 0 has 9 in-progress, 1 blocked, 5 planned and 2 accepted requirement scopes. The current PR makes this activity and recent work visible separately from acceptance and labels the actual dashboard build. Four accepted scopes are preserved; shared preparation does not start later phases. No AD/client or capacity acceptance is inferred."
   },
   "requirements": {
     "P00-01": {
@@ -1906,6 +1911,49 @@
         "I26",
         "I33"
       ]
+    },
+    {
+      "id": "W45",
+      "title": "Make phase activity and recent work visible separately from acceptance",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-08",
+        "P00-10"
+      ],
+      "how": "Reproduced the live main dashboard after PR #26: current build f42815d included W44 and 35 Phase 0 records, but its bar showed only 2/17 accepted and its header showed the older baseline. Replaced the acceptance-only bar with labeled explicit-status segments; cards show active/planned counts and related records. Active phase pages show status totals and the newest three source-backed work records above collapsed requirements. The header now uses the artifact build revision and the footer labels the separate recorded CI baseline. The GitHub report shows the same counts and recent records outside disclosures.",
+      "verification": "All 32 desktop/mobile browser checks and six build/security tests pass. New regressions verify activity and acceptance remain separate, current build labeling, actual recent work/source evidence, and no promotion of future planned phases. All 18 phase cards still fit the tested desktop viewport; mobile overflow and automated WCAG 2.2 AA-tagged checks pass. All 157 repository tests pass at 99% branch-inclusive tooling coverage; the GitHub report has a regression for visible status/recent evidence without phase acceptance. Strict types/lint, Bandit and workflow analysis pass.",
+      "limitations": "This is dashboard visibility and traceability work, not new native AD behavior or acceptance. Requirement counts and status segments are not effort/completion percentages. Work linked to a planned phase remains preparation. Pages receives the UI change after merge and successful trusted deployment; proposed work is visible separately in the GitHub report. Four accepted scopes remain unchanged and all 60 conformance scenarios stay unrun.",
+      "source_revision": "5463fb55119f1f89841c5ea645bd9ebcefd8a8f6",
+      "sources": [
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": "dashboard/src/style.css",
+          "label": "style.css"
+        },
+        {
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "dashboard.spec.ts"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "tests/test_dashboard_delivery.py",
+          "label": "test_dashboard_delivery.py"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "project-dashboard.md"
+        }
+      ],
+      "problems": [
+        "I34"
+      ]
     }
   ],
   "problems": [
@@ -2739,6 +2787,42 @@
         }
       ],
       "provenance": "Observed with the real pinned database and Rust driver, then protected by executable helper regressions. This is a development correctness finding, not a GitHub setup incident or an upstream vulnerability claim."
+    },
+    {
+      "id": "I34",
+      "title": "Acceptance-only meter hid Phase 0 activity and recent implementations",
+      "status": "resolved",
+      "kind": "dashboard-usability",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-08",
+        "P00-10"
+      ],
+      "detail": "The live site was correctly deployed after PR #26 and contained the Rust-driver increment. Phase 0 nevertheless looked unchanged because its bar represented only accepted requirements (2/17); 9 active requirements and recent work were buried in collapsed details. The header also displayed an older evidence baseline instead of the artifact build revision.",
+      "resolution": "Added explicit status counts/segments alongside acceptance, visible recent work and source-backed explanations on active phase pages, corresponding GitHub report summaries, and actual build identification. Browser/report regressions preserve acceptance totals and ensure shared preparation does not start future phases.",
+      "next_action": "Maintain explicit requirement states and work evidence in each development PR. Keep activity, acceptance, related preparation and recorded CI baseline distinct; do not turn counts into effort percentages or infer acceptance from CI.",
+      "source_revision": "5463fb55119f1f89841c5ea645bd9ebcefd8a8f6",
+      "sources": [
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "main.ts"
+        },
+        {
+          "path": "dashboard/tests/dashboard.spec.ts",
+          "label": "dashboard.spec.ts"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "render_dashboard.py"
+        },
+        {
+          "path": "tests/test_dashboard_delivery.py",
+          "label": "test_dashboard_delivery.py"
+        }
+      ],
+      "provenance": "Observed in the actual published f42815d dashboard data and reproduced against main. This is a development usability defect; CI and Pages publication had succeeded."
     }
   ],
   "focus_phase": 0,
