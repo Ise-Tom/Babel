@@ -268,7 +268,8 @@ test('completed exit work can await validation without being accepted', async ({
   step.validation = { scope: 'Full driver exit review', packet: { path: 'docs/validation/p00-15.md', label: 'Exit packet', url: `https://github.com/Ise-Tom/Babel/blob/${facts.buildRevision}/docs/validation/p00-15.md` } };
   await page.setContent(await htmlFor(facts));
   await expect(page.getByTestId('phase-card-0').locator('.badge')).toHaveText('1 ready');
-  await expect(page.getByTestId('phase-card-0')).toContainText('2/17 accepted');
+  const accepted = current.steps.filter(s => s.status === 'accepted').length;
+  await expect(page.getByTestId('phase-card-0')).toContainText(`${accepted}/${current.steps.length} accepted`);
   await phase(page, 0);
   await page.getByLabel('Requirement status', { exact: true }).selectOption('ready_for_validation');
   await expect(page.locator('.requirement')).toHaveCount(1);

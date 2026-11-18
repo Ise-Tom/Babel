@@ -1,7 +1,7 @@
 # ADR 0007 — Rust PostgreSQL driver candidate qualification
 
-Date: 18 November 2026. Status: **Phase 0 driver/transaction qualification complete; owner validation of
-P00-15 requested in the [exit packet](../validation/p00-15.md)**. PostgreSQL's backend-family
+Date: 18 November 2026. Status: **Full Phase 0 P00-15 driver/transaction gate accepted by the project owner on
+18 November 2026; decision and evidence in the [exit packet](../validation/p00-15.md)**. PostgreSQL's backend-family
 selection remains owner-approved under [ADR 0003](0003-postgresql-directory-state.md).
 This increment extends the [SQL experiment](0004-synthetic-postgresql-state-experiment.md)
 with a real Rust client; it does not add native directory storage.

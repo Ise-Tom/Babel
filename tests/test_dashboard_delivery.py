@@ -49,6 +49,7 @@ class PersistentReport(unittest.TestCase):
         self.assertNotIn("Updated automatically after the full CI gate", report)
 
     def test_activity_and_latest_work_are_visible_without_accepting_or_starting_phases(self):
+        baseline = copy.deepcopy(self.data)
         report = view.render(self.data)
         phase = self.data["phases"][0]
         section = report.split("## Phase 00\n", 1)[1].split("<details>", 1)[0]
@@ -65,7 +66,7 @@ class PersistentReport(unittest.TestCase):
         planned = report.split("## Phase 05\n", 1)[1].split("<details>", 1)[0]
         self.assertIn("0 in progress", planned)
         self.assertNotIn("Recent recorded work", planned)
-        self.assertEqual(sum(s["status"] == "accepted" for s in phase["steps"]), 2)
+        self.assertEqual(self.data, baseline)
 
     def test_authored_markup_is_literal_and_unsafe_links_are_rejected(self):
         payload = "<script>alert(1)</script> ![image](https://evil.example) | **done**"

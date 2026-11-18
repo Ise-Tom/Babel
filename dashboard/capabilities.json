@@ -94,7 +94,7 @@
     "OPS-01": {
       "status": "planned",
       "category": "experiment",
-      "scope": "The Phase 0 PostgreSQL driver/transaction review is complete; selected bounded typed writes, receipt recovery and process-crash evidence support native implementation. Native directory backup/restore/upgrade operations are not implemented.",
+      "scope": "The Phase 0 PostgreSQL driver/transaction review is complete and explicitly owner-accepted; selected bounded typed writes, receipt recovery and process-crash evidence support native implementation. Native directory backup/restore/upgrade operations are not implemented.",
       "implemented": [],
       "missing": [
         "Native directory backup/restore and upgrade",

@@ -118,7 +118,7 @@
         "draft": false
       }
     ],
-    "note": "Verified main baseline: PR #26 is merged and f42815d passed all 14 CI jobs with a successful Pages deployment. This PR now completes P00-15 technical qualification and submits its full criterion packet for owner validation, alongside the earlier display fix. Four accepted proofs are preserved; no AD/client or capacity acceptance is inferred."
+    "note": "Verified main baseline: PR #26 is merged and f42815d passed all 14 CI jobs with a successful Pages deployment. This PR completes P00-15 technical qualification and records the owner’s explicit validation of its full Phase 0 gate, alongside the earlier display fix. The four prior accepted proofs are preserved; no AD/client or capacity acceptance is inferred."
   },
   "requirements": {
     "P00-01": {
@@ -214,15 +214,20 @@
       "note": "ADR 0006 and a bounded Rustls 0.23.46/ring 0.17.14 mutual-TLS lab now have certificate/identity/protocol/property/OpenSSL/fuzz and separate coverage evidence. This qualifies a candidate experiment only; production selection, LDAP/SASL channel binding, client compatibility, revocation/rotation/key custody, provider faults and load remain open."
     },
     "P00-15": {
-      "status": "ready_for_validation",
-      "note": "All original Phase 0 driver/transaction exit criteria are implemented and evidenced. Selected tokio-postgres 0.7.18/Tokio 1.54.1 local Unix/SCRAM/no-pool profile now has typed bounded operations, dropped-future safety, durable receipt replay with reauthorization, actual COMMIT response loss and Rust-driver process recovery before/after commit. The full criterion packet is ready for owner validation. Native AD schema/ACL/service/key and domain recovery/capacity remain their separate Phase 1/3/4 gates.",
+      "status": "accepted",
+      "note": "The project owner explicitly validated the entire original Phase 0 driver/transaction gate on 18 November 2026: version review, parameterization, cancellation, commit/error mapping and recovery. The selected tokio-postgres 0.7.18/Tokio 1.54.1 local Unix/SCRAM/no-pool profile passes all 29 qualification cases, including actual lost durable replies and two process restarts. Native AD schema/ACL/service/key and domain recovery/capacity retain their separate Phase 1/3/4 gates.",
       "validation": {
-        "scope": "Full P00-15 Phase 0 driver/transaction qualification gate and selected pg18-local-unix-scram-no-pool-v1 profile; owner acceptance pending.",
+        "scope": "Full P00-15 Phase 0 driver/transaction qualification gate and selected pg18-local-unix-scram-no-pool-v1 profile, accepted by the project owner on 18 November 2026.",
         "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142",
         "packet": {
           "path": "docs/validation/p00-15.md",
           "label": "P00-15 full exit criteria and evidence"
         }
+      },
+      "acceptance": {
+        "reviewer": "Project owner (explicit validation in this conversation)",
+        "date": "2026-11-18",
+        "evidence": "The project owner explicitly answered “Validate P00-15” in this conversation on 18 November 2026. This validates the entire original Phase 0 gate: driver/version review, parameterization, cancellation, commit/error handling and recovery, for profile pg18-local-unix-scram-no-pool-v1. Reviewed implementation and full criterion packet: https://github.com/Ise-Tom/Babel/blob/8d21b7b83a76bd45f9564f7a44f7e144c50c9142/docs/validation/p00-15.md . All 29 cases pass, with actual lost commit replies, two database process restarts and 97.81% driver-library line coverage; all 14 CI jobs pass: https://github.com/Ise-Tom/Babel/actions/runs/44327591957 . Recorded decision: https://github.com/Ise-Tom/Babel/blob/49abca719c43082e4e9af30c5bc960d2b714f1b0/docs/validation/p00-15.md . Native AD storage, credential/key custody, domain recovery/capacity, the 60 unrun client scenarios and whole-phase acceptance remain separate gates."
       }
     }
   },
@@ -2018,6 +2023,30 @@
         "I26",
         "I35"
       ]
+    },
+    {
+      "id": "W47",
+      "title": "Record owner validation of the full P00-15 Phase 0 gate",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-15"
+      ],
+      "how": "The project owner explicitly answered “Validate P00-15” after reviewing the complete criterion packet and passing CI. Recorded the dated decision in the source-pinned packet and acceptance ledger, changed P00-15 from ready for validation to accepted, and preserved all four earlier acceptance proofs. Phase 0 now has 3 accepted, 8 in progress, 1 blocked and 5 planned requirements.",
+      "verification": "The reviewed implementation passed all 29 driver qualification cases with none ignored, both actual database restart checkpoints, 97.81% driver-library coverage and all 14 CI jobs in run 44327591957. The full original criterion and exact qualified profile are recorded with the owner decision; acceptance is explicit, not inferred from CI.",
+      "limitations": "This accepts the full Phase 0 driver/transaction gate, not the whole phase or a production directory server. Native AD identity/schema/ACL integration, service/key custody and domain recovery/capacity retain their separate Phase 1/3/4 gates. All 60 product/client conformance scenarios remain unrun.",
+      "source_revision": "49abca719c43082e4e9af30c5bc960d2b714f1b0",
+      "sources": [
+        {
+          "path": "docs/validation/p00-15.md",
+          "label": "Owner decision and full criterion packet"
+        }
+      ],
+      "problems": [
+        "I05",
+        "I26",
+        "I35"
+      ]
     }
   ],
   "problems": [
@@ -2151,9 +2180,9 @@
         "P01-02",
         "P01-03"
       ],
-      "detail": "P00-15 now has complete driver/transaction qualification, including typed bounds, dropped futures, real durable-reply loss and Rust-client process recovery. The native AD identity/schema/ACL/store and domain formats remain separate implementation obligations; the fixture is not a directory server.",
+      "detail": "P00-15 driver/transaction qualification is complete and explicitly owner-accepted, including typed bounds, dropped futures, real durable-reply loss and Rust-client process recovery. The native AD identity/schema/ACL/store and domain formats remain separate implementation obligations; the fixture is not a directory server.",
       "resolution": "",
-      "next_action": "Validate the completed P00-15 packet, then integrate the selected profile into P01-02/P01-03/P01-11/P01-12 with native identity/schema/ACL and durable journal semantics. Service/key custody, domain replication/backup/upgrade and production capacity retain their separate gates.",
+      "next_action": "Integrate the owner-accepted driver profile into P01-02/P01-03/P01-11/P01-12 with native identity/schema/ACL and durable journal semantics. Service/key custody, domain replication/backup/upgrade and production capacity retain their separate gates.",
       "sources": [
         {
           "path": "docs/validation/p00-15.md",
@@ -2582,9 +2611,9 @@
         "P00-14",
         "P00-15"
       ],
-      "detail": "P00-15 driver/transaction review is complete and ready for owner validation. TLS/channel/key integration, Kerberos/PAC and DNS/SMB/RPC decisions remain open at their own gates; native store implementation is tracked by I05. Later product obligations no longer keep the completed Phase 0 driver review in progress.",
+      "detail": "The owner explicitly validated the full P00-15 driver/transaction gate on 18 November 2026. TLS/channel/key integration, Kerberos/PAC and DNS/SMB/RPC decisions remain open at their own gates; native store implementation is tracked by I05.",
       "resolution": "",
-      "next_action": "Review P00-15's full exit packet and validate the selected stack/profile. Continue P00-13/P00-14 and transport qualification; implement the native store under Phase 1 rather than treating unimplemented product features as unfinished driver-selection work.",
+      "next_action": "Continue P00-13/P00-14 and transport qualification. Preserve the accepted driver profile and its qualification cases while implementing the native store under Phase 1; changes to transport/pool/stack/profile require requalification.",
       "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142",
       "sources": [
         {
@@ -2892,8 +2921,8 @@
         "P00-15"
       ],
       "detail": "The first candidate only handled its own timers and lost connections before commit. Dropping the caller's commit future could leave an uncertain session reusable; no real post-commit response was withheld, typed bounded operations were absent, and process recovery had only been tested through psql. Later product gates also obscured the original Phase 0 exit criteria.",
-      "resolution": "Implemented armed operation guards and a typed default interface with bounded results. Real COMMIT-response withholding plus independent state observation proves durable receipt recovery without duplicate effects. Added mandatory owned SIGKILL/restart checkpoints before commit and after acknowledged commit, with state checked before retry. A full criterion packet now completes P00-15 and requests owner validation; later AD integration/keys/domain recovery remain their actual separate requirements.",
-      "next_action": "Validate the full P00-15 packet, then preserve these tested invariants while implementing the native directory store. Any new transport/pool/stack/profile needs requalification. Do not turn validation readiness into automatic acceptance or product conformance.",
+      "resolution": "Implemented armed operation guards and a typed default interface with bounded results. Real COMMIT-response withholding plus independent state observation proves durable receipt recovery without duplicate effects. Added mandatory owned SIGKILL/restart checkpoints before commit and after acknowledged commit, with state checked before retry. A full criterion packet completes P00-15; the owner explicitly validated the entire Phase 0 gate on 18 November 2026; later AD integration/keys/domain recovery remain their actual separate requirements.",
+      "next_action": "Preserve the owner-accepted invariants while implementing the native directory store. Any new transport/pool/stack/profile needs requalification. Acceptance of this Phase 0 gate does not accept later product features or client conformance.",
       "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142",
       "sources": [
         {
@@ -2917,5 +2946,5 @@
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "P00-15 technical exit is complete: typed/bounded mutations, dropped-future safety, durable-reply loss and real database recovery pass. It is ready for owner validation; native directory integration remains Phase 1 work. All 60 AD/client conformance cases remain unrun."
+  "focus_summary": "P00-15 is owner-accepted for its full driver/transaction gate: 29 passing cases, bounded writes, cancellation, durable receipt recovery and real database restarts. Phase 0 has 3 accepted requirements. Native AD integration and all 60 client scenarios remain unqualified."
 }

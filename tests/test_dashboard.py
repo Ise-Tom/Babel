@@ -199,6 +199,10 @@ class DashboardModel(unittest.TestCase):
         self.assertEqual(self.model()["phases"][5]["status"], "in_progress")
 
     def test_validation_ready_requires_pinned_packet_and_does_not_invent_acceptance(self):
+        expected_accepted = sum(
+            s["status"] == "accepted" and s["id"] != "P00-15"
+            for s in self.model()["phases"][0]["steps"]
+        )
         self.progress["requirements"]["P00-15"] = {
             "status": "ready_for_validation",
             "note": "Complete fixture exit; review pending",
@@ -215,5 +219,7 @@ class DashboardModel(unittest.TestCase):
         self.assertEqual(step["status"], "ready_for_validation")
         self.assertIsNone(step["acceptance"])
         self.assertIn("/" + "b" * 40 + "/", step["validation"]["packet"]["url"])
-        self.assertEqual(sum(s["status"] == "accepted" for s in data["phases"][0]["steps"]), 2)
+        self.assertEqual(
+            sum(s["status"] == "accepted" for s in data["phases"][0]["steps"]), expected_accepted
+        )
         self.assertEqual(data["phases"][0]["status"], "in_progress")
