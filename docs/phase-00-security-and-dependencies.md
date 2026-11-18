@@ -32,7 +32,7 @@ and notification behavior, close the drill and record only redacted metadata.
 Do not create public vulnerability examples or send private reports without an
 explicit owner-authorized drill. No test message was sent by this work.
 
-Assign and exercise a real backup security contact before claiming P00-07 complete;
+Assign and exercise a real backup security contact before claiming P00-17 complete;
 a GitHub username alone does not prove availability or a private channel. The
 proposed two-working-day acknowledgment/seven-day update targets in [SECURITY.md](../SECURITY.md)
 are not active SLAs. Record time/owner/escalation, safe reproduction, severity,
@@ -45,10 +45,10 @@ coverage remain gates even though daily development uses solo approvals.
 
 | Component | Current decision / alternatives | Qualification required before broader use |
 | --- | --- | --- |
-| Native toolchain/parser | Rust 1.100.0 and existing locked bounded LDAP parser lab; memory safety does not remove logic/DoS risk | Existing Clippy/property/fuzz/coverage/audit jobs qualify only the lab subset; review target OS and unsafe dependencies on expansion |
+| Native toolchain/parser | [Complete P00-04 packet](validation/p00-04.md): Rust 1.100.0 Linux x86_64 GNU parser baseline, debug/release/overflow/client/fuzz/audit and actual compiler/ELF evidence | Owner validation pending; new targets/dependencies require requalification. TLS/Kerberos/storage and native AD behavior retain their separate gates |
 | TLS | [ADR 0006](adr/0006-tls-qualification-lab.md): Rustls 0.23.46/ring 0.17.14 standalone Linux lab candidate, with real OpenSSL/certificate/fuzz tests and retained notices; production selection remains pending | LDAP/SASL channel binding, real OS clients, revocation/rotation/key custody, provider faults and production concurrency; no custom cryptography |
 | Kerberos/PAC | Production library/backend not selected; compare maintained library bindings versus a reviewed memory-safe implementation boundary | AES, PAC, replay/delegation/PKINIT scope, dependency lifetime/FFI safety and real Windows/Linux/macOS conformance; do not infer AD support from MIT Kerberos alone |
-| PostgreSQL | Owner selected backend family; PostgreSQL 18.7/psql SQL experiment and [tokio-postgres 0.7.18/Tokio 1.54.1 profile](validation/p00-15.md) now completes the Phase 0 driver review with typed/bounded operations, dropped-future safety, reply-loss/idempotency and process-crash evidence | Owner validation of P00-15 is requested. Native AD adapter/authorization, service auth provisioning, host/disk/backup/upgrade and key custody remain subsequent implementation/qualification gates |
+| PostgreSQL | Owner selected backend family; PostgreSQL 18.7/psql SQL experiment and [tokio-postgres 0.7.18/Tokio 1.54.1 profile](validation/p00-15.md) now completes the Phase 0 driver review with typed/bounded operations, dropped-future safety, reply-loss/idempotency and process-crash evidence | The owner validated the full P00-15 gate on 18 November 2026. Native AD adapter/authorization, service auth provisioning, host/disk/backup/upgrade and key custody remain subsequent implementation/qualification gates |
 | DNS/SMB/RPC | Production parsers/transports not selected; reuse reviewed libraries where suitable without requiring Samba | Exact supported operation/encoding/signing/sealing matrix, adversarial bounds, licenses and fuzz/reference evidence |
 | Python / TypeScript | Current test/report tooling and dashboard, not native domain-server language | Hash-locked/pinned dependencies and current CI; tool/compiler changes must preserve security checks |
 | Platform agents | Separate later Linux/macOS/Windows qualification | Updater/sensor/driver/consent/signing/privacy requirements; no generic privileged shell as policy engine |
@@ -73,3 +73,7 @@ each selected Microsoft/RFC reference, redistributed fixtures, SDK/library and
 Windows image. This document is not a legal clearance or permission to redistribute
 licensed VM images. Keep public evidence synthetic and retain notices; do not
 import another directory server's code/database as the native implementation.
+
+The complete [P00-06 contribution/redistribution register](licensing-and-redistribution.md)
+now records the existing owner decision, actual terms and enforced artifact handling.
+Its full Phase 0 criterion packet awaits owner validation; P00-16 remains separate.

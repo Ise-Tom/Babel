@@ -17,9 +17,9 @@ runs cancel superseded runs; releases wait for their own full CI invocation.
 | Static security and dependency audit | Bandit on all shipped Python tools, offline Zizmor workflow-security checks, strict pip-audit of the complete locked CI dependency graph; known advisories block regardless of severity |
 | Workflow lint | actionlint, including shell analysis when provided by the runner |
 | Secret scan | Redacted Gitleaks scan of full available Git history and checked-out files |
-| Native protocol labs | Pinned Rust build/format/all-feature Clippy, property/transport tests and independent ldap3/OpenSSL probes, >=90% protocol and separate TLS library line coverage, sanitizer fuzz, locked advisory/license/source audit and CycloneDX inventory |
+| Native protocol labs | Pinned Rust debug/release build/overflow tests, actual compiler/Linux/ELF and source-bound parser profile, strict complete notice extraction, format/all-feature Clippy, property/transport tests and independent ldap3/OpenSSL probes, >=90% protocol and separate TLS library line coverage, sanitizer fuzz, locked advisory/license/source audit and CycloneDX inventory |
 | Rust PostgreSQL driver qualification | Real private-socket/SCRAM binding/transaction/deadline/cancellation/connection-failure cases; separate >=90% driver library coverage, declared case accounting, observed fixture isolation/cleanup and actual notice inventory |
-| Project dashboard | Validated phase/progress model, strict TypeScript, ESLint/DOM security rules, deterministic HTML/CSP tests, full npm audit/SBOM and Chromium desktop/mobile flows/accessibility checks |
+| Project dashboard | Validated phase/progress model, strict TypeScript, ESLint/DOM security rules, deterministic HTML/CSP/license retention and bundled-input checks, full npm audit/SBOM and Chromium desktop/mobile flows/accessibility checks |
 | CI gate | Always-run aggregate; any failed, skipped or cancelled prerequisite blocks success |
 
 Security/coverage evidence is uploaded with 14-day retention, including a

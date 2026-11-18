@@ -48,18 +48,28 @@ class NativeNotices(unittest.TestCase):
                 {"id": "crate-id", "deps": []},
             ]
         }
+        self.system = self.root / "system"
+        for name in notices.SYSTEM_TERMS.values():
+            target = self.system / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("Synthetic system runtime license/copyright fixture\n")
         self.output = self.root / "out"
 
     def assemble(self):
         return notices.assemble(
-            self.meta, self.project, self.docs, self.output, selected=("local",)
+            self.meta,
+            self.project,
+            self.docs,
+            self.output,
+            selected=("local",),
+            system_root=self.system,
         )
 
     def test_actual_nested_terms_project_and_rust_notices_are_retained(self):
         manifest = self.assemble()
         notices.verify(self.output)
         self.assertEqual(len(manifest["packages"]), 1)
-        self.assertEqual(len(manifest["files"]), 7)
+        self.assertEqual(len(manifest["files"]), 13)
         self.assertEqual(
             (self.output / "third-party/test-crate-1.0.0/third-party/NOTICE").read_bytes(),
             (self.package / "third-party/NOTICE").read_bytes(),
@@ -90,7 +100,12 @@ class NativeNotices(unittest.TestCase):
         (self.package / "LICENSE").symlink_to(self.project / "LICENSE")
         with self.assertRaises(ValueError):
             notices.assemble(
-                self.meta, self.project, self.docs, self.root / "other", selected=("local",)
+                self.meta,
+                self.project,
+                self.docs,
+                self.root / "other",
+                selected=("local",),
+                system_root=self.system,
             )
 
     def test_empty_or_oversized_terms_fail(self):
@@ -131,3 +146,108 @@ class NativeNotices(unittest.TestCase):
         path.write_bytes(bytes([data[0] ^ 1]) + data[1:])
         with self.assertRaisesRegex(ValueError, "digest"):
             notices.verify(self.output)
+
+    def test_omitted_unlisted_required_or_unaccounted_notices_cannot_pass(self):
+        self.assemble()
+        path = self.output / "manifest.json"
+        original = json.loads(path.read_text())
+        for edit in (
+            "omit",
+            "missing_project",
+            "missing_rust",
+            "missing_system",
+            "drop_package",
+            "duplicate_package",
+            "wrong_package",
+            "empty_terms",
+            "missing_license",
+            "missing_roots",
+            "missing_inventory",
+        ):
+            manifest = json.loads(json.dumps(original))
+            if edit == "omit":
+                manifest["files"].pop()
+            elif edit == "missing_project":
+                manifest["files"] = [r for r in manifest["files"] if r["path"] != "project/LICENSE"]
+            elif edit == "missing_rust":
+                manifest["files"] = [
+                    r for r in manifest["files"] if not r["path"].startswith("rust/licenses/")
+                ]
+            elif edit == "missing_system":
+                manifest["files"] = [r for r in manifest["files"] if r["path"] != "system/LGPL-2.1"]
+            elif edit == "drop_package":
+                manifest["packages"] = []
+            elif edit == "duplicate_package":
+                manifest["packages"].append(manifest["packages"][0])
+            elif edit == "wrong_package":
+                manifest["packages"][0]["name"] = "wrong"
+            elif edit == "empty_terms":
+                manifest["packages"][0]["notices"] = []
+            elif edit == "missing_license":
+                manifest["packages"][0]["license"] = ""
+            elif edit == "missing_roots":
+                manifest["root_packages"] = []
+            else:
+                manifest["packages"] = None
+            path.write_text(json.dumps(manifest))
+            with self.subTest(edit=edit), self.assertRaises(ValueError):
+                notices.verify(self.output)
+
+    def test_expected_manifest_digest_survives_extraction_and_detects_rewritten_terms(self):
+        import hashlib
+
+        self.assemble()
+        path = self.output / "manifest.json"
+        expected = hashlib.sha256(path.read_bytes()).hexdigest()
+        notices.verify(self.output, expected)
+        with self.assertRaisesRegex(ValueError, "manifest digest"):
+            notices.verify(self.output, "invalid")
+        manifest = json.loads(path.read_text())
+        manifest["scope"] = "Tampered claim"
+        path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(ValueError, "manifest digest"):
+            notices.verify(self.output, expected)
+
+    def test_additional_symlinks_and_unlisted_files_fail_even_when_manifest_is_unchanged(self):
+        self.assemble()
+        extra = self.output / "extra"
+        extra.write_text("Unlisted terms")
+        with self.assertRaisesRegex(ValueError, "tree and manifest"):
+            notices.verify(self.output)
+        extra.unlink()
+        extra.symlink_to(self.project, target_is_directory=True)
+        with self.assertRaisesRegex(ValueError, "Symlink"):
+            notices.verify(self.output)
+
+    def test_missing_symlinked_manifest_and_symlinked_root_are_rejected(self):
+        self.assemble()
+        path = self.output / "manifest.json"
+        raw = path.read_bytes()
+        path.unlink()
+        with self.assertRaisesRegex(ValueError, "manifest"):
+            notices.verify(self.output)
+        other = self.root / "manifest-copy"
+        other.write_bytes(raw)
+        path.symlink_to(other)
+        with self.assertRaisesRegex(ValueError, "manifest"):
+            notices.verify(self.output)
+        link = self.root / "linked-root"
+        link.symlink_to(self.output, target_is_directory=True)
+        with self.assertRaisesRegex(ValueError, "directory"):
+            notices.verify(link)
+
+    def test_system_runtime_terms_are_required_and_cannot_escape_the_trusted_tree(self):
+        path = self.system / "common-licenses/LGPL-2.1"
+        path.unlink()
+        with self.assertRaises(ValueError):
+            self.assemble()
+        path.symlink_to(self.project / "LICENSE")
+        with self.assertRaises(ValueError):
+            notices.assemble(
+                self.meta,
+                self.project,
+                self.docs,
+                self.root / "escaped-system",
+                selected=("local",),
+                system_root=self.system,
+            )

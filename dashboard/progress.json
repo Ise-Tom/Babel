@@ -2,8 +2,8 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-18",
-    "commit": "d535d816d2071e0d5d33a321412525f59b371db7",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44348312817",
+    "commit": "3437a860ba9967a5a1068ad5806e2bb3e274bd81",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44362669137",
     "ci_result": "passed",
     "checks_passed": 14,
     "pull_requests": [
@@ -121,9 +121,14 @@
         "number": 27,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 28,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Verified main baseline: PR #27 merged and d535d81 passed all 14 CI jobs, recording the owner-accepted full P00-15 gate. This PR completes the original P00-10/P00-11 Phase 0 design gates and submits their pinned packets for owner validation. All five prior accepted proofs are unchanged; native recovery/client evidence remains unrun."
+    "note": "Verified main baseline: PR #28 merged and 3437a86 passed CI. P00-10/P00-11 remain awaiting explicit owner validation. This PR completes the original P00-04/P00-06 foundation gates with pinned packets and actual compiler/binary/notice evidence. All five existing acceptance proofs are preserved; no AD/client or capacity acceptance is inferred."
   },
   "requirements": {
     "P00-01": {
@@ -139,16 +144,32 @@
       "note": "ADR 0005 works through attribute/link conflicts, partitions, cursor commits, tombstones, RID authority and restore quarantine. Exact AD algorithms/reference outcomes and native replication remain unimplemented."
     },
     "P00-04": {
-      "status": "in_progress",
-      "note": "Rust/parser safeguards and a standalone Rustls/ring candidate are qualified for limited lab scopes. Production dependency selection and platform qualification remain open; TLS, Kerberos/PAC and storage-driver decisions retain separate P00-13–P00-15 acceptance."
+      "status": "ready_for_validation",
+      "note": "The full original Phase 0 toolchain/parser gate is complete: Linux x86_64 GNU on Ubuntu 24.04 CI/Debian 13 locally, exact pinned Rust/compiler/LLVM/ELF/binary/lock evidence, dependency-free unsafe-forbidden parser roots, reviewed alternatives and advisory/license maintenance. Debug/release overflow tests, real independent probes, coverage, locked audits and bounded sanitizer fuzz are required. Owner validation is pending. TLS/Kerberos/storage and all native AD/client behavior remain their separate gates.",
+      "validation": {
+        "scope": "Full original P00-04 memory-safe toolchain/parser-baseline gate for linux-x86_64-gnu-bounded-parser-v1; no native AD or whole-server qualification.",
+        "source_revision": "900a24e7cd38957905d00f628e0b5445511ae52d",
+        "packet": {
+          "path": "docs/validation/p00-04.md",
+          "label": "P00-04 full criterion packet"
+        }
+      }
     },
     "P00-05": {
       "status": "blocked",
       "note": "The isolated Windows lab definition exists; licensed Windows/Mac hosts and exact images are missing. Linux/macOS client qualification and two clean deployments have not run."
     },
     "P00-06": {
-      "status": "in_progress",
-      "note": "Owner-selected Apache-2.0/DCO retained. Native archives and the driver candidate inventory retain actual selected dependency/Rust-library terms, including reviewed Unicode-3.0 obligations and byte verification. Requirement acceptance is not recorded; protocol/fixture rights and product distribution remain separately unqualified under P00-16."
+      "status": "ready_for_validation",
+      "note": "The full original Phase 0 license/contribution gate is complete: existing owner-selected Apache-2.0/DCO, actual contribution terms, selected third-party obligations and source/native/driver/dashboard distribution handling. Strict complete notice/package accounting and trusted pre-archive manifest integrity are enforced; standalone HTML retains full terms and rejects unreviewed bundled runtime inputs. Owner validation is pending; specification/image/fixture rights stay P00-16 and no certification is invented.",
+      "validation": {
+        "scope": "Full original P00-06 project-license/contributor/third-party-obligation-recording gate; preserves the existing license decision, with specification/image/fixture and future product release rights separate.",
+        "source_revision": "900a24e7cd38957905d00f628e0b5445511ae52d",
+        "packet": {
+          "path": "docs/validation/p00-06.md",
+          "label": "P00-06 full criterion packet"
+        }
+      }
     },
     "P00-07": {
       "status": "in_progress",
@@ -2156,6 +2177,107 @@
       "problems": [
         "I36"
       ]
+    },
+    {
+      "id": "W50",
+      "title": "Complete the qualified Linux/Rust toolchain and bounded parser baseline",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-04"
+      ],
+      "how": "Declared and qualified a Linux x86_64 GNU parser profile, with Ubuntu 24.04 CI and Debian 13 observations. Added source/lock/policy/compiler/LLVM/readelf/host/binary facts and runtime Cargo-closure checks; new parser normal/build/FFI expansion or missing PIE/full RELRO/non-executable-stack protections fails. Enabled optimized overflow checks and added a real debug/release overflow test. Required CI now retains actual parser-baseline evidence alongside existing probes, coverage, audit and sanitizer-fuzz results. Recorded alternatives and upstream maintenance responsibilities in the full original P00-04 packet.",
+      "verification": "185 repository tests pass at 99% combined statement/branch coverage; the new qualification collector has 100% coverage. Local all-feature Clippy, workspace tests and real release LDAP/OpenSSL probes pass, including all 19 TLS methods. Release arithmetic visibly fails rather than wrapping. The actual Debian 13.6 binary shows PIE, full RELRO and a non-executable stack, exact Rust 1.100.0/LLVM 23.1.5 and a dependency-free parser normal/runtime crate closure. Required CI separately repeats the real tests, >=90% native coverage, locked graph audits and bounded sanitizer fuzz.",
+      "limitations": "This completes the entire stated Phase 0 compiler/parser baseline; owner validation is pending. Std/libc internals remain upstream trust, and ring native code is a separate TLS boundary. Other targets/new parser dependencies require requalification. Linux server baseline qualification does not qualify Windows/Linux/macOS client behavior or native AD semantics, capacity, credential handling or full-server operation. All 60 conformance scenarios remain unrun.",
+      "source_revision": "900a24e7cd38957905d00f628e0b5445511ae52d",
+      "sources": [
+        {
+          "path": "docs/validation/p00-04.md",
+          "label": "p00-04.md"
+        },
+        {
+          "path": "docs/native-parser-baseline.md",
+          "label": "native-parser-baseline.md"
+        },
+        {
+          "path": "scripts/qualify_parser_baseline.py",
+          "label": "qualify_parser_baseline.py"
+        },
+        {
+          "path": "tests/test_parser_baseline.py",
+          "label": "test_parser_baseline.py"
+        },
+        {
+          "path": "Cargo.toml",
+          "label": "Cargo.toml"
+        },
+        {
+          "path": "native/babel-ldap/tests/toolchain.rs",
+          "label": "toolchain.rs"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        }
+      ],
+      "problems": [
+        "I38"
+      ]
+    },
+    {
+      "id": "W51",
+      "title": "Complete project contribution and redistribution obligations with omission-safe artifacts",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-06"
+      ],
+      "how": "Preserved the owner-selected Apache-2.0/DCO and documented the complete contribution/selected-third-party obligation register. Hardened notice verification against missing required terms, omitted/unlisted files, symlinks and missing/duplicate/unaccounted package inventories; extraction compares a manifest SHA-256 captured before archiving. Standalone dashboard HTML now retains full project and actual esbuild terms inertly; esbuild input accounting refuses new unreviewed bundled runtime sources. One-pass template substitution also preserves authored placeholder text. Prepared the full original P00-06 criterion packet. Native bundles also retain actual glibc/libgcc package copyright and LGPL/GPL texts; system libraries remain dynamically replaceable and are not bundled.",
+      "verification": "185 repository tests pass at 99% combined coverage, including 13 notice-verifier methods with omission, changed-manifest, package-binding, digest and symlink denials. A real protocol notice bundle (11 packages/46 files) was archived, extracted and verified against its original manifest digest; the real driver bundle (62 packages/150 files) also passes strict verification. Nine dashboard build/security tests pass, checking full retained license text, inert escaping, literal placeholder preservation and rejected runtime inputs. No dependency or Cargo license allowance was added; actual GNU runtime terms are retained separately, with no fabricated DCO sign-off.",
+      "limitations": "This completes the original Phase 0 project-license/contributor/obligation-recording gate, pending owner validation. Inventories and trusted CI digests are not independent legal certification, complete binary-link analysis or public release signatures. Actual system shared-library names are recorded separately from Cargo; broader installers/containers must assess their contents. Exact protocol/reference-image/fixture rights stay P00-16, and future product/agent distribution retains its own review. Existing five accepted proofs and pending P00-10/P00-11 decisions are unchanged.",
+      "source_revision": "900a24e7cd38957905d00f628e0b5445511ae52d",
+      "sources": [
+        {
+          "path": "docs/validation/p00-06.md",
+          "label": "p00-06.md"
+        },
+        {
+          "path": "docs/licensing-and-redistribution.md",
+          "label": "licensing-and-redistribution.md"
+        },
+        {
+          "path": "CONTRIBUTING.md",
+          "label": "CONTRIBUTING.md"
+        },
+        {
+          "path": "scripts/collect_native_notices.py",
+          "label": "collect_native_notices.py"
+        },
+        {
+          "path": "tests/test_native_notices.py",
+          "label": "test_native_notices.py"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        },
+        {
+          "path": "dashboard/build.mjs",
+          "label": "build.mjs"
+        },
+        {
+          "path": "dashboard/tests/build.test.mjs",
+          "label": "build.test.mjs"
+        },
+        {
+          "path": "dashboard/src/index.html",
+          "label": "index.html"
+        }
+      ],
+      "problems": [
+        "I39",
+        "I40"
+      ]
     }
   ],
   "problems": [
@@ -3110,8 +3232,101 @@
         }
       ],
       "provenance": "Development design-integrity gap resolved with concrete CI/tooling and full criterion evidence; not an account/hosting incident."
+    },
+    {
+      "id": "I38",
+      "title": "Optimized arithmetic and observed native build protections lacked an explicit qualification gate",
+      "status": "resolved",
+      "kind": "development-correctness",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-04"
+      ],
+      "detail": "The release profile inherited disabled overflow checks, while current host/compiler/ELF facts were not bound to the exact tested parser artifact. The original Phase 0 parser/toolchain gate also lacked a complete platforms/alternatives/maintenance exit packet.",
+      "resolution": "Enabled release overflow checks with a real debug/release failure test. Added compiler/host/lock/binary-bound evidence, parser dependency/FFI guards and actual PIE/full-RELRO/NX-stack checks to required CI, plus the full original criterion packet.",
+      "next_action": "Owner review of P00-04; keep the profile bounded and requalify toolchain/target/dependency changes. Native AD and client behavior retain their separate requirements.",
+      "source_revision": "900a24e7cd38957905d00f628e0b5445511ae52d",
+      "sources": [
+        {
+          "path": "docs/native-parser-baseline.md",
+          "label": "native-parser-baseline.md"
+        },
+        {
+          "path": "scripts/qualify_parser_baseline.py",
+          "label": "qualify_parser_baseline.py"
+        },
+        {
+          "path": "native/babel-ldap/tests/toolchain.rs",
+          "label": "toolchain.rs"
+        }
+      ],
+      "provenance": "Concrete development/build/distribution gap verified against existing code and closed with negative regression tests; not a GitHub setup issue."
+    },
+    {
+      "id": "I39",
+      "title": "Notice verification could miss omitted inventory entries and standalone HTML lacked retained full terms",
+      "status": "resolved",
+      "kind": "development-correctness",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-06"
+      ],
+      "detail": "The verifier checked only listed files. Dropping a file/package entry could therefore escape self-manifest checks, and the standalone dashboard did not retain the full project license and applicable build-tool notice text.",
+      "resolution": "Require complete file/package accounting, mandatory project/Rust terms, no symlink roots/trees/manifests, and the original pre-archive manifest digest at extraction. Retain full project/esbuild terms inside inert dashboard HTML and block newly bundled runtime inputs until their notice policy is reviewed. Retain actual GNU runtime copyright/LGPL/GPL terms as well as Cargo/Rust terms, without broadening the Cargo license policy.",
+      "next_action": "Owner review of P00-06; re-evaluate actual contents before broader distributions. Keep specification/image/fixture rights under P00-16.",
+      "source_revision": "900a24e7cd38957905d00f628e0b5445511ae52d",
+      "sources": [
+        {
+          "path": "docs/licensing-and-redistribution.md",
+          "label": "licensing-and-redistribution.md"
+        },
+        {
+          "path": "scripts/collect_native_notices.py",
+          "label": "collect_native_notices.py"
+        },
+        {
+          "path": "tests/test_native_notices.py",
+          "label": "test_native_notices.py"
+        },
+        {
+          "path": "dashboard/build.mjs",
+          "label": "build.mjs"
+        }
+      ],
+      "provenance": "Concrete development/build/distribution gap verified against existing code and closed with negative regression tests; not a GitHub setup issue."
+    },
+    {
+      "id": "I40",
+      "title": "Authored template-placeholder text could consume a later dashboard build replacement",
+      "status": "resolved",
+      "kind": "development-correctness",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-06"
+      ],
+      "detail": "Sequential template replacement scanned already inserted authored data. Literal placeholder text in a title could consume a later replacement and break the generated dashboard data/script. This was a build correctness defect in repository-controlled document content.",
+      "resolution": "Use one-pass replacement over the original HTML template, with escaped inert notice text. A regression preserves all authored placeholder tokens and the complete embedded JSON while inserting the actual script.",
+      "next_action": "Preserve the one-pass substitution and escaping when adding new template slots. This repair does not change requirement or capability acceptance.",
+      "source_revision": "900a24e7cd38957905d00f628e0b5445511ae52d",
+      "sources": [
+        {
+          "path": "dashboard/build.mjs",
+          "label": "build.mjs"
+        },
+        {
+          "path": "dashboard/tests/build.test.mjs",
+          "label": "build.test.mjs"
+        }
+      ],
+      "provenance": "Concrete development/build/distribution gap verified against existing code and closed with negative regression tests; not a GitHub setup issue."
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "Two more Phase 0 gates are complete for review: recovery/scope governance (P00-10) and the Linux-hosted 2016 functional profile (P00-11), with enforced CI contracts. P00-15 stays accepted; actual domain recovery and all 60 client scenarios remain unrun."
+  "focus_summary": "Two more Phase 0 gates are complete for review: Linux/Rust parser qualification (P00-04) and project licensing/contributions (P00-06). Four gates now await owner review; native AD implementation and all 60 client scenarios remain unqualified."
 }

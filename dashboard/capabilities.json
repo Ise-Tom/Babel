@@ -70,7 +70,8 @@
         "Pinned dependencies, secret/advisory/license scans and SBOM",
         "Verified source/dashboard artifacts and prerelease preflight",
         "Actual project/runtime-crate/Rust-library notice packaging and extraction verification",
-        "Source-bound Phase 0 change/recovery review and expiry/baseline consistency checks"
+        "Source-bound Phase 0 change/recovery review and expiry/baseline consistency checks",
+        "Source-bound native compiler/ELF qualification, optimized overflow checks and complete notice/distribution guards"
       ],
       "missing": [
         "Production Linux service hardening",
@@ -86,7 +87,9 @@
         "W30",
         "W43",
         "W44",
-        "W48"
+        "W48",
+        "W50",
+        "W51"
       ],
       "blockers": [
         "I27"
@@ -177,6 +180,25 @@
         "I04",
         "I05",
         "I25"
+      ],
+      "acceptance": null
+    },
+    "PLAT-01": {
+      "status": "planned",
+      "category": "runtime_lab",
+      "scope": "The existing parser lab has a completed Linux x86_64 GNU compiler/binary qualification packet (P00-04), pending owner review. Full domain-server installation and operation remain unimplemented.",
+      "implemented": [],
+      "missing": [
+        "Qualified installation/service lifecycle of all native Linux server roles",
+        "Actual domain creation, authentication, GPO and administration without a Windows server",
+        "Production packaging and supported-platform evidence"
+      ],
+      "work_items": [
+        "W50"
+      ],
+      "blockers": [
+        "I04",
+        "I05"
       ],
       "acceptance": null
     }

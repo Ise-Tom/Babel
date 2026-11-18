@@ -38,7 +38,9 @@ jobs:
           cargo fmt --manifest-path fuzz/Cargo.toml --check
           cargo clippy --workspace --all-features --all-targets --locked -- -D warnings
       - name: Unit, negative, property and transport tests
-        run: cargo test --workspace --all-targets --locked
+        run: |
+          cargo test --workspace --all-targets --locked
+          cargo test -p babel-ldap --all-targets --release --locked
       - name: Release build and independent LDAP client
         run: |
           cargo build --workspace --release --locked
@@ -46,6 +48,17 @@ jobs:
           mkdir -p reports
           BABEL_TLS_REPORT=reports/tls-independent-interop.json \
             python native/babel-tls-lab/tests/interop_tls.py target/release/babel-tls-lab
+      - name: Bind actual compiler, Linux host and hardened parser binary
+        run: |
+          mkdir -p reports
+          rustc -vV > reports/parser-rustc.txt
+          readelf --version > reports/parser-binutils.txt
+          LC_ALL=C readelf -h -l -d --wide target/release/babel-ldap > reports/parser-elf.txt
+          cargo metadata --locked --filter-platform x86_64-unknown-linux-gnu --format-version 1 > "$RUNNER_TEMP/babel-parser-metadata.json"
+          python scripts/qualify_parser_baseline.py --metadata "$RUNNER_TEMP/babel-parser-metadata.json" \
+            --compiler reports/parser-rustc.txt --inspector reports/parser-binutils.txt \
+            --elf reports/parser-elf.txt --binary target/release/babel-ldap \
+            --revision "$GITHUB_SHA" --runner-image "${ImageVersion:-local}" > reports/parser-baseline.json
       - name: Install pinned coverage tool
         run: |
           cargo install cargo-llvm-cov --version 0.9.1 --locked --root "$RUNNER_TEMP/babel-native-tools"
@@ -70,12 +83,14 @@ jobs:
           babel_lab_sysroot=$(rustc --print sysroot)
           python3 scripts/collect_native_notices.py --metadata "$RUNNER_TEMP/babel-cargo-metadata.json" \
             --rust-docs "$babel_lab_sysroot/share/doc/rust" --output "$RUNNER_TEMP/babel-protocol-labs/notices"
+          babel_notice_manifest_sha=$(sha256sum "$RUNNER_TEMP/babel-protocol-labs/notices/manifest.json" | cut -d ' ' -f1)
           cp target/release/babel-ldap target/release/babel-tls-lab "$RUNNER_TEMP/babel-protocol-labs/"
           tar -cf reports/babel-protocol-labs-linux-x86_64.tar -C "$RUNNER_TEMP/babel-protocol-labs" .
           (cd reports && sha256sum babel-protocol-labs-linux-x86_64.tar > native-SHA256SUMS && sha256sum -c native-SHA256SUMS)
           mkdir -p "$RUNNER_TEMP/babel-native-extracted"
           tar -xf reports/babel-protocol-labs-linux-x86_64.tar -C "$RUNNER_TEMP/babel-native-extracted"
-          python3 scripts/collect_native_notices.py --verify --output "$RUNNER_TEMP/babel-native-extracted/notices"
+          python3 scripts/collect_native_notices.py --verify --output "$RUNNER_TEMP/babel-native-extracted/notices" \
+            --expected-sha256 "$babel_notice_manifest_sha"
           python native/babel-ldap/tests/smoke_ldap.py "$RUNNER_TEMP/babel-native-extracted/babel-ldap"
           BABEL_TLS_REPORT=reports/tls-packaged-interop.json \
             python native/babel-tls-lab/tests/interop_tls.py "$RUNNER_TEMP/babel-native-extracted/babel-tls-lab"

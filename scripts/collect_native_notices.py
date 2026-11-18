@@ -9,6 +9,14 @@ from typing import Any
 
 MAX_FILE = 4 * 1024 * 1024
 MAX_TOTAL = 32 * 1024 * 1024
+SYSTEM_TERMS = {
+    "glibc-copyright": "doc/libc6/copyright",
+    "libgcc-copyright": "doc/libgcc-s1/copyright",
+    "LGPL-2.1": "common-licenses/LGPL-2.1",
+    "LGPL-3": "common-licenses/LGPL-3",
+    "GPL-2": "common-licenses/GPL-2",
+    "GPL-3": "common-licenses/GPL-3",
+}
 
 
 def require(condition: bool, message: str) -> None:
@@ -45,6 +53,8 @@ def assemble(
     rust_docs: Path,
     output: Path,
     selected: tuple[str, ...] = ("babel-ldap", "babel-tls-lab"),
+    *,
+    system_root: Path,
 ) -> dict[str, Any]:
     packages = metadata.get("packages")
     if not isinstance(packages, list):
@@ -122,10 +132,14 @@ def assemble(
     require(bool(licenses), "Rust library license texts missing")
     for path in licenses:
         retain(path, rust_docs, Path("rust/licenses") / path.name)
+    # Debian/Ubuntu package copyright paths can be symlinks within /usr/share.
+    # Resolve only these fixed trusted-system inputs; retain() rejects an escape.
+    for label, name in SYSTEM_TERMS.items():
+        retain((system_root / name).resolve(), system_root, Path("system") / label)
     result = {
         "schema_version": 1,
         "scope": (
-            "Notices for selected normal/runtime dependency closure and Rust library bundle; "
+            "Notices for selected runtime closure, Rust library and GNU system-runtime terms; "
             "not legal clearance or an assertion that every listed component is linked."
         ),
         "root_packages": list(selected),
@@ -138,13 +152,29 @@ def assemble(
     return result
 
 
-def verify(output: Path) -> None:
-    manifest = json.loads((output / "manifest.json").read_text())
+def verify(output: Path, expected_sha256: str | None = None) -> None:
+    require(output.is_dir() and not output.is_symlink(), "Regular notice directory required")
+    manifest_path = output / "manifest.json"
+    require(
+        manifest_path.is_file()
+        and not manifest_path.is_symlink()
+        and 0 < manifest_path.stat().st_size <= MAX_FILE,
+        "Regular bounded notice manifest required",
+    )
+    raw = manifest_path.read_bytes()
+    if expected_sha256 is not None:
+        require(
+            bool(re.fullmatch(r"[a-f0-9]{64}", expected_sha256))
+            and hashlib.sha256(raw).hexdigest() == expected_sha256,
+            "Expected notice manifest digest mismatch",
+        )
+    manifest = json.loads(raw)
     require(
         manifest.get("schema_version") == 1 and bool(manifest.get("files")),
         "Unknown/empty notice manifest",
     )
     seen = set()
+    total = 0
     for row in manifest["files"]:
         path = Path(row["path"])
         require(
@@ -159,11 +189,56 @@ def verify(output: Path) -> None:
             and source.is_file(),
             "Missing or linked notice file",
         )
-        require(source.stat().st_size == row["bytes"] <= MAX_FILE, "Notice size mismatch")
+        require(0 < source.stat().st_size == row["bytes"] <= MAX_FILE, "Notice size mismatch")
+        total += source.stat().st_size
+        require(total <= MAX_TOTAL, "Notice size budget exceeded")
         require(
             hashlib.sha256(source.read_bytes()).hexdigest() == row["sha256"],
             "Notice digest mismatch",
         )
+
+    required = {"project/LICENSE", "project/NOTICE", "project/DCO", "rust/COPYRIGHT-library.html"}
+    required.update("system/" + name for name in SYSTEM_TERMS)
+    require(
+        required <= seen and any(p.startswith("rust/licenses/") for p in seen),
+        "Required project/Rust/system notices missing from manifest",
+    )
+    tree = set()
+    for path in output.rglob("*"):
+        require(not path.is_symlink(), "Symlink in notice tree")
+        if path.is_file():
+            tree.add(path.relative_to(output).as_posix())
+    require(tree == seen | {"manifest.json"}, "Notice tree and manifest differ")
+    roots = manifest.get("root_packages")
+    require(
+        isinstance(roots, list) and bool(roots) and len(roots) == len(set(roots)),
+        "Selected notice roots required",
+    )
+    inventory = manifest.get("packages")
+    require(isinstance(inventory, list), "Package notice inventory required")
+    packages = set()
+    declared = set()
+    for package in inventory:
+        identity = f"{package['name']}-{package['version']}"
+        require(
+            identity not in packages and bool(package.get("license")),
+            "Duplicate package or missing license",
+        )
+        packages.add(identity)
+        terms = package.get("notices")
+        require(
+            isinstance(terms, list) and bool(terms) and len(terms) == len(set(terms)),
+            "Package notices required",
+        )
+        require(
+            all(p in seen and p.startswith(f"third-party/{identity}/") for p in terms),
+            "Package notice binding mismatch",
+        )
+        declared.update(terms)
+    require(
+        declared == {p for p in seen if p.startswith("third-party/")},
+        "Unaccounted dependency notice files",
+    )
 
 
 if __name__ == "__main__":
@@ -171,13 +246,15 @@ if __name__ == "__main__":
     parser.add_argument("--metadata", type=Path)
     parser.add_argument("--project", type=Path, default=Path.cwd())
     parser.add_argument("--rust-docs", type=Path)
+    parser.add_argument("--system-root", type=Path, default=Path("/usr/share"))
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--packages", nargs="+", default=["babel-ldap", "babel-tls-lab"])
     parser.add_argument("--verify", action="store_true")
+    parser.add_argument("--expected-sha256")
     args = parser.parse_args()
     try:
         if args.verify:
-            verify(args.output)
+            verify(args.output, args.expected_sha256)
         else:
             if args.metadata is None or args.rust_docs is None:
                 parser.error("--metadata and --rust-docs are required for assembly")
@@ -187,8 +264,9 @@ if __name__ == "__main__":
                 args.rust_docs,
                 args.output,
                 tuple(args.packages),
+                system_root=args.system_root,
             )
-            verify(args.output)
+            verify(args.output, args.expected_sha256)
     except (ValueError, OSError, KeyError, TypeError, AttributeError) as error:
         raise SystemExit(f"Native notices rejected: {error}") from error
     print(
