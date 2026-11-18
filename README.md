@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T20:05:55\+01:00.
+GitHub metadata checked: 2026-11-18T20:11:16\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#29 · Complete Phase 0 parser qualification and contribution/distribution gates](<https://github.com/Ise-Tom/Babel/pull/29>)
 
-**In review · Pending merge · CI: in\_progress** · Head 0e8038a
+**In review · Pending merge · CI: success** · Head 0e8038a
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
