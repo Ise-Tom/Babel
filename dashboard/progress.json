@@ -118,7 +118,7 @@
         "draft": false
       }
     ],
-    "note": "Verified main snapshot: PR #26 is merged and all 14 main CI jobs passed for f42815d; Pages deployment succeeded. Phase 0 has 9 in-progress, 1 blocked, 5 planned and 2 accepted requirement scopes. The current PR makes this activity and recent work visible separately from acceptance and labels the actual dashboard build. Four accepted scopes are preserved; shared preparation does not start later phases. No AD/client or capacity acceptance is inferred."
+    "note": "Verified main baseline: PR #26 is merged and f42815d passed all 14 CI jobs with a successful Pages deployment. This PR now completes P00-15 technical qualification and submits its full criterion packet for owner validation, alongside the earlier display fix. Four accepted proofs are preserved; no AD/client or capacity acceptance is inferred."
   },
   "requirements": {
     "P00-01": {
@@ -182,7 +182,7 @@
     },
     "P01-03": {
       "status": "in_progress",
-      "note": "PostgreSQL backend and local transaction/journal contract are merged. The SQL transaction/process-crash experiment and a Phase 0 Rust driver candidate have synthetic evidence. The production adapter, full identity/ACL model, key custody, host/disk/backup/upgrade and AD replication remain open."
+      "note": "The P00-15 driver/transaction profile is now technically complete and ready for validation, including typed writes, bounds, abandoned futures, durable reply loss and actual before/after-commit Rust-driver recovery. Native AD identity/schema/ACL integration and the production directory store remain Phase 1 implementation work; this does not accept that store."
     },
     "P01-04": {
       "status": "in_progress",
@@ -214,8 +214,16 @@
       "note": "ADR 0006 and a bounded Rustls 0.23.46/ring 0.17.14 mutual-TLS lab now have certificate/identity/protocol/property/OpenSSL/fuzz and separate coverage evidence. This qualifies a candidate experiment only; production selection, LDAP/SASL channel binding, client compatibility, revocation/rotation/key custody, provider faults and load remain open."
     },
     "P00-15": {
-      "status": "in_progress",
-      "note": "ADR 0007 now has tokio-postgres 0.7.18/Tokio 1.54.1 candidate evidence: real SCRAM/binding/transaction/error/deadline/cancel cases and a separate driver coverage gate. Production selection, typed authorized operations, row/byte/pool limits, ambiguous-commit/idempotency and caller-dropped-future safety, key custody and host/disk/backup/upgrade remain open."
+      "status": "ready_for_validation",
+      "note": "All original Phase 0 driver/transaction exit criteria are implemented and evidenced. Selected tokio-postgres 0.7.18/Tokio 1.54.1 local Unix/SCRAM/no-pool profile now has typed bounded operations, dropped-future safety, durable receipt replay with reauthorization, actual COMMIT response loss and Rust-driver process recovery before/after commit. The full criterion packet is ready for owner validation. Native AD schema/ACL/service/key and domain recovery/capacity remain their separate Phase 1/3/4 gates.",
+      "validation": {
+        "scope": "Full P00-15 Phase 0 driver/transaction qualification gate and selected pg18-local-unix-scram-no-pool-v1 profile; owner acceptance pending.",
+        "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142",
+        "packet": {
+          "path": "docs/validation/p00-15.md",
+          "label": "P00-15 full exit criteria and evidence"
+        }
+      }
     }
   },
   "phase_acceptance": {},
@@ -1954,6 +1962,62 @@
       "problems": [
         "I34"
       ]
+    },
+    {
+      "id": "W46",
+      "title": "Complete the P00-15 storage driver and transaction qualification gate",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-15"
+      ],
+      "how": "Closed the candidate increment's technical gaps in the existing component. Added a typed default create/rename path over atomic state/journal/audit/actor-request-payload receipts; generic SQL/transaction entry is qualification-only. Streaming results and statement/parameter inputs have explicit budgets. Armed RAII guards poison and close sessions on caller-dropped futures for query/BEGIN/mutation/rollback/COMMIT. A bounded private relay withholds the actual PostgreSQL commit reply; an independent connection verifies committed effects before recovery. The controller now SIGKILLs/restarts its owned database at two mandatory Rust checkpoints and rejects missing checkpoint accounting. Added a complete criterion-by-criterion P00-15 exit packet and a validation-ready state requiring pinned evidence, separate from owner acceptance.",
+      "verification": "All 29 qualification cases pass with none ignored; driver library line coverage is 97.81% (312/319). Tests prove actual committed state exists after restart before any retry, staged state is absent after a pre-commit kill, lost durable replies and dropped commit futures recover exactly one effect, concurrent duplicate requests commit once, changed payload/revoked actors are denied, and over-budget or abandoned operations cannot reuse their connection. Both real process-crash checkpoints completed. All 160 repository tests pass at 99% tooling coverage; 34 desktop/mobile browser checks and six build/security tests pass. Strict types, all-feature Clippy, Bandit, workflow checks and root/fuzz locked graph audits pass.",
+      "limitations": "This completes the entire stated Phase 0 P00-15 library/transaction review, submitted for owner validation. It does not accept later native AD storage or a production release. Native GUID/SID/schema/ACL integration, service provisioning, credential/key custody and domain/host/disk/backup/upgrade/capacity qualification retain their actual Phase 1/3/4 gates. The fixed fixture identities and actor switch are not AD semantics/authentication. All 60 client conformance scenarios remain unrun; existing accepted proofs are unchanged.",
+      "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142",
+      "sources": [
+        {
+          "path": "docs/validation/p00-15.md",
+          "label": "p00-15.md"
+        },
+        {
+          "path": "docs/adr/0007-postgresql-driver-qualification.md",
+          "label": "0007-postgresql-driver-qualification.md"
+        },
+        {
+          "path": "native/babel-store-driver-lab/src/lib.rs",
+          "label": "lib.rs"
+        },
+        {
+          "path": "native/babel-store-driver-lab/src/mutation.rs",
+          "label": "mutation.rs"
+        },
+        {
+          "path": "native/babel-store-driver-lab/tests/database.rs",
+          "label": "database.rs"
+        },
+        {
+          "path": "native/babel-store-driver-lab/tests/support/mod.rs",
+          "label": "mod.rs"
+        },
+        {
+          "path": "native/babel-store-driver-lab/tests/fixture.sql",
+          "label": "fixture.sql"
+        },
+        {
+          "path": "scripts/qualify_store_driver.py",
+          "label": "qualify_store_driver.py"
+        },
+        {
+          "path": "tests/test_store_driver_harness.py",
+          "label": "test_store_driver_harness.py"
+        }
+      ],
+      "problems": [
+        "I05",
+        "I26",
+        "I35"
+      ]
     }
   ],
   "problems": [
@@ -2072,7 +2136,7 @@
     },
     {
       "id": "I05",
-      "title": "SQL recovery and Rust driver candidates pass; native directory storage remains unqualified",
+      "title": "Qualified driver profile available; native AD directory storage still needs implementation",
       "status": "open",
       "kind": "design",
       "phases": [
@@ -2087,29 +2151,25 @@
         "P01-02",
         "P01-03"
       ],
-      "detail": "The PostgreSQL 18.7 SQL experiment retains transaction/process-crash evidence. A separate Rust candidate now exercises SCRAM, binding, commit/rollback and real error/deadline/cancel cases, including prevention of false acknowledgments after failed SQL statements. LDAP still has no native directory storage or credential persistence.",
+      "detail": "P00-15 now has complete driver/transaction qualification, including typed bounds, dropped futures, real durable-reply loss and Rust-client process recovery. The native AD identity/schema/ACL/store and domain formats remain separate implementation obligations; the fixture is not a directory server.",
       "resolution": "",
-      "next_action": "Review ADR 0007 and qualify typed authorized native operations, bounded reads/pools, ambiguous-commit recovery/idempotency and dropped-future safety before production driver acceptance. Complete identity/schema/ACL, host/disk/backup/upgrade, key custody and AD conflict/RID/FSMO/restore/GPO contracts before valuable credentials or multi-controller writes.",
+      "next_action": "Validate the completed P00-15 packet, then integrate the selected profile into P01-02/P01-03/P01-11/P01-12 with native identity/schema/ACL and durable journal semantics. Service/key custody, domain replication/backup/upgrade and production capacity retain their separate gates.",
       "sources": [
         {
-          "path": "docs/adr/0003-postgresql-directory-state.md",
-          "label": "0003-postgresql-directory-state.md"
+          "path": "docs/validation/p00-15.md",
+          "label": "p00-15.md"
         },
         {
-          "path": "docs/adr/0004-synthetic-postgresql-state-experiment.md",
-          "label": "0004-synthetic-postgresql-state-experiment.md"
+          "path": "native/babel-store-driver-lab/src/lib.rs",
+          "label": "lib.rs"
         },
         {
-          "path": "docs/adr/0007-postgresql-driver-qualification.md",
-          "label": "0007-postgresql-driver-qualification.md"
-        },
-        {
-          "path": "native/babel-store-driver-lab/tests/database.rs",
-          "label": "database.rs"
+          "path": "docs/phases/phase-01.md",
+          "label": "phase-01.md"
         }
       ],
       "provenance": "Design blocker, not an implemented storage defect.",
-      "source_revision": "32c80310d3a19a9b4ed522a2e9f8974c8ef5ed7f"
+      "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142"
     },
     {
       "id": "I06",
@@ -2522,18 +2582,14 @@
         "P00-14",
         "P00-15"
       ],
-      "detail": "Bounded LDAP, synthetic PostgreSQL transactions, Rustls/ring TLS and tokio-postgres/Tokio storage candidates now have limited executable evidence. Production library/interface selection and key/client/fault handling remain unqualified; Kerberos/PAC and DNS/SMB/RPC choices are still open.",
+      "detail": "P00-15 driver/transaction review is complete and ready for owner validation. TLS/channel/key integration, Kerberos/PAC and DNS/SMB/RPC decisions remain open at their own gates; native store implementation is tracked by I05. Later product obligations no longer keep the completed Phase 0 driver review in progress.",
       "resolution": "",
-      "next_action": "Review the TLS and storage candidate ADRs, then qualify production auth/channel/key boundaries and typed bounded native storage with ambiguous-commit and cancellation/recovery evidence. Separately select/test Kerberos/PAC and other transports with exact features/rights/advisories and platform/reference evidence.",
-      "source_revision": "32c80310d3a19a9b4ed522a2e9f8974c8ef5ed7f",
+      "next_action": "Review P00-15's full exit packet and validate the selected stack/profile. Continue P00-13/P00-14 and transport qualification; implement the native store under Phase 1 rather than treating unimplemented product features as unfinished driver-selection work.",
+      "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142",
       "sources": [
         {
-          "path": "docs/adr/0006-tls-qualification-lab.md",
-          "label": "0006-tls-qualification-lab.md"
-        },
-        {
-          "path": "docs/adr/0007-postgresql-driver-qualification.md",
-          "label": "0007-postgresql-driver-qualification.md"
+          "path": "docs/validation/p00-15.md",
+          "label": "p00-15.md"
         },
         {
           "path": "docs/phase-00-security-and-dependencies.md",
@@ -2823,8 +2879,43 @@
         }
       ],
       "provenance": "Observed in the actual published f42815d dashboard data and reproduced against main. This is a development usability defect; CI and Pages publication had succeeded."
+    },
+    {
+      "id": "I35",
+      "title": "Abandoned futures, durable reply loss and native-client recovery left P00-15 unfinished",
+      "status": "resolved",
+      "kind": "development-correctness",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-15"
+      ],
+      "detail": "The first candidate only handled its own timers and lost connections before commit. Dropping the caller's commit future could leave an uncertain session reusable; no real post-commit response was withheld, typed bounded operations were absent, and process recovery had only been tested through psql. Later product gates also obscured the original Phase 0 exit criteria.",
+      "resolution": "Implemented armed operation guards and a typed default interface with bounded results. Real COMMIT-response withholding plus independent state observation proves durable receipt recovery without duplicate effects. Added mandatory owned SIGKILL/restart checkpoints before commit and after acknowledged commit, with state checked before retry. A full criterion packet now completes P00-15 and requests owner validation; later AD integration/keys/domain recovery remain their actual separate requirements.",
+      "next_action": "Validate the full P00-15 packet, then preserve these tested invariants while implementing the native directory store. Any new transport/pool/stack/profile needs requalification. Do not turn validation readiness into automatic acceptance or product conformance.",
+      "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142",
+      "sources": [
+        {
+          "path": "docs/validation/p00-15.md",
+          "label": "p00-15.md"
+        },
+        {
+          "path": "native/babel-store-driver-lab/src/lib.rs",
+          "label": "lib.rs"
+        },
+        {
+          "path": "native/babel-store-driver-lab/tests/database.rs",
+          "label": "database.rs"
+        },
+        {
+          "path": "scripts/qualify_store_driver.py",
+          "label": "qualify_store_driver.py"
+        }
+      ],
+      "provenance": "Concrete missing driver semantics were closed with actual database, reply-loss and process-crash tests. This is development correctness and completion of a requirement, not a GitHub setup incident."
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "Phase 0: TLS and PostgreSQL driver candidates have real qualification tests. Track implementation and gaps across 130 capabilities. Native storage, client labs, capacity and response work remain open. Four accepted scopes are unchanged; all 60 conformance cases remain unrun."
+  "focus_summary": "P00-15 technical exit is complete: typed/bounded mutations, dropped-future safety, durable-reply loss and real database recovery pass. It is ready for owner validation; native directory integration remains Phase 1 work. All 60 AD/client conformance cases remain unrun."
 }
