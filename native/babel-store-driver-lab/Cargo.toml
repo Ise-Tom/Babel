@@ -1,0 +1,22 @@
+[package]
+name = "babel-store-driver-lab"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.100"
+publish = false
+license.workspace = true
+
+[features]
+qualification = []
+
+[dependencies]
+tokio-postgres = { version = "=0.7.18", default-features = false, features = ["runtime"] }
+tokio = { version = "=1.54.1", default-features = false, features = ["rt", "time"] }
+
+[dev-dependencies]
+tokio = { version = "=1.54.1", default-features = false, features = ["macros", "net"] }
+tempfile = "=3.27.0"
+
+[[test]]
+name = "database"
+required-features = ["qualification"]

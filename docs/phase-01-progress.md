@@ -76,3 +76,8 @@ transaction/process-crash experiment. It validates bounded synthetic SQL state,
 journal ordering, rollback, retry and recovery. It is separate from the LDAP lab:
 there is still no persistent directory API, credential store or Rust storage adapter.
 I05 remains open for the remaining native model, recovery, keys and AD semantics.
+
+Phase 0 now also qualifies a [Rust PostgreSQL driver candidate](adr/0007-postgresql-driver-qualification.md).
+This adds real driver-level binding/transaction/auth/deadline evidence, not a native
+storage adapter or additional Phase 1 acceptance. LDAP remains disconnected from
+database/credential storage; identity/ACL and recovery qualification remain open.

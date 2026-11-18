@@ -36,7 +36,7 @@ jobs:
         run: |
           cargo fmt --all --check
           cargo fmt --manifest-path fuzz/Cargo.toml --check
-          cargo clippy --workspace --all-targets --locked -- -D warnings
+          cargo clippy --workspace --all-features --all-targets --locked -- -D warnings
       - name: Unit, negative, property and transport tests
         run: cargo test --workspace --all-targets --locked
       - name: Release build and independent LDAP client
@@ -61,7 +61,7 @@ jobs:
             python native/babel-tls-lab/tests/interop_tls.py target/llvm-cov-target/debug/babel-tls-lab
           cargo llvm-cov report --package babel-tls-lab --ignore-filename-regex '/tests/|/budget_tests.rs$|/main.rs$' \
             --fail-under-lines 90 --lcov --output-path reports/tls-lab-coverage.lcov
-          cargo llvm-cov report --ignore-filename-regex '/tests/|/budget_tests.rs$|/main.rs$' --fail-under-lines 90 \
+          cargo llvm-cov report --ignore-filename-regex '/tests/|/budget_tests.rs$|/main.rs$|/babel-store-driver-lab/' --fail-under-lines 90 \
             --lcov --output-path reports/native-coverage.lcov
       - name: Internal lab archive with actual dependency notices (not a release)
         run: |
@@ -85,6 +85,44 @@ jobs:
         with:
           name: native-lab-evidence
           path: reports/
+          retention-days: 14
+
+  store-driver:
+    name: Rust PostgreSQL driver qualification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Install hash-locked tooling and pinned coverage compiler
+        run: |
+          python -m pip install --require-hashes -r requirements-ci.txt -r requirements-ci.in
+          rustup toolchain install 1.100.0 --profile minimal --component llvm-tools-preview,rust-docs
+          cargo install cargo-llvm-cov --version 0.9.1 --locked --root "$RUNNER_TEMP/babel-native-tools"
+          echo "$RUNNER_TEMP/babel-native-tools/bin" >> "$GITHUB_PATH"
+      - name: Real SCRAM, binding, transaction, deadline and cancellation cases
+        run: |
+          mkdir -p reports
+          python -m scripts.qualify_store_driver --coverage
+          cargo metadata --locked --filter-platform x86_64-unknown-linux-gnu --format-version 1 > "$RUNNER_TEMP/babel-driver-metadata.json"
+          babel_driver_sysroot=$(rustc --print sysroot)
+          python scripts/collect_native_notices.py --metadata "$RUNNER_TEMP/babel-driver-metadata.json" \
+            --rust-docs "$babel_driver_sysroot/share/doc/rust" --packages babel-store-driver-lab \
+            --output reports/store-driver-notices
+          python scripts/collect_native_notices.py --verify --output reports/store-driver-notices
+      - name: Preserve driver qualification evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: store-driver-qualification
+          path: |
+            reports/store-driver-qualification.json
+            reports/store-driver-coverage.lcov
+            reports/store-driver-notices/
           retention-days: 14
 
   supply-chain:
@@ -176,7 +214,7 @@ jobs:
   gate:
     name: Native gate
     if: ${{ always() }}
-    needs: [core, supply-chain, fuzz]
+    needs: [core, store-driver, supply-chain, fuzz]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

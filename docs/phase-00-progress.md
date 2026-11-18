@@ -133,3 +133,21 @@ contracts with explicit implementation state, stage, implemented/missing behavio
 source-backed work and blockers. Shared design/tooling never automatically claims
 functional implementation or starts a later phase. No new owner acceptance is
 recorded; the four previously accepted requirement scopes remain unchanged.
+
+## Rust PostgreSQL driver candidate
+
+P00-15 now has a [real async Rust driver qualification experiment](adr/0007-postgresql-driver-qualification.md)
+against the owned PostgreSQL 18 lab. It tests binding, SCRAM rejection, limited
+database privileges, commit/rollback, failed/deferred transactions, serialization,
+lock/statement/client deadlines, explicit cancellation and connection loss.
+A comparison demonstrates that raw driver command success after a caught SQL
+failure does not establish a committed mutation; the helper tracks that failure
+and refuses a successful acknowledgment. It conservatively reports unknown
+commit outcomes and discards expired/lost connections without automatic retry.
+
+The required CI adds a separate real-database driver job and 90% library coverage
+gate, scenario-completeness checks and retained source/version/isolation/cleanup
+evidence. Reviewed Unicode data terms and actual dependency notices are included.
+This is a candidate experiment, not native directory storage, production driver
+selection, schema/ACL or capacity acceptance. P00-15 and I05/I26 remain open;
+all 60 client conformance scenarios and four accepted scopes are unchanged.

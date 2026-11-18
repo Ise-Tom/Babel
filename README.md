@@ -22,6 +22,7 @@ required production runtime. Advanced security capabilities extend this core pro
 - [Phase 0 compatibility, evidence and design progress](docs/phase-00-progress.md)
 - [Phase 1 implementation progress and native commands](docs/phase-01-progress.md)
 - [TLS qualification experiment](docs/adr/0006-tls-qualification-lab.md) and [capability tracker guide](docs/capability-tracker.md)
+- [Rust PostgreSQL driver qualification](docs/adr/0007-postgresql-driver-qualification.md)
 - [Product, security, and capacity requirements](docs/requirements.md)
 - [Complete phase designs and acceptance specifications](docs/phases/README.md)
 - [Verification plan](docs/validation-plan.md) and [open design decisions](docs/decisions.md)

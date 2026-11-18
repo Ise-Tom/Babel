@@ -172,6 +172,7 @@ if __name__ == "__main__":
     parser.add_argument("--project", type=Path, default=Path.cwd())
     parser.add_argument("--rust-docs", type=Path)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--packages", nargs="+", default=["babel-ldap", "babel-tls-lab"])
     parser.add_argument("--verify", action="store_true")
     args = parser.parse_args()
     try:
@@ -181,7 +182,11 @@ if __name__ == "__main__":
             if args.metadata is None or args.rust_docs is None:
                 parser.error("--metadata and --rust-docs are required for assembly")
             assemble(
-                json.loads(args.metadata.read_text()), args.project, args.rust_docs, args.output
+                json.loads(args.metadata.read_text()),
+                args.project,
+                args.rust_docs,
+                args.output,
+                tuple(args.packages),
             )
             verify(args.output)
     except (ValueError, OSError, KeyError, TypeError, AttributeError) as error:
