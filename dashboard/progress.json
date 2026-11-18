@@ -2,8 +2,8 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-18",
-    "commit": "2e2b4baccb3a1c6769e698a9e926ff46f6ea9407",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44275572074",
+    "commit": "685758b59c354c6a95e3b6fdd838bdd43f52b06b",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44304413862",
     "ci_result": "passed",
     "checks_passed": 13,
     "pull_requests": [
@@ -106,9 +106,14 @@
         "number": 24,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 25,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Verified main snapshot: PR #24 is merged and all 13 main CI jobs passed for 2e2b4ba. Only Phases 0 and 1 are active; 274 requirements have variable phase sizes. Four owner-accepted scopes remain unchanged. The current PR adds explicit capability tracking, standalone TLS candidate qualification and actual native notice packaging; no AD compatibility, production TLS or capacity acceptance is inferred."
+    "note": "Verified main snapshot: PR #25 is merged and all 13 main CI jobs passed for 685758b. The capability tracker is part of main. Only Phases 0 and 1 are active; 274 requirements and four owner-accepted scopes are unchanged. The current PR qualifies a Rust PostgreSQL driver candidate with real synthetic cases; native directory storage, AD conformance and capacity are not accepted."
   },
   "requirements": {
     "P00-01": {
@@ -133,7 +138,7 @@
     },
     "P00-06": {
       "status": "in_progress",
-      "note": "Owner-selected Apache-2.0/DCO retained. Internal native archives now bundle actual project, selected runtime dependency and Rust-library notice texts with byte verification and extracted probes. Explicit requirement acceptance is not recorded; protocol/fixture rights and product distribution remain separately unqualified under P00-16."
+      "note": "Owner-selected Apache-2.0/DCO retained. Native archives and the driver candidate inventory retain actual selected dependency/Rust-library terms, including reviewed Unicode-3.0 obligations and byte verification. Requirement acceptance is not recorded; protocol/fixture rights and product distribution remain separately unqualified under P00-16."
     },
     "P00-07": {
       "status": "in_progress",
@@ -172,7 +177,7 @@
     },
     "P01-03": {
       "status": "in_progress",
-      "note": "The owner-selected PostgreSQL backend and local transaction/journal contract are merged. Twenty-two synthetic real-database transaction/process-crash tests pass; the production Rust adapter, identity/ACL model, key custody, host/disk/backup and AD replication qualification remain open."
+      "note": "PostgreSQL backend and local transaction/journal contract are merged. The SQL transaction/process-crash experiment and a Phase 0 Rust driver candidate have synthetic evidence. The production adapter, full identity/ACL model, key custody, host/disk/backup/upgrade and AD replication remain open."
     },
     "P01-04": {
       "status": "in_progress",
@@ -202,6 +207,10 @@
     "P00-13": {
       "status": "in_progress",
       "note": "ADR 0006 and a bounded Rustls 0.23.46/ring 0.17.14 mutual-TLS lab now have certificate/identity/protocol/property/OpenSSL/fuzz and separate coverage evidence. This qualifies a candidate experiment only; production selection, LDAP/SASL channel binding, client compatibility, revocation/rotation/key custody, provider faults and load remain open."
+    },
+    "P00-15": {
+      "status": "in_progress",
+      "note": "ADR 0007 now has tokio-postgres 0.7.18/Tokio 1.54.1 candidate evidence: real SCRAM/binding/transaction/error/deadline/cancel cases and a separate driver coverage gate. Production selection, typed authorized operations, row/byte/pool limits, ambiguous-commit/idempotency and caller-dropped-future safety, key custody and host/disk/backup/upgrade remain open."
     }
   },
   "phase_acceptance": {},
@@ -1836,6 +1845,67 @@
       "problems": [
         "I32"
       ]
+    },
+    {
+      "id": "W44",
+      "title": "Qualify an async PostgreSQL driver and prevent false transaction acknowledgments",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-15",
+        "P00-06"
+      ],
+      "how": "Added an isolated tokio-postgres 0.7.18/Tokio 1.54.1 candidate helper and explicit real-database qualification target. The existing owned container can share exactly one socket-only child below a private 0700 directory while TCP stays disabled. The harness observes isolation, requires SCRAM activation and every declared case, redacts synthetic credentials and verifies cleanup. Helpers bind parameters, classify failures, verify durability settings, enforce deadlines/discard, track failed transactions and conservatively report unknown commits without retry. Required CI adds an independent driver library coverage gate and actual selected dependency notices; reviewed Unicode-3.0 terms stay enforced.",
+      "verification": "16 real Rust/PostgreSQL 18.7 cases pass with none ignored, including the raw-driver aborted-COMMIT comparison, coupled commit/explicit/drop rollback, deferred errors, SCRAM/privilege denial, typed text/null/binary parameters, serialization/lock contention, server/client/transaction deadlines, explicit cancellation and connection loss. Local driver line coverage is 92.12% (152/165). All 156 repository tests pass at 99% tooling coverage; 25 SQL/controller tests pass at 94% controller coverage. All-feature Clippy, strict types/lint, Bandit, workflow checks and both locked graph audits pass. The actual driver notice bundle verifies 62 selected normal-closure packages and 144 files (2,254,392 bytes).",
+      "limitations": "Qualification helper only, separate from LDAP and a native storage adapter. No directory identities/schema/ACLs, production auth-policy/pooling/key custody, row/byte bounds, measured capacity or real-client conformance. Upstream still supports trust/cleartext/MD5 authentication; only owned-lab SCRAM is qualified. Exact after-durable-commit wire response loss, durable retry identities, caller-dropped-future safety and host/disk/backup/upgrade need further work. Four accepted scopes remain unchanged and all 60 conformance scenarios remain unrun. Hosted checks must pass on the PR head before merge.",
+      "source_revision": "32c80310d3a19a9b4ed522a2e9f8974c8ef5ed7f",
+      "sources": [
+        {
+          "path": "native/babel-store-driver-lab/Cargo.toml",
+          "label": "Cargo.toml"
+        },
+        {
+          "path": "native/babel-store-driver-lab/src/lib.rs",
+          "label": "lib.rs"
+        },
+        {
+          "path": "native/babel-store-driver-lab/tests/database.rs",
+          "label": "database.rs"
+        },
+        {
+          "path": "native/babel-store-driver-lab/tests/fixture.sql",
+          "label": "fixture.sql"
+        },
+        {
+          "path": "scripts/qualify_store_driver.py",
+          "label": "qualify_store_driver.py"
+        },
+        {
+          "path": "tests/test_store_driver_harness.py",
+          "label": "test_store_driver_harness.py"
+        },
+        {
+          "path": "experiments/postgres_store/experiment.py",
+          "label": "experiment.py"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        },
+        {
+          "path": "docs/adr/0007-postgresql-driver-qualification.md",
+          "label": "0007-postgresql-driver-qualification.md"
+        },
+        {
+          "path": "deny.toml",
+          "label": "deny.toml"
+        }
+      ],
+      "problems": [
+        "I05",
+        "I26",
+        "I33"
+      ]
     }
   ],
   "problems": [
@@ -1954,7 +2024,7 @@
     },
     {
       "id": "I05",
-      "title": "Synthetic PostgreSQL recovery passes; native adapter and AD state qualification remain",
+      "title": "SQL recovery and Rust driver candidates pass; native directory storage remains unqualified",
       "status": "open",
       "kind": "design",
       "phases": [
@@ -1969,37 +2039,29 @@
         "P01-02",
         "P01-03"
       ],
-      "detail": "An isolated PostgreSQL 18.7/official psql experiment now passes synthetic create/rename, identity/collision, transaction/audit/receipt atomicity, idempotency, denial, concurrent ordering and process/container crash recovery tests. It is separate from the LDAP lab and contains no credential-bearing directory or Rust production adapter.",
+      "detail": "The PostgreSQL 18.7 SQL experiment retains transaction/process-crash evidence. A separate Rust candidate now exercises SCRAM, binding, commit/rollback and real error/deadline/cancel cases, including prevention of false acknowledgments after failed SQL statements. LDAP still has no native directory storage or credential persistence.",
       "resolution": "",
-      "next_action": "Implement and qualify the Rust adapter/full native identity-schema-ACL model, host/disk/backup/upgrade and key custody. Resolve AD conflict/RID/FSMO/restore epochs and GPO/SYSVOL requirements before valuable credentials or writable multi-controller state.",
+      "next_action": "Review ADR 0007 and qualify typed authorized native operations, bounded reads/pools, ambiguous-commit recovery/idempotency and dropped-future safety before production driver acceptance. Complete identity/schema/ACL, host/disk/backup/upgrade, key custody and AD conflict/RID/FSMO/restore/GPO contracts before valuable credentials or multi-controller writes.",
       "sources": [
         {
-          "path": "experiments/postgres_store/Dockerfile",
-          "label": "Dockerfile"
-        },
-        {
-          "path": "experiments/postgres_store/experiment.py",
-          "label": "experiment.py"
-        },
-        {
-          "path": "experiments/postgres_store/schema.sql",
-          "label": "schema.sql"
-        },
-        {
-          "path": "experiments/postgres_store/test_store.py",
-          "label": "test_store.py"
-        },
-        {
-          "path": ".github/workflows/ci.yml",
-          "label": "ci.yml"
+          "path": "docs/adr/0003-postgresql-directory-state.md",
+          "label": "0003-postgresql-directory-state.md"
         },
         {
           "path": "docs/adr/0004-synthetic-postgresql-state-experiment.md",
           "label": "0004-synthetic-postgresql-state-experiment.md"
+        },
+        {
+          "path": "docs/adr/0007-postgresql-driver-qualification.md",
+          "label": "0007-postgresql-driver-qualification.md"
+        },
+        {
+          "path": "native/babel-store-driver-lab/tests/database.rs",
+          "label": "database.rs"
         }
       ],
       "provenance": "Design blocker, not an implemented storage defect.",
-      "source_revision": "7cb02d8bec6b9eae84f8550c90a2670b1fb17710"
+      "source_revision": "32c80310d3a19a9b4ed522a2e9f8974c8ef5ed7f"
     },
     {
       "id": "I06",
@@ -2412,14 +2474,18 @@
         "P00-14",
         "P00-15"
       ],
-      "detail": "Rust and bounded LDAP safeguards, PostgreSQL synthetic transactions and now a standalone Rustls/ring TLS candidate have executable lab evidence. Production TLS/key custody/client integration, Kerberos/PAC, native store driver and DNS/SMB/RPC remain unqualified.",
+      "detail": "Bounded LDAP, synthetic PostgreSQL transactions, Rustls/ring TLS and tokio-postgres/Tokio storage candidates now have limited executable evidence. Production library/interface selection and key/client/fault handling remain unqualified; Kerberos/PAC and DNS/SMB/RPC choices are still open.",
       "resolution": "",
-      "next_action": "Review the TLS candidate ADR and qualify LDAP/SASL/client/revocation/rotation/provider-fault boundaries before production use. Separately select and test Kerberos/PAC, storage driver and other transports with exact versions/features/rights/advisories and runtime failure/reference evidence.",
-      "source_revision": "37df14a3507b8468f7e7246b17f7490265e3b0fd",
+      "next_action": "Review the TLS and storage candidate ADRs, then qualify production auth/channel/key boundaries and typed bounded native storage with ambiguous-commit and cancellation/recovery evidence. Separately select/test Kerberos/PAC and other transports with exact features/rights/advisories and platform/reference evidence.",
+      "source_revision": "32c80310d3a19a9b4ed522a2e9f8974c8ef5ed7f",
       "sources": [
         {
           "path": "docs/adr/0006-tls-qualification-lab.md",
           "label": "0006-tls-qualification-lab.md"
+        },
+        {
+          "path": "docs/adr/0007-postgresql-driver-qualification.md",
+          "label": "0007-postgresql-driver-qualification.md"
         },
         {
           "path": "docs/phase-00-security-and-dependencies.md",
@@ -2642,8 +2708,39 @@
         }
       ],
       "provenance": "Development implementation/tooling gap observed in the repository and verified with executable tests; not a GitHub setup incident."
+    },
+    {
+      "id": "I33",
+      "title": "Caught SQL errors can make raw COMMIT completion look like a committed mutation",
+      "status": "resolved",
+      "kind": "development-correctness",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-15"
+      ],
+      "detail": "A real tokio-postgres 0.7.18/PostgreSQL 18.7 comparison shows that after a caught statement error, Transaction.commit() can return Ok while PostgreSQL rolls back the transaction and no inserted record exists. Raw SQL command completion alone is therefore not a durable mutation acknowledgment.",
+      "resolution": "The qualification helper tracks statement failures, rolls back and returns Aborted instead of successful commit. Deferred commit failures and lost connections never return success; unconfirmed commit outcomes conservatively discard the session and return UnknownCommit without automatic retry. Actual tests verify committed/absent database state.",
+      "next_action": "Carry this invariant into a typed authorized native adapter and constrain unmanaged transaction SQL. Qualify durable idempotency, caller-dropped-future safety and exact after-commit response loss; this helper does not close the wider I05/I26 production gaps.",
+      "source_revision": "32c80310d3a19a9b4ed522a2e9f8974c8ef5ed7f",
+      "sources": [
+        {
+          "path": "native/babel-store-driver-lab/src/lib.rs",
+          "label": "lib.rs"
+        },
+        {
+          "path": "native/babel-store-driver-lab/tests/database.rs",
+          "label": "database.rs"
+        },
+        {
+          "path": "docs/adr/0007-postgresql-driver-qualification.md",
+          "label": "0007-postgresql-driver-qualification.md"
+        }
+      ],
+      "provenance": "Observed with the real pinned database and Rust driver, then protected by executable helper regressions. This is a development correctness finding, not a GitHub setup incident or an upstream vulnerability claim."
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "Phase 0: Rustls/ring candidate tested; native archives retain actual license notices. The tracker shows implementation and gaps for all 130 capabilities. Production integration, real-client labs, capacity and response qualification remain open. Four accepted scopes are unchanged; all 60 conformance cases remain unrun."
+  "focus_summary": "Phase 0: TLS and PostgreSQL driver candidates have real qualification tests. Track implementation and gaps across 130 capabilities. Native storage, client labs, capacity and response work remain open. Four accepted scopes are unchanged; all 60 conformance cases remain unrun."
 }

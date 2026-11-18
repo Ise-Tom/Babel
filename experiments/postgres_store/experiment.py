@@ -4,6 +4,7 @@ import os
 import re
 import secrets
 import subprocess  # nosec B404
+import tempfile
 import time
 import uuid
 from dataclasses import dataclass
@@ -67,9 +68,26 @@ class Session:
 
 
 class PostgresLab:
-    def __init__(self) -> None:
+    def __init__(self, *, share_socket: bool = False) -> None:
         self.container = ""
         self.sessions: list[Session] = []
+        self.share_socket = share_socket
+        self.socket_temp: tempfile.TemporaryDirectory[str] | None = None
+        self.socket_directory: Path | None = None
+
+    def socket_options(self) -> list[str]:
+        if not self.share_socket:
+            return []
+        self.socket_temp = tempfile.TemporaryDirectory(prefix="babel-driver-")
+        self.socket_directory = Path(self.socket_temp.name) / "socket"
+        self.socket_directory.mkdir()
+        # The parent stays 0700. Container postgres can create sockets in this child;
+        # no database files or arbitrary host directories are mounted.
+        self.socket_directory.chmod(0o777)
+        return [
+            "--mount",
+            f"type=bind,source={self.socket_directory},target=/babel-driver-socket",
+        ]
 
     @staticmethod
     def docker(
@@ -103,51 +121,62 @@ class PostgresLab:
             if self.docker(["pull", IMAGE], timeout=180).returncode:
                 raise RuntimeError("Pinned PostgreSQL image unavailable")
         environment = dict(os.environ, POSTGRES_PASSWORD=secrets.token_hex(32))
-        result = self.docker(
-            [
-                "run",
-                "--detach",
-                "--network",
-                "none",
-                "--memory",
-                "512m",
-                "--cpus",
-                "1",
-                "--pids-limit",
-                "128",
-                "--security-opt",
-                "no-new-privileges",
-                "--read-only",
-                "--tmpfs",
-                "/var/run/postgresql:rw,nosuid,noexec,size=8m",
-                "--log-opt",
-                "max-size=1m",
-                "--log-opt",
-                "max-file=1",
-                "-e",
-                "POSTGRES_PASSWORD",
-                "-e",
-                "POSTGRES_DB=babel_store_lab",
-                "-e",
-                "TMPDIR=/var/run/postgresql",
-                IMAGE,
-                "postgres",
-                "-c",
-                "listen_addresses=",
-                "-c",
-                "max_connections=12",
-                "-c",
-                "shared_buffers=32MB",
-                "-c",
-                "fsync=on",
-                "-c",
-                "full_page_writes=on",
-                "-c",
-                "synchronous_commit=on",
-            ],
-            environment=environment,
-        )
+        try:
+            result = self.docker(
+                [
+                    "run",
+                    "--detach",
+                    "--network",
+                    "none",
+                    "--memory",
+                    "512m",
+                    "--cpus",
+                    "1",
+                    "--pids-limit",
+                    "128",
+                    "--security-opt",
+                    "no-new-privileges",
+                    "--read-only",
+                    "--tmpfs",
+                    "/var/run/postgresql:rw,nosuid,noexec,size=8m",
+                    "--log-opt",
+                    "max-size=1m",
+                    "--log-opt",
+                    "max-file=1",
+                    "-e",
+                    "POSTGRES_PASSWORD",
+                    "-e",
+                    "POSTGRES_DB=babel_store_lab",
+                    "-e",
+                    "TMPDIR=/var/run/postgresql",
+                    *self.socket_options(),
+                    IMAGE,
+                    "postgres",
+                    "-c",
+                    "listen_addresses=",
+                    "-c",
+                    "max_connections=12",
+                    "-c",
+                    "shared_buffers=32MB",
+                    "-c",
+                    "fsync=on",
+                    "-c",
+                    "full_page_writes=on",
+                    "-c",
+                    "synchronous_commit=on",
+                    *(
+                        ["-c", "unix_socket_directories=/var/run/postgresql,/babel-driver-socket"]
+                        if self.share_socket
+                        else []
+                    ),
+                ],
+                environment=environment,
+            )
+        except BaseException:
+            self.clean_socket()
+            raise
         if result.returncode:
+            self.clean_socket()
             raise RuntimeError("Unable to create isolated experiment container")
         self.container = result.stdout.strip()
         try:
@@ -295,6 +324,13 @@ class PostgresLab:
         for session in self.sessions:
             self.drain(session)
         self.sessions.clear()
+        self.clean_socket()
+
+    def clean_socket(self) -> None:
+        if self.socket_temp is not None:
+            self.socket_temp.cleanup()
+            self.socket_temp = None
+            self.socket_directory = None
 
     def __exit__(
         self,

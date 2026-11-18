@@ -328,3 +328,46 @@ class ControllerSafety(unittest.TestCase):
                 self.lab.crash_restart()
             with self.assertRaisesRegex(RuntimeError, "cleanup failed"):
                 self.lab.close()
+
+
+class SharedDriverSocket(unittest.TestCase):
+    def test_shared_socket_uses_only_owned_private_parent_and_is_cleaned(self):
+        with PostgresLab(share_socket=True) as lab:
+            socket = lab.socket_directory
+            self.assertIsNotNone(socket)
+            self.assertEqual(socket.parent.stat().st_mode & 0o777, 0o700)
+            info = json.loads(lab.docker(["inspect", lab.owned()]).stdout)[0]
+            binds = [m for m in info["Mounts"] if m["Type"] == "bind"]
+            self.assertEqual(
+                [(m["Source"], m["Destination"]) for m in binds],
+                [(str(socket), "/babel-driver-socket")],
+            )
+            self.assertTrue((socket / ".s.PGSQL.5432").is_socket())
+            self.assertEqual(lab.query("SHOW listen_addresses;"), "")
+        self.assertFalse(socket.exists())
+        self.assertIsNone(lab.socket_directory)
+
+    def test_failed_shared_creation_removes_only_its_generated_socket_directory(self):
+        lab = PostgresLab(share_socket=True)
+        success = subprocess.CompletedProcess([], 0, stdout="", stderr="")
+        failure = subprocess.CompletedProcess([], 1, stdout="private", stderr="private")
+        with patch.object(lab, "docker", side_effect=[success, failure]):
+            with self.assertRaisesRegex(RuntimeError, "Unable to create"):
+                lab.__enter__()
+        self.assertIsNone(lab.socket_temp)
+        self.assertIsNone(lab.socket_directory)
+
+    def test_launch_exception_cleans_generated_socket_before_propagating(self):
+        lab = PostgresLab(share_socket=True)
+        with patch.object(
+            lab,
+            "docker",
+            side_effect=[
+                subprocess.CompletedProcess([], 0, stdout="", stderr=""),
+                RuntimeError("Unavailable"),
+            ],
+        ):
+            with self.assertRaisesRegex(RuntimeError, "Unavailable"):
+                lab.__enter__()
+        self.assertIsNone(lab.socket_temp)
+        self.assertIsNone(lab.socket_directory)

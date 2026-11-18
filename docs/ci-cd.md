@@ -17,7 +17,8 @@ runs cancel superseded runs; releases wait for their own full CI invocation.
 | Static security and dependency audit | Bandit on all shipped Python tools, offline Zizmor workflow-security checks, strict pip-audit of the complete locked CI dependency graph; known advisories block regardless of severity |
 | Workflow lint | actionlint, including shell analysis when provided by the runner |
 | Secret scan | Redacted Gitleaks scan of full available Git history and checked-out files |
-| Native LDAP lab | Pinned Rust build/format/Clippy, property/transport tests and independent ldap3 process smoke, >=90% instrumented core line coverage, address-sanitizer fuzz, Cargo.lock advisory/license/source audit and CycloneDX inventory |
+| Native protocol labs | Pinned Rust build/format/all-feature Clippy, property/transport tests and independent ldap3/OpenSSL probes, >=90% protocol and separate TLS library line coverage, sanitizer fuzz, locked advisory/license/source audit and CycloneDX inventory |
+| Rust PostgreSQL driver qualification | Real private-socket/SCRAM binding/transaction/deadline/cancellation/connection-failure cases; separate >=90% driver library coverage, declared case accounting, observed fixture isolation/cleanup and actual notice inventory |
 | Project dashboard | Validated phase/progress model, strict TypeScript, ESLint/DOM security rules, deterministic HTML/CSP tests, full npm audit/SBOM and Chromium desktop/mobile flows/accessibility checks |
 | CI gate | Always-run aggregate; any failed, skipped or cancelled prerequisite blocks success |
 
@@ -226,6 +227,16 @@ The tar/checksum and TLS version/outcome/coverage evidence are 14-day CI artifac
 visible to repository readers, not a production release/installer. No native source
 change completes Phase 1 as a whole. Windows join/authentication, storage/ACL, DNS,
 LDAP TLS/SASL integration and GPO remain explicit future gates.
+
+The [driver candidate](adr/0007-postgresql-driver-qualification.md) has a separate
+required native job that enables its database test target's `qualification`
+feature. Default workspace tests do not run that target. Its independent 90%
+coverage gate prevents unrelated protocol coverage masking missing driver tests;
+the protocol coverage report excludes this separately gated component. All-feature
+Clippy compiles its tests, and the whole workspace remains in advisory/license/SBOM
+scope. The driver job retains actual normal-dependency notices, including reviewed
+Unicode-3.0 copyright/permission and non-promotion terms. No new driver binary is
+added to the protocol archive or deployed to a server.
 
 ## Project dashboard gate
 

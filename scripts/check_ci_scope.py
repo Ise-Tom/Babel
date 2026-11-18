@@ -32,6 +32,8 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
             name in ROOT_FILES
             or name
             in {
+                "experiments/__init__.py",
+                "experiments/postgres_store/__init__.py",
                 "experiments/postgres_store/Dockerfile",
                 "experiments/postgres_store/experiment.py",
                 "experiments/postgres_store/schema.sql",
@@ -62,9 +64,20 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
                 )
             )
             or (
-                path.parts[:2] in {("native", "babel-ldap"), ("native", "babel-tls-lab")}
+                path.parts[:2]
+                in {
+                    ("native", "babel-ldap"),
+                    ("native", "babel-tls-lab"),
+                    ("native", "babel-store-driver-lab"),
+                }
                 and (
-                    name in {"native/babel-ldap/Cargo.toml", "native/babel-tls-lab/Cargo.toml"}
+                    name
+                    in {
+                        "native/babel-ldap/Cargo.toml",
+                        "native/babel-tls-lab/Cargo.toml",
+                        "native/babel-store-driver-lab/Cargo.toml",
+                        "native/babel-store-driver-lab/tests/fixture.sql",
+                    }
                     or (
                         len(path.parts) >= 4
                         and path.parts[2] in {"src", "tests"}
