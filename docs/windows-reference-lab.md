@@ -86,3 +86,20 @@ actual corresponding Windows client behavior; no zero-test result qualifies.
 I04 remains open until the host, rights, reproducible provisioning and real-client
 execution evidence exist. See [D-02/D-10](decisions.md) and the
 [verification contract](validation-plan.md).
+
+## Non-Windows client qualification
+
+The owner-selected initial profile also includes Ubuntu 24.04 LTS and Debian 13
+with SSSD/MIT Kerberos, plus macOS on Apple Silicon and Intel. The current six-VM
+Windows lab definition is not a complete cross-platform lab. Linux probe images
+need exact SSSD/Kerberos/PAM/package versions and real login/password/SSO tests,
+not only LDAP queries. Add dedicated disposable client images when provisioning
+is implemented; never attach an operator's daily workstation to a synthetic domain.
+
+macOS requires eligible Apple hardware/virtualization and image-use rights, exact
+OS/build/architecture and native directory/Kerberos behavior. No Mac host or image
+is allocated, and no automatic download/purchase is authorized. Keep test clients
+on the appropriate isolated `.test` network, with controlled DNS/time and per-run
+synthetic credentials. Record cleanup of local enrollment, caches and keychain
+state and restore the disposable client. Mobile/appliance integrations use separate
+protocol/module gates; Windows GPO cannot be assumed to apply to them.

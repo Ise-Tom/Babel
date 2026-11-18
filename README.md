@@ -5,7 +5,8 @@ safer administration experience. **An experimental Rust LDAP RootDSE lab slice i
 controller or production-ready identity service exists yet.**
 
 The first production release must be **hosted on Linux servers**, providing
-Windows domain compatibility for **10,000 identities across three sites**.
+Windows domain compatibility and declared **Linux/macOS identity clients**, for
+**10,000 identities across three sites**.
 Linux hosts run the directory/domain controllers and administration services;
 Windows machines are clients or interoperability test references. A standalone
 Babel domain must not require a Windows Server host. These are acceptance
@@ -18,6 +19,7 @@ automation API/CLI. Babel will build its own native AD-compatible core, with
 reviewed libraries and a protocol conformance harness; Samba AD DC will not be a
 required production runtime. Advanced security capabilities extend this core product.
 
+- [Phase 0 compatibility, evidence and design progress](docs/phase-00-progress.md)
 - [Phase 1 implementation progress and native commands](docs/phase-01-progress.md)
 - [Product, security, and capacity requirements](docs/requirements.md)
 - [Complete phase designs and acceptance specifications](docs/phases/README.md)

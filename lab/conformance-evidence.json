@@ -1,0 +1,486 @@
+{
+  "schema_version": 1,
+  "contract_sha256": "f9a248174251883347669c7d89e4329e7f7c7cda53e54f6ba18eb850c02a05f4",
+  "records": [
+    {
+      "operation": "objects",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "objects",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "schema-acl",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "schema-acl",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "recycle",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "recycle",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "join-login",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "join-login",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "machine-password",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "machine-password",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "cached-login",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "cached-login",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "password",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "password",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "lockout",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "lockout",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "kerberos",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "kerberos",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "pac-delegation",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "pac-delegation",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "ldap-discovery",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "ldap-discovery",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "ldap-directory",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "ldap-directory",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "global-catalog",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "global-catalog",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "dns-locator",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "dns-locator",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "dns-update",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "dns-update",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "gpo",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "gpo",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "sysvol",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "sysvol",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "replication",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "replication",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "deletion-recovery",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "deletion-recovery",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "rpc-membership",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "rpc-membership",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "rpc-admin",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "rpc-admin",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "trusts",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "trusts",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "migration",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "migration",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "functional-levels",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "functional-levels",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "fsmo",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "fsmo",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "linux-hosting",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "linux-hosting",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "non-windows-clients",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "non-windows-clients",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "platform-boundary",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "platform-boundary",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "recovery-ops",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "recovery-ops",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "admin-ux",
+      "scenario": "positive",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    },
+    {
+      "operation": "admin-ux",
+      "scenario": "negative",
+      "outcome": "unrun",
+      "reason": "Licensed isolated reference/client infrastructure and exact image/spec revisions are not yet qualified.",
+      "executions": [],
+      "review": null
+    }
+  ]
+}

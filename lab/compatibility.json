@@ -1,0 +1,976 @@
+{
+  "schema_version": 1,
+  "id": "babel-native-ad-v1",
+  "status": "proposed",
+  "approval": null,
+  "functional_level": {
+    "domain": "2016",
+    "forest": "2016",
+    "decision": "Owner selected the 2016 initial baseline on 18 November 2026, explicitly including non-Windows devices. This is a scope decision, not conformance acceptance."
+  },
+  "profiles": [
+    {
+      "id": "linux-host",
+      "product": "Ubuntu Server 24.04 LTS",
+      "role": "server",
+      "architecture": "x86_64",
+      "build": null,
+      "image_sha256": null,
+      "qualification": "unqualified"
+    },
+    {
+      "id": "win11-pro",
+      "product": "Windows 11 Pro",
+      "role": "client",
+      "architecture": "x86_64",
+      "build": null,
+      "image_sha256": null,
+      "qualification": "unqualified"
+    },
+    {
+      "id": "win11-enterprise",
+      "product": "Windows 11 Enterprise",
+      "role": "client",
+      "architecture": "x86_64",
+      "build": null,
+      "image_sha256": null,
+      "qualification": "unqualified"
+    },
+    {
+      "id": "server-2022",
+      "product": "Windows Server 2022 Standard",
+      "role": "reference_and_client",
+      "architecture": "x86_64",
+      "build": null,
+      "image_sha256": null,
+      "qualification": "unqualified"
+    },
+    {
+      "id": "server-2025",
+      "product": "Windows Server 2025 Standard",
+      "role": "reference_and_client",
+      "architecture": "x86_64",
+      "build": null,
+      "image_sha256": null,
+      "qualification": "unqualified"
+    },
+    {
+      "id": "linux-client",
+      "product": "Ubuntu 24.04 LTS with SSSD and MIT Kerberos",
+      "role": "client",
+      "architecture": "x86_64",
+      "build": null,
+      "image_sha256": null,
+      "qualification": "unqualified"
+    },
+    {
+      "id": "debian-client",
+      "product": "Debian 13 with SSSD and MIT Kerberos",
+      "role": "client",
+      "architecture": "x86_64",
+      "build": null,
+      "image_sha256": null,
+      "qualification": "unqualified"
+    },
+    {
+      "id": "macos-arm",
+      "product": "macOS native directory/Kerberos integration; exact OS release pending",
+      "role": "client",
+      "architecture": "aarch64",
+      "build": null,
+      "image_sha256": null,
+      "qualification": "unqualified"
+    },
+    {
+      "id": "macos-intel",
+      "product": "macOS native directory/Kerberos integration; exact OS release pending",
+      "role": "client",
+      "architecture": "x86_64",
+      "build": null,
+      "image_sha256": null,
+      "qualification": "unqualified"
+    }
+  ],
+  "specifications": [
+    {
+      "id": "MS-ADTS",
+      "revision": null,
+      "rights_review": "pending",
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/"
+    },
+    {
+      "id": "MS-DFSR",
+      "revision": null,
+      "rights_review": "pending",
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dfsr/"
+    },
+    {
+      "id": "MS-DNSP",
+      "revision": null,
+      "rights_review": "pending",
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dnsp/"
+    },
+    {
+      "id": "MS-DRSR",
+      "revision": null,
+      "rights_review": "pending",
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-drsr/"
+    },
+    {
+      "id": "MS-GPOL",
+      "revision": null,
+      "rights_review": "pending",
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-gpol/"
+    },
+    {
+      "id": "MS-KILE",
+      "revision": null,
+      "rights_review": "pending",
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/"
+    },
+    {
+      "id": "MS-LSAD",
+      "revision": null,
+      "rights_review": "pending",
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-lsad/"
+    },
+    {
+      "id": "MS-NRPC",
+      "revision": null,
+      "rights_review": "pending",
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-nrpc/"
+    },
+    {
+      "id": "MS-PAC",
+      "revision": null,
+      "rights_review": "pending",
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-pac/"
+    },
+    {
+      "id": "MS-SAMR",
+      "revision": null,
+      "rights_review": "pending",
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-samr/"
+    },
+    {
+      "id": "MS-SMB2",
+      "revision": null,
+      "rights_review": "pending",
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-smb2/"
+    },
+    {
+      "id": "RFC4511",
+      "revision": null,
+      "rights_review": "pending",
+      "url": "https://www.rfc-editor.org/rfc/rfc4511"
+    }
+  ],
+  "operations": [
+    {
+      "id": "objects",
+      "title": "Object creation, rename and immutable GUID/SID",
+      "requirements": [
+        "AD-01"
+      ],
+      "specifications": [
+        "MS-ADTS"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Create and rename retain identity and valid naming context",
+        "negative": "Reject DN collisions, malformed SID and unauthorized object writes"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "schema-acl",
+      "title": "Schema, ACL inheritance and nested groups",
+      "requirements": [
+        "AD-01"
+      ],
+      "specifications": [
+        "MS-ADTS"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Apply schema constraints, inherited rights and bounded nested membership",
+        "negative": "Deny hidden-attribute reads, invalid classes, cycles and unauthorized delegation"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "recycle",
+      "title": "Delete, tombstone and restore",
+      "requirements": [
+        "AD-01"
+      ],
+      "specifications": [
+        "MS-ADTS"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Restore the same eligible identity under the declared recycle profile",
+        "negative": "Reject expired restore and privilege resurrection without authorization"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "join-login",
+      "title": "Domain join, online login and reconnect",
+      "requirements": [
+        "AD-02"
+      ],
+      "specifications": [
+        "MS-NRPC"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Join licensed Windows client and obtain real online domain authentication",
+        "negative": "Deny wrong credentials, revoked machine and broken secure channel"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "machine-password",
+      "title": "Machine password rotation",
+      "requirements": [
+        "AD-02"
+      ],
+      "specifications": [
+        "MS-NRPC"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Rotate machine credentials and authenticate after restart",
+        "negative": "Reject replay and unauthorized account takeover; retain declared recovery behavior"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "cached-login",
+      "title": "Offline cached login distinction",
+      "requirements": [
+        "AD-02"
+      ],
+      "specifications": [
+        "MS-NRPC"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Exercise cached login then revalidate online after reconnect",
+        "negative": "Report offline login separately from online success and reject disallowed cached access"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "password",
+      "title": "Password change/reset, expiry and fine-grained policy",
+      "requirements": [
+        "IAM-01"
+      ],
+      "specifications": [
+        "MS-SAMR"
+      ],
+      "profiles": [
+        "debian-client",
+        "linux-client",
+        "macos-arm",
+        "macos-intel",
+        "server-2022",
+        "server-2025",
+        "win11-enterprise",
+        "win11-pro"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Authorized change/reset enforces effective policy and redacts credentials",
+        "negative": "Deny old-password mismatch, weak password and unauthorized helpdesk reset"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "lockout",
+      "title": "Lockout and disable",
+      "requirements": [
+        "IAM-01"
+      ],
+      "specifications": [
+        "MS-SAMR"
+      ],
+      "profiles": [
+        "debian-client",
+        "linux-client",
+        "macos-arm",
+        "macos-intel",
+        "server-2022",
+        "server-2025",
+        "win11-enterprise",
+        "win11-pro"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Enforce declared thresholds, unlock and disabled-account behavior",
+        "negative": "Resist enumeration and reject authentication after effective local revocation"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "kerberos",
+      "title": "AS/TGS, SPNs and service SSO",
+      "requirements": [
+        "AD-03"
+      ],
+      "specifications": [
+        "MS-KILE"
+      ],
+      "profiles": [
+        "debian-client",
+        "linux-client",
+        "macos-arm",
+        "macos-intel",
+        "server-2022",
+        "server-2025",
+        "win11-enterprise",
+        "win11-pro"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Obtain AES tickets and use them at a separately authenticated service",
+        "negative": "Reject replay, expiry, clock skew and disallowed encryption downgrade"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "pac-delegation",
+      "title": "PAC validation and constrained delegation",
+      "requirements": [
+        "AD-03"
+      ],
+      "specifications": [
+        "MS-PAC"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Validate PAC and permitted service delegation against the reference",
+        "negative": "Reject forged PAC, unintended audience and unapproved delegation targets"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "ldap-discovery",
+      "title": "Bounded RootDSE discovery",
+      "requirements": [
+        "AD-04"
+      ],
+      "specifications": [
+        "RFC4511"
+      ],
+      "profiles": [
+        "debian-client",
+        "linux-client",
+        "macos-arm",
+        "macos-intel",
+        "server-2022",
+        "server-2025",
+        "win11-enterprise",
+        "win11-pro"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "lab_only",
+      "scenarios": {
+        "positive": "Compare base-scope anonymous discovery and supported bounded filter truth",
+        "negative": "Reject malformed BER, unsupported scope and over-budget nesting without leaking data"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "ldap-directory",
+      "title": "LDAPS, controls, paging, referrals and ACL filtering",
+      "requirements": [
+        "AD-04"
+      ],
+      "specifications": [
+        "MS-ADTS"
+      ],
+      "profiles": [
+        "debian-client",
+        "linux-client",
+        "macos-arm",
+        "macos-intel",
+        "server-2022",
+        "server-2025",
+        "win11-enterprise",
+        "win11-pro"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Read authorized objects with declared controls and stable page behavior",
+        "negative": "Deny unsigned insecure credential paths and unauthorized attributes or controls"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "global-catalog",
+      "title": "Global catalog and partial attribute sets",
+      "requirements": [
+        "AD-04"
+      ],
+      "specifications": [
+        "MS-ADTS"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Return authorized cross-domain partial attributes with declared freshness",
+        "negative": "Reject out-of-scope secrets and unsupported GC semantics explicitly"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "dns-locator",
+      "title": "DNS SRV, sites/subnets and DC locator",
+      "requirements": [
+        "AD-05"
+      ],
+      "specifications": [
+        "MS-ADTS"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Locate an eligible DC and fail over after DNS/DC loss",
+        "negative": "Exclude stale records and disallowed site placement; bound locator timeout"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "dns-update",
+      "title": "Secure dynamic DNS updates",
+      "requirements": [
+        "AD-05"
+      ],
+      "specifications": [
+        "MS-DNSP"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Authorize and persist signed machine-owned record updates",
+        "negative": "Reject unsigned updates, replay and writes to another machine record"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "gpo",
+      "title": "GPO creation, linking, resultant policy and revert",
+      "requirements": [
+        "AD-06"
+      ],
+      "specifications": [
+        "MS-GPOL"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Real Windows client applies linked policy with expected resultant settings",
+        "negative": "Deny unauthorized links/edits and reject stale or incomplete policy publication"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "sysvol",
+      "title": "SYSVOL ACLs, scripts and content/version consistency",
+      "requirements": [
+        "AD-06"
+      ],
+      "specifications": [
+        "MS-SMB2"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Read permitted signed/sealed policy content and reconcile interrupted publication",
+        "negative": "Deny unauthorized script writes and never advertise complete policy after partial publication"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "replication",
+      "title": "Attribute/link conflicts, partition and convergence",
+      "requirements": [
+        "AD-07"
+      ],
+      "specifications": [
+        "MS-DRSR"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Rejoin partitioned DCs and converge declared object/link outcomes",
+        "negative": "Reject unauthenticated replication, stale epochs and rollback cursor advancement"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "deletion-recovery",
+      "title": "Tombstones, lingering objects and restored DCs",
+      "requirements": [
+        "AD-07"
+      ],
+      "specifications": [
+        "MS-DRSR"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Restore coherent state with a new qualified invocation epoch",
+        "negative": "Quarantine stale snapshots and prevent deleted objects from silently resurrecting"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "rpc-membership",
+      "title": "Signed/sealed Netlogon and DCE/RPC membership",
+      "requirements": [
+        "AD-08"
+      ],
+      "specifications": [
+        "MS-NRPC"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Complete required membership calls over authenticated protected channels",
+        "negative": "Reject downgrade, replay, wrong machine identity and unsupported opnums safely"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "rpc-admin",
+      "title": "SAMR/LSA and management tools",
+      "requirements": [
+        "AD-08"
+      ],
+      "specifications": [
+        "MS-LSAD"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Delegate bounded administrative operations using supported RSAT/RPC calls",
+        "negative": "Deny privilege escalation, anonymous enumeration and raw secret export"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "trusts",
+      "title": "Forest/domain trust, selective authentication and SID filtering",
+      "requirements": [
+        "AD-09"
+      ],
+      "specifications": [
+        "MS-ADTS"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Authenticate and authorize selected users across two disposable forests",
+        "negative": "Reject untrusted SID history, disallowed targets and removed trust credentials"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "migration",
+      "title": "Migration and coexistence",
+      "requirements": [
+        "AD-09"
+      ],
+      "specifications": [
+        "MS-ADTS"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Move declared synthetic identities with stable mapping and documented cutover",
+        "negative": "Abort or roll back interrupted migration without duplicate SID/credential exposure"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "functional-levels",
+      "title": "Domain/forest levels and schema transitions",
+      "requirements": [
+        "AD-10"
+      ],
+      "specifications": [
+        "MS-ADTS"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Advertise and enforce only the approved qualified functional profile",
+        "negative": "Reject unsupported level changes and interrupted irreversible transitions"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "fsmo",
+      "title": "FSMO/RID ownership, transfer and seizure",
+      "requirements": [
+        "AD-10"
+      ],
+      "specifications": [
+        "MS-DRSR"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Transfer roles and allocate non-overlapping RID ranges",
+        "negative": "Reject duplicate role authority and RID reuse after crash or restore"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "linux-hosting",
+      "title": "Linux server installation and lifecycle",
+      "requirements": [
+        "PLAT-01",
+        "PLAT-02",
+        "PLAT-03"
+      ],
+      "specifications": [
+        "RFC4511"
+      ],
+      "profiles": [
+        "linux-host"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Install, supervise, reboot, upgrade and remove the constrained native Linux service with declared ordering and persistent directory data preserved",
+        "negative": "Reject unsafe privileges, unsupported configuration, missing key providers and implicit directory-data deletion"
+      },
+      "targets": [
+        "babel"
+      ]
+    },
+    {
+      "id": "non-windows-clients",
+      "title": "Linux SSSD/MIT Kerberos and macOS directory/Kerberos integration",
+      "requirements": [
+        "AD-02",
+        "AD-03",
+        "AD-04",
+        "IAM-01"
+      ],
+      "specifications": [
+        "MS-KILE"
+      ],
+      "profiles": [
+        "linux-client",
+        "debian-client",
+        "macos-arm",
+        "macos-intel"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Resolve identities/groups, enroll where supported, perform online login, password change and Kerberos service SSO on each exact Linux/macOS build",
+        "negative": "Reject revoked/expired identities and wrong realms; distinguish offline caches from online authentication and reject Windows-only policy claims"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "platform-boundary",
+      "title": "Native core and integration boundary",
+      "requirements": [
+        "PLAT-01",
+        "PLAT-03"
+      ],
+      "specifications": [
+        "MS-ADTS"
+      ],
+      "profiles": [
+        "linux-host"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Operate without a Samba daemon/database or Windows runtime on the Babel host",
+        "negative": "Reject unsupported platform/integration claims and direct management store access"
+      },
+      "targets": [
+        "babel"
+      ]
+    },
+    {
+      "id": "recovery-ops",
+      "title": "Backup, rotation and interrupted upgrade",
+      "requirements": [
+        "OPS-01"
+      ],
+      "specifications": [
+        "MS-DRSR"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Restore target synthetic domain coherently within the measured RPO/RTO",
+        "negative": "Reject incompatible formats, missing keys and stale epoch reuse"
+      },
+      "targets": [
+        "babel",
+        "reference"
+      ]
+    },
+    {
+      "id": "admin-ux",
+      "title": "Accessible delegated UI/API administration",
+      "requirements": [
+        "UX-01"
+      ],
+      "specifications": [
+        "MS-ADTS"
+      ],
+      "profiles": [
+        "win11-pro",
+        "win11-enterprise",
+        "server-2022",
+        "server-2025"
+      ],
+      "owner": "Ise-Tom",
+      "implementation": "planned",
+      "scenarios": {
+        "positive": "Complete supported administrator journeys with audit-correlated outcomes",
+        "negative": "Deny unauthorized API/UI actions, CSRF and misleading success on partial failure"
+      },
+      "targets": [
+        "babel"
+      ]
+    }
+  ],
+  "limitations": [
+    "No Windows join/login/GPO evidence exists; every conformance scenario is unrun.",
+    "The native implementation is only a loopback read-only LDAP discovery lab.",
+    "No exact patched Windows/Linux image build is qualified.",
+    "RODC, AD CS, ADFS, Exchange schema, Entra synchronization, RADIUS and federation require separate compatibility decisions; this is not a claim of support.",
+    "No production support or multi-master compatibility is established by this inventory.",
+    "Non-Windows Linux and macOS identity/authentication are in the initial client profile. Native Windows GPO is not claimed on those systems; cross-platform policy/patch/remote/EDR agents have separate roadmap gates.",
+    "Mobile devices and network appliances are inventoried integration targets, not Windows domain-join/GPO clients; web federation, certificates and RADIUS require explicit later protocol/module qualification."
+  ]
+}

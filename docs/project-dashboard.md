@@ -253,3 +253,12 @@ No remote fonts/assets, live API, secrets, analytics, untrusted HTML or install
 scripts are required. Keep these boundaries when adding functionality. The
 existing CI gate waits for dashboard checks and audits the complete npm tooling
 graph; this does not make GitHub merge protection available on an unsupported plan.
+
+## Problem list scope
+
+The problem list tracks product and development activity: implementation bugs,
+dependency failures, design gaps and missing interoperability infrastructure.
+GitHub account, billing, repository permissions, review settings and Pages setup
+are excluded. Operational setup remains in the [GitHub settings guide](github-security-settings.md)
+and Git history; removing those entries does not mean an unresolved setting was fixed.
+Existing development problem IDs stay stable and are not renumbered.
