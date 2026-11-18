@@ -30,3 +30,29 @@ test('hostile document text remains encoded in a complete build', async () => {
   assert.ok(!html.includes('<img src=x'));
   assert.ok(html.includes('\\u003c/script>'));
 });
+test('standalone distribution retains full project and build-tool notices inertly', async () => {
+  const html = await htmlFor(model);
+  const { textForHtml } = await import('../build.mjs');
+  for (const url of [new URL('../../LICENSE', import.meta.url), new URL('../../NOTICE', import.meta.url), new URL('../node_modules/esbuild/LICENSE.md', import.meta.url)]) {
+    assert.ok(html.includes(textForHtml(await readFile(url, 'utf8'))));
+  }
+  assert.ok(html.includes('<template id="license-notices"><pre>'));
+  assert.equal(textForHtml('</template><script>&'), '&lt;/template&gt;&lt;script&gt;&amp;');
+});
+test('authored placeholder text cannot consume subsequent build replacements', async () => {
+  const data = structuredClone(model);
+  data.phases[0].title = '__JS__ __CSP__ __CSS__ __DATA__ __NOTICES__';
+  const html = await htmlFor(data);
+  const embedded = html.match(/<script id="dashboard-data" type="application\/json">([\s\S]*?)<\/script>/)?.[1];
+  assert.ok(embedded);
+  assert.deepEqual(JSON.parse(embedded), data);
+  assert.ok(!html.includes('<script>__JS__</script>'));
+});
+test('new bundled runtime dependencies cannot silently omit their redistribution review', async () => {
+  const { validateBundledInputs } = await import('../build.mjs');
+  validateBundledInputs({ 'src/main.ts': {}, 'src/dom.ts': {} });
+  for (const name of ['node_modules/runtime/index.ts', '../outside.ts', 'src/../outside.ts', 'src/node_modules/vendor/index.ts', 'src\\runtime.ts', 'src/unreviewed.js']) {
+    assert.throws(() => validateBundledInputs({ [name]: {} }), /notice policy/);
+  }
+  assert.throws(() => validateBundledInputs({}), /notice policy/);
+});

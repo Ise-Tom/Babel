@@ -5,3 +5,7 @@ resolver = "2"
 
 [workspace.package]
 license = "Apache-2.0"
+
+# Keep integer overflow visible in optimized qualification binaries.
+[profile.release]
+overflow-checks = true

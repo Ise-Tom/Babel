@@ -13,9 +13,9 @@ are still proposed test targets at the selected level.
 | P00-01 | [Versioned matrix](../lab/compatibility.json): 30 operation families, positive/negative scenarios, requirements, protocol references, target/client combinations and accountable owner | Exact patched images/packages, complete wire-operation/control/error decomposition, approved profile and real-client runs |
 | P00-02 | [State and authorization contract](adr/0005-directory-and-replication-invariants.md): stable identity, authorization order and worked rename/collision/revocation/group examples | Review against pinned specifications and native implementations |
 | P00-03 | Same ADR: separate origin/local metadata, conflict/delete/restore examples and replica quarantine | Exact MS-ADTS/MS-DRSR algorithms, reference observations, multi-DC implementation and fault tests |
-| P00-04 | [Dependency qualification register](phase-00-security-and-dependencies.md): qualified lab subset versus unselected production TLS/Kerberos/storage libraries | Production dependency ADRs, licenses/advisories and executable qualification |
+| P00-04 | [Full toolchain/parser packet](validation/p00-04.md): declared Linux profiles, exact compiler/ELF facts, release overflow checks, locked debug/release/client/fuzz/security gates and maintenance review | Explicit owner validation of the original Phase 0 toolchain/parser gate; TLS/Kerberos/storage retain separate requirements |
 | P00-05 | Existing [isolated Windows lab definition](windows-reference-lab.md) retained | Licensed host/images, exact builds and two clean provisioning/discovery/cleanup runs; no host exists yet |
-| P00-06 | Apache-2.0/DCO owner decision retained; protocol/specification rights review explicitly versioned | Pin specification revisions and finish distribution/reference-fixture obligations |
+| P00-06 | [Full license/contribution packet](validation/p00-06.md): existing Apache-2.0/DCO choice, complete obligations, strict notice archives and standalone dashboard license retention | Explicit owner validation of the original project-license gate; specification/image/fixture rights remain P00-16 |
 | P00-07 | Named current owner, Tier 0 boundaries, boundary-to-threat/evidence ownership and intake exercise procedure | Actual private intake exercise, backup security contact and incident drill; no fictitious contact or test |
 | P00-08 | [Executable validator](../scripts/check_conformance.py) and [evidence inventory](../lab/conformance-evidence.json), included in CI | Real artifacts, exact platforms/specs and reviewer disposition; no structural check is product evidence |
 | P00-09 | [Mixed workload/fault method](phase-00-workload.md), hardware and measurement/cost accounting | Method approved and dataset tooling implemented; load runner, real hosts, measured runs and SLO ratification remain |
@@ -182,3 +182,17 @@ and explicitly refuses unqualified advertisements or level transitions. Immutabl
 reference review distinguishes 2025 DC operating systems from the 2025 level and
 records a stale-source conflict. Both gates await explicit owner validation;
 actual upgrades, domain recovery and all 60 client conformance cases remain unrun.
+
+
+## Completed toolchain/parser and project-license gates
+
+P00-04 and P00-06 now have full original-criterion packets for explicit owner
+validation. Actual native evidence binds the Linux/compiler/ELF/lockfile/binary;
+debug and release arithmetic checks expose overflow, and required probes/fuzz/
+audits retain their separate results. Contribution/redistribution terms are
+recorded against real package notices. Notice extraction rejects omissions,
+unlisted files and rewritten manifests; the standalone dashboard safely retains
+full terms and blocks new unreviewed bundled runtime inputs. These close the
+original Phase 0 foundation gates without starting a new phase or claiming
+native AD conformance. P00-10/P00-11 remain awaiting their earlier owner reviews;
+all five existing accepted proofs are preserved.
