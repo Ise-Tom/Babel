@@ -1,0 +1,325 @@
+{
+  "schema_version": 1,
+  "status": "design_only",
+  "functional_profile": {
+    "id": "babel-fresh-2016-v1",
+    "domain": "2016",
+    "forest": "2016",
+    "host_os": "linux",
+    "advertised_levels": [],
+    "client_profiles": [
+      "win11-pro",
+      "win11-enterprise",
+      "server-2022",
+      "server-2025",
+      "linux-client",
+      "debian-client",
+      "macos-arm",
+      "macos-intel"
+    ],
+    "transitions": {
+      "coexist": "unsupported",
+      "create": "design_only",
+      "lower_domain": "unsupported",
+      "lower_forest": "unsupported",
+      "raise_domain": "unsupported",
+      "raise_forest": "unsupported"
+    },
+    "reference_dc_os": [
+      "2016",
+      "2019",
+      "2022",
+      "2025"
+    ],
+    "incompatibilities": {
+      "legacy_levels": "No native creation or migration profile below 2016 is specified; inherited 2016 behavior still requires qualification.",
+      "level_2025": "2025 DC OS can participate in a Microsoft 2016-level reference forest, but 2025 functional-level features such as 32-KiB database pages are outside this profile. No fictitious 2019 or 2022 functional level.",
+      "frs": "No FRS fallback. First-production GPO/SYSVOL must meet the supported profile; mixed Windows-DC coexistence requires separately qualified DFSR behavior. A fresh all-Babel topology still requires its complete GPO/SYSVOL consistency/replication contract.",
+      "optional_features": "PAM/MIM, PKINIT freshness, smart-card/password-secret policy, Protected Users and authentication-policy/silo behavior must be inventoried and qualified or explicitly block the applicable claim; a level label does not implement them. No silent legacy-crypto fallback.",
+      "mixed_dc": "No mixed Windows/Babel-DC or trust/migration claim in the initial creation design. Reference Windows DC OS compatibility is not Babel coexistence evidence.",
+      "client_os": "Functional level constrains DC behavior, not workstation/member-server OS. Preserve Windows, Linux SSSD/Kerberos and macOS client profiles with separate exact-build qualification.",
+      "rollback": "No native raise or lower transition. Conditional Microsoft rollback exceptions are not implemented. Domain cannot be below its forest level; a restore must reconcile keys, SYSVOL and replica epochs, not only change a number."
+    }
+  },
+  "references": [
+    {
+      "url": "https://github.com/MicrosoftDocs/windowsserverdocs/blob/6dd2bb888a637412b091d421dab23ed1e09d52e7/WindowsServerDocs/identity/ad-ds/active-directory-functional-levels.md",
+      "review": "Reviewed 18 November 2026. Primary current functional-level/OS distinction, 2016 features, inherited behavior, forest/domain ordering and 2025 level. This takes precedence over the stale no-levels-since-2016 sentence in the upgrade article."
+    },
+    {
+      "url": "https://github.com/MicrosoftDocs/windowsserverdocs/blob/b55123260d473dccfec52516efbec3c19eb0bb40/WindowsServerDocs/identity/ad-ds/deploy/upgrade-domain-controllers.md",
+      "review": "Reviewed 18 November 2026 for conditional level rollback and upgrade/recovery boundaries. Its no-new-levels-since-2016 sentence conflicts with the pinned current level table; it is not used to deny the existence of the 2025 level. Babel implements none of its conditional rollback exceptions."
+    }
+  ],
+  "worked_changes": [
+    {
+      "id": "GOV-schema",
+      "kind": "schema",
+      "owner": "Ise-Tom",
+      "scope": "Normative Phase 0 worked design for schema; implementation and runtime qualification remain separate.",
+      "requirements": [
+        "P00-10",
+        "P01-02",
+        "P02-08",
+        "P02-11"
+      ],
+      "forward": "Exclusive, bounded migration authority checks schema versions, a coherent backup and dry-run compatibility before staging a versioned migration.",
+      "interrupted": "Power fails after staging a new attribute index but before the schema checkpoint.",
+      "recovery": "Stop incompatible writes; read the durable checkpoint, resume idempotently or restore the coherent backup into isolation. Verify matching rules, counts and ACLs before serving. A partial migration never advertises the new schema.",
+      "production_impact": "Block the corresponding production operation until implementation, failure/recovery evidence and explicit release review are qualified.",
+      "impacts": {
+        "security": "Preserve authority, secret custody and denied-operation behavior through interruption.",
+        "capacity": "Bound authority/lock duration and include backup/staging/replay resources in the operation budget.",
+        "formats": "Version affected formats; preserve stable identities and refuse partial/new-version state.",
+        "protocols": "Do not advertise completed or compatible behavior before coherent recovery.",
+        "api": "Return an explicit failure/incomplete state; do not acknowledge an uncertain mutation as success."
+      },
+      "recovery_controls": [
+        "exclusive_authority",
+        "incompatible_writes_stopped",
+        "version_checkpoint"
+      ],
+      "binary_revert_is_recovery": false,
+      "runtime_outcome": "unrun",
+      "evidence_invalidation": {
+        "on_change": [
+          "source",
+          "profile",
+          "schema",
+          "key_class",
+          "scope",
+          "expected_result"
+        ],
+        "rerun": "Invalidate affected observations; regenerate the compatibility/evidence binding and rerun positive, denial, interruption and recovery cases against the new source/profile. Keep old failed/unrun results visible."
+      },
+      "review": {
+        "disposition": "proposed",
+        "accountable_owner": "Ise-Tom; explicit owner review required for the Phase 0 design gate"
+      }
+    },
+    {
+      "id": "GOV-credential-keys",
+      "kind": "credential_keys",
+      "owner": "Ise-Tom",
+      "scope": "Normative Phase 0 worked design for credential_keys; implementation and runtime qualification remain separate.",
+      "requirements": [
+        "P00-10",
+        "P01-14",
+        "P03-15"
+      ],
+      "forward": "Version key classes and custody, test escrow access, enter a dual-read interval, write only with the new class, verify recovery, then explicitly retire old material.",
+      "interrupted": "The provider disappears after new-key writes but before old-key retirement.",
+      "recovery": "Deny affected secret operations, retain both encrypted generations, recover through the reviewed provider/escrow procedure and verify old/new reads before resuming. No plaintext fallback or silent weaker provider; never retire the only recoverable key.",
+      "production_impact": "Block the corresponding production operation until implementation, failure/recovery evidence and explicit release review are qualified.",
+      "impacts": {
+        "security": "Preserve authority, secret custody and denied-operation behavior through interruption.",
+        "capacity": "Bound authority/lock duration and include backup/staging/replay resources in the operation budget.",
+        "formats": "Version affected formats; preserve stable identities and refuse partial/new-version state.",
+        "protocols": "Do not advertise completed or compatible behavior before coherent recovery.",
+        "api": "Return an explicit failure/incomplete state; do not acknowledge an uncertain mutation as success."
+      },
+      "recovery_controls": [
+        "dual_read",
+        "provider_loss_denies",
+        "recover_before_retirement"
+      ],
+      "binary_revert_is_recovery": false,
+      "runtime_outcome": "unrun",
+      "evidence_invalidation": {
+        "on_change": [
+          "source",
+          "profile",
+          "schema",
+          "key_class",
+          "scope",
+          "expected_result"
+        ],
+        "rerun": "Invalidate affected observations; regenerate the compatibility/evidence binding and rerun positive, denial, interruption and recovery cases against the new source/profile. Keep old failed/unrun results visible."
+      },
+      "review": {
+        "disposition": "proposed",
+        "accountable_owner": "Ise-Tom; explicit owner review required for the Phase 0 design gate"
+      }
+    },
+    {
+      "id": "GOV-domain-restore",
+      "kind": "domain_restore",
+      "owner": "Ise-Tom",
+      "scope": "Normative Phase 0 worked design for domain_restore; implementation and runtime qualification remain separate.",
+      "requirements": [
+        "P00-10",
+        "P03-06",
+        "P03-07",
+        "P03-13",
+        "P03-14"
+      ],
+      "forward": "Validate a coherent directory/SYSVOL/keys/schema/replication backup and start the restored DC on an isolated network.",
+      "interrupted": "The restored snapshot contains an old invocation/USN view while peers have accepted password changes and deletions.",
+      "recovery": "Quarantine the restored instance. Establish the protocol-qualified restore epoch/invocation procedure, reconcile revocation/deletion and rejoin from a qualified source before service. If retained history is insufficient, rebuild. A VM snapshot or SQL restart alone never proves domain recovery.",
+      "production_impact": "Block the corresponding production operation until implementation, failure/recovery evidence and explicit release review are qualified.",
+      "impacts": {
+        "security": "Preserve authority, secret custody and denied-operation behavior through interruption.",
+        "capacity": "Bound authority/lock duration and include backup/staging/replay resources in the operation budget.",
+        "formats": "Version affected formats; preserve stable identities and refuse partial/new-version state.",
+        "protocols": "Do not advertise completed or compatible behavior before coherent recovery.",
+        "api": "Return an explicit failure/incomplete state; do not acknowledge an uncertain mutation as success."
+      },
+      "recovery_controls": [
+        "coherent_backup",
+        "epoch_quarantine",
+        "isolated_start",
+        "revocation_reconcile"
+      ],
+      "binary_revert_is_recovery": false,
+      "runtime_outcome": "unrun",
+      "evidence_invalidation": {
+        "on_change": [
+          "source",
+          "profile",
+          "schema",
+          "key_class",
+          "scope",
+          "expected_result"
+        ],
+        "rerun": "Invalidate affected observations; regenerate the compatibility/evidence binding and rerun positive, denial, interruption and recovery cases against the new source/profile. Keep old failed/unrun results visible."
+      },
+      "review": {
+        "disposition": "proposed",
+        "accountable_owner": "Ise-Tom; explicit owner review required for the Phase 0 design gate"
+      }
+    },
+    {
+      "id": "GOV-functional-level",
+      "kind": "functional_level",
+      "owner": "Ise-Tom",
+      "scope": "Normative Phase 0 worked design for functional_level; implementation and runtime qualification remain separate.",
+      "requirements": [
+        "P00-10",
+        "P00-11",
+        "P02-08"
+      ],
+      "forward": "Only fresh isolated 2016-domain/2016-forest creation has an initial design. Inventory every eligible DC and domain before any future reviewed transition.",
+      "interrupted": "An administrator requests a lower level, 2025 raise, older-controller coexistence, or a partial domain/forest update.",
+      "recovery": "Reject without changing the advertised level or schema. There is no implemented level transition. Review any extension separately with all-DC qualification and coherent recovery; binary downgrade is not a rollback. Microsoft conditional lower-level exceptions do not enable them in Babel.",
+      "production_impact": "Block the corresponding production operation until implementation, failure/recovery evidence and explicit release review are qualified.",
+      "impacts": {
+        "security": "Preserve authority, secret custody and denied-operation behavior through interruption.",
+        "capacity": "Bound authority/lock duration and include backup/staging/replay resources in the operation budget.",
+        "formats": "Version affected formats; preserve stable identities and refuse partial/new-version state.",
+        "protocols": "Do not advertise completed or compatible behavior before coherent recovery.",
+        "api": "Return an explicit failure/incomplete state; do not acknowledge an uncertain mutation as success."
+      },
+      "recovery_controls": [
+        "all_dc_inventory",
+        "no_binary_downgrade",
+        "unsupported_transition_denied"
+      ],
+      "binary_revert_is_recovery": false,
+      "runtime_outcome": "unrun",
+      "evidence_invalidation": {
+        "on_change": [
+          "source",
+          "profile",
+          "schema",
+          "key_class",
+          "scope",
+          "expected_result"
+        ],
+        "rerun": "Invalidate affected observations; regenerate the compatibility/evidence binding and rerun positive, denial, interruption and recovery cases against the new source/profile. Keep old failed/unrun results visible."
+      },
+      "review": {
+        "disposition": "proposed",
+        "accountable_owner": "Ise-Tom; explicit owner review required for the Phase 0 design gate"
+      }
+    },
+    {
+      "id": "GOV-storage",
+      "kind": "storage",
+      "owner": "Ise-Tom",
+      "scope": "Normative Phase 0 worked design for storage; implementation and runtime qualification remain separate.",
+      "requirements": [
+        "P00-10",
+        "P01-03",
+        "P01-12"
+      ],
+      "forward": "Version export/import; compare stable GUID/SID, matching keys, ACLs, counts and audit/journal/cursor mappings in an isolated target.",
+      "interrupted": "Import stops after object rows but before descriptor and receipt/journal reconstruction.",
+      "recovery": "Keep the target offline and incomplete; resume from a verified checkpoint or discard it and restore the original. Retain the encrypted original through independently verified recovery. Do not treat engine streaming replication or an adapter interface as semantic migration.",
+      "production_impact": "Block the corresponding production operation until implementation, failure/recovery evidence and explicit release review are qualified.",
+      "impacts": {
+        "security": "Preserve authority, secret custody and denied-operation behavior through interruption.",
+        "capacity": "Bound authority/lock duration and include backup/staging/replay resources in the operation budget.",
+        "formats": "Version affected formats; preserve stable identities and refuse partial/new-version state.",
+        "protocols": "Do not advertise completed or compatible behavior before coherent recovery.",
+        "api": "Return an explicit failure/incomplete state; do not acknowledge an uncertain mutation as success."
+      },
+      "recovery_controls": [
+        "audit_cursor_mapping",
+        "identity_acl_comparison",
+        "original_retained"
+      ],
+      "binary_revert_is_recovery": false,
+      "runtime_outcome": "unrun",
+      "evidence_invalidation": {
+        "on_change": [
+          "source",
+          "profile",
+          "schema",
+          "key_class",
+          "scope",
+          "expected_result"
+        ],
+        "rerun": "Invalidate affected observations; regenerate the compatibility/evidence binding and rerun positive, denial, interruption and recovery cases against the new source/profile. Keep old failed/unrun results visible."
+      },
+      "review": {
+        "disposition": "proposed",
+        "accountable_owner": "Ise-Tom; explicit owner review required for the Phase 0 design gate"
+      }
+    },
+    {
+      "id": "GOV-gpo",
+      "kind": "gpo",
+      "owner": "Ise-Tom",
+      "scope": "Normative Phase 0 worked design for gpo; implementation and runtime qualification remain separate.",
+      "requirements": [
+        "P00-10",
+        "P01-07",
+        "P02-22"
+      ],
+      "forward": "Stage policy content, ACLs, directory/SYSVOL versions and publication state before declaring a coherent policy.",
+      "interrupted": "The directory transaction succeeds but SYSVOL publication or ACL installation fails.",
+      "recovery": "Hide the incomplete publication from coherent policy reads, retain an explicit pending state and reconcile or revert both sides under the publication authority. Verify hashes/ACLs/versions before exposing it. Ordinary copying is not DFSR or Windows policy evidence.",
+      "production_impact": "Block the corresponding production operation until implementation, failure/recovery evidence and explicit release review are qualified.",
+      "impacts": {
+        "security": "Preserve authority, secret custody and denied-operation behavior through interruption.",
+        "capacity": "Bound authority/lock duration and include backup/staging/replay resources in the operation budget.",
+        "formats": "Version affected formats; preserve stable identities and refuse partial/new-version state.",
+        "protocols": "Do not advertise completed or compatible behavior before coherent recovery.",
+        "api": "Return an explicit failure/incomplete state; do not acknowledge an uncertain mutation as success."
+      },
+      "recovery_controls": [
+        "directory_sysvol_versions",
+        "incomplete_publication_hidden",
+        "reconcile_or_revert"
+      ],
+      "binary_revert_is_recovery": false,
+      "runtime_outcome": "unrun",
+      "evidence_invalidation": {
+        "on_change": [
+          "source",
+          "profile",
+          "schema",
+          "key_class",
+          "scope",
+          "expected_result"
+        ],
+        "rerun": "Invalidate affected observations; regenerate the compatibility/evidence binding and rerun positive, denial, interruption and recovery cases against the new source/profile. Keep old failed/unrun results visible."
+      },
+      "review": {
+        "disposition": "proposed",
+        "accountable_owner": "Ise-Tom; explicit owner review required for the Phase 0 design gate"
+      }
+    }
+  ],
+  "active_exceptions": []
+}

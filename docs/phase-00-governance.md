@@ -48,3 +48,46 @@ requirement. Accept a design scope explicitly where appropriate, while keeping
 unrun real-client and infrastructure requirements blocked. Whole Phase 0 exit
 requires all its stated acceptance evidence and an explicit separate phase decision.
 No acceptance is prefilled by these documents.
+
+## Completed Phase 0 contract and executable consistency checks
+
+The original P00-10 design gate is now complete and submitted for explicit owner
+validation in the [criterion packet](validation/p00-10.md). Runtime upgrade,
+secret rotation and domain recovery are **unrun implementation gates**, rather
+than evidence this design checker manufactures. The requirements themselves have
+not been narrowed. See the [functional-level profile](functional-level-profile.md)
+for the selected levels and transition review.
+
+The [versioned contract](../lab/phase0-contract.json) contains all six worked
+changes above. Each names its scope/owner/requirements; security, capacity, format,
+protocol and API impact; forward checkpoint; interruption; recovery controls;
+evidence invalidation/reruns; production impact; and proposed review disposition.
+For example, an interrupted key rotation denies secret operations and retains both
+recoverable encrypted generations; an incomplete GPO publication stays hidden
+until directory/SYSVOL content, ACLs and versions reconcile. These are normative
+outcomes to implement and test, not claims that those operations currently run.
+
+[Required CI](../.github/workflows/ci.yml) runs the
+[planning checker](../scripts/check_phase0_contract.py), which rejects omitted
+recovery material, unsupported level declarations, binary-revert-only recovery,
+rewritten runtime outcomes and incomplete evidence-invalidation rules. It emits
+source revision, exact contract/matrix SHA-256, check time and the six reviewed
+change families in a retained `phase0-contract-evidence` artifact. The usual
+strict lint/type/security and branch-coverage checks also cover this tool.
+
+An active scope exception must identify operation, client, site, owner, scope,
+reason, compensating control, explicit review evidence and production impact.
+UTC activation is inclusive and expiry exclusive; inactive/expired entries fail
+CI and never renew. No current exception exists. No first-production global
+baseline ID may be waived; unknown IDs and phase-gate waivers are rejected. No
+exception may rewrite observations as passing.
+A changed source/profile/schema/key class/scope/expected result invalidates its
+affected evidence and requires fresh cases; keeping an old hash is not revalidation.
+
+This checker validates **review material and consistency**. It does not verify
+that prose is sufficient, authenticate a named reviewer or escrow, grant Tier 0
+access, enact a change, or prove runtime recovery. The owner reviews the actual
+PR/evidence using the established solo-maintainer process. Future runtime command
+handlers must enforce their own authority, version/checkpoint and fail-closed
+state machines. Owner acceptance of P00-10 remains a separate dated decision;
+Phase 0 exit and production approval are never inferred from a passing record.
