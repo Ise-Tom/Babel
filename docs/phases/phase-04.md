@@ -30,16 +30,30 @@ marked provisional require a reviewed ADR before their feature's production rele
 
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
-| P04-01 | Run independent integrated security assessment and threat-model review. | Report covers protocol, keys, admin UI/API, replication, supply chain and restore; findings have owners, retests and explicit dispositions. |
+| P04-01 | Run independent integrated assessment and threat review. | Scoped reproducible findings cover protocol, keys, UI/API, replication, supply chain and restore. |
 | P04-02 | Enforce secure protocol defaults and scoped legacy exceptions. | Invalid TLS, anonymous sensitive reads, unsigned channels and weak crypto fail; exceptions carry scope/expiry/audit and cannot silently become defaults. |
 | P04-03 | Measure the full mixed-load contract with real clients and reference requests. | Publish dataset, hardware, caches, concurrency, rates, percentiles and unexpected errors; each baseline target is met or release-blocking. |
-| P04-04 | Qualify sustained operation and failure headroom. | 24-hour soak and DC/site failures show bounded queues/storage, no unexplained credential/data corruption and documented degraded behavior. |
+| P04-04 | Qualify sustained operation through the full soak. | A 24-hour mixed-load soak shows bounded queues/storage and no unexplained credential/data corruption. |
 | P04-05 | Demonstrate complete and privacy-preserving security audit. | For each privileged/auth/policy/key operation, expected events and denied cases are present, correlated and redacted; export loss is visible. |
 | P04-06 | Qualify administrator journeys with representative users. | At least five admins achieve >=90% unassisted completion per declared journey, including delegation, policy, diagnosis and restore; publish time-on-task. |
-| P04-07 | Qualify keyboard/screen-reader accessibility and dangerous-action previews. | WCAG 2.2 AA audit and manual assistive-technology journeys pass for the administration surface; unsupported settings are never silently discarded. |
+| P04-07 | Qualify keyboard/screen-reader accessibility. | WCAG 2.2 AA audit and manual assistive-technology journeys pass across supported administration surfaces. |
 | P04-08 | Test denial and recovery through UI, API and CLI consistently. | Role/session expiry, CSRF, unauthorized export/reset, recovery bypass and stale privilege tests preserve authorization and provide safe actionable errors. |
 | P04-09 | Ratify production sizing and operating limits from results. | ADR records DC/backup/audit capacity, retention, bandwidth and expansion triggers; suggested 4-vCPU/16-GiB sizing is not treated as measured beforehand. |
 | P04-10 | Produce a signed-off first-production readiness bundle. | Every baseline requirement maps to current passing evidence; outstanding exceptions, unsupported clients and residual risks are explicit and approved before Phase 5. |
+| P04-11 | Remediate and independently retest assessment findings. | Each finding has an owner/severity/fix/retest/disposition; an assessment report alone cannot close qualification. |
+| P04-12 | Qualify DC/site failure headroom under load. | Losing a DC/site at sustained traffic preserves declared SLO/resource bounds and publishes degraded-mode limits and failures. |
+| P04-13 | Qualify dangerous-action previews and unsupported-setting handling. | Bulk/irreversible changes preview exact scope/consequences; unsupported settings and partial failures are never silently discarded. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P04-01`: separately verify `P04-11`.
+- `P04-04`: separately verify `P04-12`.
+- `P04-07`: separately verify `P04-13`.
 
 ## Evidence and exit
 

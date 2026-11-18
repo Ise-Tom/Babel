@@ -1,6 +1,7 @@
 """Validate reporting facts, acceptance distinctions and safe source references."""
 
 import json
+import re
 import shutil
 import sys
 import tempfile
@@ -36,11 +37,16 @@ class DashboardModel(unittest.TestCase):
     def test_complete_model_has_no_invented_acceptance(self):
         data = self.model()
         self.assertEqual(len(data["phases"]), 18)
-        self.assertEqual(sum(len(p["steps"]) for p in data["phases"]), 180)
+        canonical_count = sum(
+            len(re.findall(r"^\| P\d{2}-\d{2} \|", path.read_text(), re.M))
+            for path in (self.root / "docs/phases").glob("phase-*.md")
+        )
+        self.assertEqual(sum(len(p["steps"]) for p in data["phases"]), canonical_count)
+        self.assertGreater(len({len(p["steps"]) for p in data["phases"]}), 1)
         self.assertEqual(len(data["features"]), 130)
         self.assertEqual(sum(p["status"] == "accepted" for p in data["phases"]), 0)
         self.assertEqual(data["phases"][1]["status"], "in_progress")
-        self.assertEqual(data["phases"][2]["status"], "planned")
+        self.assertTrue(all(p["status"] == "planned" for p in data["phases"][2:]))
 
     def test_unknown_or_undocumented_status_is_rejected(self):
         self.progress["requirements"]["P01-01"]["status"] = "done"
@@ -48,6 +54,7 @@ class DashboardModel(unittest.TestCase):
             self.model()
 
     def test_additional_noncontiguous_requirement_keeps_other_phase_counts(self):
+        baseline = self.model()
         phase = self.root / "docs/phases/phase-01.md"
         phase.write_text(phase.read_text() + "\n| P01-42 | Fixture task | Fixture proof |\n")
         path = self.root / "dashboard/associations.json"
@@ -55,8 +62,8 @@ class DashboardModel(unittest.TestCase):
         associations["P01-42"] = associations["P01-01"]
         path.write_text(json.dumps(associations))
         data = self.model()
-        self.assertEqual(len(data["phases"][0]["steps"]), 10)
-        self.assertEqual(len(data["phases"][1]["steps"]), 11)
+        self.assertEqual(len(data["phases"][0]["steps"]), len(baseline["phases"][0]["steps"]))
+        self.assertEqual(len(data["phases"][1]["steps"]), len(baseline["phases"][1]["steps"]) + 1)
         self.assertEqual(data["phases"][1]["steps"][-1]["id"], "P01-42")
         self.assertEqual(data["phases"][1]["steps"][-1]["status"], "planned")
 
@@ -91,7 +98,9 @@ class DashboardModel(unittest.TestCase):
             "date": "2026-11-17",
             "evidence": "Synthetic validation fixture",
         }
-        all_ids = [f"P00-{i:02}" for i in range(1, 11)]
+        all_ids = re.findall(
+            r"^\| (P00-\d{2}) \|", (self.root / "docs/phases/phase-00.md").read_text(), re.M
+        )
         for identifier in all_ids:
             self.progress["requirements"][identifier] = {"status": "accepted", "acceptance": proof}
         record = dict(self.progress["work_items"][0])
@@ -173,3 +182,18 @@ class DashboardModel(unittest.TestCase):
         (self.root / "docs/phases/phase-17.md").unlink()
         with self.assertRaisesRegex(ValueError, "design validation"):
             self.model()
+
+    def test_shared_preparation_does_not_start_future_phase_execution(self):
+        for kind in ("design", "implementation"):
+            work = dict(self.progress["work_items"][0])
+            work.update(id=f"PREPARATION-{kind}", kind=kind, requirements=["P05-01", "P10-01"])
+            self.progress["work_items"].append(work)
+        data = self.model()
+        self.assertEqual(data["phases"][5]["status"], "planned")
+        self.assertEqual(data["phases"][10]["status"], "planned")
+        self.assertEqual(data["phases"][5]["steps"][0]["status"], "planned")
+        self.progress["requirements"]["P05-01"] = {
+            "status": "in_progress",
+            "note": "Synthetic explicit execution fixture",
+        }
+        self.assertEqual(self.model()["phases"][5]["status"], "in_progress")

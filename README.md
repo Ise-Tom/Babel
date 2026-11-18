@@ -52,7 +52,7 @@ Open PR proposals remain separate from main-branch totals. It remains available 
 
 The [dashboard guide](docs/project-dashboard.md) explains how to build/open the
 portable phase board, inspect implementation evidence and maintain progress facts.
-It covers all 18 phases, 180 current requirements, feature associations, completed increments
+It covers all 18 phases, the current canonical requirements, feature associations, completed increments
 and problems/resolutions. It is a read-only engineering report, not the planned
 directory administration console or a live production/GitHub status service.
 

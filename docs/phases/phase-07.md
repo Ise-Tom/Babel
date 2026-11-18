@@ -30,16 +30,34 @@ marked provisional require a reviewed ADR before their feature's production rele
 
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
-| P07-01 | Provide secure passkey/hardware-key enrollment and recovery for privileged access. | Origin/replay/unauthorized enrollment tests fail; multiple factors, replacement and recovery are audited with no SMS-only Tier 0 bypass. |
+| P07-01 | Secure privileged passkey/hardware-key enrollment. | Origin/replay/unauthorized enrollment fails; factors bind to intended identities with audited registration. |
 | P07-02 | Implement time-bounded just-in-time/just-enough privileges. | Grant expiry remains enforced after worker restart; tests cover nested groups, stale sessions/tickets and delayed replication with declared limits. |
 | P07-03 | Separate requester/approver/executor for high-risk actions. | UI/API/bulk operations reject self-approval and scope substitution; signed-off target/content changes require reapproval. |
-| P07-04 | Provide scoped managed Windows/Linux service and local-admin credential lifecycles. | Qualified LAPS/gMSA/keytab retrieval, rotation, offline behavior and denied readers pass; secrets never appear in logs or broad inventory. |
+| P07-04 | Provide scoped managed service credential lifecycles. | Qualified gMSA/keytab retrieval, rotation and offline/reconnect behavior work on Windows/Linux services; unauthorized readers and secret logging fail. |
 | P07-05 | Implement hardened password/self-service and lifecycle workflows. | Spray, enumeration, recovery impersonation and unauthorized reset/group request tests fail; breach checks do not export raw passwords. |
-| P07-06 | Provide effective-permission and privilege-path views with access reviews. | Results match actual ACL/trust/nested-group decisions; unauthorized viewers cannot enumerate protected relationships. |
-| P07-07 | Govern GPO changes through diffs, preview, approval and staged OU rollout. | Version/SYSVOL consistency, out-of-band edits and resultant-policy comparisons are validated; revert restores real client behavior. |
+| P07-06 | Provide effective-permission and privilege-path views. | Displayed paths match ACL/trust/group decisions without exposing protected relationships to unauthorized viewers. |
+| P07-07 | Govern GPO changes through diffs, preview and approval. | Approved content/scope matches committed policy; out-of-band edits and directory/SYSVOL conflicts are detected. |
 | P07-08 | Provide monitored break-glass and privileged-workstation guidance. | A rehearsed IdP/provider outage preserves audited emergency access with separate custody and post-use rotation, without permanent hidden bypass. |
-| P07-09 | Enforce exception ownership, expiration and accessible policy workflows. | Expired grants/exceptions fail closed; keyboard/screen-reader and policy-simulation journeys include safe bulk-change previews. |
+| P07-09 | Enforce exception ownership and expiration. | Expired/unowned grants and exceptions fail closed with visible review and renewal decisions. |
 | P07-10 | Qualify advanced privilege features without weakening baseline defaults. | Negative/auth-strength/latency/recovery evidence covers selected feature IDs and mixed load; new security service failures cannot silently bypass MFA. |
+| P07-11 | Secure factor replacement and privileged recovery. | Lost-factor/replacement and impersonation cases pass without SMS-only Tier 0 or hidden permanent bypass. |
+| P07-12 | Provide scoped local-administrator credential retrieval and rotation. | LAPS/platform-equivalent retrieval, rotation and offline recovery respect device/reader boundaries and redact secret material. |
+| P07-13 | Implement access-review decisions and effective revocation. | Owned reviews produce auditable retain/remove decisions and verify grant removal including stale sessions and replication limits. |
+| P07-14 | Stage GPO rollout by OU and verify actual client revert. | Pilot/target resultant policy is measured; failures pause expansion and revert restores real client behavior. |
+| P07-15 | Qualify accessible privileged policy workflows and bulk simulation. | Keyboard/screen-reader users can preview, approve and diagnose exact-scope changes without hidden omission or unsafe defaults. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P07-01`: separately verify `P07-11`.
+- `P07-04`: separately verify `P07-12`.
+- `P07-06`: separately verify `P07-13`.
+- `P07-07`: separately verify `P07-14`.
+- `P07-09`: separately verify `P07-15`.
 
 ## Evidence and exit
 

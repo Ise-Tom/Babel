@@ -31,15 +31,31 @@ marked provisional require a reviewed ADR before their feature's production rele
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
 | P17-01 | Run the combined supported-endpoint and directory workload. | Reports identify real versus simulated endpoints/sessions, platform counts, traffic mix and exact build/rule versions; all individual contracts remain satisfied. |
-| P17-02 | Qualify aggregate concurrency, latency and resource budgets. | 50 desktop/100 terminal/250 transfer and EDR steady/burst profiles publish CPU/RAM/disk/IOPS/network/retention sizing, cost and endpoint overhead. |
+| P17-02 | Qualify aggregate session/transfer/telemetry concurrency and latency. | 50 desktop/100 terminal/250 transfer plus EDR steady/burst profiles report achieved rates and failures under the combined mix. |
 | P17-03 | Preserve authentication/replication SLOs under endpoint pressure. | Telemetry floods, relay misses, large transfers and reconnect storms cannot starve core directory services within approved resource isolation limits. |
-| P17-04 | Recover from site/provider/control-plane failures. | 24-hour partition, clock/DNS faults, full disks, expired issuers and 10k reconnect preserve authorization, bounded queues and truthful unknown state. |
+| P17-04 | Recover from site/provider/control-plane loss. | A 24-hour partition and provider loss retain declared degraded operation and truthful unknown/offline state. |
 | P17-05 | Reconcile pending/partial operations after backup/upgrade recovery. | Actual endpoint patch/file/isolation/session states are verified before replay; duplicate, cancelled and expired jobs cannot gain fresh authority. |
 | P17-06 | Exercise cross-module privilege and compromise boundaries independently. | Support/upload/patch/EDR roles cannot exchange execution authority; external review includes enrollment, brokers, privileged executors, signing and recovery. |
 | P17-07 | Rehearse emergency stop and fleet trust recovery. | Stop dispatch, revoke/rotate identities and rules, inspect queues and reenroll through an independent rescue path; offline stop limits and irreversible actions are explicit. |
-| P17-08 | Qualify privacy and usability for real operator workflows. | Notice/consent/recording/evidence retention and accessible triage/patch/support journeys pass; missing data cannot appear as healthy/compliant. |
-| P17-09 | Release immutable versioned endpoint services and agents safely. | Signed artifacts, SBOM/provenance, staged agent upgrades/version skew and supported Linux/Windows packages pass with defined rollback/forward-recovery. |
+| P17-08 | Qualify cross-module privacy and consent. | Notice/recording/consent/evidence retention agree across services; missing data cannot appear healthy/compliant. |
+| P17-09 | Build immutable signed service and agent releases. | Artifact digests, SBOM/provenance and supported Linux/Windows package identities resolve to tested reviewed source. |
 | P17-10 | Publish final endpoint service readiness and ownership. | All PATCH/REMOTE/FILE/EDR and selected security gates have current evidence, operator/support owners and known limits; no unrun acceptance is labeled production ready. |
+| P17-11 | Ratify joint capacity, retention, cost and endpoint overhead. | Measured CPU/RAM/disk/IOPS/network, retention and endpoint budgets include every module and exact hardware/provider/cost assumptions. |
+| P17-12 | Recover from clock/DNS/disk/issuer faults and reconnect storms. | Skew, DNS loss, full disks, expired issuers and 10k reconnect preserve authorization and bounded queues without duplicate authority. |
+| P17-13 | Qualify accessible operator triage/patch/support workflows. | Representative users complete cross-module journeys with correct permissions, uncertainty and safe recovery actions. |
+| P17-14 | Qualify staged upgrades, version skew and release recovery. | Actual mixed-version endpoints preserve job/session/telemetry semantics, pause unsafe rollouts and recover by defined paths. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P17-02`: separately verify `P17-11`.
+- `P17-04`: separately verify `P17-12`.
+- `P17-08`: separately verify `P17-13`.
+- `P17-09`: separately verify `P17-14`.
 
 ## Evidence and exit
 

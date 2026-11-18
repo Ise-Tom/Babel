@@ -12,7 +12,7 @@ Requirement and task counts follow the scope of each phase; they have no fixed
 quota and need not be equal or sequential. Stable IDs are retained when adding or
 splitting work. Independent tasks can proceed in parallel once their entry
 dependencies are met; phase numbering does not impose a single execution chain.
-The current 180 phase requirements refine and trace all 130 existing global/catalog IDs.
+The phase requirements refine and trace all 130 existing global/catalog IDs.
 A trace link is not a claim of delivery. Existing security/patch/endpoint catalogs
 remain normative capability contracts; phase specifications define their design
 and delivery gates. No requirement may be silently dropped to pass a milestone.
@@ -61,3 +61,17 @@ The documents remain reviewable even when those decisions require experiments.
 Use [architecture](../architecture.md) for shared boundaries, [requirements](../requirements.md)
 for normative baselines, [threat model](../threat-model.md) for attackers/trust,
 and [validation plan](../validation-plan.md) for required executable evidence.
+
+## Requirement granularity and phase activity
+
+The original ten-row template bundled independently testable obligations. Those
+rows are now refined in each phase's **Requirement refinement** section: existing
+IDs retain their named primary obligation and new stable IDs carry the split
+acceptance cases. The accepted P00-08/P00-09/P01-01/P01-10 scopes are unchanged.
+Counts come from the actual canonical rows and currently range from 12 to 24;
+counts are not effort estimates and are not a target for future changes.
+
+Shared licensing, CI and source-prerelease preparation may relate to later phases
+without starting their execution. Only explicitly active/accepted requirements
+start a phase; linked work records alone do not. Whole-phase acceptance still
+requires all current requirements plus separate phase-exit approval.

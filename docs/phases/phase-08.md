@@ -30,16 +30,38 @@ marked provisional require a reviewed ADR before their feature's production rele
 
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
-| P08-01 | Qualify certificate/smart-card authentication and enrollment profiles. | Real supported clients pass valid mapping/rotation and reject invalid templates, SAN escalation, expired/revoked certificates and weak mappings. |
-| P08-02 | Provide secure federation/provisioning connectors with scoped authority. | Issuer/audience, nonce/state/PKCE where applicable, malicious attributes, duplicate events and cross-organization mix-ups are tested; unknown claims grant no privilege. |
-| P08-03 | Integrate device posture and network-access policies with clear freshness. | Spoofed/stale/missing posture and provider outage behavior match approved policy; no raw posture flag grants Tier 0 membership. |
-| P08-04 | Maintain certificate/key/trust inventory and renewal visibility. | Expiry forecasting, safe overlap, CA/CRL/OCSP failure and renewal tests produce accurate status without disabling verification. |
-| P08-05 | Implement structured protected audit export and investigation timelines. | Schema/version/provenance, gap detection, redaction and denied-reader tests pass; root-controlled local files are not claimed tamper-proof. |
+| P08-01 | Qualify certificate/smart-card authentication and mapping. | Supported clients validate mapping/rotation and reject expired/revoked credentials, weak mappings and unintended identities. |
+| P08-02 | Provide scoped federation authentication connectors. | Issuer/audience, nonce/state/PKCE and organization-confusion cases preserve intended identity/audience. |
+| P08-03 | Integrate device-posture observations with explicit freshness. | Spoofed/stale/missing inputs show known/unknown state; raw posture cannot grant Tier 0 membership. |
+| P08-04 | Maintain certificate/key/trust inventory and renewal visibility. | Expiry forecasting and safe overlap report exact owned keys/providers and accurate next actions. |
+| P08-05 | Implement structured protected audit export. | Versioned schema, redaction and reader authorization pass; collector loss and local root-trust limits remain explicit. |
 | P08-06 | Develop labeled directory/credential/trust/GPO detection scenarios. | Versioned fixtures measure expected alerts and false positives; missing endpoint signals/forged ticket limits are disclosed. |
 | P08-07 | Provide safe canary identities and replayable detection-rule tests. | Decoys have no real privilege, trigger approved handling and cannot be accidentally promoted into normal production accounts. |
-| P08-08 | Provide privacy-scoped search/export and retention controls. | LDAP/UI/API attribute denials, purpose-scoped exports, deletion/hold and residency policy tests pass without breaking required discovery. |
+| P08-08 | Provide purpose-scoped private search/export. | LDAP/UI/API attribute denials and scoped export prevent unauthorized collection while retaining required discovery. |
 | P08-09 | Define organization isolation and external integration boundaries. | Independent deployment/forest boundaries are documented; shared writable DCs are never sold as hostile-tenant isolation based only on UI roles. |
-| P08-10 | Qualify module cost, observability and accessible posture reporting. | Reports show freshness, unsupported/unknown state, rule quality, provider dependencies and mixed-load overhead; a module outage does not stop core domain auth. |
+| P08-10 | Qualify module resource cost and observability. | Mixed-load/provider measurements expose overhead and prevent module outages from stopping core authentication. |
+| P08-11 | Qualify enrollment templates and issuance authorization. | Real providers/clients reject template/SAN escalation and unauthorized key/subject changes in enrollment and renewal. |
+| P08-12 | Provide scoped provisioning and idempotent lifecycle mapping. | Malicious attributes, duplicate/reordered events and unavailable providers cannot grant privilege or corrupt identity lifecycle. |
+| P08-13 | Qualify network-access decisions and provider-loss behavior. | Allowed/denied access follows scoped fresh inputs and tested failure policy without silently admitting devices on dependency failure. |
+| P08-14 | Handle CA/CRL/OCSP outage and expiry conservatively. | Revocation-provider loss and stale responses have declared per-operation behavior without disabling trust verification. |
+| P08-15 | Build investigation timelines with provenance and gap detection. | Clock/reorder/duplicate/source gaps remain visible; absent observations cannot produce an apparently complete timeline. |
+| P08-16 | Enforce retention, deletion/hold and residency policy. | Expiry, holds, deletion and region boundaries preserve authorized evidence without indefinite unnecessary identity-data storage. |
+| P08-17 | Provide accessible posture and detection-quality reporting. | Reports expose freshness, unknown/unsupported state and rule quality through accessible operator workflows rather than healthy-by-default gaps. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P08-01`: separately verify `P08-11`.
+- `P08-02`: separately verify `P08-12`.
+- `P08-03`: separately verify `P08-13`.
+- `P08-04`: separately verify `P08-14`.
+- `P08-05`: separately verify `P08-15`.
+- `P08-08`: separately verify `P08-16`.
+- `P08-10`: separately verify `P08-17`.
 
 ## Evidence and exit
 

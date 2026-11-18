@@ -32,14 +32,34 @@ marked provisional require a reviewed ADR before their feature's production rele
 | --- | --- | --- |
 | P12-01 | Approve exact targets, content and risk before scheduling. | Changing membership/digest/privileged scope requires reapproval; self-approval, cross-group API calls and stale authorization fail. |
 | P12-02 | Implement gated canary/pilot/production rings. | Bad patch/health/error-rate fixtures pause later rings; missing report coverage cannot count as promotion success. |
-| P12-03 | Enforce maintenance/deadline/reboot policy with user notice. | DST/time-zone, sleep/offline devices, active sessions, grace/deferral and forced reboot scenarios match explicit approved policy. |
-| P12-04 | Run disk/power/prerequisite/lock and application-health preflight. | Blocked devices are reported separately; competing native transactions and unsupported reboot suppression are not overridden silently. |
-| P12-05 | Deliver verified packages through throttled resumable site caches. | Vendor signatures plus approved digests survive retries/proxies; tamper, replay, incomplete files and quota failures block installation. |
-| P12-06 | Revalidate typed job authority immediately before privileged execution. | Expired/cancelled jobs cannot run after reconnect; duplicate IDs and lost replies cannot cause repeated install or arbitrary command execution. |
-| P12-07 | Verify actual installation, reboot and post-patch health. | Native version/state and health checks confirm remediation; exit zero, downloaded content or offline silence alone never counts as verified. |
+| P12-03 | Implement maintenance scheduling and user notice. | Time-zone/DST, sleep/offline and active-session cases follow approved schedules with visible grace/deferral notices. |
+| P12-04 | Run disk/power and package-prerequisite preflight. | Insufficient capacity/power or missing dependencies block the device with actionable state rather than unsafe installation. |
+| P12-05 | Verify approved package/vendor/content authenticity. | Signatures and approved digests reject tamper, replay and incomplete payloads before privileged installation. |
+| P12-06 | Revalidate typed job authority before privileged execution. | Expired/cancelled/wrong-scope jobs cannot run after reconnect; no arbitrary command authority is exposed. |
+| P12-07 | Verify actual native installation state. | Native versions/receipts confirm remediation; exit zero, downloaded bytes or offline silence cannot qualify success. |
 | P12-08 | Provide update-class-specific failure recovery. | Uninstall works where supported; irreversible kernel/application/state changes follow tested restore/reimage/forward-fix with recorded limitations. |
-| P12-09 | Provide emergency prioritization and controlled overrides. | Known-exploited/exposed asset priority is explainable; override scope, expiry, independent approval and audit prevent unlimited emergency privilege. |
+| P12-09 | Prioritize emergency remediation by explainable exposure. | Known-exploited/exposed assets receive transparent priority without changing approved target/content authority. |
 | P12-10 | Protect identity-service availability during server patching. | A controller rollout cannot reboot all site DCs together; induced auth/replication health failure pauses and recovers the campaign. |
+| P12-11 | Enforce reboot, deadline and deferral policy. | Native reboot/deadline/forced-restart cases match explicit policy; unsupported reboot suppression is never silently asserted. |
+| P12-12 | Check competing native transactions and application health. | Native locks and unhealthy application conditions remain visible; no racing update authority or silent unsupported override. |
+| P12-13 | Distribute bounded resumable/throttled packages through site caches. | Retries/proxies, connection loss, quotas and hit/miss paths preserve content integrity within declared bandwidth limits. |
+| P12-14 | Make installation retries and lost replies idempotent. | Duplicate IDs, ambiguous responses and restarts reconcile durable native results without repeated unauthorized installation. |
+| P12-15 | Verify post-reboot/application health before campaign success. | Required restart is observed and service checks pass; pending reboot or unhealthy applications remain unverified/failed. |
+| P12-16 | Control emergency overrides through scope, expiry and approval. | Independent approval and audit prevent emergency status from granting unlimited/permanent installation privilege. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P12-03`: separately verify `P12-11`.
+- `P12-04`: separately verify `P12-12`.
+- `P12-05`: separately verify `P12-13`.
+- `P12-06`: separately verify `P12-14`.
+- `P12-07`: separately verify `P12-15`.
+- `P12-09`: separately verify `P12-16`.
 
 ## Evidence and exit
 

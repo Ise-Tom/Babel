@@ -31,15 +31,33 @@ marked provisional require a reviewed ADR before their feature's production rele
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
 | P11-01 | Define a supported endpoint/agent/application update matrix. | Exact Windows editions/builds, Linux releases/architectures and selected third-party products have native-engine feasibility and licensing evidence. |
-| P11-02 | Enroll agents with unique revocable mutual authentication. | Replay/cloned tokens, wrong device identities and revoked certificates fail; enrollment/rotation/rescue are audited without embedded domain-admin secrets. |
-| P11-03 | Collect trustworthy bounded hardware/software/update inventory. | Compare actual OS/native package tools and reboot state; missing/stale/unknown/unsupported observations remain distinguishable. |
-| P11-04 | Build an authenticated applicability/supersedence/dependency catalog. | Vendor signatures/backports/prerequisites and known-issue fixtures yield correct applicable/not-applicable results beyond version-string matching. |
+| P11-02 | Enroll agents with unique authenticated device identity. | Wrong identities, cloned/replayed tokens and unauthorized enrollment fail without embedded domain-admin secrets. |
+| P11-03 | Collect bounded native hardware/software inventory. | Inventory matches actual OS/package tools; malformed/oversized payloads cannot exhaust endpoint or controller resources. |
+| P11-04 | Authenticate update applicability and native backport/version rules. | Vendor signatures and native version/backport fixtures yield correct applicability beyond string matching. |
 | P11-05 | Maintain explicit dynamic-target attributes and provenance. | Approved device/OU/tag mappings resist spoofed inventory and unauthorized cross-group changes; hostname reuse does not inherit device authority. |
 | P11-06 | Detect competing update authorities and unsupported endpoints. | WSUS/Intune/native locks and EOL products surface actionable conflicts; the service does not race another manager into unsupported state. |
 | P11-07 | Separate agent communication and privileged action boundaries. | A malicious inventory payload cannot execute a command, read arbitrary files or gain package-install/EDR/support rights. |
-| P11-08 | Design authenticated content staging/site caching. | Poisoned cache/metadata, wrong recipient and signature failures are rejected; relay possession of payload never authorizes installation. |
-| P11-09 | Set inventory privacy, retention and capacity budgets. | Fields/roles/retention are documented; 10k fleet simulation plus representative real endpoints reports freshness, resource and storage overhead. |
+| P11-08 | Design authenticated content staging. | Source/recipient/signature/digest and partial-content checks reject tamper before distribution. |
+| P11-09 | Define inventory privacy, access and retention. | Fields, reader roles and expiry are documented and tested against unauthorized collection/export. |
 | P11-10 | Deliver a recoverable Linux-hosted management foundation. | Controller/agent restart, certificate expiry and provider outage preserve device identity and show stale state without affecting domain login. |
+| P11-11 | Rotate, revoke and rescue device enrollment credentials. | Real certificate rotation/revocation/recovery preserve identity and audited custody without accepting stale authority. |
+| P11-12 | Report inventory freshness, reboot and unsupported observations. | Missing/stale/unknown/unsupported states stay distinct; reboot/pending transaction status agrees with native endpoint reality. |
+| P11-13 | Resolve update supersedence, prerequisites and dependencies. | Conflicting/superseded/prerequisite/known-issue fixtures select supported remediation order and reject unsafe combinations. |
+| P11-14 | Qualify site caching and relay authority separation. | Poisoned metadata, eviction/retry and recipient tests retain verification; holding payload never authorizes installation. |
+| P11-15 | Budget inventory/controller/agent capacity and freshness. | 10k simulation plus representative real devices reports resource/storage overhead and truthful freshness denominators. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P11-02`: separately verify `P11-11`.
+- `P11-03`: separately verify `P11-12`.
+- `P11-04`: separately verify `P11-13`.
+- `P11-08`: separately verify `P11-14`.
+- `P11-09`: separately verify `P11-15`.
 
 ## Evidence and exit
 

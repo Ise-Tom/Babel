@@ -132,12 +132,13 @@ test('deep links, back navigation and expand/collapse remain usable', async ({ p
 });
 
 test('export contains the complete snapshot and works without network', async ({ page }) => {
+  const facts = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
   const requests: string[] = []; page.on('request', request => { if (request.url().startsWith('http')) requests.push(request.url()); });
   await page.context().setOffline(true);
   const downloaded = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export JSON' }).click();
   const download = await downloaded; const path = await download.path(); if (!path) throw new Error('Missing exported file');
   const data = JSON.parse(await readFile(path, 'utf8')) as Board;
-  expect(data.phases).toHaveLength(18); expect(data.phases.flatMap(item => item.steps)).toHaveLength(180);
+  expect(data.phases).toHaveLength(18); expect(data.phases.flatMap(item => item.steps)).toHaveLength(facts.phases.flatMap(item => item.steps).length);
   expect(data.features).toHaveLength(130); expect(requests).toEqual([]);
 });
 
@@ -174,7 +175,8 @@ test('unequal phase sizes render their own acceptance counts and requirement lis
   if (!small || !large || !large.steps[0]) throw new Error('Missing fixture phases');
   small.steps = small.steps.slice(0, 3);
   const template = large.steps[0];
-  large.steps.push(...[11, 12, 42].map(id => ({ ...template, id: `P01-${id}`, status: 'planned' as const, acceptance: null })));
+  large.steps = large.steps.slice(0, 10);
+  large.steps.push(...[41, 42, 43].map(id => ({ ...template, id: `P01-${id}`, status: 'planned' as const, acceptance: null })));
   await page.setContent(await htmlFor(data));
   await expect(page.getByTestId('phase-card-0')).toContainText(`${small.steps.filter(s => s.status === 'accepted').length}/3 accepted`);
   await expect(page.getByTestId('phase-card-1')).toContainText(`${large.steps.filter(s => s.status === 'accepted').length}/13 accepted`);
@@ -182,4 +184,18 @@ test('unequal phase sizes render their own acceptance counts and requirement lis
   await phase(page, 1); await expect(page.locator('.requirement')).toHaveCount(13);
   await page.getByRole('button', { name: 'Expand all', exact: true }).click();
   await expect(page.locator('.requirement[open]')).toHaveCount(13);
+});
+
+test('shared future-phase preparation stays planned and activity counts are explicit', async ({ page }) => {
+  const facts = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  await expect(page.locator('.stat').nth(1).locator('strong')).toHaveText('2');
+  for (const id of [5, 10]) {
+    await expect(page.getByTestId(`phase-card-${id}`).locator('.badge')).toHaveText('Planned');
+    await expect(page.getByTestId(`phase-card-${id}`)).toContainText('related records');
+  }
+  expect(new Set(facts.phases.map(item => item.steps.length)).size).toBeGreaterThan(1);
+  await phase(page, 5);
+  const planned = page.getByTestId('P05-02');
+  await planned.locator(':scope > summary').click();
+  await expect(planned).toContainText('This requirement remains planned');
 });

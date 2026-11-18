@@ -94,3 +94,11 @@ linked scopes in this conversation. These are design/tooling acceptances: all 60
 conformance cases remain unrun and capacity/SLOs unmeasured. Other Phase 0
 requirements and whole-phase acceptance remain outstanding. The dashboard records
 reviewer/date, pinned implementation/proposal evidence and these limits.
+
+## Requirement refinement
+
+The canonical phase now separates functional-level selection (P00-11), exact
+platform profiles (P00-12), TLS/Kerberos/storage dependency review (P00-13–P00-15),
+specification/fixture rights (P00-16) and intake/backup response exercise (P00-17).
+These were bundled into P00-01/P00-04/P00-06/P00-07. Their separate acceptance
+obligations remain unqualified; the two explicitly accepted scopes above are unchanged.

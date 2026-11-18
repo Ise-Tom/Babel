@@ -31,15 +31,29 @@ marked provisional require a reviewed ADR before their feature's production rele
 | ID | Requirement | Verification / acceptance evidence |
 | --- | --- | --- |
 | P13-01 | Qualify real OS/application remediation plus large-fleet orchestration. | Publish exact platform/device counts and real versus simulated roles; containers/simulators cannot replace native install/reboot evidence. |
-| P13-02 | Meet freshness/ack targets with transparent denominators. | Connected/stale/offline/unsupported categories are explicit; p95 ack and >=99% inventory targets exclude neither unexplained failures nor hidden missing agents. |
+| P13-02 | Meet inventory freshness with transparent denominators. | Connected/stale/offline/unsupported categories stay explicit; >=99% targets cannot hide unexplained failures or missing agents. |
 | P13-03 | Bound reconnect storms, work queues and retries. | 10k-agent recovery after controller/site outage preserves authorization/cancellation, avoids duplicate installs and publishes convergence and queue metrics. |
 | P13-04 | Budget payload bandwidth and relay storage from real package sizes. | Transfer tests measure cache hits/misses/eviction/retries under configured site limits; control API rate is not reported as distribution throughput. |
 | P13-05 | Produce truthful compliance/SLA and exception reports. | Missing/stale/offline/unverified/EOL devices cannot appear compliant; risk-based overdue time and exception expiry are reproducible from raw receipts. |
-| P13-06 | Provide delegated UI/API/CLI and ticket-system integrations. | Role/target/approval/audit behavior agrees across clients; connector outages and duplicate tickets cannot grant new execution rights. |
+| P13-06 | Provide delegated patch UI/API/CLI workflows. | Role/target/approval/audit behavior agrees across clients and rejects unauthorized scopes. |
 | P13-07 | Recover controller/relay state and interrupted upgrades safely. | Backups, expired certificates, full disks and process failures reconcile endpoint reality before resuming approved campaigns. |
 | P13-08 | Rehearse compromised-controller containment and recovery. | Stop dispatch, revoke/rotate trust, inspect queue/catalog, recover signing/enrollment and reinstall trusted agents through a documented rescue process. |
-| P13-09 | Qualify agent/controller version skew and secure upgrades. | Supported old/new combinations preserve identity and job semantics; staged signed-agent rollout pauses bad versions and retains recovery. |
+| P13-09 | Qualify agent/controller version skew. | Declared old/new combinations preserve identity, typed jobs/cancellation and truthful unsupported state. |
 | P13-10 | Release the patch service with owned operating limits. | Independent review, resource/storage/retention sizing, failure runbooks and mixed-load no-directory-SLO-regression evidence are approved before production. |
+| P13-11 | Measure job acknowledgment separately from execution. | p95 ack reports retain dropped/unexplained requests; controller acceptance is never verified endpoint remediation. |
+| P13-12 | Integrate ticket systems without granting execution authority. | Outages, duplicate tickets and replayed external events cannot widen permissions or report false completion. |
+| P13-13 | Roll out signed agent upgrades with pause and recovery. | Staged upgrades reject bad signatures, pause bad versions and retain tested rollback/forward-recovery. |
+
+## Requirement refinement
+
+Composite requirements were split by independent acceptance evidence. Original IDs
+retain the primary responsibility named in their row; additional IDs carry the
+other obligations from the earlier combined row. Scope is preserved and previously
+accepted IDs/scopes are unchanged. Refinement does not start or accept work.
+
+- `P13-02`: separately verify `P13-11`.
+- `P13-06`: separately verify `P13-12`.
+- `P13-09`: separately verify `P13-13`.
 
 ## Evidence and exit
 
