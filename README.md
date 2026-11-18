@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T09:07:37\+01:00.
+GitHub metadata checked: 2026-11-18T09:07:59\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#22 · Build Phase 0 compatibility evidence and focus problems on development](<https://github.com/Ise-Tom/Babel/pull/22>)
 
-**In review · Pending merge · CI: queued** · Head c8eac0a
+**In review · Pending merge · CI: in\_progress** · Head c8eac0a
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -65,9 +65,9 @@ GitHub metadata checked: 2026-11-18T09:07:37\+01:00.
     
     Phase 0 design now includes worked stable identity/authorization and replication/restore cases (ADR 0005), a dependency/rights and Tier 0 ownership register, a concrete mixed-load/fault/measurement contract, and schema/key/restore/scope governance. These documents identify unresolved specification interpretation and implementation gates; they do not claim a working domain controller, qualified AD replication or production durability.
     
-    Dashboard work records W32–W37 map implementation/design, verification, limitations and immutable source evidence to P00 requirements. Development problem IDs stay stable. Licensed Windows/Mac infrastructure, exact compatibility builds/cases, production dependencies, security response exercises and specification/rights qualification remain visible (I04/I05/I25–I28). GitHub hosting/billing/permission/approval setup history remains in operational docs/Git history instead of the problem list. Existing owner-accepted P01 scopes remain unchanged; no Phase 0 requirement or phase is auto-accepted.
+    Dashboard work records W32–W37 map implementation/design, verification, limitations and immutable source evidence to P00 requirements. Development problem IDs stay stable. Licensed Windows/Mac infrastructure, exact compatibility builds/cases, production dependencies, security response exercises and specification/rights qualification remain visible (I04/I05/I25–I28). GitHub hosting/billing/permission/approval setup history remains in operational docs/Git history instead of the problem list. Existing owner-accepted P01 scopes remain unchanged. The owner explicitly accepted P00-08 for the current version-1 schema/tooling and approved P00-09 for the workload/method on 18 November 2026; reviewer/date/pinned evidence and limits are recorded. No product conformance, capacity/SLO results or whole Phase 0 acceptance is implied.
     
-    Validation: 118 repository tests passed with 99% combined tooling coverage and 100% statement/branch coverage for the new validator; all 24 desktop/mobile browser checks and six dashboard build/security-lint checks passed. Strict types, Ruff, Bandit, actionlint, Zizmor, design/dashboard/lab integrity, component scope and local documentation links passed. Hosted CI for this PR is recorded separately after it runs.
+    Validation: 118 repository tests passed with 99% combined tooling coverage and 100% statement/branch coverage for the new validator; all 24 desktop/mobile browser checks and six dashboard build/security-lint checks passed. Strict types, Ruff, Bandit, actionlint, Zizmor, design/dashboard/lab integrity, component scope and local documentation links passed. Hosted CI for the current PR head is recorded separately after it runs.
     
     No merge, release/tag, new infrastructure purchase, Pages deployment or cloud-environment publication is performed by opening this PR. The existing GitHub report automation displays the PR proposals separately from main totals; the interactive Pages site changes after merge and successful main deployment.
 
