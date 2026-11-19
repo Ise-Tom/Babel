@@ -148,22 +148,29 @@
     "SEC-04": {
       "status": "prototype",
       "category": "experiment",
-      "scope": "Standalone Rustls/ring mutual-TLS qualification lab; no LDAP/SASL integration or production TLS selection.",
+      "scope": "Selected Linux/Rustls/ring provider/channel qualification profile complete for Phase 0 owner review. Bounded synthetic mutual TLS, CRL/replacement/exporter/fault controls are implemented; native LDAP/SASL/EPA and general production lifecycle are unqualified.",
       "implemented": [
         "Explicit trust root and mandatory certificate validation in a bounded TLS 1.2/1.3 lab",
         "Certificate identity/trust/time/purpose, obsolete-protocol and unapproved-cipher rejection tests",
-        "Independent OpenSSL probes, exporter prerequisites, malformed-record fuzzing and separate coverage gate"
+        "Independent OpenSSL probes, exporter prerequisites, malformed-record fuzzing and separate coverage gate",
+        "Expiry-enforcing direct-issuer leaf CRLs with revoked/unknown/bad-signature rejection",
+        "Observed in-process certificate replacement and rejected invalid candidates",
+        "Independent TLS 1.3 RFC 9266 exporter agreement and wrong/truncated/replay rejection",
+        "Failed entropy/clock/key-load/live-signer interfaces deny authentication"
       ],
       "missing": [
-        "LDAP/StartTLS and SASL/EPA channel-binding integration",
-        "Live certificate rotation/revocation and protected key/provider custody",
-        "Real Windows/Linux/macOS client and production fault/load qualification"
+        "Native LDAP/StartTLS, SASL/GSSAPI/EPA and tls-server-end-point integration",
+        "Protected product key/HSM/zeroization and owner/ancestor-safe provisioning",
+        "General revocation acquisition/freshness/rollback/OCSP/intermediate policy",
+        "Real Windows/Linux/macOS client, sustained load and independent production assessment"
       ],
       "work_items": [
-        "W42"
+        "W42",
+        "W57"
       ],
       "blockers": [
-        "I26"
+        "I26",
+        "I44"
       ],
       "acceptance": null
     },
