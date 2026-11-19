@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-19T15:23:51\+01:00.
+GitHub metadata checked: 2026-11-19T15:26:55\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#31 · Qualify Phase 0 TLS revocation, replacement, binding and provider failures](<https://github.com/Ise-Tom/Babel/pull/31>)
 
-**In review · Pending merge · CI: in\_progress** · Head e36bd53
+**In review · Pending merge · CI: success** · Head e36bd53
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
