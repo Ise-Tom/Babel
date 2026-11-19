@@ -70,3 +70,15 @@ controls, not proof of conformance/security. Independent assessments, real-clien
 negative tests, capacity faults and current recovery evidence gate production.
 The [validation plan](validation-plan.md) defines required results; the
 [decision register](decisions.md) names unresolved authority/infrastructure choices.
+
+
+## Complete Phase 0 ownership and misuse binding
+
+The [boundary contract](../lab/state-security-contract.json) now names Ise-Tom as
+current accountable development owner for eleven distinct boundaries and covers
+all T-01–T-20 threats with assets, concrete misuse, required denial/fault behavior,
+residual limits and canonical implementation gates. Required CI rejects missing
+owners, dropped threats/boundaries and false runtime/independent-review claims.
+This prepares the full [P00-07 review packet](validation/p00-07.md). Shared design
+coverage does not start later phases or secure an unimplemented module. Live
+security response, backup availability and production assessment remain separate.

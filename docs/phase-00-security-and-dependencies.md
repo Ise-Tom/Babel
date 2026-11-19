@@ -1,6 +1,7 @@
 # Phase 0 security ownership and dependency qualification
 
-Status: proposed process with explicit gaps, not an assessment or support promise.
+Status: full P00-07 boundary/threat/ownership design prepared for owner review;
+not an independent assessment or support promise.
 Current accountable development owner is **Ise-Tom**, the repository owner. The solo
 PR policy requires owner diff review plus CI; it does not claim independent review.
 No additional maintainer, security mailbox or private report exercise is invented.
@@ -68,7 +69,8 @@ qualification. See ADR 0006 for the reviewed permissive terms and exact boundary
 
 The project license is Apache-2.0 with DCO, as selected by the owner. The protocol
 matrix lists public reference locations **without copying specification text**;
-revision pins and specification-use rights are pending. Consult actual terms for
+exact revision/byte pins and a reference-use review are now recorded, while
+patent/program/image/fixture clearance remains unresolved. Consult actual terms for
 each selected Microsoft/RFC reference, redistributed fixtures, SDK/library and
 Windows image. This document is not a legal clearance or permission to redistribute
 licensed VM images. Keep public evidence synthetic and retain notices; do not
@@ -77,3 +79,17 @@ import another directory server's code/database as the native implementation.
 The complete [P00-06 contribution/redistribution register](licensing-and-redistribution.md)
 now records the existing owner decision, actual terms and enforced artifact handling.
 Its full Phase 0 criterion packet awaits owner validation; P00-16 remains separate.
+
+
+The [complete boundary register](../lab/state-security-contract.json) expands the
+summary table into eleven separately owned boundaries with all twenty threat IDs,
+assets/misuse/denial/fault/residual-risk and implementation-gate bindings. See the
+[full P00-07 criterion packet](validation/p00-07.md). Exact protocol reference
+editions and the remaining P00-16 rights gaps are recorded in the
+[reference-use review](reference-use-review.md); no image/patent grant is inferred.
+
+The [solo response-readiness proposal](security-response-readiness.md) documents
+intake, custody, owner absence and a future drill record. It proposes moving actual
+backup coverage/live escalation evidence to a mandatory supported-production gate.
+The original P00-17 and pre-preview policy remain in force pending owner agreement;
+no private report has been authorized or sent, and no operational gate is accepted.

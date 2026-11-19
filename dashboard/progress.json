@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "snapshot": {
-    "date": "2026-11-18",
-    "commit": "3437a860ba9967a5a1068ad5806e2bb3e274bd81",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44362669137",
+    "date": "2026-11-19",
+    "commit": "525ac7490b3208dff26073e01b72b086b49f8d8d",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44408618949",
     "ci_result": "passed",
     "checks_passed": 14,
     "pull_requests": [
@@ -126,9 +126,14 @@
         "number": 28,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 29,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Verified main baseline: PR #28 merged and 3437a86 passed CI. P00-10/P00-11 remain awaiting explicit owner validation. This PR completes the original P00-04/P00-06 foundation gates with pinned packets and actual compiler/binary/notice evidence. All five existing acceptance proofs are preserved; no AD/client or capacity acceptance is inferred."
+    "note": "Verified main baseline: PR #29 merged and 525ac74 passed all 14 CI jobs. This PR prepares full original P00-02/P00-03/P00-07 design gates for owner review, pins public references and records remaining use-rights/lab/crypto/response gaps. No new owner acceptance, native AD conformance or independent assessment is inferred."
   },
   "requirements": {
     "P00-01": {
@@ -136,12 +141,28 @@
       "note": "The protocol-operation inventory is drafted. Functional-level profile and exact platform pins now have separate P00-11/P00-12 acceptance; detailed positive/negative wire/control/error coverage remains unqualified."
     },
     "P00-02": {
-      "status": "in_progress",
-      "note": "ADR 0005 specifies stable identity, authorization order and worked rename/collision/revocation/group cases. Native identity/ACL behavior and specification/reference review remain unqualified."
+      "status": "ready_for_validation",
+      "note": "Nine worked local cases cover GUID/domain SID rules, schema/matching and collisions, ordered ACLs and asynchronous inheritance, nested groups/token freshness, locally serialized revocation and durable receipts. Actual readable ADTS/DRSR/DTYP sections are bound by edition/raw digest/heading. The full original Phase 0 design gate is prepared; explicit owner validation is pending. Native directory/ACL implementation is not claimed.",
+      "validation": {
+        "scope": "Full original P00-02 Phase 0 Identity/schema/authorization/local commit design gate; no native AD behavior, independent production assessment or whole-phase acceptance.",
+        "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
+        "packet": {
+          "path": "docs/validation/p00-02.md",
+          "label": "P00-02 full criterion packet"
+        }
+      }
     },
     "P00-03": {
-      "status": "in_progress",
-      "note": "ADR 0005 works through attribute/link conflicts, partitions, cursor commits, tombstones, RID authority and restore quarantine. Exact AD algorithms/reference outcomes and native replication remain unimplemented."
+      "status": "ready_for_validation",
+      "note": "Eleven worked cases specify independent updates, version wrap/half-range, little-endian GUIDs, separate link lifetimes and naming conflicts, lifecycle repair, progress commits, invocation epochs, retention and RID authority. Exact ADTS/DRSR sections are pinned; no disk format is frozen. The full original Phase 0 design gate is prepared; explicit owner validation is pending. Native replication/reference/fault evidence remains unrun.",
+      "validation": {
+        "scope": "Full original P00-03 Phase 0 Replication/versioning/conflict/restore epoch design gate; no native AD behavior, independent production assessment or whole-phase acceptance.",
+        "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
+        "packet": {
+          "path": "docs/validation/p00-03.md",
+          "label": "P00-03 full criterion packet"
+        }
+      }
     },
     "P00-04": {
       "status": "ready_for_validation",
@@ -172,8 +193,16 @@
       }
     },
     "P00-07": {
-      "status": "in_progress",
-      "note": "Ise-Tom and Tier 0 threat/review boundaries are documented; their security design is not independently assessed. Intake and backup response exercises now have separate P00-17 acceptance."
+      "status": "ready_for_validation",
+      "note": "Eleven separately owned trust boundaries map all twenty threats to assets, misuse, denial/fault behavior, residual risk and canonical implementation gates. CI rejects missing owners or false runtime/independent-assessment claims. The full original Phase 0 design gate is prepared; explicit owner validation is pending. No second reviewer, operational backup or successful private drill is invented; P00-17 remains separate.",
+      "validation": {
+        "scope": "Full original P00-07 Phase 0 Tier 0 boundary/threat/ownership design gate; no native AD behavior, independent production assessment or whole-phase acceptance.",
+        "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
+        "packet": {
+          "path": "docs/validation/p00-07.md",
+          "label": "P00-07 full criterion packet"
+        }
+      }
     },
     "P00-08": {
       "status": "accepted",
@@ -275,6 +304,18 @@
           "label": "P00-11 full criterion packet"
         }
       }
+    },
+    "P00-12": {
+      "status": "blocked",
+      "note": "Exact Windows/Linux/macOS profiles cannot qualify without the selected licensed hosts/images and actual patched OS/build/package/architecture identifiers. Profile templates are not pinned acquisitions; no image was purchased, downloaded or provisioned. This is an external lab prerequisite, not passing client evidence."
+    },
+    "P00-16": {
+      "status": "in_progress",
+      "note": "Thirteen actual public document editions now have publisher URLs, byte hashes, notice identity and reference-only dispositions; 58 state-design headings were verified against readable editions. Corrected the invalid DFS-R reference to MS-FRS2 and added MS-DTYP. External image/fixture uses remain denied without explicit rights. Concrete patent/program/image clearance remains unresolved; this is not blanket legal approval."
+    },
+    "P00-17": {
+      "status": "in_progress",
+      "note": "Documented solo intake, private custody, triage/disclosure, owner absence and an explicit scheduling proposal. A read-only 19 November check reports private reporting enabled; receipt/notification/escalation are untested. The current live-drill and actual-backup gate is unchanged and unmet. Proposed pre-production scheduling awaits owner agreement; no private report was authorized or sent."
     }
   },
   "phase_acceptance": {},
@@ -2278,6 +2319,197 @@
         "I39",
         "I40"
       ]
+    },
+    {
+      "id": "W52",
+      "title": "Complete identity, schema, authorization and local commit design",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-02"
+      ],
+      "how": "Replaced ambiguous draft invariants with nine original worked cases against actual pinned ADTS/DRSR/DTYP editions. Distinguished GUID from domain-move SID changes, local uniqueness from replica name repair, ordered object/attribute/control checks, move-parent rights, hidden filter attributes, asynchronous inheritance, group/GC/token freshness and durable reauthorized receipts.",
+      "verification": "196 repository tests pass at 99% combined statement/branch coverage. The new checker has 99% coverage and exercises missing-case/owner/source/rights/runtime denials. Actual public bytes for 13 document editions and all 58 referenced section headings were checked locally; required CI validates committed source bindings offline.",
+      "limitations": "Full original P00-02 design gate prepared for owner validation; this does not implement or qualify native GUID/SID/schema/matching/ACL/token behavior. Inheritance, existing PAC and cross-site freshness are not instantaneous revocation promises. All 60 client cases remain unrun.",
+      "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
+      "sources": [
+        {
+          "path": "docs/validation/p00-02.md",
+          "label": "p00-02.md"
+        },
+        {
+          "path": "docs/adr/0005-directory-and-replication-invariants.md",
+          "label": "0005-directory-and-replication-invariants.md"
+        },
+        {
+          "path": "lab/state-security-contract.json",
+          "label": "state-security-contract.json"
+        },
+        {
+          "path": "scripts/check_state_security.py",
+          "label": "check_state_security.py"
+        },
+        {
+          "path": "tests/test_state_security.py",
+          "label": "test_state_security.py"
+        }
+      ],
+      "problems": [
+        "I41"
+      ]
+    },
+    {
+      "id": "W53",
+      "title": "Complete source-pinned replication, conflicts and restore epoch design",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-03"
+      ],
+      "how": "Specified eleven worked cases for per-attribute origin/local progress, modular version comparison, little-endian GUID ordering, distinct link lifetimes, timestamp/object-GUID naming conflicts, deletion repair, safe response/cycle progress, invocation epochs, stale-retention quarantine and RID authority. The disk format remains unfrozen.",
+      "verification": "The selected ADTS/DRSR/DTYP PDF bytes and exact section headings were inspected and checked. Required consistency checks reject lost cases, stale heading hashes and invented passing outcomes; 196 repository tests pass. Attribute, link and naming rules are expressly distinct rather than an unqualified generic comparator.",
+      "limitations": "Full original P00-03 design gate prepared for owner validation. No native DRS comparator, convergent multi-DC service, Windows observation, VM-generation detection, clean-domain recovery or RID seizure is implemented or accepted.",
+      "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
+      "sources": [
+        {
+          "path": "docs/validation/p00-03.md",
+          "label": "p00-03.md"
+        },
+        {
+          "path": "docs/adr/0005-directory-and-replication-invariants.md",
+          "label": "0005-directory-and-replication-invariants.md"
+        },
+        {
+          "path": "lab/state-security-contract.json",
+          "label": "state-security-contract.json"
+        },
+        {
+          "path": "lab/specification-pins.json",
+          "label": "specification-pins.json"
+        },
+        {
+          "path": "scripts/check_state_security.py",
+          "label": "check_state_security.py"
+        }
+      ],
+      "problems": [
+        "I42"
+      ]
+    },
+    {
+      "id": "W54",
+      "title": "Complete accountable Tier 0 and later-module threat-boundary design",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-07"
+      ],
+      "how": "Bound eleven named trust boundaries to all twenty canonical threats, with current owner Ise-Tom, assets, misuse cases, required denial/fault behavior, residual risk and actual implementation gates. Covered core/store/keys/replicas/web/restore/supply chain/external/fleet/support-files/EDR authority without starting later phases.",
+      "verification": "CI consistency checks require all original boundaries, every threat, nonempty owners and known implementation gates; regression tests reject absent coverage, unknown threats, lost residual risks and false independent/runtime qualification. All 196 repository tests pass.",
+      "limitations": "Full original P00-07 design gate prepared for owner validation. Solo ownership is not independent assessment, operational backup coverage or implemented service security. Actual response exercises remain P00-17 and later production safeguards.",
+      "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
+      "sources": [
+        {
+          "path": "docs/validation/p00-07.md",
+          "label": "p00-07.md"
+        },
+        {
+          "path": "docs/threat-model.md",
+          "label": "threat-model.md"
+        },
+        {
+          "path": "docs/phase-00-security-and-dependencies.md",
+          "label": "phase-00-security-and-dependencies.md"
+        },
+        {
+          "path": "lab/state-security-contract.json",
+          "label": "state-security-contract.json"
+        },
+        {
+          "path": "tests/test_state_security.py",
+          "label": "test_state_security.py"
+        }
+      ],
+      "problems": [
+        "I27"
+      ]
+    },
+    {
+      "id": "W55",
+      "title": "Pin actual public protocol editions and separate reference use from image/patent clearance",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-01",
+        "P00-16"
+      ],
+      "how": "Added 13 raw-byte-pinned public document records with actual notice identity, edition, reviewer/date and restrictive rights dispositions. Corrected nonexistent MS-DFSR to MS-FRS2, added descriptor rules from MS-DTYP and rebound all 60 still-unrun conformance records to the changed matrix. Added optional actual-byte/PDF-heading reproduction and synthetic-asset hash/purpose checks with explicit external-image denial.",
+      "verification": "Checked all 13 actual document byte hashes and 58 section headings locally; default CI validates committed metadata offline. Negative tests cover changed/duplicate/missing/protected documents, extractor timeout, stale headings, path traversal/symlinks, unknown purposes and unprovided image rights. Apache/DCO acceptance and all existing five acceptance proofs are unchanged.",
+      "limitations": "P00-16 remains in progress: Microsoft patent/program coverage and concrete image/fixture clearance are not established. No upstream PDFs, protected-document decryption, vendor images or captures are imported. MS-DNSP is management, not the full DNS wire protocol; detailed P00-01 mapping remains open.",
+      "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
+      "sources": [
+        {
+          "path": "docs/reference-use-review.md",
+          "label": "reference-use-review.md"
+        },
+        {
+          "path": "lab/specification-pins.json",
+          "label": "specification-pins.json"
+        },
+        {
+          "path": "lab/compatibility.json",
+          "label": "compatibility.json"
+        },
+        {
+          "path": "lab/conformance-evidence.json",
+          "label": "conformance-evidence.json"
+        },
+        {
+          "path": "scripts/check_state_security.py",
+          "label": "check_state_security.py"
+        },
+        {
+          "path": "tests/test_state_security.py",
+          "label": "test_state_security.py"
+        }
+      ],
+      "problems": [
+        "I28"
+      ]
+    },
+    {
+      "id": "W56",
+      "title": "Define solo vulnerability-response process and make timing proposal reviewable",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-17"
+      ],
+      "how": "Documented private intake, hostile-attachment custody, severity/reproduction, disclosure and sole-owner absence, with a concrete unrun drill record. Proposed Phase 0 process review plus mandatory actual drill/backup before supported production. Kept the existing P00-17 and pre-preview security policy unchanged pending owner agreement.",
+      "verification": "A read-only GitHub API observation on 19 November reports private vulnerability reporting enabled. Local documentation/traceability checks pass; no private report, recipient, receipt, escalation or backup availability is fabricated.",
+      "limitations": "Configuration is not delivery/response evidence. The current live-drill/real-backup gate is not complete, and this proposal is not an approved scheduling change, a support promise, or authorization to send a report.",
+      "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
+      "sources": [
+        {
+          "path": "docs/security-response-readiness.md",
+          "label": "security-response-readiness.md"
+        },
+        {
+          "path": "docs/phase-00-security-and-dependencies.md",
+          "label": "phase-00-security-and-dependencies.md"
+        },
+        {
+          "path": "SECURITY.md",
+          "label": "SECURITY.md"
+        },
+        {
+          "path": "docs/phases/phase-00.md",
+          "label": "phase-00.md"
+        }
+      ],
+      "problems": [
+        "I27"
+      ]
     }
   ],
   "problems": [
@@ -2356,7 +2588,8 @@
       "requirements": [
         "P00-05",
         "P01-06",
-        "P02-10"
+        "P02-10",
+        "P00-12"
       ],
       "detail": "The existing six-VM isolated Windows reference definition is prepared but no host/images have been provisioned. The initial scope now also includes Linux SSSD/MIT Kerberos and macOS Apple Silicon/Intel; Mac hardware/image rights and exact client/package builds are not allocated or qualified.",
       "resolution": "",
@@ -2864,34 +3097,34 @@
     },
     {
       "id": "I27",
-      "title": "Security response coverage and Tier 0 incident exercises remain unqualified",
+      "title": "Actual private receipt/escalation, backup response and production incident exercises remain unqualified",
       "status": "open",
       "kind": "development-qualification",
       "phases": [
         0
       ],
       "requirements": [
-        "P00-07"
+        "P00-17"
       ],
-      "detail": "The current owner and threat boundaries are explicit, but no backup response contact, private synthetic intake exercise or incident/recovery drill is evidenced. Solo development review cannot establish production response coverage.",
+      "detail": "P00-07 now has complete boundary/threat/ownership design for review. Reporting is configured but notification/receipt/escalation and a genuine backup are unverified; sole-owner process design is not operational coverage.",
       "resolution": "",
-      "next_action": "Assign an actual backup response contact and exercise owner-authorized private synthetic intake and containment/recovery procedures; retain only redacted exercise metadata. No messages or private reports were sent by this work.",
-      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
+      "next_action": "Review the explicit solo scheduling proposal; retain the original gate until agreed. No synthetic private report may be sent without explicit authorization and an available recipient.",
+      "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
       "sources": [
+        {
+          "path": "docs/security-response-readiness.md",
+          "label": "security-response-readiness.md"
+        },
         {
           "path": "docs/phase-00-security-and-dependencies.md",
           "label": "phase-00-security-and-dependencies.md"
-        },
-        {
-          "path": "SECURITY.md",
-          "label": "SECURITY.md"
         }
       ],
       "provenance": "Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting."
     },
     {
       "id": "I28",
-      "title": "Specification revisions, interpretation and use rights need review",
+      "title": "Exact references pinned; concrete program/patent/image use rights and detailed operation mapping remain open",
       "status": "open",
       "kind": "development-qualification",
       "phases": [
@@ -2899,25 +3132,24 @@
       ],
       "requirements": [
         "P00-01",
-        "P00-03",
-        "P00-06"
+        "P00-16"
       ],
-      "detail": "The matrix references public protocol documents without copying their content, but revision pins and use/fixture distribution reviews remain pending. Exact conflict/link/restore/RID semantics still require reference qualification.",
+      "detail": "Thirteen actual reference editions and notices are now pinned, including corrected MS-FRS2 and added MS-DTYP. Concrete Microsoft patent/program coverage and licensed Windows/macOS image/fixture rights remain unresolved; citations do not grant them.",
       "resolution": "",
-      "next_action": "Pin document revisions/sections, record the actual applicable rights review and minimize synthetic reference fixtures; review the worked state cases before freezing formats or AD algorithms.",
-      "source_revision": "b98dac7d33b20bef1ab6ccfb4a295f40d2330500",
+      "next_action": "Complete actual use-rights review before acquiring/distributing affected fixtures, and decompose detailed protocol operations including DNS wire RFCs. Keep unprovided images denied and all product conformance unrun.",
+      "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
       "sources": [
         {
-          "path": "lab/compatibility.json",
-          "label": "compatibility.json"
+          "path": "docs/reference-use-review.md",
+          "label": "reference-use-review.md"
         },
         {
-          "path": "docs/adr/0005-directory-and-replication-invariants.md",
-          "label": "0005-directory-and-replication-invariants.md"
+          "path": "lab/specification-pins.json",
+          "label": "specification-pins.json"
         },
         {
-          "path": "docs/phase-00-security-and-dependencies.md",
-          "label": "phase-00-security-and-dependencies.md"
+          "path": "scripts/check_state_security.py",
+          "label": "check_state_security.py"
         }
       ],
       "provenance": "Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting."
@@ -3325,8 +3557,70 @@
         }
       ],
       "provenance": "Concrete development/build/distribution gap verified against existing code and closed with negative regression tests; not a GitHub setup issue."
+    },
+    {
+      "id": "I41",
+      "title": "Earlier state draft conflated immutable SIDs, ordered ACLs, propagation and token freshness",
+      "status": "resolved",
+      "kind": "development-correctness",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-02"
+      ],
+      "detail": "The draft could suggest an unchanging SID across domain moves, global deny-first evaluation, immediate inheritance/revocation and invalidity of every group cycle. Those assumptions would lead to incorrect native authorization behavior.",
+      "resolution": "Replaced draft assumptions with pinned GUID/SID move exceptions, ordered access checks, hidden-filter semantics, asynchronous inheritance and separate GC/token freshness, with nine worked design cases. Native implementation remains its own gate.",
+      "next_action": "Owner validation of the full Phase 0 design packet; qualify actual native/client/fault behavior under its implementation gates.",
+      "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
+      "sources": [
+        {
+          "path": "docs/validation/p00-02.md",
+          "label": "p00-02.md"
+        },
+        {
+          "path": "docs/adr/0005-directory-and-replication-invariants.md",
+          "label": "0005-directory-and-replication-invariants.md"
+        },
+        {
+          "path": "lab/state-security-contract.json",
+          "label": "state-security-contract.json"
+        }
+      ],
+      "provenance": "Concrete design/reference interpretation gap found by inspecting actual readable publisher editions; resolved at the design layer only, not a GitHub setup incident."
+    },
+    {
+      "id": "I42",
+      "title": "Draft replication conflict rules needed distinct attribute, link and name procedures",
+      "status": "resolved",
+      "kind": "development-correctness",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-03"
+      ],
+      "detail": "A generic version/time/origin comparator misses attribute wrap/half-range rules, linked lifetimes, little-endian GUID comparison and the name timestamp/object-GUID conflict rule. Unqualified cursor/restore assumptions could advertise unseen data.",
+      "resolution": "Pinned actual DRSR/ADTS rules and eleven worked cases, distinguishing scalar/link/name algorithms, safe progress, deletion repair, invocation epochs and RID/retention quarantine. No unimplemented runtime comparator is labeled passing.",
+      "next_action": "Owner validation of the full Phase 0 design packet; qualify actual native/client/fault behavior under its implementation gates.",
+      "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
+      "sources": [
+        {
+          "path": "docs/validation/p00-03.md",
+          "label": "p00-03.md"
+        },
+        {
+          "path": "docs/adr/0005-directory-and-replication-invariants.md",
+          "label": "0005-directory-and-replication-invariants.md"
+        },
+        {
+          "path": "lab/state-security-contract.json",
+          "label": "state-security-contract.json"
+        }
+      ],
+      "provenance": "Concrete design/reference interpretation gap found by inspecting actual readable publisher editions; resolved at the design layer only, not a GitHub setup incident."
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "Two more Phase 0 gates are complete for review: Linux/Rust parser qualification (P00-04) and project licensing/contributions (P00-06). Four gates now await owner review; native AD implementation and all 60 client scenarios remain unqualified."
+  "focus_summary": "Three more Phase 0 design gates are ready: identity/ACL, replication/restore and threat ownership. Seven now await owner validation; three are accepted. Lab profiles, crypto qualification, use rights and response evidence remain open."
 }

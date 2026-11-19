@@ -11,16 +11,22 @@ are still proposed test targets at the selected level.
 | Requirement | Concrete result | Remaining exit evidence |
 | --- | --- | --- |
 | P00-01 | [Versioned matrix](../lab/compatibility.json): 30 operation families, positive/negative scenarios, requirements, protocol references, target/client combinations and accountable owner | Exact patched images/packages, complete wire-operation/control/error decomposition, approved profile and real-client runs |
-| P00-02 | [State and authorization contract](adr/0005-directory-and-replication-invariants.md): stable identity, authorization order and worked rename/collision/revocation/group examples | Review against pinned specifications and native implementations |
-| P00-03 | Same ADR: separate origin/local metadata, conflict/delete/restore examples and replica quarantine | Exact MS-ADTS/MS-DRSR algorithms, reference observations, multi-DC implementation and fault tests |
+| P00-02 | [Full identity/authorization packet](validation/p00-02.md): nine local cases cover stable GUID/domain SID, schema/matching, ordered ACLs, asynchronous inheritance, groups, revocation and durable receipts against pinned ADTS/DRSR/DTYP | Explicit owner validation of the original Phase 0 design gate; native identity/ACL implementation remains separate |
+| P00-03 | [Full replication/restore design packet](validation/p00-03.md): eleven cases specify attribute wrap/GUID rules, link lifetimes, naming conflicts, deletion, progress, restore and RID quarantine against actual source sections | Explicit owner validation of the original Phase 0 design gate; native DRS/reference/fault qualification remains separate |
 | P00-04 | [Full toolchain/parser packet](validation/p00-04.md): declared Linux profiles, exact compiler/ELF facts, release overflow checks, locked debug/release/client/fuzz/security gates and maintenance review | Explicit owner validation of the original Phase 0 toolchain/parser gate; TLS/Kerberos/storage retain separate requirements |
 | P00-05 | Existing [isolated Windows lab definition](windows-reference-lab.md) retained | Licensed host/images, exact builds and two clean provisioning/discovery/cleanup runs; no host exists yet |
 | P00-06 | [Full license/contribution packet](validation/p00-06.md): existing Apache-2.0/DCO choice, complete obligations, strict notice archives and standalone dashboard license retention | Explicit owner validation of the original project-license gate; specification/image/fixture rights remain P00-16 |
-| P00-07 | Named current owner, Tier 0 boundaries, boundary-to-threat/evidence ownership and intake exercise procedure | Actual private intake exercise, backup security contact and incident drill; no fictitious contact or test |
+| P00-07 | [Full boundary/threat packet](validation/p00-07.md): eleven owned boundaries cover all twenty threats with assets, misuse, denial/fault behavior, residual risk and implementation gates | Explicit owner validation of the original Phase 0 design gate; live intake/backup coverage remains P00-17 and independent production assessment remains required |
 | P00-08 | [Executable validator](../scripts/check_conformance.py) and [evidence inventory](../lab/conformance-evidence.json), included in CI | Real artifacts, exact platforms/specs and reviewer disposition; no structural check is product evidence |
 | P00-09 | [Mixed workload/fault method](phase-00-workload.md), hardware and measurement/cost accounting | Method approved and dataset tooling implemented; load runner, real hosts, measured runs and SLO ratification remain |
 | P00-10 | [Complete criterion packet](validation/p00-10.md): six reviewed-design transition examples, source/digest-bound CI checker and exception/invalidation controls | Explicit owner validation of the full Phase 0 design gate; runtime transitions retain their implementation gates |
 | P00-11 | [Complete functional-level profile](functional-level-profile.md): 2016/2016 Linux-hosted creation contract, level/OS distinction, incompatibilities and transition refusal | Explicit owner validation of the full Phase 0 design gate; exact builds, native behavior and client runs remain separate |
+| P00-12 | Windows/Linux/macOS profile templates remain explicit and unqualified | Exact owned/licensed host/image/build/package/architecture identifiers and rights are missing; no image has been acquired |
+| P00-13 | Real Rustls/ring mutual-TLS candidate and independent OpenSSL/certificate/fuzz evidence | Complete key custody, rotation/revocation, channel binding and provider-loss qualification; candidate work remains in progress |
+| P00-14 | Kerberos/PAC dependency boundary and required AES/replay/delegation/FFI review specified | Select and qualify actual dependency candidates; planned engineering work, not an external-host-only blocker |
+| P00-15 | [Entire original driver gate](validation/p00-15.md) explicitly accepted by owner | Native AD adapter/domain/key/backup behavior remains later implementation work |
+| P00-16 | [Thirteen byte-pinned references and actual use-notice review](reference-use-review.md); external image use/distribution denied without explicit rights | Resolve concrete patent/program and reference-fixture/image rights; no blanket clearance or legal certification |
+| P00-17 | [Solo intake/custody/absence process and explicit timing proposal](security-response-readiness.md); reporting configuration observed enabled | Original actual receipt/escalation drill and available backup remain unmet; timing change awaits owner agreement, no report sent |
 
 ## Client coverage
 
@@ -196,3 +202,24 @@ full terms and blocks new unreviewed bundled runtime inputs. These close the
 original Phase 0 foundation gates without starting a new phase or claiming
 native AD conformance. P00-10/P00-11 remain awaiting their earlier owner reviews;
 all five existing accepted proofs are preserved.
+
+
+## Completed state, replication and threat-design gates
+
+P00-02, P00-03 and P00-07 now each have a full original-criterion validation
+packet. Twenty original worked design cases bind exact readable publisher
+editions and 58 section headings. Corrections include cross-domain SID changes,
+ordered ACL evaluation, asynchronous inheritance, group/token freshness and
+distinct attribute/link/name conflict algorithms. Eleven accountable boundaries
+cover all twenty threats and preserve explicit residual risks. The required CI
+checker rejects missing cases/owners, source drift, false runtime/independent
+assessment and unjustified external-asset use. It checks design integrity, not
+AD semantics or proof of rights. All product cases remain unrun.
+
+Seven Phase 0 requirements are now prepared for explicit owner validation:
+P00-02/03/04/06/07/10/11. The three accepted Phase 0 scopes and both accepted
+Phase 1 scopes are unchanged. Whole Phase 0 is still incomplete: detailed
+operation mapping, exact licensed lab profiles, TLS/Kerberos qualification,
+reference-use clearance and the current P00-17 operational gate remain open.
+The solo-response scheduling proposal records the genuine constraint without
+pretending there is another responder or a successful intake drill.

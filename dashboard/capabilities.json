@@ -71,7 +71,8 @@
         "Verified source/dashboard artifacts and prerelease preflight",
         "Actual project/runtime-crate/Rust-library notice packaging and extraction verification",
         "Source-bound Phase 0 change/recovery review and expiry/baseline consistency checks",
-        "Source-bound native compiler/ELF qualification, optimized overflow checks and complete notice/distribution guards"
+        "Source-bound native compiler/ELF qualification, optimized overflow checks and complete notice/distribution guards",
+        "Source-pinned state/security design integrity and restrictive reference/asset accounting"
       ],
       "missing": [
         "Production Linux service hardening",
@@ -89,7 +90,10 @@
         "W44",
         "W48",
         "W50",
-        "W51"
+        "W51",
+        "W54",
+        "W55",
+        "W56"
       ],
       "blockers": [
         "I27"
@@ -166,7 +170,7 @@
     "AD-01": {
       "status": "planned",
       "category": "product",
-      "scope": "The 2016 domain/forest creation/transition design and its CI consistency checks are complete for owner review (P00-11). Native AD object/domain creation, level transitions and client interoperability are not implemented.",
+      "scope": "Full P00-02 identity/schema/ACL/local commit design and P00-11 functional-profile design are prepared for owner validation. Native domain/object/account/password behavior is unimplemented.",
       "implemented": [],
       "missing": [
         "Native domain/forest creation and qualified functional-level behavior",
@@ -174,7 +178,8 @@
         "Client/reference denied-operation and recycle/restore qualification"
       ],
       "work_items": [
-        "W49"
+        "W49",
+        "W52"
       ],
       "blockers": [
         "I04",
@@ -198,6 +203,44 @@
       ],
       "blockers": [
         "I04",
+        "I05"
+      ],
+      "acceptance": null
+    },
+    "AD-07": {
+      "status": "planned",
+      "category": "product",
+      "scope": "Full P00-03 replication/conflict/restore epoch design is prepared for owner validation; no native replica transport, convergence or recovery service is implemented.",
+      "implemented": [],
+      "missing": [
+        "Authenticated DRS peer/NC authority and actual wire replication",
+        "Native attribute/link/name conflict, deletion and safe-cursor handling",
+        "Multi-site partition/rejoin, restore/VM/RID/retention fault qualification"
+      ],
+      "work_items": [
+        "W53"
+      ],
+      "blockers": [
+        "I04",
+        "I05"
+      ],
+      "acceptance": null
+    },
+    "SEC-01": {
+      "status": "planned",
+      "category": "product",
+      "scope": "Full P00-07 boundary/threat/ownership design and P00-02 ordered authorization design are prepared for review. Production privilege enforcement and separation remain unimplemented.",
+      "implemented": [],
+      "missing": [
+        "Native operation/attribute/control authorization and privilege separation",
+        "Protected credential/key/replica/recovery authority",
+        "Denied-operation and independent production assessment evidence"
+      ],
+      "work_items": [
+        "W52",
+        "W54"
+      ],
+      "blockers": [
         "I05"
       ],
       "acceptance": null

@@ -94,75 +94,81 @@
   "specifications": [
     {
       "id": "MS-ADTS",
-      "revision": null,
+      "revision": "v20260824",
       "rights_review": "pending",
-      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/"
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/d2435927-0999-4c62-8c6d-13ba31a52e1a"
     },
     {
-      "id": "MS-DFSR",
-      "revision": null,
+      "id": "MS-FRS2",
+      "revision": "v20210407",
       "rights_review": "pending",
-      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dfsr/"
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-frs2/9914bdd4-9579-43a7-9f2d-9efe2e162944"
     },
     {
       "id": "MS-DNSP",
-      "revision": null,
+      "revision": "v20260928",
       "rights_review": "pending",
-      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dnsp/"
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dnsp/f97756c9-3783-428b-9451-b376f877319a"
     },
     {
       "id": "MS-DRSR",
-      "revision": null,
+      "revision": "v20251121",
       "rights_review": "pending",
-      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-drsr/"
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-drsr/f977faaa-673e-4f66-b9bf-48c640241d47"
     },
     {
       "id": "MS-GPOL",
-      "revision": null,
+      "revision": "v20210625",
       "rights_review": "pending",
-      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-gpol/"
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-gpol/62d12924-6252-4052-996f-161d2b9019f4"
     },
     {
       "id": "MS-KILE",
-      "revision": null,
+      "revision": "v20260928",
       "rights_review": "pending",
-      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/"
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-kile/2a32282e-dd48-4ad9-a542-609804b02cc9"
     },
     {
       "id": "MS-LSAD",
-      "revision": null,
+      "revision": "v20250610",
       "rights_review": "pending",
-      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-lsad/"
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-lsad/1b5471ef-4c33-4a91-b079-dfcbb82f05cc"
     },
     {
       "id": "MS-NRPC",
-      "revision": null,
+      "revision": "v20260209",
       "rights_review": "pending",
-      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-nrpc/"
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-nrpc/ff8f970f-3e37-40f7-bd4b-af7336e4792f"
     },
     {
       "id": "MS-PAC",
-      "revision": null,
+      "revision": "v20240610",
       "rights_review": "pending",
-      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-pac/"
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-pac/166d8064-c863-41e1-9c23-edaaa5f36962"
     },
     {
       "id": "MS-SAMR",
-      "revision": null,
+      "revision": "v20260309",
       "rights_review": "pending",
-      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-samr/"
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-samr/4df07fab-1bbc-452f-8e92-7853a3c7e380"
     },
     {
       "id": "MS-SMB2",
-      "revision": null,
+      "revision": "v20260714",
       "rights_review": "pending",
-      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-smb2/"
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-smb2/5606ad47-5ee0-437a-817e-70c366052962"
     },
     {
       "id": "RFC4511",
-      "revision": null,
+      "revision": "RFC4511-June-2006",
       "rights_review": "pending",
-      "url": "https://www.rfc-editor.org/rfc/rfc4511"
+      "url": "https://www.rfc-editor.org/info/rfc4511/"
+    },
+    {
+      "id": "MS-DTYP",
+      "revision": "v20231212",
+      "rights_review": "pending",
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/cca27429-5689-4a16-b2b4-9325d93e4ba2"
     }
   ],
   "operations": [
@@ -199,7 +205,8 @@
         "AD-01"
       ],
       "specifications": [
-        "MS-ADTS"
+        "MS-ADTS",
+        "MS-DTYP"
       ],
       "profiles": [
         "win11-pro",
@@ -211,7 +218,7 @@
       "implementation": "planned",
       "scenarios": {
         "positive": "Apply schema constraints, inherited rights and bounded nested membership",
-        "negative": "Deny hidden-attribute reads, invalid classes, cycles and unauthorized delegation"
+        "negative": "Hidden values act absent in results/filters; reject invalid classes and delegation; cyclic membership terminates without privilege amplification and resource exhaustion fails explicitly"
       },
       "targets": [
         "babel",
