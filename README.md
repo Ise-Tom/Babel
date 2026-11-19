@@ -44,7 +44,7 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-19T11:43:03\+01:00.
+GitHub metadata checked: 2026-11-19T11:43:33\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -79,7 +79,7 @@ GitHub metadata checked: 2026-11-19T11:43:03\+01:00.
     
     Update requirement packets, development problems and capability evidence in this same PR. Native domain/replication/security capabilities remain planned; the new source-pinned design does not start later phases. The GitHub report can show these PR proposals before merge; Pages reflects trusted main after owner merge and passing CI.
     
-    Local checks: 196 repository tests pass at **99% combined statement/branch coverage**, including 11 new regression test methods for incomplete records, source drift, false outcomes, unprovided rights, path/symlink escapes and changed/unreadable documents. All 34 local desktop/mobile browser checks, strict types, formatting/lint, design/document/conformance/CI-scope checks, workflow analysis and nine dashboard build/security tests pass. The exact-byte reproduction also verified all 13 public documents and 58 section bindings against source commit 2989ed4. Required [hosted CI](https://github.com/Ise-Tom/Babel/actions/runs/44507652333) runs all 14 jobs, including native, real PostgreSQL, independent probes, security and browser gates; its results are pending.
+    Local checks: 196 repository tests pass at **99% combined statement/branch coverage**, including 11 new regression test methods for incomplete records, source drift, false outcomes, unprovided rights, path/symlink escapes and changed/unreadable documents. All 34 local desktop/mobile browser checks, strict types, formatting/lint, design/document/conformance/CI-scope checks, workflow analysis and nine dashboard build/security tests pass. The exact-byte reproduction also verified all 13 public documents and 58 section bindings against source commit 2989ed4. **All 14 required [hosted CI jobs](https://github.com/Ise-Tom/Babel/actions/runs/44507652333) passed**, including native, real PostgreSQL, independent probes, security and browser gates. The hosted design-report input hashes match the pushed tree; hosted mobile screenshots visibly show seven ready Phase 0 gates. The GitHub dashboard already includes W52–W56 as pending PR proposals.
     
     Owner validation of the three new full design packets remains pending. Merging this PR is not requirement acceptance.
 
