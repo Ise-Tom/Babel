@@ -44,11 +44,118 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-19T14:24:59\+01:00.
+GitHub metadata checked: 2026-11-19T15:23:36\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#31 · Qualify Phase 0 TLS revocation, replacement, binding and provider failures](<https://github.com/Ise-Tom/Babel/pull/31>)
+
+**In review · Pending merge · CI: in\_progress** · Head e36bd53
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## TLS qualification progress
+    
+    Complete the original P00-13 Phase 0 library/provider/channel qualification review for the selected Linux/Rustls/ring engineering profile. The previous candidate proved ordinary handshakes but lacked exercised revocation, replacement, exact binding and provider-loss boundaries.
+    
+    - Add a bounded direct-issuer leaf-CRL profile with explicit expiry enforcement and unknown status denied. Real OpenSSL clients accept an unrevoked identity and reject revoked, expired, foreign and bad-signature status; missing/malformed/oversized policy prevents startup.
+    - Replace complete certificate configurations, retaining the old slot on invalid candidates. Independent Python/OpenSSL observes both EC and RSA server certificates in two sessions of the same running process; invalid replacement cannot produce a second verified exchange.
+    - Compare the exact RFC 9266 TLS 1.3 exporter against its session. Independent OpenSSL agrees; wrong, truncated and replayed bindings fail. Rust also checks pre-handshake/TLS 1.2 refusal, label/context substitution and different sessions. Binding is not a credential or privileged-action grant.
+    - Reject missing, public, symlinked and mismatched lab key files before listening. Test-only Rustls interfaces inject entropy, clock, key-load and live-signing loss into actual handshakes; none authenticates.
+    - Extend sanitizer fuzz to the actual CRL parser. Retain test method inventory, source/input/probe/binary digests, skip/error counts and tool facts; missing boundary methods or skipped probes fail.
+    
+    No dependency, feature, cipher implementation, certificate verifier or permissive production switch is added. Existing Cargo locks/advisory/license/notice policy and required 14-job CI are preserved.
+    
+    Full criterion and limitation packet: [P00-13](https://github.com/Ise-Tom/Babel/blob/292291ec4d79a03f7355e8d3646c9e850b6c0489/docs/validation/p00-13.md).
+    
+    ## Explicit limits
+    
+    This prepares the full selected-profile **Phase 0 review**, not production TLS or AD compatibility. WebPKI's selected expiry enforcement checks **nextUpdate but not thisUpdate**. Only owned, current, direct-issuer synthetic CRLs are qualified: external freshness/rollback/OCSP/intermediate policy remains open. Revocation applies to new handshakes, not established sessions. Disposable software-key permissions do not establish protected product provisioning, ancestor-race/owner safety, encrypted/HSM custody or zeroization. Provider fault interfaces do not test physical HSM or OS compromise.
+    
+    Native LDAP/StartTLS, SASL/GSSAPI/EPA and tls-server-end-point still require implementation and real Windows/Linux/macOS qualification. All 60 client conformance scenarios remain unrun. No durable key format, independent assessment, whole phase or production support is accepted.
+    
+    ## Dashboard and verification
+    
+    Record the implementation and discovered production gaps in this same PR, including the SEC-04 capability tracker. Phase 0 becomes **3 accepted, 8 ready for validation, 3 in progress, 2 blocked and 1 planned**. All five existing acceptance proofs are unchanged; seven earlier design packets still await their explicit owner decisions. The solo-response scheduling proposal and current P00-17 gate remain unchanged; no private report is sent. Later phases remain planned.
+    
+    Local validation: all workspace tests and all-feature Clippy pass, including 10 Rust TLS tests and 27 independent release/instrumented probe methods. TLS-library line coverage is **95.45%** against its separate 90% gate; sanitizer fuzz completed **20,000 iterations**. All 196 repository tests retain 99% combined statement/branch coverage; strict types, lint, security, design and evidence checks pass. The required hosted pipeline will repeat native, real database, independent, instrumented, packaged-binary, security and browser qualification.
+    
+    Owner validation of P00-13 is pending. Merge does not imply requirement acceptance.
+
+**Changed files:**
+
+- dashboard/capabilities.json
+- dashboard/progress.json
+- docs/adr/0006-tls-qualification-lab.md
+- docs/phase-00-progress.md
+- docs/phase-00-security-and-dependencies.md
+- docs/validation/p00-13.md
+- fuzz/fuzz\_targets/tls\_record.rs
+- native/babel-tls-lab/src/budget\_tests.rs
+- native/babel-tls-lab/src/lib.rs
+- native/babel-tls-lab/src/main.rs
+- native/babel-tls-lab/tests/handshake.rs
+- native/babel-tls-lab/tests/interop\_tls.py
+
+#### Proposed W57 · Complete the TLS provider and channel-boundary qualification review
+
+**Requirements:** P00-13
+
+**How it was done:** Added an expiry-enforcing direct-issuer leaf-CRL profile with unknown status denied, complete configuration replacement, private key-file permission checks and a bounded TLS 1.3 RFC 9266 exporter request. Independent OpenSSL validates current/revoked/expired/foreign/tampered status and session-bound exporter behavior; Python SSL observes actual certificate replacement in the same process. Test-only Rustls provider interfaces fail entropy, clock, key loading and live signing without authentication. The fuzzer now also reaches real CRL decoding. Prepared the complete original Phase 0 review packet with exact versions/features, alternatives, custody/FFI/maintenance and explicit limits.
+
+**Recorded validation:** All 10 Rust TLS tests pass, including four real provider-interface failure modes and retained old configurations. All 27 independent release/instrumented probe methods pass, including wrong/truncated/replayed bindings, eight mandatory boundary methods and no skips. TLS-library line coverage is 95.45%, above its separate 90% gate. Address-sanitizer fuzz completed 20,000 iterations; all workspace tests and all-feature Clippy pass. The 196 repository tests retain 99% combined coverage; types/lint/security/design checks pass. JSON retains source/input/probe/binary hashes and actual OpenSSL/method/failure/skip facts.
+
+**Limits and remaining work:** Full P00-13 selected-profile review awaits explicit owner validation. No new crate, feature, custom TLS/crypto/verifier or permissive production switch was added. WebPKI checks CRL nextUpdate but not thisUpdate: external/rollback-resistant freshness, OCSP and intermediate revocation are unqualified. Software key files are disposable lab material, not encrypted/HSM custody, zeroization, owner/ancestor-safe product loading or operator provisioning. Exporter matching is not LDAP/SASL/EPA/tls-server-end-point or an authorization grant. Existing sessions retain their config; no instant revocation, full service, real OS-client or production load/security acceptance is claimed. All 60 client cases remain unrun.
+
+**PR-head evidence:** [docs/validation/p00-13.md](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/docs/validation/p00-13.md>) · [docs/adr/0006-tls-qualification-lab.md](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/docs/adr/0006-tls-qualification-lab.md>) · [native/babel-tls-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/native/babel-tls-lab/src/lib.rs>) · [native/babel-tls-lab/src/main.rs](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/native/babel-tls-lab/src/main.rs>) · [native/babel-tls-lab/src/budget\_tests.rs](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/native/babel-tls-lab/src/budget_tests.rs>) · [native/babel-tls-lab/tests/handshake.rs](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/native/babel-tls-lab/tests/handshake.rs>) · [native/babel-tls-lab/tests/interop\_tls.py](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/native/babel-tls-lab/tests/interop_tls.py>) · [fuzz/fuzz\_targets/tls\_record.rs](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/fuzz/fuzz_targets/tls_record.rs>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/.github/workflows/native.yml>)
+
+#### Proposed problem update: I26 · TLS foundation ready for review; Kerberos/PAC and product transport integration remain unqualified
+
+**Proposed status:** open
+
+The original P00-04 parser and P00-13 TLS/provider/channel review packets are complete for owner validation; P00-15 driver foundation is owner-accepted. Kerberos/PAC dependency selection and actual LDAP/SASL/EPA/key/service integration remain unfinished; lab results do not establish native AD transport or production custody.
+
+**Resolution:** Still open
+
+**Next action:** Qualify the actual Kerberos/PAC dependency boundary and native LDAP/crypto/key interfaces. Preserve exact versions, no custom cryptography, explicit custody/revocation limits and actual client/reference tests.
+
+**Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
+
+[docs/validation/p00-13.md](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/docs/validation/p00-13.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/docs/phase-00-security-and-dependencies.md>) · [docs/phases/phase-01.md](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/docs/phases/phase-01.md>)
+
+#### Proposed problem update: I43 · TLS candidate lacked executed revocation, replacement, exact binding and provider-loss evidence
+
+**Proposed status:** resolved
+
+The original lab only qualified ordinary certificate handshakes and a generic exporter prerequisite. It did not exercise actual CRL status/expiry, certificate replacement, exact session-binding rejection or unavailable clock/entropy/key/signer interfaces. Rustls ignores CRL expiry unless explicitly enabled.
+
+**Resolution:** Added the bounded CRL profile with explicit expiration enforcement and unknown-status denial, replacement/retained-config semantics, RFC 9266 session binding and provider-fault tests. Independent probes and sanitizer/coverage gates now exercise the selected profile; missing boundary methods or skipped probes fail.
+
+**Next action:** Owner validation of the full Phase 0 packet; preserve the declared profile limits and separately qualify actual native product integration.
+
+**Provenance:** Concrete native qualification gap and upstream default found by inspecting the selected library APIs and running owned synthetic handshakes; resolved for the stated engineering profile only.
+
+[docs/validation/p00-13.md](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/docs/validation/p00-13.md>) · [native/babel-tls-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/native/babel-tls-lab/src/lib.rs>) · [native/babel-tls-lab/src/budget\_tests.rs](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/native/babel-tls-lab/src/budget_tests.rs>) · [native/babel-tls-lab/tests/interop\_tls.py](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/native/babel-tls-lab/tests/interop_tls.py>)
+
+#### Proposed problem update: I44 · General revocation freshness and protected product TLS-key ingestion remain unqualified
+
+**Proposed status:** open
+
+Selected WebPKI checks CRL nextUpdate but not thisUpdate. The qualified owned-current-fixture profile does not establish external CRL freshness, maximum age, rollback protection, OCSP or intermediate-chain policy. Lab key permission checks also do not establish production owner/ancestor-race safety, zeroization, encrypted custody or HSM/provider recovery.
+
+**Resolution:** Still open
+
+**Next action:** Design and qualify trusted revocation acquisition/time/rollback policy and protected key provisioning before general CRL ingestion or valuable product credentials. Keep P01-14/P01-16 and integrated SEC-04/SEC-06 gates open; never promote the lab exporter to LDAP/EPA conformance.
+
+**Provenance:** Actual selected-upstream revocation/time behavior and deliberately bounded native key-loader surface inspected during Phase 0 qualification; an explicit development integration risk, not a GitHub setup issue.
+
+[docs/validation/p00-13.md](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/docs/validation/p00-13.md>) · [docs/adr/0006-tls-qualification-lab.md](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/docs/adr/0006-tls-qualification-lab.md>) · [native/babel-tls-lab/src/main.rs](<https://github.com/Ise-Tom/Babel/blob/e36bd534e0b34feda4030bc3a90ace40598d3ed6/native/babel-tls-lab/src/main.rs>)
+
+
+</details>
 
 
 ## Phase 00
@@ -240,6 +347,8 @@ ADR 0006 and a bounded Rustls 0.23.46/ring 0.17.14 mutual-TLS lab now have certi
 
 **Acceptance evidence required:** Review exact versions/features, key custody, certificate, downgrade, channel-binding and provider-loss cases; no custom cryptography.
 
+**Pending PR proposals:** [\#31: Qualify Phase 0 TLS revocation, replacement, binding and provider failures](<https://github.com/Ise-Tom/Babel/pull/31>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W42: Qualify a bounded Rustls/ring TLS candidate with independent enforcement tests. See the [implementation journal](#implementation-journal).
 
 ### P00-14
@@ -251,6 +360,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [SEC-06: Mature reviewed crypto only; protected password/key storage, no plaintext password logs, controlled key lifecycle, dual rotation of Kerberos signing keys with ticket lifetime planning](<https://github.com/Ise-Tom/Babel/blob/d1aabf492bca13a7820d16e716488a62297c93f3/docs/requirements.md>); [SEC-08: Validate bounded inputs and LDAP filters; bound queries, nesting, RPC sizes and replication queues; prevent injection and resource exhaustion](<https://github.com/Ise-Tom/Babel/blob/d1aabf492bca13a7820d16e716488a62297c93f3/docs/requirements.md>); [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/d1aabf492bca13a7820d16e716488a62297c93f3/docs/requirements.md>)
 
 **Acceptance evidence required:** Review AES/PAC/replay/delegation support, licenses, FFI/unsafe boundaries and upstream maintenance; generic Kerberos is not AD conformance.
+
+**Pending PR proposals:** [\#31: Qualify Phase 0 TLS revocation, replacement, binding and provider failures](<https://github.com/Ise-Tom/Babel/pull/31>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -374,6 +485,8 @@ Credential rejection is implemented; real Kerberos/password/key behavior awaits 
 
 **Acceptance evidence required:** Positive/denied authentication, replay, expiry and downgrade tests pass without credential disclosure.
 
+**Pending PR proposals:** [\#31: Qualify Phase 0 TLS revocation, replacement, binding and provider failures](<https://github.com/Ise-Tom/Babel/pull/31>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W04: Credential rejection and safe diagnostics; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
 ### P01-06
@@ -484,6 +597,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Authorized/denied password operations enforce policy; key custody, rotation and redaction precede valuable credential storage.
 
+**Pending PR proposals:** [\#31: Qualify Phase 0 TLS revocation, replacement, binding and provider failures](<https://github.com/Ise-Tom/Babel/pull/31>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P01-15
@@ -507,6 +622,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [PLAT-02: Repeatable Linux installation, service supervision, reboot recovery, upgrade and removal that preserves directory data by default](<https://github.com/Ise-Tom/Babel/blob/d1aabf492bca13a7820d16e716488a62297c93f3/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/d1aabf492bca13a7820d16e716488a62297c93f3/docs/requirements.md>); [SEC-04: TLS 1.2 minimum, TLS 1.3 preferred; certificate identity validation and rotation; trust roots managed explicitly](<https://github.com/Ise-Tom/Babel/blob/d1aabf492bca13a7820d16e716488a62297c93f3/docs/requirements.md>)
 
 **Acceptance evidence required:** Missing/expired/untrusted certificates and unsafe channel settings stop affected operations without disabling verification.
+
+**Pending PR proposals:** [\#31: Qualify Phase 0 TLS revocation, replacement, binding and provider failures](<https://github.com/Ise-Tom/Babel/pull/31>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
