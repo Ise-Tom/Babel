@@ -2,8 +2,8 @@
   "schema_version": 1,
   "snapshot": {
     "date": "2026-11-19",
-    "commit": "525ac7490b3208dff26073e01b72b086b49f8d8d",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44408618949",
+    "commit": "d1aabf492bca13a7820d16e716488a62297c93f3",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44532652602",
     "ci_result": "passed",
     "checks_passed": 14,
     "pull_requests": [
@@ -131,9 +131,14 @@
         "number": 29,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 30,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Verified main baseline: PR #29 merged and 525ac74 passed all 14 CI jobs. This PR prepares full original P00-02/P00-03/P00-07 design gates for owner review, pins public references and records remaining use-rights/lab/crypto/response gaps. No new owner acceptance, native AD conformance or independent assessment is inferred."
+    "note": "Verified main baseline: PR #30 merged and d1aabf4 passed all 14 CI jobs. P00-02/03/04/06/07/10/11 still await explicit owner validation. This PR completes the selected-profile P00-13 library/provider/channel qualification review with actual CRL, replacement, exporter and provider-fault evidence. No new owner acceptance, native AD compatibility or production security is inferred."
   },
   "requirements": {
     "P00-01": {
@@ -273,8 +278,16 @@
       }
     },
     "P00-13": {
-      "status": "in_progress",
-      "note": "ADR 0006 and a bounded Rustls 0.23.46/ring 0.17.14 mutual-TLS lab now have certificate/identity/protocol/property/OpenSSL/fuzz and separate coverage evidence. This qualifies a candidate experiment only; production selection, LDAP/SASL channel binding, client compatibility, revocation/rotation/key custody, provider faults and load remain open."
+      "status": "ready_for_validation",
+      "note": "The full original Phase 0 library/provider/channel qualification-review packet is prepared for the selected Linux/Rustls/ring engineering profile. Ten Rust tests and 27 independent methods exercise certificate/downgrade policy, strict leaf-CRL expiry/status, in-process certificate replacement, exact TLS 1.3 exporter bindings and entropy/clock/key/signer loss. Actual custody and revocation-freshness limits are reviewed explicitly. Owner validation is pending; native LDAP/SASL/EPA, protected product keys and general CRL/OCSP/client/capacity qualification remain their implementation gates.",
+      "validation": {
+        "scope": "Full original P00-13 TLS library/provider/channel qualification-review gate for linux-rustls-ring-transport-v1; disposable software keys and owned current direct-issuer CRL fixtures only, with explicit production/AD integration limits.",
+        "source_revision": "292291ec4d79a03f7355e8d3646c9e850b6c0489",
+        "packet": {
+          "path": "docs/validation/p00-13.md",
+          "label": "P00-13 full criterion and limitation packet"
+        }
+      }
     },
     "P00-15": {
       "status": "accepted",
@@ -2510,6 +2523,61 @@
       "problems": [
         "I27"
       ]
+    },
+    {
+      "id": "W57",
+      "title": "Complete the TLS provider and channel-boundary qualification review",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-13"
+      ],
+      "how": "Added an expiry-enforcing direct-issuer leaf-CRL profile with unknown status denied, complete configuration replacement, private key-file permission checks and a bounded TLS 1.3 RFC 9266 exporter request. Independent OpenSSL validates current/revoked/expired/foreign/tampered status and session-bound exporter behavior; Python SSL observes actual certificate replacement in the same process. Test-only Rustls provider interfaces fail entropy, clock, key loading and live signing without authentication. The fuzzer now also reaches real CRL decoding. Prepared the complete original Phase 0 review packet with exact versions/features, alternatives, custody/FFI/maintenance and explicit limits.",
+      "verification": "All 10 Rust TLS tests pass, including four real provider-interface failure modes and retained old configurations. All 27 independent release/instrumented probe methods pass, including wrong/truncated/replayed bindings, eight mandatory boundary methods and no skips. TLS-library line coverage is 95.45%, above its separate 90% gate. Address-sanitizer fuzz completed 20,000 iterations; all workspace tests and all-feature Clippy pass. The 196 repository tests retain 99% combined coverage; types/lint/security/design checks pass. JSON retains source/input/probe/binary hashes and actual OpenSSL/method/failure/skip facts.",
+      "limitations": "Full P00-13 selected-profile review awaits explicit owner validation. No new crate, feature, custom TLS/crypto/verifier or permissive production switch was added. WebPKI checks CRL nextUpdate but not thisUpdate: external/rollback-resistant freshness, OCSP and intermediate revocation are unqualified. Software key files are disposable lab material, not encrypted/HSM custody, zeroization, owner/ancestor-safe product loading or operator provisioning. Exporter matching is not LDAP/SASL/EPA/tls-server-end-point or an authorization grant. Existing sessions retain their config; no instant revocation, full service, real OS-client or production load/security acceptance is claimed. All 60 client cases remain unrun.",
+      "source_revision": "292291ec4d79a03f7355e8d3646c9e850b6c0489",
+      "sources": [
+        {
+          "path": "docs/validation/p00-13.md",
+          "label": "p00-13.md"
+        },
+        {
+          "path": "docs/adr/0006-tls-qualification-lab.md",
+          "label": "0006-tls-qualification-lab.md"
+        },
+        {
+          "path": "native/babel-tls-lab/src/lib.rs",
+          "label": "lib.rs"
+        },
+        {
+          "path": "native/babel-tls-lab/src/main.rs",
+          "label": "main.rs"
+        },
+        {
+          "path": "native/babel-tls-lab/src/budget_tests.rs",
+          "label": "budget_tests.rs"
+        },
+        {
+          "path": "native/babel-tls-lab/tests/handshake.rs",
+          "label": "handshake.rs"
+        },
+        {
+          "path": "native/babel-tls-lab/tests/interop_tls.py",
+          "label": "interop_tls.py"
+        },
+        {
+          "path": "fuzz/fuzz_targets/tls_record.rs",
+          "label": "tls_record.rs"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        }
+      ],
+      "problems": [
+        "I43",
+        "I44"
+      ]
     }
   ],
   "problems": [
@@ -3063,34 +3131,34 @@
     },
     {
       "id": "I26",
-      "title": "Production TLS/Kerberos/storage/transport libraries need qualification",
+      "title": "TLS foundation ready for review; Kerberos/PAC and product transport integration remain unqualified",
       "status": "open",
       "kind": "development-qualification",
       "phases": [
         0
       ],
       "requirements": [
-        "P00-04",
-        "P00-13",
         "P00-14",
-        "P00-15"
+        "P01-05",
+        "P01-14",
+        "P01-16"
       ],
-      "detail": "The owner explicitly validated the full P00-15 driver/transaction gate on 18 November 2026. TLS/channel/key integration, Kerberos/PAC and DNS/SMB/RPC decisions remain open at their own gates; native store implementation is tracked by I05.",
+      "detail": "The original P00-04 parser and P00-13 TLS/provider/channel review packets are complete for owner validation; P00-15 driver foundation is owner-accepted. Kerberos/PAC dependency selection and actual LDAP/SASL/EPA/key/service integration remain unfinished; lab results do not establish native AD transport or production custody.",
       "resolution": "",
-      "next_action": "Continue P00-13/P00-14 and transport qualification. Preserve the accepted driver profile and its qualification cases while implementing the native store under Phase 1; changes to transport/pool/stack/profile require requalification.",
-      "source_revision": "8d21b7b83a76bd45f9564f7a44f7e144c50c9142",
+      "next_action": "Qualify the actual Kerberos/PAC dependency boundary and native LDAP/crypto/key interfaces. Preserve exact versions, no custom cryptography, explicit custody/revocation limits and actual client/reference tests.",
+      "source_revision": "292291ec4d79a03f7355e8d3646c9e850b6c0489",
       "sources": [
         {
-          "path": "docs/validation/p00-15.md",
-          "label": "p00-15.md"
+          "path": "docs/validation/p00-13.md",
+          "label": "p00-13.md"
         },
         {
           "path": "docs/phase-00-security-and-dependencies.md",
           "label": "phase-00-security-and-dependencies.md"
         },
         {
-          "path": "docs/decisions.md",
-          "label": "decisions.md"
+          "path": "docs/phases/phase-01.md",
+          "label": "phase-01.md"
         }
       ],
       "provenance": "Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting."
@@ -3619,8 +3687,75 @@
         }
       ],
       "provenance": "Concrete design/reference interpretation gap found by inspecting actual readable publisher editions; resolved at the design layer only, not a GitHub setup incident."
+    },
+    {
+      "id": "I43",
+      "title": "TLS candidate lacked executed revocation, replacement, exact binding and provider-loss evidence",
+      "status": "resolved",
+      "kind": "development-qualification",
+      "phases": [
+        0
+      ],
+      "requirements": [
+        "P00-13"
+      ],
+      "detail": "The original lab only qualified ordinary certificate handshakes and a generic exporter prerequisite. It did not exercise actual CRL status/expiry, certificate replacement, exact session-binding rejection or unavailable clock/entropy/key/signer interfaces. Rustls ignores CRL expiry unless explicitly enabled.",
+      "resolution": "Added the bounded CRL profile with explicit expiration enforcement and unknown-status denial, replacement/retained-config semantics, RFC 9266 session binding and provider-fault tests. Independent probes and sanitizer/coverage gates now exercise the selected profile; missing boundary methods or skipped probes fail.",
+      "next_action": "Owner validation of the full Phase 0 packet; preserve the declared profile limits and separately qualify actual native product integration.",
+      "source_revision": "292291ec4d79a03f7355e8d3646c9e850b6c0489",
+      "sources": [
+        {
+          "path": "docs/validation/p00-13.md",
+          "label": "p00-13.md"
+        },
+        {
+          "path": "native/babel-tls-lab/src/lib.rs",
+          "label": "lib.rs"
+        },
+        {
+          "path": "native/babel-tls-lab/src/budget_tests.rs",
+          "label": "budget_tests.rs"
+        },
+        {
+          "path": "native/babel-tls-lab/tests/interop_tls.py",
+          "label": "interop_tls.py"
+        }
+      ],
+      "provenance": "Concrete native qualification gap and upstream default found by inspecting the selected library APIs and running owned synthetic handshakes; resolved for the stated engineering profile only."
+    },
+    {
+      "id": "I44",
+      "title": "General revocation freshness and protected product TLS-key ingestion remain unqualified",
+      "status": "open",
+      "kind": "development-security-design",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P01-14",
+        "P01-16"
+      ],
+      "detail": "Selected WebPKI checks CRL nextUpdate but not thisUpdate. The qualified owned-current-fixture profile does not establish external CRL freshness, maximum age, rollback protection, OCSP or intermediate-chain policy. Lab key permission checks also do not establish production owner/ancestor-race safety, zeroization, encrypted custody or HSM/provider recovery.",
+      "next_action": "Design and qualify trusted revocation acquisition/time/rollback policy and protected key provisioning before general CRL ingestion or valuable product credentials. Keep P01-14/P01-16 and integrated SEC-04/SEC-06 gates open; never promote the lab exporter to LDAP/EPA conformance.",
+      "source_revision": "292291ec4d79a03f7355e8d3646c9e850b6c0489",
+      "sources": [
+        {
+          "path": "docs/validation/p00-13.md",
+          "label": "p00-13.md"
+        },
+        {
+          "path": "docs/adr/0006-tls-qualification-lab.md",
+          "label": "0006-tls-qualification-lab.md"
+        },
+        {
+          "path": "native/babel-tls-lab/src/main.rs",
+          "label": "main.rs"
+        }
+      ],
+      "provenance": "Actual selected-upstream revocation/time behavior and deliberately bounded native key-loader surface inspected during Phase 0 qualification; an explicit development integration risk, not a GitHub setup issue."
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "Three more Phase 0 design gates are ready: identity/ACL, replication/restore and threat ownership. Seven now await owner validation; three are accepted. Lab profiles, crypto qualification, use rights and response evidence remain open."
+  "focus_summary": "TLS provider/channel qualification is ready for review: revocation, certificate replacement, exporter binding and provider failures tested. Eight Phase 0 gates await validation; three accepted scopes remain unchanged."
 }

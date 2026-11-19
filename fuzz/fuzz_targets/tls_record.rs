@@ -4,7 +4,7 @@ use rcgen::{BasicConstraints, CertificateParams, ExtendedKeyUsagePurpose, IsCa, 
 use std::io::Cursor;
 use std::sync::{Arc, LazyLock};
 
-static CONFIG: LazyLock<Arc<rustls::ServerConfig>> = LazyLock::new(|| {
+static FIXTURE: LazyLock<(Vec<u8>, Vec<u8>, Vec<u8>)> = LazyLock::new(|| {
     let root_key = KeyPair::generate().expect("synthetic fuzz key");
     let mut root = CertificateParams::new(vec!["ca.example.test".into()]).expect("synthetic name");
     root.is_ca = IsCa::Ca(BasicConstraints::Unconstrained);
@@ -17,16 +17,25 @@ static CONFIG: LazyLock<Arc<rustls::ServerConfig>> = LazyLock::new(|| {
     let cert = leaf
         .signed_by(&key, &issuer)
         .expect("synthetic certificate");
-    babel_tls_lab::server_config(
+    (
         cert.der().to_vec(),
         key.serialize_der(),
         root_cert.der().to_vec(),
     )
-    .expect("synthetic config")
+});
+static CONFIG: LazyLock<Arc<rustls::ServerConfig>> = LazyLock::new(|| {
+    babel_tls_lab::server_config(FIXTURE.0.clone(), FIXTURE.1.clone(), FIXTURE.2.clone())
+        .expect("synthetic config")
 });
 
 fuzz_target!(|input: &[u8]| {
     let input = &input[..input.len().min(16384)];
+    let _ = babel_tls_lab::revocation_config(
+        FIXTURE.0.clone(),
+        FIXTURE.1.clone(),
+        FIXTURE.2.clone(),
+        input.to_vec(),
+    );
     let mut connection =
         rustls::ServerConnection::new(CONFIG.clone()).expect("qualified lab config");
     connection.set_buffer_limit(Some(4096));

@@ -1,12 +1,16 @@
 """Independent OpenSSL/loopback probe; ephemeral synthetic keys, no AD/client conformance."""
 
+import hashlib
 import json
 import os
+import re
 import select
 import socket
+import ssl
 import subprocess  # nosec B404
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 from typing import Any, ClassVar
@@ -17,6 +21,17 @@ BINARY = (
     else Path("target/debug/babel-tls-lab").resolve()
 )
 REQUEST = b"BABEL-TLS-LAB\n"
+ROOT = Path(__file__).resolve().parents[3]
+REQUIRED_BOUNDARY_METHODS = {
+    "test_current_crl_accepts_unrevoked_and_rejects_revoked_clients",
+    "test_expired_unknown_and_bad_signature_revocation_data_fail_closed",
+    "test_bad_or_missing_crl_is_not_a_revocation_bypass",
+    "test_certificate_replacement_is_observed_in_the_same_running_process",
+    "test_invalid_replacement_cannot_produce_a_second_verified_exchange",
+    "test_private_key_loss_permissions_and_mismatch_prevent_startup",
+    "test_independent_tls_exporter_and_wrong_truncated_or_replayed_bindings",
+    "test_tls12_does_not_advertise_the_tls13_binding_profile",
+}
 
 
 def command(args: list[str], *, data: bytes | None = None) -> subprocess.CompletedProcess[bytes]:
@@ -47,6 +62,56 @@ class OpenSSLQualification(unittest.TestCase):
             ("wrong-server-purpose", True, "trusted", "clientAuth", 1),
         ):
             cls.leaf(name, server, issuer, purpose, days)
+        # A dedicated client is revoked; the normal positive client remains valid.
+        cls.leaf("revoked", False, "trusted", "clientAuth", 1)
+        cls.checked(
+            [
+                "openssl",
+                "ca",
+                "-batch",
+                "-config",
+                str(cls.root / "client.cnf"),
+                "-revoke",
+                str(cls.root / "revoked.pem"),
+            ]
+        )
+        for name, issuer, dates in (
+            ("valid", "trusted", ["-crldays", "1"]),
+            (
+                "expired",
+                "trusted",
+                ["-crl_lastupdate", "20000101000000Z", "-crl_nextupdate", "20010101000000Z"],
+            ),
+            ("foreign", "stranger", ["-crldays", "1"]),
+        ):
+            config = cls.root / ("client.cnf" if issuer == "trusted" else "foreign.cnf")
+            cls.checked(
+                [
+                    "openssl",
+                    "ca",
+                    "-gencrl",
+                    "-config",
+                    str(config),
+                    *dates,
+                    "-out",
+                    str(cls.root / f"{name}-crl.pem"),
+                ]
+            )
+            cls.checked(
+                [
+                    "openssl",
+                    "crl",
+                    "-in",
+                    str(cls.root / f"{name}-crl.pem"),
+                    "-outform",
+                    "DER",
+                    "-out",
+                    str(cls.root / f"{name}-crl.der"),
+                ]
+            )
+        raw = bytearray((cls.root / "valid-crl.der").read_bytes())
+        raw[-1] ^= 1
+        (cls.root / "tampered-crl.der").write_bytes(raw)
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -98,6 +163,7 @@ class OpenSSLQualification(unittest.TestCase):
 
         (cls.root / f"{name}-index").write_text("")
         (cls.root / f"{name}-serial").write_text("1000\n")
+        (cls.root / f"{name}-crlnumber").write_text("1000\n")
         (cls.root / f"{name}-certs").mkdir()
 
     @classmethod
@@ -128,6 +194,7 @@ class OpenSSLQualification(unittest.TestCase):
             "[ca]\ndefault_ca=issuer\n[issuer]\n"
             f"database={cls.root / (issuer + '-index')}\nserial={cls.root / (issuer + '-serial')}\n"
             f"new_certs_dir={cls.root / (issuer + '-certs')}\n"
+            f"crlnumber={cls.root / (issuer + '-crlnumber')}\n"
             f"certificate={cls.root / (issuer + '.pem')}\n"
             f"private_key={cls.root / (issuer + '.key')}\n"
             "default_md=sha256\ndefault_days=1\npolicy=identity\nunique_subject=no\nx509_extensions=leaf\n"
@@ -186,13 +253,16 @@ class OpenSSLQualification(unittest.TestCase):
         key.chmod(0o600)
         (cls.root / f"{name}-key.der").chmod(0o600)
 
-    def start(self, server: str = "server") -> tuple[subprocess.Popen[bytes], str]:
+    def start(
+        self, server: str = "server", options: list[str] | None = None
+    ) -> tuple[subprocess.Popen[bytes], str]:
         process = subprocess.Popen(
             [
                 str(BINARY),
                 str(self.root / f"{server}.der"),
                 str(self.root / f"{server}-key.der"),
                 str(self.root / "trusted.der"),
+                *(options or []),
             ],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -220,8 +290,11 @@ class OpenSSLQualification(unittest.TestCase):
         flags: list[str] | None = None,
         message: bytes = REQUEST,
         allowed: bool = False,
+        crl: str | None = None,
     ) -> None:
-        process, address = self.start(server)
+        process, address = self.start(
+            server, ["--crl", str(self.root / f"{crl}-crl.der")] if crl else None
+        )
         args = [
             "openssl",
             "s_client",
@@ -264,6 +337,188 @@ class OpenSSLQualification(unittest.TestCase):
 
     def test_tls12(self) -> None:
         self.probe(flags=["-tls1_2"], allowed=True)
+
+    def test_current_crl_accepts_unrevoked_and_rejects_revoked_clients(self) -> None:
+        for version in ("-tls1_2", "-tls1_3"):
+            self.probe(flags=[version], crl="valid", allowed=True)
+            self.probe(flags=[version], crl="valid", client="revoked")
+
+    def test_expired_unknown_and_bad_signature_revocation_data_fail_closed(self) -> None:
+        for crl in ("expired", "foreign", "tampered"):
+            self.probe(crl=crl)
+
+    def test_bad_or_missing_crl_is_not_a_revocation_bypass(self) -> None:
+        path = self.root / "invalid-crl.der"
+        for data in (None, b"", b"bad CRL", b"x" * 16385):
+            if data is None:
+                path.unlink(missing_ok=True)
+            else:
+                path.write_bytes(data)
+            result = command(
+                [
+                    str(BINARY),
+                    str(self.root / "server.der"),
+                    str(self.root / "server-key.der"),
+                    str(self.root / "trusted.der"),
+                    "--crl",
+                    str(path),
+                ]
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertNotIn(b"LISTEN", result.stdout)
+
+    def test_certificate_replacement_is_observed_in_the_same_running_process(self) -> None:
+        process, address = self.start(
+            options=[
+                "--replace",
+                str(self.root / "server-rsa.der"),
+                str(self.root / "server-rsa-key.der"),
+                "--crl",
+                str(self.root / "valid-crl.der"),
+            ]
+        )
+        context = ssl.create_default_context(cafile=str(self.root / "trusted.pem"))
+        context.load_cert_chain(str(self.root / "client.pem"), str(self.root / "client.key"))
+        host, port = address.split(":")
+        for name in ("server", "server-rsa"):
+            with socket.create_connection((host, int(port)), timeout=3) as socket_peer:
+                with context.wrap_socket(socket_peer, server_hostname="babel.example.test") as peer:
+                    actual = peer.getpeercert(binary_form=True)
+                    self.assertTrue(
+                        actual is not None
+                        and hashlib.sha256(actual).digest()
+                        == hashlib.sha256((self.root / f"{name}.der").read_bytes()).digest()
+                    )
+                    peer.sendall(REQUEST)
+                    self.assertEqual(peer.recv(64), b"verified lab session\n")
+                    while peer.recv(64):
+                        pass
+        out, error = process.communicate(timeout=3)
+        self.assertEqual(process.returncode, 0)
+        self.assertEqual(out.count(b"VERIFIED"), 2)
+        self.assertNotIn(b"PRIVATE KEY", out + error)
+
+    def test_private_key_loss_permissions_and_mismatch_prevent_startup(self) -> None:
+        path = self.root / "unusable-key.der"
+        for mode in ("missing", "public", "symlink", "mismatch"):
+            path.unlink(missing_ok=True)
+            if mode == "public":
+                path.write_bytes((self.root / "server-key.der").read_bytes())
+                path.chmod(0o644)
+            elif mode == "symlink":
+                path.symlink_to(self.root / "server-key.der")
+            elif mode == "mismatch":
+                path.write_bytes((self.root / "client-key.der").read_bytes())
+                path.chmod(0o600)
+            result = command(
+                [
+                    str(BINARY),
+                    str(self.root / "server.der"),
+                    str(path),
+                    str(self.root / "trusted.der"),
+                ]
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertNotIn(b"LISTEN", result.stdout)
+            self.assertNotIn(b"PRIVATE KEY", result.stderr)
+
+    def test_invalid_replacement_cannot_produce_a_second_verified_exchange(self) -> None:
+        process, address = self.start(
+            options=[
+                "--replace",
+                str(self.root / "server-rsa.der"),
+                str(self.root / "client-key.der"),
+            ]
+        )
+        context = ssl.create_default_context(cafile=str(self.root / "trusted.pem"))
+        context.load_cert_chain(str(self.root / "client.pem"), str(self.root / "client.key"))
+        host, port = address.split(":")
+        with socket.create_connection((host, int(port)), timeout=3) as raw:
+            with context.wrap_socket(raw, server_hostname="babel.example.test") as peer:
+                peer.sendall(REQUEST)
+                self.assertEqual(peer.recv(64), b"verified lab session\n")
+                while peer.recv(64):
+                    pass
+        out, error = process.communicate(timeout=3)
+        self.assertNotEqual(process.returncode, 0)
+        self.assertEqual(out.count(b"VERIFIED"), 1)
+        self.assertNotIn(b"PRIVATE KEY", out + error)
+
+    def binding_probe(self, mode: str, replay: bytes | None = None) -> bytes:
+        process, address = self.start(options=["--crl", str(self.root / "valid-crl.der")])
+        args = [
+            "openssl",
+            "s_client",
+            "-connect",
+            address,
+            "-servername",
+            "babel.example.test",
+            "-verify_hostname",
+            "babel.example.test",
+            "-verify_return_error",
+            "-CAfile",
+            str(self.root / "trusted.pem"),
+            "-cert",
+            str(self.root / "client.pem"),
+            "-key",
+            str(self.root / "client.key"),
+            "-ign_eof",
+            "-tls1_3",
+            "-keymatexport",
+            "EXPORTER-Channel-Binding",
+            "-keymatexportlen",
+            "32",
+        ]
+        client_process = subprocess.Popen(
+            args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )  # nosec B603
+        self.addCleanup(self.stop, client_process)
+        assert client_process.stdout is not None and client_process.stdin is not None
+        data = b""
+        deadline = time.monotonic() + 2
+        match = None
+        while time.monotonic() < deadline and len(data) < 65536:
+            if not select.select(
+                [client_process.stdout], [], [], max(0, deadline - time.monotonic())
+            )[0]:
+                break
+            chunk = os.read(client_process.stdout.fileno(), 4096)
+            if not chunk:
+                break
+            data += chunk
+            match = re.search(rb"Keying material: ([0-9a-fA-F]{64})", data)
+            if match:
+                break
+        self.assertIsNotNone(match, "Independent client did not produce bounded exporter evidence")
+        assert match is not None
+        binding = bytes.fromhex(match.group(1).decode())
+        sent = binding if mode == "matching" else replay if mode == "replay" else b"\0" * 32
+        assert sent is not None
+        payload = b"BABEL-TLS-CB\n" + sent
+        if mode == "truncated":
+            payload = payload[:-1]
+        client_process.stdin.write(payload)
+        client_process.stdin.flush()
+        response, _ = client_process.communicate(timeout=5)
+        out, error = process.communicate(timeout=3)
+        self.assertNotIn(binding.hex().encode(), out + error)
+        if mode == "matching":
+            self.assertEqual(process.returncode, 0)
+            self.assertIn(b"verified lab session", response)
+        else:
+            self.assertNotEqual(process.returncode, 0)
+            self.assertNotIn(b"VERIFIED", out)
+            self.assertNotIn(b"verified lab session", response)
+        return binding
+
+    def test_independent_tls_exporter_and_wrong_truncated_or_replayed_bindings(self) -> None:
+        original = self.binding_probe("matching")
+        self.binding_probe("wrong")
+        self.binding_probe("truncated")
+        self.binding_probe("replay", original)
+
+    def test_tls12_does_not_advertise_the_tls13_binding_profile(self) -> None:
+        self.probe(flags=["-tls1_2"], message=b"BABEL-TLS-CB\n" + b"\0" * 32)
 
     def test_missing_client(self) -> None:
         self.probe(client=None)
@@ -338,15 +593,41 @@ class OpenSSLQualification(unittest.TestCase):
 
 if __name__ == "__main__":
     suite = unittest.defaultTestLoader.loadTestsFromTestCase(OpenSSLQualification)
+    methods = [
+        test.id().rsplit(".", 1)[-1] for test in suite if isinstance(test, unittest.TestCase)
+    ]
+    if not REQUIRED_BOUNDARY_METHODS <= set(methods):
+        raise SystemExit("TLS boundary qualification cases missing")
     result = unittest.TextTestRunner(verbosity=2).run(suite)
     summary: dict[str, Any] = {
+        "schema_version": 1,
         "scope": "synthetic TLS transport only; no AD/Windows conformance",
         "tests": result.testsRun,
         "failures": len(result.failures),
         "errors": len(result.errors),
         "openssl": command(["openssl", "version"]).stdout.decode().strip(),
+        "methods": methods,
+        "skipped": len(result.skipped),
+        "binary_sha256": hashlib.sha256(BINARY.read_bytes()).hexdigest(),
+        "probe_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "production_conformance": "unrun",
+        "source_revision": command(["git", "-C", str(ROOT), "rev-parse", "HEAD"])
+        .stdout.decode()
+        .strip(),
+        "input_sha256": {
+            name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+            for name in (
+                "Cargo.lock",
+                "native/babel-tls-lab/Cargo.toml",
+                "native/babel-tls-lab/src/lib.rs",
+                "native/babel-tls-lab/src/main.rs",
+                "native/babel-tls-lab/src/budget_tests.rs",
+                "native/babel-tls-lab/tests/handshake.rs",
+                "fuzz/fuzz_targets/tls_record.rs",
+            )
+        },
     }
     target = os.environ.get("BABEL_TLS_REPORT")
     if target:
         Path(target).write_text(json.dumps(summary, indent=2) + "\n")
-    raise SystemExit(0 if result.wasSuccessful() else 1)
+    raise SystemExit(0 if result.wasSuccessful() and not result.skipped else 1)
