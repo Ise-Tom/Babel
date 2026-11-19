@@ -1,7 +1,7 @@
 //! Bounded TLS qualification experiment; no LDAP, credentials or production service.
 #![forbid(unsafe_code)]
 
-use rustls::pki_types::{CertificateDer, PrivateKeyDer};
+use rustls::pki_types::{CertificateDer, CertificateRevocationListDer, PrivateKeyDer};
 use rustls::{RootCertStore, ServerConfig};
 use std::sync::Arc;
 
@@ -15,12 +15,23 @@ pub fn server_config(
     key: Vec<u8>,
     client_root: Vec<u8>,
 ) -> Result<Arc<ServerConfig>, &'static str> {
-    if [&certificate, &key, &client_root]
-        .iter()
-        .any(|v| v.is_empty() || v.len() > MAX_DER_BYTES)
-    {
-        return Err("bounded DER inputs required");
+    configure(certificate, key, client_root, None, ring_provider())
+}
+
+/// A strict leaf-CRL profile for the lab's direct-issuer certificate chain.
+pub fn revocation_config(
+    certificate: Vec<u8>,
+    key: Vec<u8>,
+    client_root: Vec<u8>,
+    crl: Vec<u8>,
+) -> Result<Arc<ServerConfig>, &'static str> {
+    if crl.is_empty() || crl.len() > MAX_DER_BYTES {
+        return Err("bounded CRL required");
     }
+    configure(certificate, key, client_root, Some(crl), ring_provider())
+}
+
+fn ring_provider() -> rustls::crypto::CryptoProvider {
     let mut provider = rustls::crypto::ring::default_provider();
     provider.cipher_suites.retain(|suite| {
         matches!(
@@ -33,17 +44,41 @@ pub fn server_config(
                 | rustls::CipherSuite::TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
         )
     });
+    provider
+}
+
+fn configure(
+    certificate: Vec<u8>,
+    key: Vec<u8>,
+    client_root: Vec<u8>,
+    crl: Option<Vec<u8>>,
+    provider: rustls::crypto::CryptoProvider,
+) -> Result<Arc<ServerConfig>, &'static str> {
+    if [&certificate, &key, &client_root]
+        .iter()
+        .any(|v| v.is_empty() || v.len() > MAX_DER_BYTES)
+    {
+        return Err("bounded DER inputs required");
+    }
     let provider = Arc::new(provider);
     let mut roots = RootCertStore::empty();
     roots
         .add(CertificateDer::from(client_root))
         .map_err(|_| "invalid client trust root")?;
-    let verifier = rustls::server::WebPkiClientVerifier::builder_with_provider(
+    let mut verifier = rustls::server::WebPkiClientVerifier::builder_with_provider(
         Arc::new(roots),
         provider.clone(),
-    )
-    .build()
-    .map_err(|_| "client verification configuration rejected")?;
+    );
+    if let Some(crl) = crl {
+        verifier = verifier
+            .with_crls(vec![CertificateRevocationListDer::from(crl)])
+            .only_check_end_entity_revocation()
+            .enforce_revocation_expiration();
+        // Unknown status remains denied; no allow_unknown_revocation_status call.
+    }
+    let verifier = verifier
+        .build()
+        .map_err(|_| "client verification configuration rejected")?;
     let key = PrivateKeyDer::try_from(key).map_err(|_| "invalid private key encoding")?;
     let mut config = ServerConfig::builder_with_provider(provider)
         .with_protocol_versions(&[&rustls::version::TLS13, &rustls::version::TLS12])
@@ -56,6 +91,41 @@ pub fn server_config(
     config.send_tls13_tickets = 0;
     config.max_early_data_size = 0;
     Ok(Arc::new(config))
+}
+
+/// Complete configuration replacement, retaining the old value on validation failure.
+/// Existing connections keep their Arc; revocation is enforced on new handshakes.
+pub struct ConfigSlot(Arc<ServerConfig>);
+impl ConfigSlot {
+    pub fn new(config: Arc<ServerConfig>) -> Self {
+        Self(config)
+    }
+    pub fn current(&self) -> Arc<ServerConfig> {
+        self.0.clone()
+    }
+    pub fn replace(
+        &mut self,
+        candidate: Result<Arc<ServerConfig>, &'static str>,
+    ) -> Result<(), &'static str> {
+        self.0 = candidate?;
+        Ok(())
+    }
+}
+
+pub const BINDING_REQUEST: &[u8] = b"BABEL-TLS-CB\n";
+pub const BINDING_LABEL: &[u8] = b"EXPORTER-Channel-Binding";
+
+/// RFC 9266 tls-exporter for this TLS 1.3-only binding experiment.
+/// It is not LDAP/SASL/EPA or tls-server-end-point.
+pub fn channel_binding(connection: &rustls::ServerConnection) -> Result<[u8; 32], &'static str> {
+    if connection.is_handshaking()
+        || connection.protocol_version() != Some(rustls::ProtocolVersion::TLSv1_3)
+    {
+        return Err("binding requires a completed TLS 1.3 handshake");
+    }
+    connection
+        .export_keying_material([0; 32], BINDING_LABEL, None)
+        .map_err(|_| "binding unavailable")
 }
 
 use std::io::{self, Read, Write};
@@ -154,7 +224,21 @@ pub fn exchange(
             return Err("lab application budget");
         }
     }
-    if request != REQUEST {
+    if request.starts_with(BINDING_REQUEST) {
+        let size = BINDING_REQUEST.len() + 32;
+        if request.len() > size {
+            return Err("invalid binding length");
+        }
+        let received = request.len();
+        request.resize(size, 0);
+        stream
+            .read_exact(&mut request[received..])
+            .map_err(|_| "incomplete binding")?;
+        let expected = channel_binding(&stream.conn)?;
+        if request[BINDING_REQUEST.len()..] != expected {
+            return Err("channel binding mismatch");
+        }
+    } else if request != REQUEST {
         return Err("invalid lab request");
     }
     if stream

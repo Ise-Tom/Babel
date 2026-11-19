@@ -1,7 +1,7 @@
 # ADR 0006 — Rustls transport qualification experiment
 
-Date: 18 November 2026. Status: **implemented lab candidate, production selection
-and P00-13 acceptance pending**. Applies to P00-04/P00-06/P00-13 and SEC-04/SEC-10.
+Date: 18 November 2026; extended 19 November 2026. Status: **full Phase 0
+provider/channel qualification review prepared; owner validation pending**. Applies to P00-04/P00-06/P00-13 and SEC-04/SEC-10.
 Linux hosting and the native AD direction remain unchanged.
 
 ## Decision and alternatives
@@ -34,7 +34,8 @@ The isolated crate is removable without changing directory disk formats or LDAP.
 ## Implemented boundary
 
 `babel-tls-lab` binds loopback on an ephemeral port, accepts one connection within
-five seconds, and allows two seconds for the entire exchange. It accepts only the
+five seconds, and allows two seconds for the entire exchange. Explicit replacement
+mode permits two sequential sessions; the default remains one. It accepts only the
 fixed synthetic `BABEL-TLS-LAB` message and returns a fixed acknowledgment. There
 are no accounts, directory operations, privileged actions or authentication grants.
 
@@ -54,11 +55,11 @@ secret loader, chain builder or multi-client service.
 
 ## Executed evidence and CI
 
-- Seven Rust tests exercise mutual TLS, exact provider policy, certificate/key
+- Ten Rust tests exercise mutual TLS, exact provider policy, certificate/key
   rejection, identity/trust/time/purpose failures, ciphertext tampering, transport
   budgets and property-generated invalid records. Exporter values agree across
   peers and differ by context; this is only a prerequisite for channel binding.
-- Nineteen independent OpenSSL test methods include TLS 1.2/1.3 with EC and RSA
+- Twenty-seven independent OpenSSL/Python-SSL test methods include TLS 1.2/1.3 with EC and RSA
   leaf identities, missing/untrusted/expired/future/wrong-purpose clients,
   invalid server identity/trust/expiry/purpose, obsolete TLS and unapproved cipher
   rejection, application limits, idle/plaintext deadlines and redacted errors.
@@ -118,4 +119,56 @@ multi-tenant trust, production concurrency and capacity, supported CPU/OS builds
 and independent security assessment remain open. Babel source forbids unsafe
 Rust; ring contains native C/assembly, so this is not an all-memory-safe or FIPS
 validation claim. Client OS trust/provider behavior requires separate evidence.
-P00-13 and the broader dependency blocker stay in progress.
+The broader product integration/dependency obligations remain open; the completed
+Phase 0 qualification-review packet below awaits explicit owner validation.
+
+## Completed Phase 0 provider/channel review — 19 November 2026
+
+The [full original P00-13 packet](../validation/p00-13.md) now binds every stated
+criterion to decisions, actual tests and explicit limits for the selected Linux
+engineering profile. Owner validation remains pending. The original runtime
+experiment and production obligations above remain distinguishable.
+
+The lab adds an optional `--crl CLIENT_CRL_DER` direct-issuer leaf policy. It keeps
+unknown status denied and explicitly enables CRL expiration enforcement, whose
+upstream default is to ignore expiration. Independent OpenSSL clients prove
+unrevoked acceptance and revoked/expired/foreign/tampered status rejection under
+real handshakes. Missing/bad/unbounded policy fails before listening. Only owned,
+current synthetic CRLs are qualified: WebPKI checks nextUpdate but not thisUpdate;
+future/freshness/rollback/external-provider policies remain production blockers.
+No OCSP, intermediate-chain or Internet policy fetch is implemented.
+
+`ConfigSlot` accepts only a fully built replacement, retaining its old Arc if
+candidate validation fails. Existing connections retain their snapshot; new ones
+get the replacement. The loopback CLI's bounded `--replace CERT KEY` mode serves
+two sessions, with independent Python/OpenSSL observing the actual changed server
+certificate in the same process. Invalid replacement cannot yield a second
+verified exchange. This is not a multi-client reload daemon or instantaneous
+revocation of already established sessions.
+
+The fixed `BABEL-TLS-CB` request carries the session's 32-byte RFC 9266 exporter.
+The profile requires TLS 1.3, a complete handshake, label
+`EXPORTER-Channel-Binding` and empty context. OpenSSL supplies the independent
+exporter; the server rejects wrong, truncated and replayed values. Unit tests also
+cover pre-handshake, TLS 1.2, different label/context and fresh-session behavior.
+Binding bytes are not logged or treated as credentials/privileged authority.
+RFC 9266 (July 2022) section 2 was inspected at
+https://www.rfc-editor.org/rfc/rfc9266.txt: 14,414 bytes, SHA-256
+`dda84b295ff134eb77105f406a55ab6cee3afe035fd23c9e79a2dad662c2e880`.
+This reference is separate from the 13-document AD state matrix; no upstream text
+or code is imported and no protocol/image use-rights clearance is implied.
+
+Private key files must have owner-only permission bits; missing, symlinked,
+public or mismatched material fails before a listener is created. Fixtures live
+in private temporary directories. This does not solve production ancestor races,
+owner verification, encrypted custody, memory zeroization or operator provisioning.
+Test-only provider adapters inject unavailable entropy/time, key loading and
+signing through Rustls's real interfaces; all fail before authentication. No
+fault-injection or permissive-verifier switch is exposed through the CLI.
+
+There are now ten Rust tests and 27 independent test methods. Eight boundary
+methods are required by name; skipped probes fail. JSON reports retain method
+inventory, tool version, source/input/probe/binary hashes and honest unrun
+production conformance. The existing required job repeats instrumented and
+extracted-binary probes; the TLS fuzzer now exercises CRL parsing too. All new
+code uses the existing locked dependency/features and notice obligations.

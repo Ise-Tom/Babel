@@ -1,5 +1,8 @@
 //! Synthetic ephemeral PKI and bounded in-memory TLS tests, not AD/client conformance.
-use babel_tls_lab::{MAX_DER_BYTES, MAX_WIRE_BYTES, REQUEST, server_config};
+use babel_tls_lab::{
+    BINDING_LABEL, ConfigSlot, MAX_DER_BYTES, MAX_WIRE_BYTES, REQUEST, channel_binding,
+    revocation_config, server_config,
+};
 use proptest::prelude::*;
 use rcgen::{
     BasicConstraints, Certificate, CertificateParams, ExtendedKeyUsagePurpose, IsCa, Issuer,
@@ -209,6 +212,91 @@ fn invalid_bounded_configuration_never_exposes_key_material() {
     for (cert, key, root) in inputs {
         let error = server_config(cert, key, root).unwrap_err();
         assert!(!error.contains("synthetic-invalid-key"));
+    }
+    let (cert, key) = leaf(&ca, true, None);
+    for crl in [vec![], vec![0; MAX_DER_BYTES + 1], vec![1, 2, 3]] {
+        assert!(revocation_config(cert.clone(), key.clone(), ca.cert.der().to_vec(), crl).is_err());
+    }
+}
+
+#[test]
+fn replacement_preserves_existing_configs_and_failed_candidates_cannot_replace() {
+    let ca = authority();
+    let (cert, key) = leaf(&ca, true, None);
+    let initial = server_config(cert.clone(), key, ca.cert.der().to_vec()).unwrap();
+    let mut slot = ConfigSlot::new(initial.clone());
+    let mut old = ServerConnection::new(slot.current()).unwrap();
+    assert!(slot.replace(Err("rejected candidate")).is_err());
+    assert!(Arc::ptr_eq(&initial, &slot.current()));
+    let (next_cert, next_key) = leaf(&ca, true, None);
+    slot.replace(server_config(
+        next_cert.clone(),
+        next_key,
+        ca.cert.der().to_vec(),
+    ))
+    .unwrap();
+    assert!(!Arc::ptr_eq(&initial, &slot.current()));
+    for (server, expected) in [
+        (&mut old, cert),
+        (
+            &mut ServerConnection::new(slot.current()).unwrap(),
+            next_cert,
+        ),
+    ] {
+        let mut peer = client(
+            &ca,
+            Some(leaf(&ca, false, None)),
+            "babel.example.test",
+            &rustls::version::TLS13,
+        );
+        pump(&mut peer, server).unwrap();
+        assert_eq!(peer.peer_certificates().unwrap()[0].as_ref(), expected);
+    }
+}
+
+#[test]
+fn rfc9266_binding_rejects_early_tls12_and_cross_session_label_or_context_substitution() {
+    let ca = authority();
+    let (cert, key) = leaf(&ca, true, None);
+    let config = server_config(cert, key, ca.cert.der().to_vec()).unwrap();
+    let mut previous = None;
+    for version in [
+        &rustls::version::TLS12,
+        &rustls::version::TLS13,
+        &rustls::version::TLS13,
+    ] {
+        let mut server = ServerConnection::new(config.clone()).unwrap();
+        assert!(channel_binding(&server).is_err());
+        let mut peer = client(
+            &ca,
+            Some(leaf(&ca, false, None)),
+            "babel.example.test",
+            version,
+        );
+        pump(&mut peer, &mut server).unwrap();
+        if version.version == rustls::ProtocolVersion::TLSv1_2 {
+            assert!(channel_binding(&server).is_err());
+            continue;
+        }
+        let actual = channel_binding(&server).unwrap();
+        let expected = peer
+            .export_keying_material([0; 32], BINDING_LABEL, None)
+            .unwrap();
+        assert!(actual == expected);
+        assert!(Some(actual) != previous);
+        assert!(
+            actual
+                != peer
+                    .export_keying_material([0; 32], b"EXPORTER-Wrong", None)
+                    .unwrap()
+        );
+        assert!(
+            actual
+                != peer
+                    .export_keying_material([0; 32], BINDING_LABEL, Some(b"wrong-context"))
+                    .unwrap()
+        );
+        previous = Some(actual);
     }
 }
 #[test]

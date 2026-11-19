@@ -22,7 +22,7 @@ are still proposed test targets at the selected level.
 | P00-10 | [Complete criterion packet](validation/p00-10.md): six reviewed-design transition examples, source/digest-bound CI checker and exception/invalidation controls | Explicit owner validation of the full Phase 0 design gate; runtime transitions retain their implementation gates |
 | P00-11 | [Complete functional-level profile](functional-level-profile.md): 2016/2016 Linux-hosted creation contract, level/OS distinction, incompatibilities and transition refusal | Explicit owner validation of the full Phase 0 design gate; exact builds, native behavior and client runs remain separate |
 | P00-12 | Windows/Linux/macOS profile templates remain explicit and unqualified | Exact owned/licensed host/image/build/package/architecture identifiers and rights are missing; no image has been acquired |
-| P00-13 | Real Rustls/ring mutual-TLS candidate and independent OpenSSL/certificate/fuzz evidence | Complete key custody, rotation/revocation, channel binding and provider-loss qualification; candidate work remains in progress |
+| P00-13 | [Full TLS/provider/channel review packet](validation/p00-13.md): exact stack, custody decision/limits, CRL rejection, in-process certificate replacement, independent exporter comparison and entropy/clock/key/signer faults | Explicit owner validation of the original Phase 0 selected-profile review; native LDAP/EPA, general revocation freshness and production key/service/client/capacity gates remain separate |
 | P00-14 | Kerberos/PAC dependency boundary and required AES/replay/delegation/FFI review specified | Select and qualify actual dependency candidates; planned engineering work, not an external-host-only blocker |
 | P00-15 | [Entire original driver gate](validation/p00-15.md) explicitly accepted by owner | Native AD adapter/domain/key/backup behavior remains later implementation work |
 | P00-16 | [Thirteen byte-pinned references and actual use-notice review](reference-use-review.md); external image use/distribution denied without explicit rights | Resolve concrete patent/program and reference-fixture/image rights; no blanket clearance or legal certification |
@@ -223,3 +223,22 @@ operation mapping, exact licensed lab profiles, TLS/Kerberos qualification,
 reference-use clearance and the current P00-17 operational gate remain open.
 The solo-response scheduling proposal records the genuine constraint without
 pretending there is another responder or a successful intake drill.
+
+
+## Completed TLS library/provider/channel qualification review
+
+P00-13 now has a [full original-criterion packet](validation/p00-13.md) for the
+selected Linux/Rustls/ring engineering profile. Ten Rust tests and 27 independent
+methods exercise actual cryptographic controls, not only documentation. The
+selected CRL expiry option is now explicitly enforced, certificate replacement
+is observed in one process, independent OpenSSL exporter values are checked
+against their exact session and provider faults fail authentication. The review
+records WebPKI's unchecked CRL thisUpdate, lab-only software-key custody and
+unimplemented LDAP/SASL/EPA as explicit constraints; it does not claim production
+revocation or AD compatibility. Required CI retains source/input/binary evidence
+and repeats coverage, sanitizer fuzz and packaged-binary probes.
+
+Eight Phase 0 gates now await owner validation: P00-02/03/04/06/07/10/11/13.
+The accepted scopes are unchanged. Detailed operation mapping, licensed lab
+profiles, Kerberos/PAC dependency qualification, use rights and actual response
+evidence remain open. No scheduling proposal or live drill is silently approved.
