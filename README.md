@@ -44,7 +44,7 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-19T15:27:09\+01:00.
+GitHub metadata checked: 2026-11-19T15:28:04\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -81,7 +81,7 @@ GitHub metadata checked: 2026-11-19T15:27:09\+01:00.
     
     Record the implementation and discovered production gaps in this same PR, including the SEC-04 capability tracker. Phase 0 becomes **3 accepted, 8 ready for validation, 3 in progress, 2 blocked and 1 planned**. All five existing acceptance proofs are unchanged; seven earlier design packets still await their explicit owner decisions. The solo-response scheduling proposal and current P00-17 gate remain unchanged; no private report is sent. Later phases remain planned.
     
-    Local validation: all workspace tests and all-feature Clippy pass, including 10 Rust TLS tests and 27 independent release/instrumented probe methods. TLS-library line coverage is **95.45%** against its separate 90% gate; sanitizer fuzz completed **20,000 iterations**. All 196 repository tests retain 99% combined statement/branch coverage; strict types, lint, security, design and evidence checks pass. The required hosted pipeline will repeat native, real database, independent, instrumented, packaged-binary, security and browser qualification.
+    Local validation: all workspace tests and all-feature Clippy pass, including 10 Rust TLS tests and 27 independent release/instrumented probe methods. TLS-library line coverage is **95.45%** against its separate 90% gate; sanitizer fuzz completed **20,000 iterations**. All 196 repository tests retain 99% combined statement/branch coverage; strict types, lint, security, design and evidence checks pass. **All 14 required [hosted CI jobs](https://github.com/Ise-Tom/Babel/actions/runs/44543165955) passed**, including native, real database, independent, instrumented, packaged-binary, security and browser qualification. All 34 local and hosted browser checks pass. The three hosted TLS reports each record 27 tests, zero failures/errors/skips and input digests matching the pushed tree; hosted TLS line coverage is 189/198 (**95.45%**). The hosted sanitizer fuzzer completed 20,000 TLS/CRL iterations. The GitHub dashboard includes W57 and the current PR as pending proposals.
     
     Owner validation of P00-13 is pending. Merge does not imply requirement acceptance.
 
