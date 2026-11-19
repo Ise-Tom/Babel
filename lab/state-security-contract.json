@@ -1,0 +1,1011 @@
+{
+  "schema_version": 1,
+  "status": "design_only",
+  "cases": [
+    {
+      "id": "S-RENAME",
+      "requirement": "P00-02",
+      "title": "Same-domain rename preserves identity and references",
+      "owner": "Ise-Tom",
+      "initial_state": "Object GUID G and current domain SID S have parent A; a group references G.",
+      "operation": "Rename/move inside the same domain after name/old-parent/new-parent operation rights.",
+      "expected": "G and S stay stable; only parent/RDN/derived locator changes. Typed DN references resolve G, not a stale text DN.",
+      "denied_or_interrupted": "A denied move changes neither object, parent edges, indexes, journal, audit nor receipt. Resolve names with schema rules, not SQL collation.",
+      "references": [
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.1.3",
+          "title": "Basics, objectGUID, and Special Attribute Behavior",
+          "heading": "Basics, objectGUID, and Special Attribute Behavior",
+          "heading_sha256": "4b02f9b5f31ae5b742624116c9aea50fa7ff51845ad161b34ac3c7c217260494"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.1.6",
+          "title": "Object Reference Attributes",
+          "heading": "Attribute Syntaxes, Object References, Referential Integrity, and Well-",
+          "heading_sha256": "2804bb234280bd77536138d03af7f197f2c2b7ee3858432efb20262e0e60b900"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.5.4.1.1",
+          "title": "Intra Domain Modify DN security considerations",
+          "heading": "Security Considerations",
+          "heading_sha256": "b01b27c875506ccee01e984e4e56cef4fcdf7b9f1a8514370ed8e57894f6127d"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "S-CROSS-DOMAIN-SID",
+      "requirement": "P00-02",
+      "title": "Cross-domain move is an explicit SID transition",
+      "owner": "Ise-Tom",
+      "initial_state": "Principal has G and domain-A SID SA; source and destination NC/role authorities are distinct.",
+      "operation": "A separately qualified cross-domain move is requested.",
+      "expected": "Preserve object identity as specified by the move protocol, allocate the destination-domain SID under its RID authority and apply only the qualified SID-history/cleanup rules. An applicable SID is not immutable across every domain transition.",
+      "denied_or_interrupted": "Never implement this as an ordinary intradomain rename or allow a caller to choose an arbitrary SID/SID-history. Unsupported migration remains refused.",
+      "references": [
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.1.3",
+          "title": "Basics, objectGUID, and Special Attribute Behavior",
+          "heading": "Basics, objectGUID, and Special Attribute Behavior",
+          "heading_sha256": "4b02f9b5f31ae5b742624116c9aea50fa7ff51845ad161b34ac3c7c217260494"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.5.4.2",
+          "title": "Cross Domain Modify DN",
+          "heading": "Cross Domain Move",
+          "heading_sha256": "b6eae44b8258917b64f0259fd839bd6081f6130ffa634b96f7c73d3b56086b40"
+        },
+        {
+          "document": "MS-DTYP",
+          "section": "2.4.2",
+          "title": "SID",
+          "heading": "SID",
+          "heading_sha256": "1ff3d5d384d8f1496ba048e4fc582fe0ad6f9441f54f08a39749dddd370529e1"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "S-COLLISION",
+      "requirement": "P00-02",
+      "title": "Concurrent originating DN collision",
+      "owner": "Ise-Tom",
+      "initial_state": "Two creates target the same parent and schema-equivalent RDN.",
+      "operation": "Resolve syntax/matching keys and serialize local uniqueness checks.",
+      "expected": "At most one local live name key commits; the other originating request receives the specified collision result. This is distinct from replicated naming conflicts.",
+      "denied_or_interrupted": "The losing request leaves no partial object, state/journal/audit/receipt or reused identity. Escapes and multi-valued RDNs are structural inputs.",
+      "references": [
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.5.1.2",
+          "title": "Naming Constraints",
+          "heading": "Naming Constraints",
+          "heading_sha256": "dbbadb8d94b381f999cfb4a1fd5014533c8b720656ec3ed31bc11004a8938829"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.5.1.3",
+          "title": "Uniqueness Constraints",
+          "heading": "Uniqueness Constraints",
+          "heading_sha256": "2d0fe2192d86c4965edef896ebadb4285e333315fa18a2a3609ee61187733160"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "S-SCHEMA",
+      "requirement": "P00-02",
+      "title": "Schema identity and constraints govern values",
+      "owner": "Ise-Tom",
+      "initial_state": "Class/attribute schema defines syntax, required/allowed attributes, matching rule, links and system-managed fields.",
+      "operation": "Add/modify an entry under one versioned schema snapshot.",
+      "expected": "Validate structural/auxiliary class constraints and attribute-specific encodings before commit. Object references use stable identities; preserve display values separately from matching keys.",
+      "denied_or_interrupted": "Reject missing/invalid class/value, unauthorized system-field changes and unknown matching implementations; no generic Unicode casefold or PostgreSQL collation stands in for AD matching.",
+      "references": [
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.2",
+          "title": "Schema",
+          "heading": "for details. A forward link attribute can exist with no corresponding back link attribute, but not",
+          "heading_sha256": "4476ca9ed868918c01df149555f1a2b2cbcfe82461023a4cf5cb5fe30643ef6d"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.5.1.1",
+          "title": "Enforce Schema Constraints",
+          "heading": "Enforce Schema Constraints",
+          "heading_sha256": "83505ca40512d07018c79afa947fe003e4718ae683c7632a4ceb6f1d7da4a3a8"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.5.3.2",
+          "title": "Modify constraints",
+          "heading": "Constraints",
+          "heading_sha256": "2b59190cc5bd4a597383315889e692a5802b1bdefa537c89584527672925586c"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "S-ACL-ORDER",
+      "requirement": "P00-02",
+      "title": "Ordered ACEs and attribute visibility",
+      "owner": "Ise-Tom",
+      "initial_state": "A valid descriptor has an applicable explicit allow of READ_PROPERTY followed by an inherited deny for that same bit; request is only that bit.",
+      "operation": "Run the Windows ordered access check and operation-specific visibility checks.",
+      "expected": "The explicit allow satisfies that remaining bit before the later inherited deny. Preserve the specified canonicalization/object-ACE rules; never sort all denies ahead of all allows. Hidden attributes behave absent in both search results and filter evaluation.",
+      "denied_or_interrupted": "NULL and empty DACLs are distinct; owner/privilege/object/integrity rules are not blanket grants. Wrong attribute/control rights never become a generic object-level allow.",
+      "references": [
+        {
+          "document": "MS-DTYP",
+          "section": "2.5.3.2",
+          "title": "Access Check Algorithm Pseudocode",
+          "heading": "Access Check Algorithm Pseudocode",
+          "heading_sha256": "398d9d9a7c129ce818daccfc35a0b306dc4574d752cedc868db7ce0572ffd2df"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "5.1.3.3",
+          "title": "Checking Access",
+          "heading": "Checking Access",
+          "heading_sha256": "4f4e35064dc82387ab823a03c549291900db73b656aaf9ad8bdd3d433f84613a"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.4.3",
+          "title": "Access Checks",
+          "heading": "Access Checks",
+          "heading_sha256": "84ea5f1565c3f1b189d427d9317246f2786fa0c138909f0b80755701e632c041"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "6.1.3",
+          "title": "Security Descriptor Requirements",
+          "heading": "Security Descriptor Requirements",
+          "heading_sha256": "623aa4b82909396db62e419e920a7309c044ec84c0fc16e06af998b6799f6569"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "S-INHERITANCE",
+      "requirement": "P00-02",
+      "title": "Inheritance propagation and protected objects",
+      "owner": "Ise-Tom",
+      "initial_state": "Parent P changes an inheritable ACE; descendant C has a materialized descriptor, while D has a protected DACL.",
+      "operation": "Commit P and schedule the security-descriptor propagation task.",
+      "expected": "C is eventually recomputed under class/inheritance flags; D keeps its protected inheritance semantics. AdminSDHolder protection is a separate mechanism. Propagator writes do not create replicated attribute stamps.",
+      "denied_or_interrupted": "Do not claim immediate descendant-wide revocation: the specified background task can span transactions. Show pending propagation; a parent commit acknowledgment is not proof that every descendant already changed.",
+      "references": [
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.6.3",
+          "title": "Security Descriptor Propagator Update",
+          "heading": "Security Descriptor Propagator Update",
+          "heading_sha256": "ef5a485f52c49f2b4e6070602a8a108a998b97946f43a291d703daf7604dead0"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.6.1",
+          "title": "AdminSDHolder",
+          "heading": "AdminSDHolder",
+          "heading_sha256": "3b48df2aac7ebe45847b7f7d98199b6f89380bea768f2085fce7b21406391462"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "6.1.3",
+          "title": "Security Descriptor Requirements",
+          "heading": "Security Descriptor Requirements",
+          "heading_sha256": "623aa4b82909396db62e419e920a7309c044ec84c0fc16e06af998b6799f6569"
+        },
+        {
+          "document": "MS-DTYP",
+          "section": "2.5.3.4.1",
+          "title": "CreateSecurityDescriptor",
+          "heading": "CreateSecurityDescriptor",
+          "heading_sha256": "549cbc24773bbd08ae285e4ca69cfc3267ee99511d6b84cb14f8434fcdf136ef"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "S-NESTED-GROUPS",
+      "requirement": "P00-02",
+      "title": "Cycles, token provenance and incomplete membership",
+      "owner": "Ise-Tom",
+      "initial_state": "A links to B, B links to A and a user is reachable through one link; a GC or a traversal budget can be unavailable.",
+      "operation": "Evaluate a link traversal/computed tokenGroups under the declared operation.",
+      "expected": "Use visited identities to terminate cycles; follow group scope/security-enabled and primary-group rules. LDAP transitive matching is not PAC/token construction. tokenGroups may be absent without a GC; an explicitly incomplete alternative must be labeled.",
+      "denied_or_interrupted": "Do not reject all cyclic graphs as a universal AD rule, silently truncate authorization expansion or grant from incomplete work. Authenticated ticket/token SID freshness is distinct from current directory membership.",
+      "references": [
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.3.4.4.3",
+          "title": "LDAP_MATCHING_RULE_TRANSITIVE_EVAL",
+          "heading": "LDAP_MATCHING_RULE_TRANSITIVE_EVAL",
+          "heading_sha256": "696855a4396e3eb3713544a91d0ffadb14e022947920e10f422df05cb413f72b"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.4.5.19",
+          "title": "tokenGroups, tokenGroupsNoGCAcceptable",
+          "heading": "tokenGroups, tokenGroupsNoGCAcceptable",
+          "heading_sha256": "6fed253923d8b3fb3164c665f4e3aaede4537023a8e1f1c25714498d7fa35e9a"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "4.1.8.3",
+          "title": "IDL_DRSGetMemberships server behavior",
+          "heading": "Server Behavior of the IDL_DRSGetMemberships Method",
+          "heading_sha256": "ad67b545c88fffc1bed4880f92d8194a3ab06e308cfddeed6ed2d2ffc5eff8fe"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "S-REVOKE-RACE",
+      "requirement": "P00-02",
+      "title": "Local resource ACL revocation serializes with mutation",
+      "owner": "Ise-Tom",
+      "initial_state": "Actor is authenticated; the target descriptor changes to revoke its requested write before mutation commit.",
+      "operation": "Acquire the bounded writer/security-version authority and recheck current resource descriptor and operation rights.",
+      "expected": "Either the write commits before the local descriptor revocation, or it observes the revocation and is denied/retried. Use the verified token context plus current resource policy; do not silently rewrite an already issued PAC.",
+      "denied_or_interrupted": "A cached grant cannot survive a locally serialized target-ACL revoke. Parent inheritance propagation, old ticket groups and cross-site revocation windows remain explicit separate freshness states.",
+      "references": [
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.5.1.4",
+          "title": "Transactional Semantics",
+          "heading": "Transactional Semantics",
+          "heading_sha256": "c95fdfe884249e9bfe477001f811d24d42ca3fb49d4c230aae7809781fe4e436"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "5.1.3.3",
+          "title": "Checking Access",
+          "heading": "Checking Access",
+          "heading_sha256": "4f4e35064dc82387ab823a03c549291900db73b656aaf9ad8bdd3d433f84613a"
+        },
+        {
+          "document": "MS-DTYP",
+          "section": "2.5.3.2",
+          "title": "Access Check Algorithm Pseudocode",
+          "heading": "Access Check Algorithm Pseudocode",
+          "heading_sha256": "398d9d9a7c129ce818daccfc35a0b306dc4574d752cedc868db7ce0572ffd2df"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "S-DURABLE-ACK",
+      "requirement": "P00-02",
+      "title": "Durable local success and retry boundaries",
+      "owner": "Ise-Tom",
+      "initial_state": "A local mutation has object/name changes, journal, audit intent and actor/request/payload receipt.",
+      "operation": "Commit them together before acknowledging the local mutation; a response can be lost.",
+      "expected": "Retry reauthorizes and recovers the same durable receipt, without duplicate effects; changed payload is rejected. Each search/page has its own transaction. Documented post-response background tasks retain their own durable pending state.",
+      "denied_or_interrupted": "A failed/unknown commit is not success. This is a Babel local atomic contract, not a claim that AD mandates one giant transaction for a whole paged search or all GPO/SYSVOL/background work.",
+      "references": [
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.5.1.4",
+          "title": "Transactional Semantics",
+          "heading": "Transactional Semantics",
+          "heading_sha256": "c95fdfe884249e9bfe477001f811d24d42ca3fb49d4c230aae7809781fe4e436"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.1.16",
+          "title": "Delayed Link Processing",
+          "heading": "Delayed Link Processing",
+          "heading_sha256": "daf5b3132cd4b65a1ee1d8b5d42e80bd7ad2cf594876f7c810a59c1e1d237f6f"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "R-INDEPENDENT",
+      "requirement": "P00-03",
+      "title": "Partitioned edits to separate attributes",
+      "owner": "Ise-Tom",
+      "initial_state": "A changes displayName; B changes telephoneNumber for the same G while disconnected.",
+      "operation": "Deliver the two updates in both orders and include duplicates.",
+      "expected": "Compare/apply stamps per attribute; both independent winning values survive. Preserve originating stamps, assign receiver-local progress separately.",
+      "denied_or_interrupted": "Object-wide last-writer overwrite or one global SQL sequence must not discard the other attribute.",
+      "references": [
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.1.9",
+          "title": "DCs, USN Counters, and the Originating Update Stamp",
+          "heading": "DCs, USN Counters, and the Originating Update Stamp",
+          "heading_sha256": "f90221ea96e95fc0ebd1b6238f4709fc29954fe1dc525923be7b47af9870b257"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "4.1.10.6.10",
+          "title": "UpdateObject",
+          "heading": "UpdateObject",
+          "heading_sha256": "fd983bca135a705e0dd62cc4c28e6cdacc0bf70d584137ff4c86c2db185f668b"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "R-SCALAR",
+      "requirement": "P00-03",
+      "title": "Same-attribute conflict uses attribute stamps",
+      "owner": "Ise-Tom",
+      "initial_state": "A has version 8/time 100; B has version 9/time 90 for the same attribute.",
+      "operation": "Merge in either delivery order.",
+      "expected": "B wins by CompareVersions despite its older clock. Equal versions compare timeChanged, then originating invocation GUID; equal comparison leaves the current value. usnOriginating is not an extra conflict tie-breaker.",
+      "denied_or_interrupted": "Do not use wall-clock-only ordering or infer authority from a timestamp; conversion/time precision follows the pinned type.",
+      "references": [
+        {
+          "document": "MS-DRSR",
+          "section": "5.11",
+          "title": "AttributeStamp",
+          "heading": "for details on the comparison of AttributeStamps.",
+          "heading_sha256": "3b00e24b55bdfdd489423096a1a6f45f85fae8da5c587401b611045aa38bdf92"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "4.1.10.3.5",
+          "title": "AttributeStampCompare",
+          "heading": "AttributeStampCompare",
+          "heading_sha256": "f38e5328d268aaf16499c6cea05e380a301a766e7eb9270b0f9511e12bd68510"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "4.1.10.6.10",
+          "title": "UpdateObject",
+          "heading": "UpdateObject",
+          "heading_sha256": "fd983bca135a705e0dd62cc4c28e6cdacc0bf70d584137ff4c86c2db185f668b"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "R-GUID-ORDER",
+      "requirement": "P00-03",
+      "title": "GUID tie-breaking uses little-endian octets",
+      "owner": "Ise-Tom",
+      "initial_state": "Versions/times tie; invocation A=00000001-0000-0000-0000-000000000000 and B=00000100-0000-0000-0000-000000000000.",
+      "operation": "Compare the specified GUID representation.",
+      "expected": "A compares greater: its first little-endian octet is 01 versus B’s 00. Canonical UUID text order would produce the wrong result.",
+      "denied_or_interrupted": "Do not use database UUID/string ordering without proving the required byte representation.",
+      "references": [
+        {
+          "document": "MS-DRSR",
+          "section": "5.87",
+          "title": "GUID",
+          "heading": "GUID",
+          "heading_sha256": "bd69ba7eeb6d476e5f1a405d0c464e03ea0ef51af71e0aa19a58c2f7e6b50d87"
+        },
+        {
+          "document": "MS-DTYP",
+          "section": "2.3.4.2",
+          "title": "GUID--Packet Representation",
+          "heading": "GUID--Packet Representation",
+          "heading_sha256": "1deb06ef6bbe62d3f3b1eccca71fcef5976ebd54622c97f530a2bb1caf16ee04"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "5.11",
+          "title": "AttributeStamp",
+          "heading": "for details on the comparison of AttributeStamps.",
+          "heading_sha256": "3b00e24b55bdfdd489423096a1a6f45f85fae8da5c587401b611045aa38bdf92"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "R-VERSION-WRAP",
+      "requirement": "P00-03",
+      "title": "Attribute DWORD version wrap is explicit",
+      "owner": "Ise-Tom",
+      "initial_state": "One version is FFFFFFFF; its next originating update wraps to 00000000. Also compare 00000001 versus 80000001.",
+      "operation": "Apply the pinned CompareVersions procedure with defined 32-bit arithmetic.",
+      "expected": "00000000 is newer than FFFFFFFF in this transition; the explicit half-range case selects 80000001 over 00000001. This is not plain unsigned sorting.",
+      "denied_or_interrupted": "Keep global overflow checks enabled; implement only protocol-defined modular arithmetic explicitly. Do not substitute the link-value comparator or claim arbitrary transitivity across unqualified history gaps.",
+      "references": [
+        {
+          "document": "MS-DRSR",
+          "section": "5.11",
+          "title": "AttributeStamp",
+          "heading": "for details on the comparison of AttributeStamps.",
+          "heading_sha256": "3b00e24b55bdfdd489423096a1a6f45f85fae8da5c587401b611045aa38bdf92"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.1.9",
+          "title": "DCs, USN Counters, and the Originating Update Stamp",
+          "heading": "DCs, USN Counters, and the Originating Update Stamp",
+          "heading_sha256": "f90221ea96e95fc0ebd1b6238f4709fc29954fe1dc525923be7b47af9870b257"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "R-LINK-LIFETIME",
+      "requirement": "P00-03",
+      "title": "Linked values have lifetime-aware metadata",
+      "owner": "Ise-Tom",
+      "initial_state": "A live/new lifetime has timeCreated 200/version 1; an older lifetime has timeCreated 100/version 300.",
+      "operation": "Compare link stamps; separately delete/recreate a retained tombstoned link.",
+      "expected": "Use LinkValueStampCompare, including zero/nonzero-version handling, timeCreated, signed 32-bit version difference, timeChanged and origin GUID. A retained tombstone recreation preserves timeCreated and increments version; a fresh post-GC lifetime differs.",
+      "denied_or_interrupted": "Never apply AttributeStampCompare wholesale to links. timeDeleted maps to the wire presence flag; deletion/recycle cannot create an active orphaned privilege link.",
+      "references": [
+        {
+          "document": "MS-DRSR",
+          "section": "5.118",
+          "title": "LinkValueStamp",
+          "heading": "LinkValueStamp",
+          "heading_sha256": "61ca13ff10382d47ab1f1b140f8ca3c88fbfbabdbe103e1b1a6179b3ab52cfbc"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "5.119",
+          "title": "LinkValueStampCompare",
+          "heading": "LinkValueStampCompare",
+          "heading_sha256": "a482633de5b7896b6161888a34c974c4f2140bb3b546ee991c87d18192f13bb6"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "4.1.10.6.14",
+          "title": "ProcessLinkValue",
+          "heading": "ProcessLinkValue",
+          "heading_sha256": "9c907f97c4231da169f57604a9489c823b61ddf568e368f19ab5540f68679e24"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.1.9",
+          "title": "DCs, USN Counters, and the Originating Update Stamp",
+          "heading": "DCs, USN Counters, and the Originating Update Stamp",
+          "heading_sha256": "f90221ea96e95fc0ebd1b6238f4709fc29954fe1dc525923be7b47af9870b257"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "R-NAME-CONFLICT",
+      "requirement": "P00-03",
+      "title": "Replicated same-name objects do not merge identities",
+      "owner": "Ise-Tom",
+      "initial_state": "Two distinct object GUIDs claim one RDN under one parent. Name timestamps tie; A/B use the GUIDs from R-GUID-ORDER, with different name versions.",
+      "operation": "Resolve the cross-object name conflict.",
+      "expected": "Use ResolveNameConflict’s name timestamp and OBJECT GUID rule, not a generic attribute-version/origin-GUID ranking. A keeps the name in this example; preserve B under a conflict RDN containing U+000A + CNF: + B’s dashed GUID.",
+      "denied_or_interrupted": "Keep both principals/identities; never merge by DN. Do not store the documentation’s display placeholder # as the literal conflict separator.",
+      "references": [
+        {
+          "document": "MS-DRSR",
+          "section": "4.1.10.6.12",
+          "title": "ResolveNameConflict",
+          "heading": "ResolveNameConflict",
+          "heading_sha256": "bf64de7afc12576c961de3ccc531fb043d5692f3a32be8aa31ecf52d978a4722"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "4.1.10.6.13",
+          "title": "MakeConflictDN",
+          "heading": "MakeConflictDN",
+          "heading_sha256": "c34674e2865ae637c38c59549b33c6225b3dc409684eb261f453696cf7c926d2"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "5.87",
+          "title": "GUID",
+          "heading": "GUID",
+          "heading_sha256": "bd69ba7eeb6d476e5f1a405d0c464e03ea0ef51af71e0aa19a58c2f7e6b50d87"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "R-DELETE-MODIFY",
+      "requirement": "P00-03",
+      "title": "Delete/recycle conflict preserves lifecycle invariants",
+      "owner": "Ise-Tom",
+      "initial_state": "A deletes an object while B modifies one attribute or linked membership.",
+      "operation": "Apply the competing replicated updates and lifecycle repair.",
+      "expected": "Follow UpdateObject/RemoveObj/RecycleObj and declared optional-feature state; retain required identity/deletion/link metadata and keep deleted/recycled objects out of ordinary active views.",
+      "denied_or_interrupted": "A retained attribute or delayed backlink cannot silently reactivate a principal or resurrect privileges; undelete has separate authorization/constraints.",
+      "references": [
+        {
+          "document": "MS-DRSR",
+          "section": "4.1.10.6.10",
+          "title": "UpdateObject",
+          "heading": "UpdateObject",
+          "heading_sha256": "fd983bca135a705e0dd62cc4c28e6cdacc0bf70d584137ff4c86c2db185f668b"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.5.5",
+          "title": "Delete Operation",
+          "heading": "Delete Operation",
+          "heading_sha256": "392021c111f2befc53aaee9266bc38befe2322a297b3d6fb63bead08153af120"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.5.3.7",
+          "title": "Undelete Operation",
+          "heading": "Undelete Operation",
+          "heading_sha256": "622347e8954f5ff862989133d572412f2bd8ac5817bfb296912a94b57e227380"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "R-CURSOR-COMMIT",
+      "requirement": "P00-03",
+      "title": "Receiver progress never outruns applied state",
+      "owner": "Ise-Tom",
+      "initial_state": "A bounded GetNCChanges reply contains objects and link updates plus per-source progress.",
+      "operation": "Crash before/after applying a page, or lose the reply.",
+      "expected": "Atomically retain each committed page and its safe local replay/progress checkpoint. Update the source watermark only for applied work; merge the broader UTD/PAS only after all response updates and cycle completion. Replay is idempotent.",
+      "denied_or_interrupted": "Never advance UTD/cursor on an unprocessed/error/partial page. Originating USNs, local USNs, per-source high-watermarks and UTD knowledge are distinct.",
+      "references": [
+        {
+          "document": "MS-DRSR",
+          "section": "4.1.10.6.1",
+          "title": "ProcessGetNCChangesReply",
+          "heading": "ProcessGetNCChangesReply",
+          "heading_sha256": "6a3d04a8a34abb1c77dff4b9aba916b295e5a94da3f58c159ab4a44aca3385a6"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "4.1.10.6.15",
+          "title": "UpdateRepsFrom",
+          "heading": "UpdateRepsFrom",
+          "heading_sha256": "87638576d19284457cd8343cfe16b996bddd3d68f16910b0e4cc67f174a9213d"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "4.1.10.6.16",
+          "title": "UpdateUTDandPAS",
+          "heading": "UpdateUTDandPAS",
+          "heading_sha256": "0781de35e01515a50cb822ff21d1e477943bed977812656e587a03393c6068a1"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "5.210",
+          "title": "USN_VECTOR",
+          "heading": "USN_VECTOR",
+          "heading_sha256": "1441708ba5761c21c209e7c15b4b9c37379e7a59d80db2ecbf3827ff33b82555"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "R-RESTORE-EPOCH",
+      "requirement": "P00-03",
+      "title": "Restore changes invocation epoch before service",
+      "owner": "Ise-Tom",
+      "initial_state": "A restored copy has old USNs/keys/SYSVOL while peers have advanced.",
+      "operation": "Start isolated; verify a coherent backup and the qualified restore procedure.",
+      "expected": "Retain DSA/object identity as specified, establish a fresh invocation ID/USN epoch and reconcile credential/deletion/replica state before service. Keep a versioned local restore checkpoint without inventing a new AD wire field.",
+      "denied_or_interrupted": "No old USN sequence can continue under its old invocation ID. A VM snapshot alone is not a qualified restore; discard/quarantine stale RID allocations and require native recovery proof later.",
+      "references": [
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.1.9",
+          "title": "DCs, USN Counters, and the Originating Update Stamp",
+          "heading": "DCs, USN Counters, and the Originating Update Stamp",
+          "heading_sha256": "f90221ea96e95fc0ebd1b6238f4709fc29954fe1dc525923be7b47af9870b257"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "6.1.1.2.2.1.2.1.1",
+          "title": "nTDSDSA Object",
+          "heading": "describes the nTDSDSA object; serverGuid equals the objectGUID of the DC's",
+          "heading_sha256": "e5dc6f16c63f4192292cfefadc215488d5378df1e753c2fccfb56836a21ef0ef"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "R-RETENTION",
+      "requirement": "P00-03",
+      "title": "Expired history prevents unsafe incremental rejoin",
+      "owner": "Ise-Tom",
+      "initial_state": "A replica returns after required deletion/link tombstones have been collected.",
+      "operation": "Attempt incremental synchronization.",
+      "expected": "Quarantine and follow the qualified full rebuild/rejoin path when safe incremental knowledge is unavailable; retain explicit stale/unknown status.",
+      "denied_or_interrupted": "Do not infer absence means a never-created object or silently reintroduce lingering principals/links.",
+      "references": [
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.5.5",
+          "title": "Delete Operation",
+          "heading": "Delete Operation",
+          "heading_sha256": "392021c111f2befc53aaee9266bc38befe2322a297b3d6fb63bead08153af120"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "4.1.10.6.10",
+          "title": "UpdateObject",
+          "heading": "UpdateObject",
+          "heading_sha256": "fd983bca135a705e0dd62cc4c28e6cdacc0bf70d584137ff4c86c2db185f668b"
+        },
+        {
+          "document": "MS-DRSR",
+          "section": "4.1.10.6.14",
+          "title": "ProcessLinkValue",
+          "heading": "ProcessLinkValue",
+          "heading_sha256": "9c907f97c4231da169f57604a9489c823b61ddf568e368f19ab5540f68679e24"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    },
+    {
+      "id": "R-RID-AUTHORITY",
+      "requirement": "P00-03",
+      "title": "RID transfer/seizure and restored allocators",
+      "owner": "Ise-Tom",
+      "initial_state": "One allocator is partitioned while another assumes qualified RID authority.",
+      "operation": "Consume/transfer/seize only under the specified allocation and recovery policy.",
+      "expected": "Never allocate duplicate SID ranges or allow an untrusted stale former authority to resume. Verify eligible roles/pools/epoch and rebuild or invalidate stale allocations before serving.",
+      "denied_or_interrupted": "A PostgreSQL sequence is not the domain RID/FSMO protocol. Exact transfer/seizure implementation and reference drills remain required before native allocation.",
+      "references": [
+        {
+          "document": "MS-ADTS",
+          "section": "3.1.1.1.3",
+          "title": "Basics, objectGUID, and Special Attribute Behavior",
+          "heading": "Basics, objectGUID, and Special Attribute Behavior",
+          "heading_sha256": "4b02f9b5f31ae5b742624116c9aea50fa7ff51845ad161b34ac3c7c217260494"
+        },
+        {
+          "document": "MS-ADTS",
+          "section": "6.1.5.3",
+          "title": "RID Master FSMO Role",
+          "heading": "RID Master FSMO Role",
+          "heading_sha256": "e723798650dd25771767c608f07f2634833d8f88fb386c14f360cbc3aaab2b85"
+        }
+      ],
+      "runtime_outcome": "unrun",
+      "review": "specified_for_owner_review"
+    }
+  ],
+  "boundaries": [
+    {
+      "id": "B-WIRE",
+      "title": "Client to protocol/core",
+      "accountable_owner": "Ise-Tom",
+      "review_model": "solo_owner_and_CI",
+      "assets": [
+        "parser/state budgets",
+        "directory confidentiality"
+      ],
+      "threats": [
+        "T-01",
+        "T-02",
+        "T-03",
+        "T-04"
+      ],
+      "misuse_cases": [
+        "Malformed/oversized/slow frames exhaust a listener",
+        "Unsigned/downgraded/replayed identity reaches a directory operation"
+      ],
+      "required_denial_or_fault": "Bound parsing/session/work; verify channel/authentication/authorization before mutation; no credential success from transport alone.",
+      "residual_risk": "The existing RootDSE parser is only a small lab subset; future protocol implementations need their own client/fault proof.",
+      "implementation_gates": [
+        "P01-04",
+        "P01-06",
+        "P02-01"
+      ],
+      "runtime_outcome": "unrun",
+      "independent_assessment": "not_performed"
+    },
+    {
+      "id": "B-AUTHORITY",
+      "title": "Core authorization and management mutation",
+      "accountable_owner": "Ise-Tom",
+      "review_model": "solo_owner_and_CI",
+      "assets": [
+        "GUID/SID/schema",
+        "ACLs and delegation"
+      ],
+      "threats": [
+        "T-02",
+        "T-05",
+        "T-11"
+      ],
+      "misuse_cases": [
+        "Caller substitutes target/scope or a stale grant",
+        "Management path marks itself a privileged replicator"
+      ],
+      "required_denial_or_fault": "One core evaluator and typed operation boundary, current target policy checks and durable audited writes; separate policy publication authority.",
+      "residual_risk": "Signed tickets and materialized inheritance/replica state can remain stale; expose the actual window.",
+      "implementation_gates": [
+        "P01-02",
+        "P01-11",
+        "P02-12"
+      ],
+      "runtime_outcome": "unrun",
+      "independent_assessment": "not_performed"
+    },
+    {
+      "id": "B-STORE-KEYS",
+      "title": "Core to transactional store/key custody",
+      "accountable_owner": "Ise-Tom",
+      "review_model": "solo_owner_and_CI",
+      "assets": [
+        "verifiers and private keys",
+        "journal/audit/receipts"
+      ],
+      "threats": [
+        "T-03",
+        "T-09",
+        "T-20"
+      ],
+      "misuse_cases": [
+        "Provider disappears or data/audit commit fails",
+        "SQL/error/diagnostic or ordinary attribute read leaks a secret"
+      ],
+      "required_denial_or_fault": "Deny affected key operations, keep coupled local security/audit state durable, redact errors and separate secret custody from generic writers.",
+      "residual_risk": "A compromised DC process/root or lost custody is not repaired by memory safety; key rotation/clean recovery remain real operational gates.",
+      "implementation_gates": [
+        "P01-03",
+        "P01-12",
+        "P01-14"
+      ],
+      "runtime_outcome": "unrun",
+      "independent_assessment": "not_performed"
+    },
+    {
+      "id": "B-REPLICATION",
+      "title": "DC membership/replication and restore",
+      "accountable_owner": "Ise-Tom",
+      "review_model": "solo_owner_and_CI",
+      "assets": [
+        "replication keys",
+        "origin/cursor/RID metadata"
+      ],
+      "threats": [
+        "T-03",
+        "T-08",
+        "T-09",
+        "T-20"
+      ],
+      "misuse_cases": [
+        "Unknown/revoked peer asks for credential changes",
+        "Reordered/partial batches or stale snapshot advance progress"
+      ],
+      "required_denial_or_fault": "Authenticate/authorize exact peer/NC/secret scope, preserve metadata rules and reject unsafe epochs/progress before serving.",
+      "residual_risk": "A writable DC compromise is domain compromise; partitions cannot promise instantaneous global revocation.",
+      "implementation_gates": [
+        "P03-01",
+        "P03-02",
+        "P03-06",
+        "P03-13"
+      ],
+      "runtime_outcome": "unrun",
+      "independent_assessment": "not_performed"
+    },
+    {
+      "id": "B-WEB",
+      "title": "Browser/session to delegated API",
+      "accountable_owner": "Ise-Tom",
+      "review_model": "solo_owner_and_CI",
+      "assets": [
+        "admin sessions",
+        "reset/enrollment/policy authority"
+      ],
+      "threats": [
+        "T-06",
+        "T-11",
+        "T-19"
+      ],
+      "misuse_cases": [
+        "CSRF/XSS/session theft or recovery enrollment takeover",
+        "Self-approval or stale scope changes high-impact policy"
+      ],
+      "required_denial_or_fault": "Phishing-resistant admin auth, CSRF/session controls, exact-scope expiry/step-up and denied browser/API/effective-access tests.",
+      "residual_risk": "Solo project review is not production separation of duties; web MFA does not impose MFA on every legacy domain protocol.",
+      "implementation_gates": [
+        "P01-08",
+        "P04-01"
+      ],
+      "runtime_outcome": "unrun",
+      "independent_assessment": "not_performed"
+    },
+    {
+      "id": "B-RECOVERY",
+      "title": "Backup storage to clean restore",
+      "accountable_owner": "Ise-Tom",
+      "review_model": "solo_owner_and_CI",
+      "assets": [
+        "encrypted coherent backups",
+        "independent recovery custody"
+      ],
+      "threats": [
+        "T-08",
+        "T-09",
+        "T-19",
+        "T-20"
+      ],
+      "misuse_cases": [
+        "Backup theft or insider deletion",
+        "Restore old keys/SYSVOL/epochs or require the failed domain to unlock its own recovery"
+      ],
+      "required_denial_or_fault": "Protect independent encrypted/offline copies; verify coherent manifests and a clean-room restore/rotation before declaring recovery.",
+      "residual_risk": "No independent backup responder/custody or live recovery exercise is presently evidenced.",
+      "implementation_gates": [
+        "P03-07",
+        "P03-13",
+        "P03-14"
+      ],
+      "runtime_outcome": "unrun",
+      "independent_assessment": "not_performed"
+    },
+    {
+      "id": "B-SUPPLY",
+      "title": "Contributor/dependency/build to signing and consumer",
+      "accountable_owner": "Ise-Tom",
+      "review_model": "solo_owner_and_CI",
+      "assets": [
+        "source and signing authority",
+        "dependency/update provenance"
+      ],
+      "threats": [
+        "T-10",
+        "T-20"
+      ],
+      "misuse_cases": [
+        "Untrusted PR/tool executes with signing authority",
+        "Wrong/replayed artifact is distributed as trusted"
+      ],
+      "required_denial_or_fault": "Pinned inputs, scoped ephemeral CI, actual review, retained terms/SBOM and verified source/artifact/provenance; fail closed on audit services or evidence failure.",
+      "residual_risk": "Green scans cannot certify absent vulnerabilities or authenticate prose; independent production assessment remains required.",
+      "implementation_gates": [
+        "P01-01",
+        "P04-01"
+      ],
+      "runtime_outcome": "unrun",
+      "independent_assessment": "not_performed"
+    },
+    {
+      "id": "B-EXTERNAL",
+      "title": "IdP/CA/posture connector to identity",
+      "accountable_owner": "Ise-Tom",
+      "review_model": "solo_owner_and_CI",
+      "assets": [
+        "issuer/certificate mapping",
+        "connector credentials"
+      ],
+      "threats": [
+        "T-07",
+        "T-11",
+        "T-19",
+        "T-20"
+      ],
+      "misuse_cases": [
+        "Forged audience/nonce/template claim grants privilege",
+        "Connector URL becomes arbitrary privileged fetch"
+      ],
+      "required_denial_or_fault": "Constrain issuers/destinations/claims and enrollment authority; provider loss/stale observations never become an automatic grant.",
+      "residual_risk": "Provider account compromise or stale third-party evidence is a distinct trust boundary, not cured by TLS.",
+      "implementation_gates": [
+        "P08-01",
+        "P08-02",
+        "P08-11"
+      ],
+      "runtime_outcome": "unrun",
+      "independent_assessment": "not_performed"
+    },
+    {
+      "id": "B-FLEET",
+      "title": "Device/relay/patch dispatcher",
+      "accountable_owner": "Ise-Tom",
+      "review_model": "solo_owner_and_CI",
+      "assets": [
+        "unique device identities",
+        "campaign/content signing"
+      ],
+      "threats": [
+        "T-12",
+        "T-13",
+        "T-18",
+        "T-20"
+      ],
+      "misuse_cases": [
+        "Replay enrollment/inventory changes campaign targets",
+        "Poisoned relay/content or event storm starves authentication"
+      ],
+      "required_denial_or_fault": "Unique revocable enrollment, authenticated timestamped inventory, immutable signed/expiring scoped jobs, native executors, quotas/canary pause and honest receipts.",
+      "residual_risk": "Endpoint root can defeat local enforcement; relays do not mint approvals and offline devices cannot honor immediate revocation.",
+      "implementation_gates": [
+        "P11-02",
+        "P11-14",
+        "P12-01",
+        "P13-01"
+      ],
+      "runtime_outcome": "unrun",
+      "independent_assessment": "not_performed"
+    },
+    {
+      "id": "B-SUPPORT-FILES",
+      "title": "Operator/relay to remote session/file destination",
+      "accountable_owner": "Ise-Tom",
+      "review_model": "solo_owner_and_CI",
+      "assets": [
+        "consent/session keys",
+        "upload destination and receipts"
+      ],
+      "threats": [
+        "T-14",
+        "T-15",
+        "T-19"
+      ],
+      "misuse_cases": [
+        "Consent/elevation or unattended-policy substitution",
+        "Traversal/symlink/overwrite race or upload autoexecution"
+      ],
+      "required_denial_or_fault": "Separate session/elevation/recording/upload/execution grants; destination-at-open/finalization checks, staging/quotas and disconnect/rescue tests.",
+      "residual_risk": "Upload is not execution; recording/telemetry access and retention require privacy controls and supported-OS evidence.",
+      "implementation_gates": [
+        "P14-01",
+        "P15-01"
+      ],
+      "runtime_outcome": "unrun",
+      "independent_assessment": "not_performed"
+    },
+    {
+      "id": "B-EDR-RESPONSE",
+      "title": "Sensor/rule/evidence to responder",
+      "accountable_owner": "Ise-Tom",
+      "review_model": "solo_owner_and_CI",
+      "assets": [
+        "telemetry/rule provenance",
+        "fleet containment authority"
+      ],
+      "threats": [
+        "T-16",
+        "T-17",
+        "T-18",
+        "T-19",
+        "T-20"
+      ],
+      "misuse_cases": [
+        "Forged/gapped events or PID reuse misidentify a target",
+        "False alerts or stolen response authority isolate the entire fleet"
+      ],
+      "required_denial_or_fault": "Supported signed sensor/rule paths, visible gaps, exact typed expiring targets, mass-action limits/approval and independent rescue/emergency stop.",
+      "residual_risk": "A compromised kernel can defeat a sensor; detection is not unlimited execution authority or proof that prior compromise is undone.",
+      "implementation_gates": [
+        "P16-01",
+        "P16-16",
+        "P17-03",
+        "P17-07"
+      ],
+      "runtime_outcome": "unrun",
+      "independent_assessment": "not_performed"
+    }
+  ],
+  "format_status": "not_frozen",
+  "production_assessment": "not_performed",
+  "source_documents": "lab/specification-pins.json"
+}

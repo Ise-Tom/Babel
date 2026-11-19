@@ -40,6 +40,8 @@ class ComponentScope(unittest.TestCase):
                     "requirements-ci.txt",
                     "lab/windows-reference.toml",
                     "lab/phase0-contract.json",
+                    "lab/state-security-contract.json",
+                    "lab/specification-pins.json",
                     "experiments/postgres_store/schema.sql",
                     "experiments/postgres_store/experiment.py",
                 ],
