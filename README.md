@@ -44,11 +44,206 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-18T23:12:07\+01:00.
+GitHub metadata checked: 2026-11-19T11:39:31\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#30 · Complete Phase 0 identity, replication and threat-design gates](<https://github.com/Ise-Tom/Babel/pull/30>)
+
+**In review · Pending merge · CI: in\_progress** · Head 6480532
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## Phase 0 design exits
+    
+    Complete the original P00-02, P00-03 and P00-07 design criteria so they can be validated as whole Phase 0 gates. The dashboard now records **3 accepted, 7 ready for validation, 4 in progress, 2 blocked and 1 planned** in Phase 0. All five existing acceptance proofs are unchanged; nothing new is accepted automatically.
+    
+    - **Identity/authorization:** nine worked cases distinguish domain-move SID changes, ordered ACL evaluation, asynchronous inheritance, hidden-attribute filters, group/token freshness, concurrent revocation and durable acknowledgments.
+    - **Replication/restore:** eleven worked cases bind actual attribute wrap/half-range, little-endian GUID, link-lifetime and timestamp/object-GUID naming algorithms, plus safe cursors, deletion, invocation epochs, retention and RID authority.
+    - **Threat ownership:** eleven accountable boundaries cover all twenty threats, with assets, misuse, denial/fault behavior, residual risks and canonical implementation gates. Solo review is explicitly not independent production assessment.
+    
+    These correct substantive assumptions in the previous draft. Full original-criterion packets: [P00-02](https://github.com/Ise-Tom/Babel/blob/2989ed476e57297f729d0e3dffd89a703e4175ac/docs/validation/p00-02.md), [P00-03](https://github.com/Ise-Tom/Babel/blob/2989ed476e57297f729d0e3dffd89a703e4175ac/docs/validation/p00-03.md), [P00-07](https://github.com/Ise-Tom/Babel/blob/2989ed476e57297f729d0e3dffd89a703e4175ac/docs/validation/p00-07.md).
+    
+    ## Reference, integrity and remaining gates
+    
+    Pin 13 actual public document editions by publisher URL, byte size and SHA-256. Bind 58 section headings to the worked state cases; fix the invalid DFS-R reference to MS-FRS2 and add MS-DTYP. Required CI retains a source/input-digest-bound design-contract report, rejects missing cases/threats/owners and false runtime/independent/rights claims, and denies external assets without explicit rights. Optional local reproduction checks actual public PDF bytes/headings; default CI validates committed metadata offline. No vendor PDFs/images/captures are committed.
+    
+    P00-16 remains in progress: reference-use notice review is not blanket Microsoft program/patent/image clearance. P00-01 still needs detailed operation decomposition, including real DNS wire RFCs. Exact licensed Windows/macOS lab resources/builds remain missing; P00-12 is honestly blocked. TLS/Kerberos qualification remains open engineering work. All 60 product/client conformance scenarios remain **unrun**, native identity/replication/privilege enforcement remains unimplemented, and durable formats remain unfrozen.
+    
+    The solo-response document proposes Phase 0 process review with actual drill/backup coverage mandatory before supported production. **The original P00-17 and pre-preview security policy remain unchanged pending owner agreement.** Private reporting was observed configured through a read-only API check; no report/message was authorized or sent and no receipt/escalation/backup is claimed.
+    
+    ## Dashboard and validation
+    
+    Update requirement packets, development problems and capability evidence in this same PR. Native domain/replication/security capabilities remain planned; the new source-pinned design does not start later phases. The GitHub report can show these PR proposals before merge; Pages reflects trusted main after owner merge and passing CI.
+    
+    Local checks: 196 repository tests pass at **99% combined statement/branch coverage**, including 11 new regression test methods for incomplete records, source drift, false outcomes, unprovided rights, path/symlink escapes and changed/unreadable documents. Strict types, formatting/lint, design/document/conformance/CI-scope checks, workflow analysis and nine dashboard build/security tests pass. Required hosted CI still runs all 14 jobs, including native, real PostgreSQL, independent probes, security and browser gates.
+    
+    Owner validation of the three new full design packets remains pending. Merging this PR is not requirement acceptance.
+
+**Changed files:**
+
+- .github/workflows/ci.yml
+- dashboard/capabilities.json
+- dashboard/progress.json
+- docs/adr/0005-directory-and-replication-invariants.md
+- docs/ci-cd.md
+- docs/decisions.md
+- docs/phase-00-progress.md
+- docs/phase-00-security-and-dependencies.md
+- docs/reference-use-review.md
+- docs/security-response-readiness.md
+- docs/threat-model.md
+- docs/validation/p00-02.md
+- docs/validation/p00-03.md
+- docs/validation/p00-07.md
+- lab/compatibility.json
+- lab/conformance-evidence.json
+- lab/specification-pins.json
+- lab/state-security-contract.json
+- scripts/check\_ci\_scope.py
+- scripts/check\_state\_security.py
+- tests/test\_delivery.py
+- tests/test\_state\_security.py
+
+#### Proposed W52 · Complete identity, schema, authorization and local commit design
+
+**Requirements:** P00-02
+
+**How it was done:** Replaced ambiguous draft invariants with nine original worked cases against actual pinned ADTS/DRSR/DTYP editions. Distinguished GUID from domain-move SID changes, local uniqueness from replica name repair, ordered object/attribute/control checks, move-parent rights, hidden filter attributes, asynchronous inheritance, group/GC/token freshness and durable reauthorized receipts.
+
+**Recorded validation:** 196 repository tests pass at 99% combined statement/branch coverage. The new checker has 99% coverage and exercises missing-case/owner/source/rights/runtime denials. Actual public bytes for 13 document editions and all 58 referenced section headings were checked locally; required CI validates committed source bindings offline.
+
+**Limits and remaining work:** Full original P00-02 design gate prepared for owner validation; this does not implement or qualify native GUID/SID/schema/matching/ACL/token behavior. Inheritance, existing PAC and cross-site freshness are not instantaneous revocation promises. All 60 client cases remain unrun.
+
+**PR-head evidence:** [docs/validation/p00-02.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/validation/p00-02.md>) · [docs/adr/0005-directory-and-replication-invariants.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/adr/0005-directory-and-replication-invariants.md>) · [lab/state-security-contract.json](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/lab/state-security-contract.json>) · [scripts/check\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/scripts/check_state_security.py>) · [tests/test\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/tests/test_state_security.py>)
+
+
+#### Proposed W53 · Complete source-pinned replication, conflicts and restore epoch design
+
+**Requirements:** P00-03
+
+**How it was done:** Specified eleven worked cases for per-attribute origin/local progress, modular version comparison, little-endian GUID ordering, distinct link lifetimes, timestamp/object-GUID naming conflicts, deletion repair, safe response/cycle progress, invocation epochs, stale-retention quarantine and RID authority. The disk format remains unfrozen.
+
+**Recorded validation:** The selected ADTS/DRSR/DTYP PDF bytes and exact section headings were inspected and checked. Required consistency checks reject lost cases, stale heading hashes and invented passing outcomes; 196 repository tests pass. Attribute, link and naming rules are expressly distinct rather than an unqualified generic comparator.
+
+**Limits and remaining work:** Full original P00-03 design gate prepared for owner validation. No native DRS comparator, convergent multi-DC service, Windows observation, VM-generation detection, clean-domain recovery or RID seizure is implemented or accepted.
+
+**PR-head evidence:** [docs/validation/p00-03.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/validation/p00-03.md>) · [docs/adr/0005-directory-and-replication-invariants.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/adr/0005-directory-and-replication-invariants.md>) · [lab/state-security-contract.json](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/lab/state-security-contract.json>) · [lab/specification-pins.json](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/lab/specification-pins.json>) · [scripts/check\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/scripts/check_state_security.py>)
+
+
+#### Proposed W54 · Complete accountable Tier 0 and later-module threat-boundary design
+
+**Requirements:** P00-07
+
+**How it was done:** Bound eleven named trust boundaries to all twenty canonical threats, with current owner Ise-Tom, assets, misuse cases, required denial/fault behavior, residual risk and actual implementation gates. Covered core/store/keys/replicas/web/restore/supply chain/external/fleet/support-files/EDR authority without starting later phases.
+
+**Recorded validation:** CI consistency checks require all original boundaries, every threat, nonempty owners and known implementation gates; regression tests reject absent coverage, unknown threats, lost residual risks and false independent/runtime qualification. All 196 repository tests pass.
+
+**Limits and remaining work:** Full original P00-07 design gate prepared for owner validation. Solo ownership is not independent assessment, operational backup coverage or implemented service security. Actual response exercises remain P00-17 and later production safeguards.
+
+**PR-head evidence:** [docs/validation/p00-07.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/validation/p00-07.md>) · [docs/threat-model.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/threat-model.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/phase-00-security-and-dependencies.md>) · [lab/state-security-contract.json](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/lab/state-security-contract.json>) · [tests/test\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/tests/test_state_security.py>)
+
+
+#### Proposed W55 · Pin actual public protocol editions and separate reference use from image/patent clearance
+
+**Requirements:** P00-01, P00-16
+
+**How it was done:** Added 13 raw-byte-pinned public document records with actual notice identity, edition, reviewer/date and restrictive rights dispositions. Corrected nonexistent MS-DFSR to MS-FRS2, added descriptor rules from MS-DTYP and rebound all 60 still-unrun conformance records to the changed matrix. Added optional actual-byte/PDF-heading reproduction and synthetic-asset hash/purpose checks with explicit external-image denial.
+
+**Recorded validation:** Checked all 13 actual document byte hashes and 58 section headings locally; default CI validates committed metadata offline. Negative tests cover changed/duplicate/missing/protected documents, extractor timeout, stale headings, path traversal/symlinks, unknown purposes and unprovided image rights. Apache/DCO acceptance and all existing five acceptance proofs are unchanged.
+
+**Limits and remaining work:** P00-16 remains in progress: Microsoft patent/program coverage and concrete image/fixture clearance are not established. No upstream PDFs, protected-document decryption, vendor images or captures are imported. MS-DNSP is management, not the full DNS wire protocol; detailed P00-01 mapping remains open.
+
+**PR-head evidence:** [docs/reference-use-review.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/reference-use-review.md>) · [lab/specification-pins.json](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/lab/specification-pins.json>) · [lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/lab/compatibility.json>) · [lab/conformance-evidence.json](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/lab/conformance-evidence.json>) · [scripts/check\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/scripts/check_state_security.py>) · [tests/test\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/tests/test_state_security.py>)
+
+
+#### Proposed W56 · Define solo vulnerability-response process and make timing proposal reviewable
+
+**Requirements:** P00-17
+
+**How it was done:** Documented private intake, hostile-attachment custody, severity/reproduction, disclosure and sole-owner absence, with a concrete unrun drill record. Proposed Phase 0 process review plus mandatory actual drill/backup before supported production. Kept the existing P00-17 and pre-preview security policy unchanged pending owner agreement.
+
+**Recorded validation:** A read-only GitHub API observation on 19 November reports private vulnerability reporting enabled. Local documentation/traceability checks pass; no private report, recipient, receipt, escalation or backup availability is fabricated.
+
+**Limits and remaining work:** Configuration is not delivery/response evidence. The current live-drill/real-backup gate is not complete, and this proposal is not an approved scheduling change, a support promise, or authorization to send a report.
+
+**PR-head evidence:** [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/security-response-readiness.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/phase-00-security-and-dependencies.md>) · [SECURITY.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/SECURITY.md>) · [docs/phases/phase-00.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/phases/phase-00.md>)
+
+#### Proposed problem update: I04 · Licensed Windows/Mac lab hosts and real cross-platform client evidence are missing
+
+**Proposed status:** open
+
+The existing six-VM isolated Windows reference definition is prepared but no host/images have been provisioned. The initial scope now also includes Linux SSSD/MIT Kerberos and macOS Apple Silicon/Intel; Mac hardware/image rights and exact client/package builds are not allocated or qualified.
+
+**Resolution:** Still open
+
+**Next action:** Select licensed isolated test infrastructure and exact image/package manifests; extend provisioning for Linux/macOS clients, then perform two clean deployment/discovery/cleanup runs with actual login/password/SSO evidence. No purchase or automatic VM/image download is authorized.
+
+**Provenance:** Explicitly outstanding; no Windows test is marked passed.
+
+[lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/phase-00-progress.md>)
+
+#### Proposed problem update: I27 · Actual private receipt/escalation, backup response and production incident exercises remain unqualified
+
+**Proposed status:** open
+
+P00-07 now has complete boundary/threat/ownership design for review. Reporting is configured but notification/receipt/escalation and a genuine backup are unverified; sole-owner process design is not operational coverage.
+
+**Resolution:** Still open
+
+**Next action:** Review the explicit solo scheduling proposal; retain the original gate until agreed. No synthetic private report may be sent without explicit authorization and an available recipient.
+
+**Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
+
+[docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/security-response-readiness.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/phase-00-security-and-dependencies.md>)
+
+#### Proposed problem update: I28 · Exact references pinned; concrete program/patent/image use rights and detailed operation mapping remain open
+
+**Proposed status:** open
+
+Thirteen actual reference editions and notices are now pinned, including corrected MS-FRS2 and added MS-DTYP. Concrete Microsoft patent/program coverage and licensed Windows/macOS image/fixture rights remain unresolved; citations do not grant them.
+
+**Resolution:** Still open
+
+**Next action:** Complete actual use-rights review before acquiring/distributing affected fixtures, and decompose detailed protocol operations including DNS wire RFCs. Keep unprovided images denied and all product conformance unrun.
+
+**Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
+
+[docs/reference-use-review.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/reference-use-review.md>) · [lab/specification-pins.json](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/lab/specification-pins.json>) · [scripts/check\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/scripts/check_state_security.py>)
+
+#### Proposed problem update: I41 · Earlier state draft conflated immutable SIDs, ordered ACLs, propagation and token freshness
+
+**Proposed status:** resolved
+
+The draft could suggest an unchanging SID across domain moves, global deny-first evaluation, immediate inheritance/revocation and invalidity of every group cycle. Those assumptions would lead to incorrect native authorization behavior.
+
+**Resolution:** Replaced draft assumptions with pinned GUID/SID move exceptions, ordered access checks, hidden-filter semantics, asynchronous inheritance and separate GC/token freshness, with nine worked design cases. Native implementation remains its own gate.
+
+**Next action:** Owner validation of the full Phase 0 design packet; qualify actual native/client/fault behavior under its implementation gates.
+
+**Provenance:** Concrete design/reference interpretation gap found by inspecting actual readable publisher editions; resolved at the design layer only, not a GitHub setup incident.
+
+[docs/validation/p00-02.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/validation/p00-02.md>) · [docs/adr/0005-directory-and-replication-invariants.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/adr/0005-directory-and-replication-invariants.md>) · [lab/state-security-contract.json](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/lab/state-security-contract.json>)
+
+#### Proposed problem update: I42 · Draft replication conflict rules needed distinct attribute, link and name procedures
+
+**Proposed status:** resolved
+
+A generic version/time/origin comparator misses attribute wrap/half-range rules, linked lifetimes, little-endian GUID comparison and the name timestamp/object-GUID conflict rule. Unqualified cursor/restore assumptions could advertise unseen data.
+
+**Resolution:** Pinned actual DRSR/ADTS rules and eleven worked cases, distinguishing scalar/link/name algorithms, safe progress, deletion repair, invocation epochs and RID/retention quarantine. No unimplemented runtime comparator is labeled passing.
+
+**Next action:** Owner validation of the full Phase 0 design packet; qualify actual native/client/fault behavior under its implementation gates.
+
+**Provenance:** Concrete design/reference interpretation gap found by inspecting actual readable publisher editions; resolved at the design layer only, not a GitHub setup incident.
+
+[docs/validation/p00-03.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/validation/p00-03.md>) · [docs/adr/0005-directory-and-replication-invariants.md](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/docs/adr/0005-directory-and-replication-invariants.md>) · [lab/state-security-contract.json](<https://github.com/Ise-Tom/Babel/blob/648053249b564f0d74a5a3d43b2f3c1f97674339/lab/state-security-contract.json>)
+
+
+</details>
 
 
 ## Phase 00
@@ -78,6 +273,8 @@ The protocol-operation inventory is drafted. Functional-level profile and exact 
 
 **Acceptance evidence required:** Every AD operation maps to expected positive/negative behavior and an owner; unknown operations remain visible.
 
+**Pending PR proposals:** [\#30: Complete Phase 0 identity, replication and threat-design gates](<https://github.com/Ise-Tom/Babel/pull/30>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients; W33: Enforce versioned conformance evidence integrity in CI; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
 ### P00-02
@@ -90,6 +287,8 @@ ADR 0005 specifies stable identity, authorization order and worked rename/collis
 
 **Acceptance evidence required:** Design review covers rename, DN collision, ACL inheritance, nested groups, concurrent updates and durable acknowledgment boundaries.
 
+**Pending PR proposals:** [\#30: Complete Phase 0 identity, replication and threat-design gates](<https://github.com/Ise-Tom/Babel/pull/30>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W12: Threat model and open decision register; W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments; W34: Specify stable state and worked replication/recovery invariants. See the [implementation journal](#implementation-journal).
 
 ### P00-03
@@ -101,6 +300,8 @@ ADR 0005 works through attribute/link conflicts, partitions, cursor commits, tom
 **Associated features:** [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/525ac7490b3208dff26073e01b72b086b49f8d8d/docs/requirements.md>); [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/525ac7490b3208dff26073e01b72b086b49f8d8d/docs/requirements.md>)
 
 **Acceptance evidence required:** Worked partition/delete/conflict/rollback examples specify observable outcomes and map to MS-ADTS/MS-DRSR.
+
+**Pending PR proposals:** [\#30: Complete Phase 0 identity, replication and threat-design gates](<https://github.com/Ise-Tom/Babel/pull/30>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W12: Threat model and open decision register; W34: Specify stable state and worked replication/recovery invariants. See the [implementation journal](#implementation-journal).
 
@@ -128,6 +329,8 @@ The isolated Windows lab definition exists; licensed Windows/Mac hosts and exact
 
 **Acceptance evidence required:** Two fresh deployments run discovery probes, isolate egress, clean up resources and publish exact image/build identifiers.
 
+**Pending PR proposals:** [\#30: Complete Phase 0 identity, replication and threat-design gates](<https://github.com/Ise-Tom/Babel/pull/30>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W26: Prepare an isolated Windows reference lab definition without provisioning; W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients. See the [implementation journal](#implementation-journal).
 
 ### P00-06
@@ -153,6 +356,8 @@ Ise-Tom and Tier 0 threat/review boundaries are documented; their security desig
 **Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/525ac7490b3208dff26073e01b72b086b49f8d8d/docs/requirements.md>); [SEC-09: Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets](<https://github.com/Ise-Tom/Babel/blob/525ac7490b3208dff26073e01b72b086b49f8d8d/docs/requirements.md>)
 
 **Acceptance evidence required:** Every boundary has misuse cases and accountable review; solo development review is not independent production assessment.
+
+**Pending PR proposals:** [\#30: Complete Phase 0 identity, replication and threat-design gates](<https://github.com/Ise-Tom/Babel/pull/30>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W12: Threat model and open decision register; W35: Map security ownership and dependency/rights qualification gaps; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
@@ -222,6 +427,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Edition, architecture, OS/build, package and image identifiers are explicit; missing profiles cannot qualify compatibility.
 
+**Pending PR proposals:** [\#30: Complete Phase 0 identity, replication and threat-design gates](<https://github.com/Ise-Tom/Babel/pull/30>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P00-13
@@ -274,6 +481,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Pin document revisions and use/redistribution obligations separately from project licensing; unclear image/fixture rights block distribution.
 
+**Pending PR proposals:** [\#30: Complete Phase 0 identity, replication and threat-design gates](<https://github.com/Ise-Tom/Babel/pull/30>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P00-17
@@ -285,6 +494,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/525ac7490b3208dff26073e01b72b086b49f8d8d/docs/requirements.md>); [SEC-09: Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets](<https://github.com/Ise-Tom/Babel/blob/525ac7490b3208dff26073e01b72b086b49f8d8d/docs/requirements.md>)
 
 **Acceptance evidence required:** A synthetic private intake drill and real backup contact demonstrate receipt/escalation; no contact, SLA or exercise is invented.
+
+**Pending PR proposals:** [\#30: Complete Phase 0 identity, replication and threat-design gates](<https://github.com/Ise-Tom/Babel/pull/30>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
@@ -379,6 +590,8 @@ Windows lab, DNS/authentication and membership implementation are missing.
 **Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/525ac7490b3208dff26073e01b72b086b49f8d8d/docs/requirements.md>); [AD-08: Required Netlogon, SAMR, LSA, SMB and DCE/RPC behavior for domain membership and administration](<https://github.com/Ise-Tom/Babel/blob/525ac7490b3208dff26073e01b72b086b49f8d8d/docs/requirements.md>)
 
 **Acceptance evidence required:** A supported Windows client joins, logs in and rotates its machine password; unsigned/unauthorized membership requests fail.
+
+**Pending PR proposals:** [\#30: Complete Phase 0 identity, replication and threat-design gates](<https://github.com/Ise-Tom/Babel/pull/30>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W26: Prepare an isolated Windows reference lab definition without provisioning. See the [implementation journal](#implementation-journal).
 
@@ -635,6 +848,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/525ac7490b3208dff26073e01b72b086b49f8d8d/docs/requirements.md>); [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/525ac7490b3208dff26073e01b72b086b49f8d8d/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/525ac7490b3208dff26073e01b72b086b49f8d8d/docs/requirements.md>)
 
 **Acceptance evidence required:** Every AD contract row has real-client evidence with exact builds/spec revisions and no unexplained failure, skip or unrun acceptance case.
+
+**Pending PR proposals:** [\#30: Complete Phase 0 identity, replication and threat-design gates](<https://github.com/Ise-Tom/Babel/pull/30>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
