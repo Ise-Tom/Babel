@@ -44,11 +44,57 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-21T15:50:03\+01:00.
+GitHub metadata checked: 2026-11-21T22:26:02\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#32 · Add the Phase 0 P00-09 open-loop LDAP workload runner](<https://github.com/Ise-Tom/Babel/pull/32>)
+
+**In review · Pending merge · CI: in\_progress** · Head 1046b5b
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## Summary
+    
+    - Drive a deterministic seeded schedule against an owned release Babel LDAP process. Bound outstanding and in-flight requests and record success, expected denials, rejections, timeouts, unexpected errors, queue time and end-to-end latency.
+    - Generate and independently audit the smoke fixture before execution. Retain the source, binary, schedule, dataset and host provenance in the [local JSON report](lab/p00-09-workload-smoke.json).
+    - Exercise the runner and check the report in native CI. Update the P00-09 dashboard entry and [evidence packet](docs/validation/p00-09.md) with the remaining criteria.
+    
+    ## Local evidence
+    
+    All 180 loopback offers started and completed. The native lab returned 144 RootDSE base results and 36 expected LDAP scope refusals, with zero timeouts, rejections or unexpected errors. Scheduler tests exercise overload, queued and active timeouts, and terminal accounting. The runner uses an ephemeral loopback listener and no credentials.
+    
+    Native mixed traffic, real clients and hosts, cold and sustained profiles, WAN and outage scenarios, and the remaining performance and cost measurements are open. The prior engineering-method acceptance is retained. Production SLO ratification and merge remain owner decisions.
+
+**Changed files:**
+
+- .github/workflows/native.yml
+- dashboard/progress.json
+- docs/phase-00-progress.md
+- docs/synthetic-workload.md
+- docs/validation/p00-09.md
+- lab/p00-09-workload-smoke.json
+- scripts/check\_ci\_scope.py
+- scripts/run\_workload.py
+- tests/test\_run\_workload.py
+
+#### Proposed W58 · Run and measure a bounded open-loop LDAP smoke workload
+
+**Requirements:** P00-09
+
+**How it was done:** Generate and audit the seeded smoke fixture, then drive a deterministic mixed schedule against an owned release Babel LDAP loopback process. Bound in-flight and outstanding requests, retain all outcomes, and measure queue wait and end-to-end latency from the scheduled offer.
+
+**Recorded validation:** Captured WSL2 run completed 144 RootDSE base searches and 36 expected LDAP scope denials with zero timeouts, rejections or unexpected errors. The report binds the source, binary, schedule, dataset and host. Native CI repeats the smoke and checks the report. Scheduler tests cover overload, deadline expiry and accounting.
+
+**Limits and remaining work:** One shared loopback host and static RootDSE data. Native authentication, indexed reads, writes, real clients, multi-site and fault workloads remain unrun. Resource, storage, cost and production SLO measurements remain open.
+
+**PR-head evidence:** [docs/validation/p00-09.md](<https://github.com/Ise-Tom/Babel/blob/1046b5b9ba5be716ee3e292a7e3320844c1a1575/docs/validation/p00-09.md>) · [lab/p00-09-workload-smoke.json](<https://github.com/Ise-Tom/Babel/blob/1046b5b9ba5be716ee3e292a7e3320844c1a1575/lab/p00-09-workload-smoke.json>) · [scripts/run\_workload.py](<https://github.com/Ise-Tom/Babel/blob/1046b5b9ba5be716ee3e292a7e3320844c1a1575/scripts/run_workload.py>)
+
+
+</details>
 
 
 ## Phase 00
@@ -187,6 +233,8 @@ The owner-approved engineering method now has a deterministic generator and inde
 **Acceptance evidence required:** Reviewed load model includes mixed successful/denied requests, cold cache, WAN loss/latency, partial outages and hardware costs.
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-18. The project owner explicitly answered “Approve the workload/method scope” in this conversation on 18 November 2026. This accepts the Phase 0 engineering method only, not measured capacity or production SLO ratification. Reviewed proposal pinned to https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/docs/phase-00-workload.md ; tracked in https://github.com/Ise-Tom/Babel/pull/22 . No benchmark or infrastructure procurement was performed.
+
+**Pending PR proposals:** [\#32: Add the Phase 0 P00-09 open-loop LDAP workload runner](<https://github.com/Ise-Tom/Babel/pull/32>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W12: Threat model and open decision register; W36: Define a reproducible target-scale mixed workload and fault method; W40: Generate and independently audit reproducible target-scale synthetic data. See the [implementation journal](#implementation-journal).
 
