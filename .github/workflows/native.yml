@@ -59,6 +59,13 @@ jobs:
             --compiler reports/parser-rustc.txt --inspector reports/parser-binutils.txt \
             --elf reports/parser-elf.txt --binary target/release/babel-ldap \
             --revision "$GITHUB_SHA" --runner-image "${ImageVersion:-local}" > reports/parser-baseline.json
+      - name: Check the P00-09 open-loop workload and report against release LDAP
+        run: |
+          python scripts/run_workload.py --binary target/release/babel-ldap \
+            --source-revision "$GITHUB_SHA" --seed babel-ldap-smoke-v1 \
+            --run-id "ci-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" \
+            --host-label "GitHub Actions ubuntu-24.04 ${ImageVersion:-unknown}" \
+            --output reports/p00-09-workload-smoke.json
       - name: Install pinned coverage tool
         run: |
           cargo install cargo-llvm-cov --version 0.9.1 --locked --root "$RUNNER_TEMP/babel-native-tools"

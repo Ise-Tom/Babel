@@ -114,6 +114,7 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
                 "lab/windows-reference.toml",
                 "lab/compatibility.json",
                 "lab/conformance-evidence.json",
+                "lab/p00-09-workload-smoke.json",
                 "lab/phase0-contract.json",
                 "lab/state-security-contract.json",
                 "lab/specification-pins.json",

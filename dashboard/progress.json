@@ -220,7 +220,7 @@
     },
     "P00-09": {
       "status": "accepted",
-      "note": "The owner-approved engineering method now has a deterministic generator and independent fixture auditor. Full-size data was generated/audited twice with byte-identical artifacts. The approval remains the workload/method scope; no token encoder, native load/capacity or production SLO is qualified.",
+      "note": "Owner acceptance covers the engineering method. Full fixture generation and audit are executable. The bounded loopback workload completed 144 RootDSE searches and 36 expected scope denials, with queue and end-to-end measurements. Native mixed load, real clients and hosts, cold and sustained profiles, WAN and outage runs, host costs and owner SLO ratification remain open.",
       "acceptance": {
         "reviewer": "Project owner (explicit approval in this conversation)",
         "date": "2026-11-18",
@@ -2578,6 +2578,34 @@
         "I43",
         "I44"
       ]
+    },
+    {
+      "id": "W58",
+      "title": "Run and measure a bounded open-loop LDAP smoke workload",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-09"
+      ],
+      "how": "Generate and audit the seeded smoke fixture, then drive a deterministic mixed schedule against an owned release Babel LDAP loopback process. Bound in-flight and outstanding requests, retain all outcomes, and measure queue wait and end-to-end latency from the scheduled offer.",
+      "verification": "Captured WSL2 run completed 144 RootDSE base searches and 36 expected LDAP scope denials with zero timeouts, rejections or unexpected errors. The report binds the source, binary, schedule, dataset and host. Native CI repeats the smoke and checks the report. Scheduler tests cover overload, deadline expiry and accounting.",
+      "limitations": "One shared loopback host and static RootDSE data. Native authentication, indexed reads, writes, real clients, multi-site and fault workloads remain unrun. Resource, storage, cost and production SLO measurements remain open.",
+      "source_revision": "ac63eacf0c4914ff931f68e86ce5f265dfeda0f7",
+      "sources": [
+        {
+          "path": "docs/validation/p00-09.md",
+          "label": "P00-09 workload evidence"
+        },
+        {
+          "path": "lab/p00-09-workload-smoke.json",
+          "label": "Captured local smoke report"
+        },
+        {
+          "path": "scripts/run_workload.py",
+          "label": "Open-loop workload runner"
+        }
+      ],
+      "problems": []
     }
   ],
   "problems": [
