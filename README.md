@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-21T22:26:20\+01:00.
+GitHub metadata checked: 2026-11-21T22:29:24\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#32 · Add the Phase 0 P00-09 open-loop LDAP workload runner](<https://github.com/Ise-Tom/Babel/pull/32>)
 
-**In review · Pending merge · CI: in\_progress** · Head 1046b5b
+**In review · Pending merge · CI: success** · Head 1046b5b
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
