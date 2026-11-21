@@ -44,9 +44,67 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-21T22:57:24\+01:00.
+GitHub metadata checked: 2026-11-21T22:59:40\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
+
+### [\#35 · Improve dashboard refresh triggers and Pages retries](<https://github.com/Ise-Tom/Babel/pull/35>)
+
+**In review · Pending merge · CI: in\_progress** · Head d3fb3a2
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## What changes
+    
+    - Refresh the GitHub report when relevant CI starts or finishes. Refresh on PR closures without a merge and when a PR moves to or from draft. The publisher uses reviewed `main` code and reads PR metadata through the existing API boundary.
+    - On manual Pages dispatch, look for a retained artifact from recent successful CI on the exact current `main` commit. Automatic deployment stays pinned to its triggering CI run. The job summary links the verified source commit, CI run and artifact ID.
+    - Record the work in the dashboard and document the publishing behavior. Reverting this PR restores the prior event and retry behavior. No settings or data migration is required.
+    
+    ## Verification
+    
+    52 dashboard, PR reporting and Pages tests passed locally. The new regression tests cover missing and expired artifacts, invalid metadata and automatic run pinning. The dashboard model, Markdown links, actionlint, offline Zizmor, Ruff, mypy and Bandit also passed. Hosted publishing event delivery can be verified once the updated workflow runs on `main`.
+
+**Changed files:**
+
+- .github/workflows/dashboard-pages.yml
+- .github/workflows/dashboard-publish.yml
+- dashboard/progress.json
+- docs/ci-cd.md
+- docs/project-dashboard.md
+- scripts/check\_pages\_source.py
+- tests/test\_pages\_deployment.py
+
+#### Proposed W60 · Improve dashboard refresh triggers and manual Pages retries
+
+**Requirements:** P00-08, P00-10, P01-10
+
+**How it was done:** Refresh the GitHub report when relevant CI starts or finishes and on unmerged PR closures and draft status changes. Manual Pages runs search recent successful CI on the current main revision for a retained artifact. The workflow summary links the selected commit, CI run and artifact ID.
+
+**Recorded validation:** Page source regression tests exercise missing and expired artifacts, invalid metadata, outdated main and strict selection of the CI run that triggered an automatic deployment. Actionlint and offline Zizmor pass.
+
+**Limits and remaining work:** The PR metadata refresh uses reviewed main code and reads pull request content as data. Pages still requires successful current main CI and a verified artifact. GitHub must run the updated publishing workflow from main to verify event delivery.
+
+**PR-head evidence:** [.github/workflows/dashboard-publish.yml](<https://github.com/Ise-Tom/Babel/blob/d3fb3a22597511f02f5767378d4c54daf7609509/.github/workflows/dashboard-publish.yml>) · [.github/workflows/dashboard-pages.yml](<https://github.com/Ise-Tom/Babel/blob/d3fb3a22597511f02f5767378d4c54daf7609509/.github/workflows/dashboard-pages.yml>) · [tests/test\_pages\_deployment.py](<https://github.com/Ise-Tom/Babel/blob/d3fb3a22597511f02f5767378d4c54daf7609509/tests/test_pages_deployment.py>)
+
+#### Proposed problem update: I45 · Report refreshes duplicated CI events and Pages retries could overlook retained artifacts
+
+**Proposed status:** resolved
+
+The report refreshed for CI requested, in progress and completed events, with canceled pending runs in the Actions history. An unmerged closure or draft status change could leave stale PR metadata. A manual Pages retry stopped if the first successful CI run had a missing or expired artifact.
+
+**Resolution:** Drop the requested trigger, refresh on unmerged closures and draft status changes, and search recent runs for an available dashboard artifact on the exact current main revision during manual Pages retries.
+
+**Next action:** Verify the report and Pages job summaries after the workflow lands on main.
+
+**Provenance:** Observed completed and canceled publisher runs on main and reproduced the manual artifact-selection case using controlled GitHub API responses.
+
+[docs/ci-cd.md](<https://github.com/Ise-Tom/Babel/blob/d3fb3a22597511f02f5767378d4c54daf7609509/docs/ci-cd.md>) · [scripts/check\_pages\_source.py](<https://github.com/Ise-Tom/Babel/blob/d3fb3a22597511f02f5767378d4c54daf7609509/scripts/check_pages_source.py>)
+
+
+</details>
 
 ### [\#34 · Refresh the dashboard CI baseline after PRs \#31–\#33](<https://github.com/Ise-Tom/Babel/pull/34>)
 
@@ -194,6 +252,8 @@ Current version-1 compatibility/evidence schema and traceability tooling accepte
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-18. The project owner explicitly answered “Accept this schema/tooling scope” in this conversation on 18 November 2026. Scope: current version-1 schema and traceability implementation in PR \#22, not client compatibility or phase acceptance. Implementation/tests pinned to b98dac7d33b20bef1ab6ccfb4a295f40d2330500: https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/scripts/check\_conformance.py ; https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/tests/test\_conformance.py . 118 local repository tests passed; all 60 conformance scenarios are explicitly unrun.
 
+**Pending PR proposals:** [\#35: Improve dashboard refresh triggers and Pages retries](<https://github.com/Ise-Tom/Babel/pull/35>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W10: Required native and repository CI gates; W11: Complete phase specifications and traceability; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W18: Open-PR-aware private progress reporting; W33: Enforce versioned conformance evidence integrity in CI; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence; W45: Make phase activity and recent work visible separately from acceptance. See the [implementation journal](#implementation-journal).
 
 ### P00-09
@@ -221,6 +281,8 @@ The full Phase 0 upgrade/recovery/scope-governance design gate is complete. Six 
 **Acceptance evidence required:** Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact.
 
 **Validation packet:** Full original P00-10 Phase 0 governance design gate, including review/recovery examples and owner/expiry/production-impact exception policy; not runtime recovery. [Review exit criteria and evidence](<https://github.com/Ise-Tom/Babel/blob/380d564183b9217acbde16476658fe003cf72338/docs/validation/p00-10.md>)
+
+**Pending PR proposals:** [\#35: Improve dashboard refresh triggers and Pages retries](<https://github.com/Ise-Tom/Babel/pull/35>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI; W33: Enforce versioned conformance evidence integrity in CI; W34: Specify stable state and worked replication/recovery invariants; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence; W45: Make phase activity and recent work visible separately from acceptance; W48: Complete recovery/scope governance with enforced design-contract checks. See the [implementation journal](#implementation-journal).
 
@@ -459,6 +521,8 @@ Project owner accepted the current prototype’s scope inventory and limitation 
 **Acceptance evidence required:** Each public operation has a tested/unsupported status; lab credentials and incomplete protocol behavior cannot be promoted as a production release.
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-17. Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: documentation, tests and CLI label the current prototype as a loopback-only LDAP discovery lab and disclose missing production/domain functionality. Evidence pinned to merged main: https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phase-01-progress.md ; https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/native/babel-ldap/src/main.rs . This accepts scope reporting, not those missing features or production readiness.
+
+**Pending PR proposals:** [\#35: Improve dashboard refresh triggers and Pages retries](<https://github.com/Ise-Tom/Babel/pull/35>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W17: Bounded LDAP RootDSE filter discovery; W18: Open-PR-aware private progress reporting; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes. See the [implementation journal](#implementation-journal).
 
