@@ -44,11 +44,74 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-21T22:34:53\+01:00.
+GitHub metadata checked: 2026-11-21T22:39:36\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#33 · Qualify MIT Kerberos/PAC dependency candidate for P00-14](<https://github.com/Ise-Tom/Babel/pull/33>)
+
+**In review · Pending merge · CI: in\_progress** · Head 0da4e63
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## P00-14 scope
+    
+    Recommend signed MIT krb5 1.22.3 for the bounded `mit-krb5-1.22.3-linux-x86_64-aes-cts-lab-v1` Phase 0 candidate. Compare Heimdal 7.8.0 and libkrimes, document AES, PAC, replay, delegation/PKINIT scope, license/maintenance, C FFI boundary, and Babel's separate authorization checks.
+    
+    ## Evidence
+    
+    - Disposable loopback `BABEL.TEST` KDC from SHA-256-pinned, signature-verified upstream source; synthetic identities/keys only.
+    - Local WSL2 run: AES-256 and AES-128 AP requests and signed minimal PACs pass. Wrong service, replay, expiration, changed PAC, and wrong PAC client reject. A no-PAC AP request authenticates and returns null PAC, so Babel must deny PAC-dependent authority itself.
+    - Exact build tools, source and probe hashes, dynamic linkage, results and unrun cases retained in `lab/kerberos/evidence/local-wsl-2026-11-21.json`. Required native CI repeats the run and uploads a JSON artifact.
+    - Criterion packet: `docs/validation/p00-14.md`; scoped dashboard update marks review pending, without owner acceptance.
+    
+    ## Limits
+    
+    No Rust product FFI, AD PAC/SID/group semantics, S4U/delegation, PKINIT, durable/replicated replay, real Windows/Linux/macOS client conformance, or product redistribution is claimed. All 60 AD compatibility scenarios remain unrun. Please leave acceptance and merge to the owner.
+
+**Changed files:**
+
+- .github/workflows/native.yml
+- dashboard/progress.json
+- docs/phase-00-progress.md
+- docs/phase-00-security-and-dependencies.md
+- docs/validation/p00-14.md
+- lab/kerberos/ap\_req\_probe.c
+- lab/kerberos/evidence/local-wsl-2026-11-21.json
+- lab/kerberos/run.sh
+- scripts/check\_ci\_scope.py
+
+#### Proposed W59 · Qualify the signed MIT Kerberos/PAC dependency candidate
+
+**Requirements:** P00-14
+
+**How it was done:** Compared MIT krb5 1.22.3, Heimdal 7.8.0 and libkrimes. Added a signed-source, SHA-256-pinned disposable Linux KDC and C API probe with synthetic principals, AES-only keys, a local replay cache and PAC signature/client checks. Reviewed maintenance, licensing, unsafe/FFI and Babel&\#x27;s separate authorization obligations in the complete Phase 0 packet.
+
+**Recorded validation:** A fresh WSL2 run built MIT krb5 1.22.3 from the verified upstream archive with exact compiler/build inputs and selected MIT dynamic libraries recorded. AES-256 and AES-128 AP requests plus signed minimal PACs pass; wrong service, one-process replay, expired ticket, changed PAC and wrong PAC client reject. A no-PAC request authenticates but returns null PAC. Required native CI repeats the lab and retains JSON evidence; PR CI is pending.
+
+**Limits and remaining work:** Full P00-14 dependency-review scope awaits owner validation. No Rust product FFI or AD KDC/client conformance was exercised. S4U/delegation, PKINIT, cross-realm, replay durability/replicas, production key custody and actual Windows/Linux/macOS clients remain unrun. MIT&\#x27;s synthetic minimal PAC supplies no AD group/SID authorization. No Babel production binary or notice bundle is qualified.
+
+**PR-head evidence:** [docs/validation/p00-14.md](<https://github.com/Ise-Tom/Babel/blob/0da4e635599d0dbc941f80adeef0240e2feb7c16/docs/validation/p00-14.md>) · [lab/kerberos/run.sh](<https://github.com/Ise-Tom/Babel/blob/0da4e635599d0dbc941f80adeef0240e2feb7c16/lab/kerberos/run.sh>) · [lab/kerberos/ap\_req\_probe.c](<https://github.com/Ise-Tom/Babel/blob/0da4e635599d0dbc941f80adeef0240e2feb7c16/lab/kerberos/ap_req_probe.c>) · [lab/kerberos/evidence/local-wsl-2026-11-21.json](<https://github.com/Ise-Tom/Babel/blob/0da4e635599d0dbc941f80adeef0240e2feb7c16/lab/kerberos/evidence/local-wsl-2026-11-21.json>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/0da4e635599d0dbc941f80adeef0240e2feb7c16/.github/workflows/native.yml>)
+
+#### Proposed problem update: I26 · Kerberos candidate ready for review; product transport integration remains unqualified
+
+**Proposed status:** open
+
+The P00-04 parser, P00-13 TLS/provider/channel and P00-14 MIT Kerberos/PAC dependency reviews are prepared for owner validation; P00-15 driver foundation is owner-accepted. The P00-14 synthetic AES/PAC/replay results do not establish native AD authority. Actual Rust FFI, LDAP/SASL/EPA, key/service integration, S4U/PKINIT and client conformance remain unfinished.
+
+**Resolution:** Still open
+
+**Next action:** Review the P00-14 dependency packet, then implement the narrow Rust FFI and fail-closed PAC/authorization interface with product replay and key custody. Run actual client/reference S4U, PKINIT and AD cases under their separate gates.
+
+**Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
+
+[docs/validation/p00-13.md](<https://github.com/Ise-Tom/Babel/blob/0da4e635599d0dbc941f80adeef0240e2feb7c16/docs/validation/p00-13.md>) · [docs/validation/p00-14.md](<https://github.com/Ise-Tom/Babel/blob/0da4e635599d0dbc941f80adeef0240e2feb7c16/docs/validation/p00-14.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/0da4e635599d0dbc941f80adeef0240e2feb7c16/docs/phase-00-security-and-dependencies.md>) · [docs/phases/phase-01.md](<https://github.com/Ise-Tom/Babel/blob/0da4e635599d0dbc941f80adeef0240e2feb7c16/docs/phases/phase-01.md>)
+
+
+</details>
 
 
 ## Phase 00
@@ -254,6 +317,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Review AES/PAC/replay/delegation support, licenses, FFI/unsafe boundaries and upstream maintenance; generic Kerberos is not AD conformance.
 
+**Pending PR proposals:** [\#33: Qualify MIT Kerberos/PAC dependency candidate for P00-14](<https://github.com/Ise-Tom/Babel/pull/33>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P00-15
@@ -376,6 +441,8 @@ Credential rejection is implemented; real Kerberos/password/key behavior awaits 
 
 **Acceptance evidence required:** Positive/denied authentication, replay, expiry and downgrade tests pass without credential disclosure.
 
+**Pending PR proposals:** [\#33: Qualify MIT Kerberos/PAC dependency candidate for P00-14](<https://github.com/Ise-Tom/Babel/pull/33>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W04: Credential rejection and safe diagnostics; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
 ### P01-06
@@ -486,6 +553,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Authorized/denied password operations enforce policy; key custody, rotation and redaction precede valuable credential storage.
 
+**Pending PR proposals:** [\#33: Qualify MIT Kerberos/PAC dependency candidate for P00-14](<https://github.com/Ise-Tom/Babel/pull/33>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P01-15
@@ -509,6 +578,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [PLAT-02: Repeatable Linux installation, service supervision, reboot recovery, upgrade and removal that preserves directory data by default](<https://github.com/Ise-Tom/Babel/blob/092a1fdb34cbaa4551499236ff9faf27d360a208/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/092a1fdb34cbaa4551499236ff9faf27d360a208/docs/requirements.md>); [SEC-04: TLS 1.2 minimum, TLS 1.3 preferred; certificate identity validation and rotation; trust roots managed explicitly](<https://github.com/Ise-Tom/Babel/blob/092a1fdb34cbaa4551499236ff9faf27d360a208/docs/requirements.md>)
 
 **Acceptance evidence required:** Missing/expired/untrusted certificates and unsafe channel settings stop affected operations without disabling verification.
+
+**Pending PR proposals:** [\#33: Qualify MIT Kerberos/PAC dependency candidate for P00-14](<https://github.com/Ise-Tom/Babel/pull/33>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
