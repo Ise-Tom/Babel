@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "snapshot": {
-    "date": "2026-11-19",
-    "commit": "d1aabf492bca13a7820d16e716488a62297c93f3",
-    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44532652602",
+    "date": "2026-11-21",
+    "commit": "934dc5d964439b6783e2ce6de310ba1d478b733e",
+    "ci_url": "https://github.com/Ise-Tom/Babel/actions/runs/44953159358",
     "ci_result": "passed",
-    "checks_passed": 14,
+    "checks_passed": 15,
     "pull_requests": [
       {
         "number": 4,
@@ -136,9 +136,24 @@
         "number": 30,
         "state": "merged",
         "draft": false
+      },
+      {
+        "number": 31,
+        "state": "merged",
+        "draft": false
+      },
+      {
+        "number": 32,
+        "state": "merged",
+        "draft": false
+      },
+      {
+        "number": 33,
+        "state": "merged",
+        "draft": false
       }
     ],
-    "note": "Verified main baseline: PR #30 merged and d1aabf4 passed all 14 CI jobs. P00-02/03/04/06/07/10/11 still await explicit owner validation. This PR completes the selected-profile P00-13 library/provider/channel qualification review with actual CRL, replacement, exporter and provider-fault evidence. No new owner acceptance, native AD compatibility or production security is inferred."
+    "note": "Verified main baseline: PRs #31–#33 are merged and 934dc5d passed all 15 CI jobs. P00-13 and P00-14 are among nine Phase 0 requirements awaiting owner validation. The merged P00-09 LDAP smoke run adds 180 measured requests to the previously accepted engineering method. Native AD conformance, mixed workload measurements and production qualification remain open."
   },
   "requirements": {
     "P00-01": {
