@@ -283,14 +283,14 @@ Progress facts are a dated, source-controlled snapshot; a fresh build does not
 silently refresh old evidence or mark planned work accepted.
 
 The separate GitHub-report workflow executes only the default branch at its
-immutable GitHub context SHA, never a PR head. It can refresh when PR CI is
-requested/running/completed (including failure), when main CI changes state, or on
-a manual main dispatch. It records current main CI health (including failures),
+immutable GitHub context SHA, never a PR head. PR and main CI refresh it when they
+start or finish, including failures. Unmerged PR closures and draft/review status
+changes request a metadata refresh, and maintainers can dispatch one on main.
+It records current main CI health (including failures),
 then reads bounded PR metadata/progress JSON through read-only APIs.
 Proposals and proposed problem resolutions remain separate from main totals and
 acceptance. Fork structured facts are not imported, malformed data is noted, and
-PR overlays never enter standalone HTML/Pages artifacts. A closed PR is removed on the
-next CI/manual refresh rather than through a live browser subscription.
+PR overlays never enter standalone HTML/Pages artifacts.
 
 That publisher alone receives `contents: write` plus PR/Actions read permissions.
 It accepts public or private Babel repositories with explicit visibility, rejects
@@ -309,8 +309,11 @@ artifact ID/digest. The read-only verification job downloads the immutable ZIP,
 checks its SHA-256 and validates its file/content-policy boundary before uploading
 the Pages artifact. The Pages/OIDC job has no source checkout, reads and requires existing
 site Actions-only mode/HTTPS without administration writes and rechecks current main just before deployment. PR/fork/tag/
-scheduled/failed/outdated runs cannot publish. Manual main retries select matching
-successful CI. Official hosting actions are commit-pinned and covered by Dependabot.
+scheduled/failed/outdated runs cannot publish. Manual main retries search the ten
+most recent successful runs for the exact revision, skipping eligible runs whose
+dashboard artifact is missing or expired. Automatic deployments use their
+triggering run. The run summary identifies the verified source and artifact.
+Official hosting actions are commit-pinned and covered by Dependabot.
 
 An owner must enable Pages with **Source: GitHub Actions** once, as documented in
 the [hosting guide](project-dashboard.md#activate-public-web-hosting-once). The
