@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-21T22:39:54\+01:00.
+GitHub metadata checked: 2026-11-21T22:43:28\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#33 · Qualify MIT Kerberos/PAC dependency candidate for P00-14](<https://github.com/Ise-Tom/Babel/pull/33>)
 
-**In review · Pending merge · CI: in\_progress** · Head 0da4e63
+**In review · Pending merge · CI: success** · Head 0da4e63
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
