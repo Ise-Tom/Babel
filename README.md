@@ -44,11 +44,31 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-21T22:49:43\+01:00.
+GitHub metadata checked: 2026-11-21T22:53:16\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#34 · Refresh the dashboard CI baseline after PRs \#31–\#33](<https://github.com/Ise-Tom/Babel/pull/34>)
+
+**In review · Pending merge · CI: in\_progress** · Head b441270
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    Update the dashboard evidence snapshot to the November 21 `main` revision `934dc5d` and its [15 successful CI jobs](https://github.com/Ise-Tom/Babel/actions/runs/44953159358). Record the verified merges for PRs #31–#33 and summarize the workload smoke evidence and pending Phase 0 reviews within their existing scopes.
+    
+    The 29 dashboard tests passed locally with `python -X utf8 -m unittest discover -s tests -p 'test_dashboard*.py'`.
+
+**Changed files:**
+
+- dashboard/progress.json
+
+No structured work increment delta was imported; inspect the description/files.
+
+
+</details>
 
 
 ## Phase 00
