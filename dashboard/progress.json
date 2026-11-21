@@ -289,6 +289,18 @@
         }
       }
     },
+    "P00-14": {
+      "status": "ready_for_validation",
+      "note": "The Phase 0 dependency and cryptographic-maintenance review recommends signed MIT krb5 1.22.3 for a bounded Linux AES/PAC/replay lab profile. Fresh synthetic tests pass AES-256/AES-128 AP requests and signed PAC checks; wrong-service, replay, expired, changed-PAC and client-mismatch cases reject. A no-PAC AP request succeeds but yields null PAC, requiring Babel to deny PAC-dependent authority. The C/FFI and licensing boundary is recorded. Owner validation is pending; Rust product integration, AD PAC/S4U/PKINIT and real-client conformance remain unrun.",
+      "validation": {
+        "scope": "Full original P00-14 Phase 0 dependency-selection and cryptographic-maintenance review for mit-krb5-1.22.3-linux-x86_64-aes-cts-lab-v1; generic synthetic Kerberos evidence only, with explicit AD and product limits.",
+        "source_revision": "cf6681c22bc42707de6efc5b5c8db59eb70504ea",
+        "packet": {
+          "path": "docs/validation/p00-14.md",
+          "label": "P00-14 criterion, candidate and evidence packet"
+        }
+      }
+    },
     "P00-15": {
       "status": "accepted",
       "note": "The project owner explicitly validated the entire original Phase 0 driver/transaction gate on 18 November 2026: version review, parameterization, cancellation, commit/error mapping and recovery. The selected tokio-postgres 0.7.18/Tokio 1.54.1 local Unix/SCRAM/no-pool profile passes all 29 qualification cases, including actual lost durable replies and two process restarts. Native AD schema/ACL/service/key and domain recovery/capacity retain their separate Phase 1/3/4 gates.",
@@ -2606,6 +2618,44 @@
         }
       ],
       "problems": []
+    },
+    {
+      "id": "W59",
+      "title": "Qualify the signed MIT Kerberos/PAC dependency candidate",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-14"
+      ],
+      "how": "Compared MIT krb5 1.22.3, Heimdal 7.8.0 and libkrimes. Added a signed-source, SHA-256-pinned disposable Linux KDC and C API probe with synthetic principals, AES-only keys, a local replay cache and PAC signature/client checks. Reviewed maintenance, licensing, unsafe/FFI and Babel's separate authorization obligations in the complete Phase 0 packet.",
+      "verification": "A fresh WSL2 run built MIT krb5 1.22.3 from the verified upstream archive with exact compiler/build inputs and selected MIT dynamic libraries recorded. AES-256 and AES-128 AP requests plus signed minimal PACs pass; wrong service, one-process replay, expired ticket, changed PAC and wrong PAC client reject. A no-PAC request authenticates but returns null PAC. Required native CI repeats the lab and retains JSON evidence; PR CI is pending.",
+      "limitations": "Full P00-14 dependency-review scope awaits owner validation. No Rust product FFI or AD KDC/client conformance was exercised. S4U/delegation, PKINIT, cross-realm, replay durability/replicas, production key custody and actual Windows/Linux/macOS clients remain unrun. MIT's synthetic minimal PAC supplies no AD group/SID authorization. No Babel production binary or notice bundle is qualified.",
+      "source_revision": "cf6681c22bc42707de6efc5b5c8db59eb70504ea",
+      "sources": [
+        {
+          "path": "docs/validation/p00-14.md",
+          "label": "p00-14.md"
+        },
+        {
+          "path": "lab/kerberos/run.sh",
+          "label": "run.sh"
+        },
+        {
+          "path": "lab/kerberos/ap_req_probe.c",
+          "label": "ap_req_probe.c"
+        },
+        {
+          "path": "lab/kerberos/evidence/local-wsl-2026-11-21.json",
+          "label": "local-wsl-2026-11-21.json"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "native.yml"
+        }
+      ],
+      "problems": [
+        "I26"
+      ]
     }
   ],
   "problems": [
@@ -3159,7 +3209,7 @@
     },
     {
       "id": "I26",
-      "title": "TLS foundation ready for review; Kerberos/PAC and product transport integration remain unqualified",
+      "title": "Kerberos candidate ready for review; product transport integration remains unqualified",
       "status": "open",
       "kind": "development-qualification",
       "phases": [
@@ -3171,14 +3221,18 @@
         "P01-14",
         "P01-16"
       ],
-      "detail": "The original P00-04 parser and P00-13 TLS/provider/channel review packets are complete for owner validation; P00-15 driver foundation is owner-accepted. Kerberos/PAC dependency selection and actual LDAP/SASL/EPA/key/service integration remain unfinished; lab results do not establish native AD transport or production custody.",
+      "detail": "The P00-04 parser, P00-13 TLS/provider/channel and P00-14 MIT Kerberos/PAC dependency reviews are prepared for owner validation; P00-15 driver foundation is owner-accepted. The P00-14 synthetic AES/PAC/replay results do not establish native AD authority. Actual Rust FFI, LDAP/SASL/EPA, key/service integration, S4U/PKINIT and client conformance remain unfinished.",
       "resolution": "",
-      "next_action": "Qualify the actual Kerberos/PAC dependency boundary and native LDAP/crypto/key interfaces. Preserve exact versions, no custom cryptography, explicit custody/revocation limits and actual client/reference tests.",
-      "source_revision": "292291ec4d79a03f7355e8d3646c9e850b6c0489",
+      "next_action": "Review the P00-14 dependency packet, then implement the narrow Rust FFI and fail-closed PAC/authorization interface with product replay and key custody. Run actual client/reference S4U, PKINIT and AD cases under their separate gates.",
+      "source_revision": "cf6681c22bc42707de6efc5b5c8db59eb70504ea",
       "sources": [
         {
           "path": "docs/validation/p00-13.md",
           "label": "p00-13.md"
+        },
+        {
+          "path": "docs/validation/p00-14.md",
+          "label": "p00-14.md"
         },
         {
           "path": "docs/phase-00-security-and-dependencies.md",
@@ -3785,5 +3839,5 @@
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "TLS provider/channel qualification is ready for review: revocation, certificate replacement, exporter binding and provider failures tested. Eight Phase 0 gates await validation; three accepted scopes remain unchanged."
+  "focus_summary": "MIT Kerberos 1.22.3 dependency review is ready for owner validation: synthetic AES, PAC and replay cases pass. AD clients, delegation, PKINIT and product FFI remain unrun. Nine Phase 0 gates await validation; three accepted scopes remain unchanged."
 }
