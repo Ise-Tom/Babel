@@ -60,7 +60,9 @@ is a fallback for repository browsing, not the preferred dashboard interface.
    HTTP 403 for Pages administration.
 3. Successful main CI automatically starts **Publish interactive dashboard**. If
    it ran before Pages was enabled, run that publishing workflow manually on main.
-   It reuses successful CI for the exact revision, so no manual rebuild/upload is needed.
+   It reuses the newest eligible successful CI run for the exact revision with a
+   retained dashboard artifact. If recent runs have no retained dashboard, run
+   **CI** on main again to produce one.
 4. Open the **github-pages** environment/deployment URL shown by that workflow and
    bookmark it. A subsequent successful main CI replaces the dashboard at that URL.
 
@@ -108,12 +110,13 @@ it never checks out or executes PR source. Fork PRs retain description/file/CI
 metadata but their structured progress is not imported. Missing/invalid progress
 produces an explicit note instead of fabricated completion.
 
-PR CI requested/in-progress/completed events refresh the report, including failed
-PR checks; main CI state changes and a manual main dispatch can refresh it too.
+PR and main CI refresh the report when they start running or finish, including
+failed checks. Closing a PR without merging, moving it to draft or marking it
+ready for review also refreshes the report. Merges refresh through main CI.
+Use a manual main dispatch to refresh on demand.
 The publisher executes only default-branch code and records current main CI health,
 including failures. This GitHub report is not a deployment or release gate; public
-Pages still requires successful main CI. A PR closed without another CI event is removed on
-the next refresh; it is not a live browser feed. Metadata records its check time.
+Pages still requires successful main CI. Metadata records its check time.
 Listings are bounded to 50 PRs/100 files per PR and flag truncation. This overlay
 is GitHub-report-only: standalone HTML/Pages artifacts never fetch PR bodies.
 The report supports public and private Babel repositories. It checks repository

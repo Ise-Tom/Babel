@@ -2671,6 +2671,38 @@
       "problems": [
         "I26"
       ]
+    },
+    {
+      "id": "W60",
+      "title": "Improve dashboard refresh triggers and manual Pages retries",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-08",
+        "P00-10",
+        "P01-10"
+      ],
+      "how": "Refresh the GitHub report when relevant CI starts or finishes and on unmerged PR closures and draft status changes. Manual Pages runs search recent successful CI on the current main revision for a retained artifact. The workflow summary links the selected commit, CI run and artifact ID.",
+      "verification": "Page source regression tests exercise missing and expired artifacts, invalid metadata, outdated main and strict selection of the CI run that triggered an automatic deployment. Actionlint and offline Zizmor pass.",
+      "limitations": "The PR metadata refresh uses reviewed main code and reads pull request content as data. Pages still requires successful current main CI and a verified artifact. GitHub must run the updated publishing workflow from main to verify event delivery.",
+      "source_revision": "70c0e690d2d7e148667acc7a18c16a7340ba4a11",
+      "sources": [
+        {
+          "path": ".github/workflows/dashboard-publish.yml",
+          "label": "GitHub report workflow"
+        },
+        {
+          "path": ".github/workflows/dashboard-pages.yml",
+          "label": "Pages deployment workflow"
+        },
+        {
+          "path": "tests/test_pages_deployment.py",
+          "label": "Pages source regression tests"
+        }
+      ],
+      "problems": [
+        "I45"
+      ]
     }
   ],
   "problems": [
@@ -3851,6 +3883,36 @@
         }
       ],
       "provenance": "Actual selected-upstream revocation/time behavior and deliberately bounded native key-loader surface inspected during Phase 0 qualification; an explicit development integration risk, not a GitHub setup issue."
+    },
+    {
+      "id": "I45",
+      "title": "Report refreshes duplicated CI events and Pages retries could overlook retained artifacts",
+      "status": "resolved",
+      "kind": "development-correctness",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P00-08",
+        "P00-10",
+        "P01-10"
+      ],
+      "detail": "The report refreshed for CI requested, in progress and completed events, with canceled pending runs in the Actions history. An unmerged closure or draft status change could leave stale PR metadata. A manual Pages retry stopped if the first successful CI run had a missing or expired artifact.",
+      "resolution": "Drop the requested trigger, refresh on unmerged closures and draft status changes, and search recent runs for an available dashboard artifact on the exact current main revision during manual Pages retries.",
+      "next_action": "Verify the report and Pages job summaries after the workflow lands on main.",
+      "source_revision": "70c0e690d2d7e148667acc7a18c16a7340ba4a11",
+      "sources": [
+        {
+          "path": "docs/ci-cd.md",
+          "label": "Dashboard publishing and Pages CI policy"
+        },
+        {
+          "path": "scripts/check_pages_source.py",
+          "label": "Pages artifact selection"
+        }
+      ],
+      "provenance": "Observed completed and canceled publisher runs on main and reproduced the manual artifact-selection case using controlled GitHub API responses."
     }
   ],
   "focus_phase": 0,
