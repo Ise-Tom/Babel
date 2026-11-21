@@ -118,6 +118,9 @@ def check(root: Path, paths: Iterable[str]) -> list[str]:
                 "lab/phase0-contract.json",
                 "lab/state-security-contract.json",
                 "lab/specification-pins.json",
+                "lab/kerberos/ap_req_probe.c",
+                "lab/kerberos/run.sh",
+                "lab/kerberos/evidence/local-wsl-2026-11-21.json",
             }
             or (path.parts[0] in {"scripts", "tests"} and path.suffix == ".py")
             or (path.parts[0] == ".github" and path.suffix in {".yml", ".yaml", ".md"})
