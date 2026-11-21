@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-21T23:00:00\+01:00.
+GitHub metadata checked: 2026-11-21T23:03:06\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#35 · Improve dashboard refresh triggers and Pages retries](<https://github.com/Ise-Tom/Babel/pull/35>)
 
-**In review · Pending merge · CI: in\_progress** · Head d3fb3a2
+**In review · Pending merge · CI: success** · Head d3fb3a2
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
