@@ -23,7 +23,7 @@ are still proposed test targets at the selected level.
 | P00-11 | [Complete functional-level profile](functional-level-profile.md): 2016/2016 Linux-hosted creation contract, level/OS distinction, incompatibilities and transition refusal | Explicit owner validation of the full Phase 0 design gate; exact builds, native behavior and client runs remain separate |
 | P00-12 | Windows/Linux/macOS profile templates remain explicit and unqualified | Exact owned/licensed host/image/build/package/architecture identifiers and rights are missing; no image has been acquired |
 | P00-13 | [Full TLS/provider/channel review packet](validation/p00-13.md): exact stack, custody decision/limits, CRL rejection, in-process certificate replacement, independent exporter comparison and entropy/clock/key/signer faults | Explicit owner validation of the original Phase 0 selected-profile review; native LDAP/EPA, general revocation freshness and production key/service/client/capacity gates remain separate |
-| P00-14 | Kerberos/PAC dependency boundary and required AES/replay/delegation/FFI review specified | Select and qualify actual dependency candidates; planned engineering work, not an external-host-only blocker |
+| P00-14 | [Full dependency-review packet](validation/p00-14.md): signed MIT krb5 1.22.3 candidate, exact Linux AES profile, synthetic signed-PAC and service/time/replay negatives, maintained alternatives, license and FFI boundary | Explicit owner validation of Phase 0 decision; product Rust adapter, AD PAC/delegation/PKINIT and real-client conformance remain separate unrun gates |
 | P00-15 | [Entire original driver gate](validation/p00-15.md) explicitly accepted by owner | Native AD adapter/domain/key/backup behavior remains later implementation work |
 | P00-16 | [Thirteen byte-pinned references and actual use-notice review](reference-use-review.md); external image use/distribution denied without explicit rights | Resolve concrete patent/program and reference-fixture/image rights; no blanket clearance or legal certification |
 | P00-17 | [Solo intake/custody/absence process and explicit timing proposal](security-response-readiness.md); reporting configuration observed enabled | Original actual receipt/escalation drill and available backup remain unmet; timing change awaits owner agreement, no report sent |
@@ -242,3 +242,14 @@ Eight Phase 0 gates now await owner validation: P00-02/03/04/06/07/10/11/13.
 The accepted scopes are unchanged. Detailed operation mapping, licensed lab
 profiles, Kerberos/PAC dependency qualification, use rights and actual response
 evidence remain open. No scheduling proposal or live drill is silently approved.
+
+## Kerberos/PAC dependency review candidate
+
+P00-14 now has a [criterion-by-criterion packet](validation/p00-14.md) and
+reproducible signed-source MIT krb5 1.22.3 lab. The fresh synthetic run passed
+AES-256/AES-128 AP requests, signed minimal PAC verification, and negative
+wrong-service, replay, expired, missing-PAC, tampered-PAC and wrong-client cases.
+The library accepts a valid AP request without a PAC; Babel must reject
+PAC-dependent authority separately. Delegation, PKINIT, production FFI and AD
+client conformance remain explicitly unrun. The P00-14 dependency-review gate
+awaits owner validation; the previously accepted scopes are unchanged.

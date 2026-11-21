@@ -147,6 +147,26 @@ jobs:
             reports/store-driver-notices/
           retention-days: 14
 
+  kerberos:
+    name: MIT Kerberos/PAC disposable qualification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install source build prerequisite
+        run: sudo apt-get update -qq && sudo apt-get install -y bison
+      - name: Verify signed source and run synthetic loopback KDC cases
+        run: bash lab/kerberos/run.sh reports/kerberos-qualification.json
+      - name: Preserve Kerberos qualification evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: kerberos-qualification
+          path: reports/kerberos-qualification.json
+          retention-days: 14
+
   supply-chain:
     name: Native dependency and license audit
     runs-on: ubuntu-24.04
@@ -236,7 +256,7 @@ jobs:
   gate:
     name: Native gate
     if: ${{ always() }}
-    needs: [core, store-driver, supply-chain, fuzz]
+    needs: [core, store-driver, kerberos, supply-chain, fuzz]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
