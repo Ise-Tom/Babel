@@ -44,13 +44,13 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-21T23:03:38\+01:00.
+GitHub metadata checked: 2026-11-21T23:03:58\+01:00.
 
 **Current main CI: in\_progress.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#34 · Refresh the dashboard CI baseline after PRs \#31–\#33](<https://github.com/Ise-Tom/Babel/pull/34>)
 
-**In review · Pending merge · CI: queued** · Head 678b51f
+**In review · Pending merge · CI: in\_progress** · Head 678b51f
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
