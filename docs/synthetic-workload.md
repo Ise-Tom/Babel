@@ -93,7 +93,8 @@ Required repository CI generates and audits the **full** profile. It retains onl
 the small manifest and audit summary for 14 days, not the large NDJSON files. Tests
 cover deterministic replay, seed changes, sampling bounds, write failure,
 rehash-resistant semantic failures, malformed references and false runtime claims.
-No benchmark/load harness or OS/client provisioning is run by this job.
+The [P00-09 workload runner](validation/p00-09.md) separately audits a smoke
+fixture and drives real loopback LDAP. The RootDSE lab has no dataset import.
 
 `token_bytes`, database index bytes, storage expansion, throughput and latency stay
 null/unmeasured. Report those only after actual encoders, stores and native mixed

@@ -1,6 +1,8 @@
 """Exercise direct scheduling and accounting independently from the native CI run."""
 
 import asyncio
+import hashlib
+import json
 import sys
 import unittest
 from collections import Counter
@@ -62,3 +64,25 @@ class Scheduler(unittest.IsolatedAsyncioTestCase):
         )
         buckets = result["histogram_us_inclusive_upper_bounds"]
         self.assertEqual((buckets["100"], buckets["250"], buckets["+inf"]), (1, 2, 1))
+
+
+class RetainedSmoke(unittest.TestCase):
+    def test_captured_report_preserves_schedule_provenance_and_accounting(self):
+        path = Path(__file__).resolve().parents[1] / "lab/p00-09-workload-smoke.json"
+        data = json.loads(path.read_bytes())
+        self.assertEqual(data["requirement"], "P00-09")
+        self.assertEqual(data["profile"], workload.asdict(workload.SMOKE))
+        self.assertEqual(data["status"], "passed")
+        audit = data["dataset"]["audit"]
+        self.assertFalse(data["dataset"]["loaded_into_server"])
+        self.assertEqual(audit["status"], "synthetic_fixture_verified")
+        self.assertEqual(audit["source_revision"], data["source_revision"])
+        for digest in (audit["manifest_sha256"], data["binary_sha256"]):
+            self.assertRegex(digest, r"^[0-9a-f]{64}$")
+        plan = workload.schedule(workload.SMOKE, audit["seed"])
+        expected = hashlib.sha256(workload.encoded([workload.asdict(offer) for offer in plan]))
+        self.assertEqual(data["schedule_sha256"], expected.hexdigest())
+        self.assertEqual(data["unrun"], workload.UNRUN)
+        self.assertTrue(workload.check_smoke(data))
+        data["operations"]["rootdse_scope_denial"]["denied"] = 0
+        self.assertFalse(workload.check_smoke(data))
