@@ -4,7 +4,11 @@ on:
   # Execute only default-branch code; PR heads are read through the API as data.
   workflow_run: # zizmor: ignore[dangerous-triggers]
     workflows: [CI]
-    types: [requested, in_progress, completed]
+    types: [in_progress, completed]
+  # Metadata changes may leave CI untouched. The publisher still checks out main only.
+  pull_request_target: # zizmor: ignore[dangerous-triggers]
+    branches: [main]
+    types: [closed, converted_to_draft, ready_for_review]
   workflow_dispatch:
 
 permissions:
@@ -19,8 +23,13 @@ jobs:
     name: Update permanent GitHub dashboard
     if: >-
       github.repository == 'Ise-Tom/Babel' &&
-      ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
-       github.event_name == 'workflow_run')
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'workflow_dispatch' ||
+       (github.event_name == 'pull_request_target' && github.event.pull_request.merged != true) ||
+       (github.event_name == 'workflow_run' &&
+        (github.event.workflow_run.event == 'pull_request' ||
+         (github.event.workflow_run.head_repository.full_name == 'Ise-Tom/Babel' &&
+          github.event.workflow_run.head_branch == 'main'))))
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
@@ -36,7 +45,10 @@ jobs:
         with:
           python-version: '3.12'
       - name: Publish reviewed facts using GitHub's existing access controls
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           SOURCE_REVISION: ${{ github.sha }}
-        run: python scripts/publish_dashboard.py --revision "$SOURCE_REVISION" --include-prs
+        run: |
+          python scripts/publish_dashboard.py --revision "$SOURCE_REVISION" --include-prs \
+            | tee -a "$GITHUB_STEP_SUMMARY"

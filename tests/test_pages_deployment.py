@@ -37,6 +37,8 @@ class PagesSource(unittest.TestCase):
                 "digest": "sha256:" + "b" * 64,
             }
         ]
+        self.candidates = [{"event": "pull_request"}, self.run]
+        self.artifacts_by_run = {}
         self.current = REVISION
         self.calls = []
 
@@ -47,14 +49,16 @@ class PagesSource(unittest.TestCase):
         if path == "branches/main":
             return {"commit": {"sha": self.current}}
         if path.endswith("/artifacts"):
-            return {"artifacts": self.artifacts}
+            run_id = int(path.split("/")[-2])
+            return {"artifacts": self.artifacts_by_run.get(run_id, self.artifacts)}
         if path.startswith("actions/workflows/"):
-            return {"workflow_runs": [{"event": "pull_request"}, self.run]}
+            return {"workflow_runs": self.candidates}
         return self.run
 
     def test_exact_successful_main_run_and_manual_retry_are_supported(self):
-        self.assertEqual(pages.source_run(REVISION, "123", request=self.request), 123)
-        self.assertEqual(pages.source_run(REVISION, request=self.request), 123)
+        expected = (123, self.artifacts[0])
+        self.assertEqual(pages.source_artifact(REVISION, "123", request=self.request), expected)
+        self.assertEqual(pages.source_artifact(REVISION, request=self.request), expected)
         self.run["event"] = "workflow_dispatch"
         self.assertEqual(pages.validate_run(self.run, REVISION), 123)
 
@@ -78,7 +82,7 @@ class PagesSource(unittest.TestCase):
 
     def test_outdated_main_skips_before_artifact_access(self):
         self.current = "b" * 40
-        self.assertIsNone(pages.source_run(REVISION, "123", request=self.request))
+        self.assertIsNone(pages.source_artifact(REVISION, "123", request=self.request))
         self.assertEqual(self.calls, ["branches/main"])
 
     def test_unverified_or_expired_artifacts_are_rejected(self):
@@ -97,19 +101,46 @@ class PagesSource(unittest.TestCase):
             self.artifacts = artifacts
             with (
                 self.subTest(artifacts=artifacts),
-                self.assertRaisesRegex(ValueError, "missing or expired"),
+                self.assertRaisesRegex(ValueError, "missing or expired|metadata is invalid"),
             ):
-                pages.source_run(REVISION, "123", request=self.request)
+                pages.source_artifact(REVISION, "123", request=self.request)
+
+    def test_manual_retry_uses_the_latest_eligible_retained_artifact(self):
+        self.candidates = [dict(self.run, id=126), dict(self.run, id=125), self.run]
+        self.artifacts_by_run = {126: [], 125: [dict(self.artifacts[0], expired=True)]}
+        self.assertEqual(
+            pages.source_artifact(REVISION, request=self.request), (123, self.artifacts[0])
+        )
+        self.assertEqual(
+            [path for path in self.calls if path.endswith("/artifacts")],
+            [
+                "actions/runs/126/artifacts",
+                "actions/runs/125/artifacts",
+                "actions/runs/123/artifacts",
+            ],
+        )
+
+    def test_event_pins_its_run_and_manual_retry_rejects_invalid_metadata(self):
+        self.run = dict(self.run, id=124)
+        self.candidates.insert(0, self.run)
+        self.artifacts_by_run[124] = []
+        with self.assertRaisesRegex(ValueError, "missing or expired"):
+            pages.source_artifact(REVISION, "124", request=self.request)
+        self.artifacts_by_run[124] = [dict(self.artifacts[0], digest="invalid")]
+        self.calls.clear()
+        with self.assertRaisesRegex(ValueError, "metadata is invalid"):
+            pages.source_artifact(REVISION, request=self.request)
+        self.assertNotIn("actions/runs/123/artifacts", self.calls)
 
     def test_no_matching_successful_ci_refuses_publication(self):
         self.run["conclusion"] = "failure"
         with self.assertRaisesRegex(ValueError, "run CI first"):
-            pages.source_run(REVISION, request=self.request)
+            pages.source_artifact(REVISION, request=self.request)
 
     def test_invalid_ids_do_not_reach_unintended_api_routes(self):
         with self.assertRaisesRegex(ValueError, "source revision"):
-            pages.source_run("bad", request=self.request)
+            pages.source_artifact("bad", request=self.request)
         self.assertEqual(self.calls, [])
         with self.assertRaisesRegex(ValueError, "CI run ID"):
-            pages.source_run(REVISION, "../other", request=self.request)
+            pages.source_artifact(REVISION, "../other", request=self.request)
         self.assertEqual(self.calls, ["branches/main"])
