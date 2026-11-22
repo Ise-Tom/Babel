@@ -18,7 +18,7 @@ production readiness, or P00-17 acceptance by the owner.
 | Escalation | Runbook assigns an independent verifier to trigger the private backup route while the owner is unavailable; backup responds directly and owner reviews later. Ledger records trigger, delivery, acknowledgment and failure path. | Owner-absence design present; no verifier, backup or live escalation appointed or exercised. |
 | Failure handling | Route-unavailable fallback waits for a private channel; absent notification/open/acknowledgment or backup response stays failed/incomplete. The offline cases explicitly retain missing owner/backup states. | Failure rules present; no operational pass inferred. |
 | Live-drill plan | [Draft and ledger](p00-17.md) define exact content, authorization, roles, UTC observations, closure and redaction. An owner-only route drill is due before soliciting external preview users; backup/owner-absence exercise remains due under P05-04 before supported production. | Plan present. Both operational checkpoints remain unrun and require separate authorization. |
-| Benign offline recordkeeping rehearsal | [Fixture](../../lab/security-intake/offline-rehearsal.json), [validator](../../scripts/check_security_intake.py), [retained fresh result](../../lab/security-intake/evidence/review-f2ddab3-2026-11-23.json) and [negative tests](../../tests/test_security_intake.py). | Design rehearsal passes; `live_intake_and_backup_ready` remains `false`. Simulated actors and timestamps are not delivery or backup evidence. |
+| Benign offline recordkeeping rehearsal | [Fixture](../../lab/security-intake/offline-rehearsal.json), [validator](../../scripts/check_security_intake.py), [retained fresh result](../../lab/security-intake/evidence/offline-rehearsal-result.json) and [negative tests](../../tests/test_security_intake.py). | Design rehearsal passes; `live_intake_and_backup_ready` remains `false`. Simulated actors and timestamps are not delivery or backup evidence. |
 
 ## Fresh reproducible review evidence
 
@@ -29,7 +29,7 @@ revision. On 23 November 2026, with Python 3.13, the following commands
 completed locally:
 
 ```text
-python scripts/check_security_intake.py --output lab/security-intake/evidence/review-f2ddab3-2026-11-23.json
+python scripts/check_security_intake.py --output lab/security-intake/evidence/offline-rehearsal-result.json
 python -m unittest discover -s tests -p test_security_intake.py -v
 ```
 
@@ -43,13 +43,14 @@ backup, missing case, false pass, wrong actor, duplicate event, missing trigger,
 owner-triggered escalation and reversed timestamp.
 The test also compares the retained result with a fresh validator call.
 
-SHA-256 of exact execution inputs and retained output:
+SHA-256 of the canonical Git blob bytes for the execution inputs and retained
+output (Windows working-tree line endings may differ):
 
 | File | SHA-256 |
 | --- | --- |
-| `lab/security-intake/offline-rehearsal.json` | `2c79699fd35ade76f44fbf7daf4a790b855f2a840b10ae62315d5b0717926ab7` |
-| `scripts/check_security_intake.py` | `1c0081d9ef3f5ffc8524f6e510b2ddecc0967d2c96b0d72a8921493791002efb` |
-| `lab/security-intake/evidence/review-f2ddab3-2026-11-23.json` | `19d721cfe89cd6bf2a33b9b2d703ec2902fa55ef4616a4585770f12029e99a9d` |
+| `lab/security-intake/offline-rehearsal.json` | `4a2771bf1c3686dbd0510ca5c6216a2e52fed36e02ac8b1102d2b7efb1674971` |
+| `scripts/check_security_intake.py` | `30bafdac28dfa8ce837b6264b5d6f3a7f9c0a9e79202e5e02e30ad9e5f911068` |
+| `lab/security-intake/evidence/offline-rehearsal-result.json` | `e7252f50993255b40d3660d44dae412f8f9df9d13c3cbe01ed3995a8ee8e845e` |
 
 The validator checks the structure and expected classifications of synthetic
 records. It cannot verify GitHub notifications, actual maintainer access,

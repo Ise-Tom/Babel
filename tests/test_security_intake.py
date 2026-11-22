@@ -23,12 +23,6 @@ class SecurityIntakeRecordTest(unittest.TestCase):
             )
         )
         self.assertEqual(result, retained)
-        fresh = json.loads(
-            Path("lab/security-intake/evidence/review-f2ddab3-2026-11-23.json").read_text(
-                encoding="utf-8"
-            )
-        )
-        self.assertEqual(result, fresh)
         self.assertIs(result["live_intake_and_backup_ready"], False)
         self.assertEqual(
             result["outcomes"]["all_mock_fields"], "offline_complete_not_gate_evidence"

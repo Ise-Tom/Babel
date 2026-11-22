@@ -1018,7 +1018,7 @@
       "id": "offline-intake-fixture",
       "kind": "project_synthetic",
       "path": "lab/security-intake/offline-rehearsal.json",
-      "sha256": "5b8b31ef1172e8d3874dc39257828620d120162badc03931c5c1a4932c7bdb97",
+      "sha256": "4a2771bf1c3686dbd0510ca5c6216a2e52fed36e02ac8b1102d2b7efb1674971",
       "rights": "owner_selected_project_license",
       "allowed_uses": [
         "source_distribution",
@@ -1034,7 +1034,7 @@
       "id": "offline-intake-report",
       "kind": "project_synthetic",
       "path": "lab/security-intake/evidence/offline-rehearsal-result.json",
-      "sha256": "5974d134dbeb335a2719ba6842e8013995f41cc651d1b7e08212ca0bab1261e6",
+      "sha256": "e7252f50993255b40d3660d44dae412f8f9df9d13c3cbe01ed3995a8ee8e845e",
       "rights": "owner_selected_project_license",
       "allowed_uses": [
         "source_distribution",
