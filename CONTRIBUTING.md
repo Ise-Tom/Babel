@@ -2,6 +2,7 @@
 
 Read the [requirements](docs/requirements.md), [roadmap](docs/roadmap.md), and
 [architecture decisions](docs/architecture.md) and the [phase specifications](docs/phases/README.md) before proposing implementation.
+Follow the [development branch naming rule](AGENTS.md#branch-names).
 Map changes to global and Pxx requirement IDs, update affected designs/ADRs and
 acceptance scenarios, and never label planned evidence as a passing product test.
 Use small pull requests with a problem statement, security implications,

@@ -29,6 +29,17 @@ service failures are not converted into success. Daily schedules apply once
 merged onto the default branch; GitHub can suspend schedules on inactive repos,
 so maintainers must monitor actual runs.
 
+## Development branch names
+
+Use the convention in [AGENTS.md](../AGENTS.md#branch-names), for example
+`dev/phase0-protocol-operation-matrix`. The repository job checks branch names
+on same-repository pull requests into `main`. A mismatch fails the required
+`CI gate`. Fork PRs and Dependabot PRs using their own namespace follow their
+normal checks. The naming check runs during PR CI, so prepare a compliant branch
+before opening the PR.
+
+## CI dependency maintenance
+
 `requirements-ci.in` pins direct Python tools; `requirements-ci.txt` locks their
 transitive dependencies with hashes. Installation passes both files with
 `--require-hashes`, so divergent direct pins fail instead of running old tools.
