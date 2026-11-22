@@ -211,7 +211,11 @@ function overview(): HTMLElement {
   const focus = el('section', 'focus'); const focusText = el('div');
   const focusPhase = board.phases.find(phase => phase.id === board.focusPhase);
   focusText.append(el('div', 'eyebrow', 'CURRENT FOCUS'), el('h2', '', `${String(board.focusPhase).padStart(2, '0')} / ${focusPhase?.title ?? 'Development'}`), el('p', '', board.focusSummary));
-  focus.append(focusText, button(`Review Phase ${String(board.focusPhase).padStart(2, '0')} →`, 'button primary', () => navigate({ view: 'phase', phase: board.focusPhase, q: '', status: 'all' }))); result.append(focus);
+  const hasPendingDecisions = board.phases.some(phase => phase.steps.some(step => step.status === 'ready_for_validation'));
+  const action = hasPendingDecisions
+    ? button('Owner review →', 'button primary', openReview)
+    : button(`Review Phase ${String(board.focusPhase).padStart(2, '0')} →`, 'button primary', () => navigate({ view: 'phase', phase: board.focusPhase, q: '', status: 'all' }));
+  focus.append(focusText, action); result.append(focus);
   const visible = board.phases.filter(phase => filtered(phase).length > 0);
   const heading = el('div', 'list-heading'); heading.append(el('h2', '', 'The delivery plan'));
   const legend = el('span', 'status-legend'); legend.append(el('span', '', 'Requirement status:'));
@@ -345,7 +349,7 @@ function capabilityView(): HTMLElement {
   return result;
 }
 function renderNav(): void {
-  for (const [id, view] of [['overview-tab', 'overview'], ['review-tab', 'review'], ['capabilities-tab', 'capabilities'], ['log-tab', 'log']]) {
+  for (const [id, view] of [['overview-tab', 'overview'], ['capabilities-tab', 'capabilities'], ['log-tab', 'log']]) {
     const tab = get(id ?? ''); if (state.view === view) tab.setAttribute('aria-current', 'page'); else tab.removeAttribute('aria-current');
   }
 }
@@ -369,7 +373,6 @@ function render(): void {
   }
 }
 get('overview-tab').addEventListener('click', () => navigate({ view: 'overview', phase: null }));
-get('review-tab').addEventListener('click', openReview);
 get('capabilities-tab').addEventListener('click', () => navigate({ view: 'capabilities', phase: null, q: '', status: 'all', capabilityStatus: 'all' }));
 get<HTMLSelectElement>('capability-status').addEventListener('change', event => navigate({ capabilityStatus: (event.target as HTMLSelectElement).value as State['capabilityStatus'] }, false));
 get('log-tab').addEventListener('click', () => navigate({ view: 'log', phase: null }));

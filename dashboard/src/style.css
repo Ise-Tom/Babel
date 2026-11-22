@@ -812,5 +812,7 @@ dialog .button {
 .review-message textarea { width: 100%; resize: vertical; border: 1px solid #9fac9f; border-radius: 7px; padding: 10px; background: white; color: #253b2f; }
 @media(max-width:760px) {
   .overview-page .list-heading { row-gap: 4px; margin-top: 12px; }
-  .sidebar nav { flex-wrap: wrap; }
+  .overview-page .page-heading h1 { font-size: 21px; }
+  .overview-page .stats { margin: 10px 0; gap: 6px 10px; }
+  .overview-page .focus { margin-bottom: 12px; }
 }
