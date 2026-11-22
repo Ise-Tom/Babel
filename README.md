@@ -51,13 +51,13 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T10:53:05\+01:00.
+GitHub metadata checked: 2026-11-22T10:54:52\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#39 · Prepare P00-17 private intake drill and response timing decision](<https://github.com/Ise-Tom/Babel/pull/39>)
 
-**In review · Pending merge · CI: in\_progress** · Head 701c4c8
+**In review · Pending merge · CI: in\_progress** · Head f21670d
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -105,7 +105,7 @@ GitHub metadata checked: 2026-11-22T10:53:05\+01:00.
 
 **Limits and remaining work:** The form was not submitted. Owner notification, actual receipt and acknowledgment, real backup consent/access and escalation remain unrun. Timing change awaits owner approval and a reviewed policy amendment.
 
-**PR-head evidence:** [docs/validation/p00-17.md](<https://github.com/Ise-Tom/Babel/blob/701c4c8a92e4527324cbd5b7d69ca4a92fd49e14/docs/validation/p00-17.md>) · [lab/security-intake/evidence/offline-rehearsal-result.json](<https://github.com/Ise-Tom/Babel/blob/701c4c8a92e4527324cbd5b7d69ca4a92fd49e14/lab/security-intake/evidence/offline-rehearsal-result.json>) · [scripts/check\_security\_intake.py](<https://github.com/Ise-Tom/Babel/blob/701c4c8a92e4527324cbd5b7d69ca4a92fd49e14/scripts/check_security_intake.py>)
+**PR-head evidence:** [docs/validation/p00-17.md](<https://github.com/Ise-Tom/Babel/blob/f21670dfd8536edb17ad2d265425131de076e6ea/docs/validation/p00-17.md>) · [lab/security-intake/evidence/offline-rehearsal-result.json](<https://github.com/Ise-Tom/Babel/blob/f21670dfd8536edb17ad2d265425131de076e6ea/lab/security-intake/evidence/offline-rehearsal-result.json>) · [scripts/check\_security\_intake.py](<https://github.com/Ise-Tom/Babel/blob/f21670dfd8536edb17ad2d265425131de076e6ea/scripts/check_security_intake.py>)
 
 #### Proposed problem update: I27 · Actual private receipt/escalation, backup response and production incident exercises remain unqualified
 
@@ -119,7 +119,7 @@ P00-07 has boundary/threat/ownership design. The reporter-side private form is a
 
 **Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
 
-[docs/validation/p00-17.md](<https://github.com/Ise-Tom/Babel/blob/701c4c8a92e4527324cbd5b7d69ca4a92fd49e14/docs/validation/p00-17.md>) · [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/701c4c8a92e4527324cbd5b7d69ca4a92fd49e14/docs/security-response-readiness.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/701c4c8a92e4527324cbd5b7d69ca4a92fd49e14/docs/phase-00-security-and-dependencies.md>)
+[docs/validation/p00-17.md](<https://github.com/Ise-Tom/Babel/blob/f21670dfd8536edb17ad2d265425131de076e6ea/docs/validation/p00-17.md>) · [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/f21670dfd8536edb17ad2d265425131de076e6ea/docs/security-response-readiness.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/f21670dfd8536edb17ad2d265425131de076e6ea/docs/phase-00-security-and-dependencies.md>)
 
 
 </details>
