@@ -51,13 +51,13 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T16:11:12\+01:00.
+GitHub metadata checked: 2026-11-22T16:13:18\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#44 · Implement native stable identity and synthetic schema primitives](<https://github.com/Ise-Tom/Babel/pull/44>)
 
-**In review · Pending merge · CI: success** · Head 11927f6
+**In review · Pending merge · CI: in\_progress** · Head 6d63eca
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -82,6 +82,10 @@ GitHub metadata checked: 2026-11-22T16:11:12\+01:00.
     [Pinned profile, criterion evidence and reproduction](https://github.com/Ise-Tom/Babel/blob/d3d8b291823f1831583e5f94323cf9a21f673028/docs/validation/p01-02.md)
     
     The original identity/schema primitive criterion is exercised in `babel-synthetic-directory-v1`. Broader LDAP schema and DN behavior, persistence, authorization, network writes, credentials and client conformance remain separate work. Merge remains with the owner.
+    
+    ## Owner decision
+    
+    Ise-Tom selected **Approve** in the P01-02 worker chat on 22 November 2026 for the original stable identity and schema primitive gate in `babel-synthetic-directory-v1`. [Dashboard decision](https://github.com/Ise-Tom/Babel/blob/6d63ecaddd9cedce1478be806582f11765ad196c/dashboard/progress.json) · [CI on reviewed code](https://github.com/Ise-Tom/Babel/actions/runs/45036491181)
 
 **Changed files:**
 
@@ -108,9 +112,9 @@ GitHub metadata checked: 2026-11-22T16:11:12\+01:00.
 
 **Recorded validation:** Seven public API tests and one identifier allocation fault test pass in debug and release. Directory line coverage is 93.96% locally and has a dedicated required CI threshold. The release LDAP RootDSE smoke passes.
 
-**Limits and remaining work:** The original primitive gate is ready for owner review within the synthetic profile. Broader DN/schema and matching semantics, persisted identity, ACLs/links, credentials, network mutations and real-client conformance require separate work.
+**Limits and remaining work:** The owner approved the original primitive gate within the tested synthetic profile. Broader DN/schema and matching semantics, persisted identity, ACLs/links, credentials, network mutations and real-client conformance require separate work.
 
-**PR-head evidence:** [docs/validation/p01-02.md](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/docs/validation/p01-02.md>) · [native/babel-directory/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/native/babel-directory/src/lib.rs>) · [native/babel-directory/tests/synthetic\_profile.rs](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/native/babel-directory/tests/synthetic_profile.rs>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/.github/workflows/native.yml>)
+**PR-head evidence:** [docs/validation/p01-02.md](<https://github.com/Ise-Tom/Babel/blob/6d63ecaddd9cedce1478be806582f11765ad196c/docs/validation/p01-02.md>) · [native/babel-directory/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/6d63ecaddd9cedce1478be806582f11765ad196c/native/babel-directory/src/lib.rs>) · [native/babel-directory/tests/synthetic\_profile.rs](<https://github.com/Ise-Tom/Babel/blob/6d63ecaddd9cedce1478be806582f11765ad196c/native/babel-directory/tests/synthetic_profile.rs>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/6d63ecaddd9cedce1478be806582f11765ad196c/.github/workflows/native.yml>)
 
 #### Proposed problem update: I05 · Qualified driver profile available; native AD directory storage still needs implementation
 
@@ -124,7 +128,7 @@ P00-15 driver/transaction qualification is complete and explicitly owner-accepte
 
 **Provenance:** Design blocker, not an implemented storage defect.
 
-[docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/docs/validation/p00-15.md>) · [native/babel-store-driver-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/native/babel-store-driver-lab/src/lib.rs>) · [docs/phases/phase-01.md](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/docs/phases/phase-01.md>)
+[docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/6d63ecaddd9cedce1478be806582f11765ad196c/docs/validation/p00-15.md>) · [native/babel-store-driver-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/6d63ecaddd9cedce1478be806582f11765ad196c/native/babel-store-driver-lab/src/lib.rs>) · [docs/phases/phase-01.md](<https://github.com/Ise-Tom/Babel/blob/6d63ecaddd9cedce1478be806582f11765ad196c/docs/phases/phase-01.md>)
 
 
 </details>
