@@ -48,8 +48,11 @@ class ConformanceEvidence(unittest.TestCase):
             profile.update(build="fixture-build", image_sha256="b" * 64, qualification="qualified")
         for operation in self.contract["operations"]:
             operation["implementation"] = "implemented"
+            operation["exchanges"] = [
+                x for x in operation["exchanges"] if x["kind"] != "unresolved"
+            ]
         for spec in self.contract["specifications"]:
-            spec.update(revision="fixture-revision", rights_review="approved")
+            spec["rights_review"] = "approved"
         artifact = self.root / "lab/evidence-artifacts/synthetic.txt"
         artifact.parent.mkdir()
         artifact.write_text("Synthetic fixture only; no client test was run.\n")
@@ -145,6 +148,65 @@ class ConformanceEvidence(unittest.TestCase):
             with self.subTest(change=change), self.assertRaises(ValueError):
                 self.check()
 
+    def test_operation_report_covers_all_families_and_retains_unknowns(self):
+        report = policy.check(self.root)
+        self.assertEqual(report["families"], 30)
+        self.assertGreater(report["exchange_counts"]["wire"], 30)
+        self.assertGreater(report["exchange_counts"]["workflow"], 0)
+        self.assertIn("join-login/join-variants", report["unresolved_mappings"])
+        self.assertEqual(
+            report["exchange_counts"]["unresolved"], len(report["unresolved_mappings"])
+        )
+        self.assertEqual(report["conformance_outcomes"], {"unrun": 60})
+        self.assertEqual(
+            report["input_sha256"]["lab/compatibility.json"],
+            hashlib.sha256((self.root / "lab/compatibility.json").read_bytes()).hexdigest(),
+        )
+
+    def test_exchange_mappings_require_assertions_and_resolvable_sections(self):
+        operation = self.contract["operations"][0]
+        exchanges = copy.deepcopy(operation["exchanges"])
+        changes = (
+            ("expected_success", "", "success, refusal"),
+            ("expected_refusal", None, "success, refusal"),
+            ("required_evidence", "", "required evidence"),
+            ("references", ["MS-ADTS#99.99"], "pinned section"),
+            ("references", ["MS-NRPC#3.5.4.4.1"], "pinned section"),
+            ("references", ["BABEL-ARCH"], "Wire exchange"),
+            ("kind", "assumed", "Unknown exchange type"),
+            ("kind", "unresolved", "requires a blocker"),
+            ("blocker", "unmarked mapping", "requires unresolved status"),
+        )
+        for field, value, message in changes:
+            operation["exchanges"] = copy.deepcopy(exchanges)
+            operation["exchanges"][0][field] = value
+            with (
+                self.subTest(field=field, value=value),
+                self.assertRaisesRegex(ValueError, message),
+            ):
+                self.check()
+        operation["exchanges"] = []
+        with self.assertRaisesRegex(ValueError, "exchanges"):
+            self.check()
+
+    def test_unknown_policy_and_project_references_cannot_disappear(self):
+        unknown = self.contract["unmapped_exchange_policy"]
+        unknown["owner"] = ""
+        with self.assertRaisesRegex(ValueError, "Unmapped exchange policy"):
+            self.check()
+        unknown["owner"] = "fixture-owner"
+        self.contract["project_references"][0]["heading"] = "Unlisted project heading"
+        with self.assertRaisesRegex(ValueError, "Project reference heading"):
+            self.check()
+
+    def test_unresolved_exchange_prevents_otherwise_ready_fixture(self):
+        self.passing_fixture()
+        self.contract["operations"][0]["exchanges"][0].update(
+            kind="unresolved", blocker="Unmapped fixture variant"
+        )
+        with self.assertRaisesRegex(ValueError, "Unresolved exchange mappings"):
+            self.check(ready=True)
+
     def test_skip_unsupported_and_unrun_require_a_reason_and_never_pass_readiness(self):
         self.passing_fixture()
         row = self.evidence["records"][0]
@@ -190,10 +252,11 @@ class ConformanceEvidence(unittest.TestCase):
 
     def test_missing_spec_revision_and_unqualified_profile_block_ready_gate(self):
         self.passing_fixture()
+        pinned_revision = self.contract["specifications"][0]["revision"]
         self.contract["specifications"][0]["revision"] = None
         with self.assertRaisesRegex(ValueError, "Specification revision"):
             self.check(ready=True)
-        self.contract["specifications"][0]["revision"] = "fixture"
+        self.contract["specifications"][0]["revision"] = pinned_revision
         self.contract["profiles"][0]["qualification"] = "unqualified"
         with self.assertRaisesRegex(ValueError, "Unqualified"):
             self.check(ready=True)

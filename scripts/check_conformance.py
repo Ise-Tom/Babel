@@ -139,7 +139,105 @@ def execution(
     return profile, target
 
 
-def validate(root: Path, *, require_ready: bool = False) -> Counter[str]:
+def operation_mappings(
+    root: Path, contract: dict[str, Any], specs: dict[str, dict[str, Any]]
+) -> tuple[set[str], dict[str, dict[str, Any]]]:
+    registry = json.loads((root / "lab/specification-pins.json").read_bytes())
+    documents = indexed(registry.get("documents"), "pinned documents")
+    require(
+        documents.keys() == specs.keys(), "Specification references must match pinned documents"
+    )
+    pins: set[str] = set()
+    for name, doc in documents.items():
+        require(
+            text(doc.get("revision"))
+            and doc["revision"] == specs[name].get("revision")
+            and doc.get("landing") == specs[name].get("url")
+            and digest(doc.get("sha256")),
+            f"{name}: Specification revision, publisher or document digest binding is invalid",
+        )
+        sections = doc.get("sections", {})
+        require(
+            isinstance(sections, dict)
+            and all(
+                re.fullmatch(r"[a-z0-9]+(?:[.-][a-z0-9]+)*", key) and text(heading)
+                for key, heading in sections.items()
+            ),
+            f"{name}: Invalid pinned section catalog",
+        )
+        pins.update(f"{name}#{section}" for section in sections)
+
+    local = indexed(contract.get("project_references"), "project references")
+    for name, ref in local.items():
+        require(
+            name.startswith("BABEL-") and text(ref.get("path")) and text(ref.get("heading")),
+            f"{name}: Project path and heading required",
+        )
+        path = root / ref["path"]
+        require(
+            path.resolve().is_relative_to((root / "docs").resolve())
+            and path.suffix == ".md"
+            and path.is_file()
+            and re.search(
+                r"^#{1,6} " + re.escape(ref["heading"]) + r"$",
+                path.read_text(encoding="utf-8"),
+                re.M,
+            )
+            is not None,
+            f"{name}: Project reference heading or path is missing",
+        )
+    unknown = contract.get("unmapped_exchange_policy", {})
+    require(
+        unknown.get("disposition") == "unresolved"
+        and all(
+            text(unknown.get(key)) for key in ("owner", "expected_refusal", "required_evidence")
+        ),
+        "Unmapped exchange policy requires an owner, refusal and evidence",
+    )
+    return pins, local
+
+
+def check_exchanges(
+    operation: dict[str, Any], pins: set[str], local: set[str]
+) -> dict[str, dict[str, Any]]:
+    name = operation["id"]
+    exchanges = indexed(operation.get("exchanges"), f"{name} exchanges")
+    permitted = {ref for ref in pins if ref.split("#", 1)[0] in operation["specifications"]}
+    require(
+        any(row.get("kind") in ("wire", "workflow") for row in exchanges.values()),
+        f"{name}: At least one mapped exchange or workflow is required",
+    )
+    for identifier, row in exchanges.items():
+        label = f"{name}/{identifier}"
+        require(
+            row.get("kind") in ("wire", "workflow", "unresolved"), f"{label}: Unknown exchange type"
+        )
+        require(
+            all(
+                text(row.get(field))
+                for field in (
+                    "exchange",
+                    "expected_success",
+                    "expected_refusal",
+                    "required_evidence",
+                )
+            ),
+            f"{label}: Exchange, success, refusal and required evidence are mandatory",
+        )
+        references(row.get("references"), permitted | local, f"{label} pinned section references")
+        if row["kind"] == "wire":
+            require(
+                bool(permitted.intersection(row["references"])),
+                f"{label}: Wire exchange requires a pinned protocol section",
+            )
+        if row["kind"] == "unresolved":
+            require(text(row.get("blocker")), f"{label}: Unresolved exchange requires a blocker")
+        else:
+            require("blocker" not in row, f"{label}: Blocker requires unresolved status")
+    return exchanges
+
+
+def check(root: Path, *, require_ready: bool = False) -> dict[str, Any]:
     raw = (root / "lab/compatibility.json").read_bytes()
     contract = json.loads(raw)
     evidence = json.loads((root / "lab/conformance-evidence.json").read_bytes())
@@ -178,6 +276,10 @@ def validate(root: Path, *, require_ready: bool = False) -> Counter[str]:
     )
     specs = indexed(contract.get("specifications"), "specifications")
     operations = indexed(contract.get("operations"), "operations")
+    pins, local = operation_mappings(root, contract, specs)
+    exchange_counts: Counter[str] = Counter()
+    unresolved = []
+    section_refs: set[str] = set()
     known = set()
     for name in GLOBAL_SOURCES:
         known.update(re.findall(rf"^\| ({GLOBAL_ID}) \|", (root / "docs" / name).read_text(), re.M))
@@ -199,6 +301,12 @@ def validate(root: Path, *, require_ready: bool = False) -> Counter[str]:
             set(scenarios) == {"positive", "negative"} and all(text(s) for s in scenarios.values()),
             "Positive and negative expectations required",
         )
+        exchanges = check_exchanges(operation, pins, set(local))
+        for identifier, exchange in exchanges.items():
+            exchange_counts[exchange["kind"]] += 1
+            section_refs.update(pins.intersection(exchange["references"]))
+            if exchange["kind"] == "unresolved":
+                unresolved.append(f"{operation['id']}/{identifier}")
     required = {f"AD-{i:02}" for i in range(1, 11)} | {f"PLAT-{i:02}" for i in range(1, 4)}
     require(required | {"IAM-01", "OPS-01", "UX-01"} <= covered, "Missing first-production scope")
     for profile in profiles.values():
@@ -291,7 +399,31 @@ def validate(root: Path, *, require_ready: bool = False) -> Counter[str]:
                 "Unaccepted or non-passing scenario blocks qualification",
             )
     require(seen == expected, "Missing positive/negative evidence scenarios")
-    return counts
+    if require_ready:
+        require(not unresolved, "Unresolved exchange mappings block conformance readiness")
+    return {
+        "requirement": "P00-01",
+        "families": len(operations),
+        "exchange_counts": dict(sorted(exchange_counts.items())),
+        "unique_protocol_sections": len(section_refs),
+        "unresolved_mappings": unresolved,
+        "conformance_outcomes": dict(sorted(counts.items())),
+        "input_sha256": {
+            name: hashlib.sha256((root / name).read_bytes()).hexdigest()
+            for name in sorted(
+                {
+                    "lab/compatibility.json",
+                    "lab/conformance-evidence.json",
+                    "lab/specification-pins.json",
+                    *(ref["path"] for ref in local.values()),
+                }
+            )
+        },
+    }
+
+
+def validate(root: Path, *, require_ready: bool = False) -> Counter[str]:
+    return Counter(check(root, require_ready=require_ready)["conformance_outcomes"])
 
 
 if __name__ == "__main__":
@@ -302,12 +434,18 @@ if __name__ == "__main__":
         action="store_true",
         help="Fail on any unqualified or unaccepted conformance evidence",
     )
+    parser.add_argument("--revision", help="Emit design integrity JSON bound to this commit")
     args = parser.parse_args()
     try:
-        counts = validate(args.root, require_ready=args.require_ready)
+        result = check(args.root, require_ready=args.require_ready)
+        if args.revision is not None:
+            require(digest(args.revision, 40), "Full source revision required")
+            result["source_revision"] = args.revision
+            print(json.dumps(result, indent=2))
+        else:
+            print(
+                f"Compatibility/evidence structure valid: {result['conformance_outcomes']}. "
+                "Structural validation is not conformance or phase acceptance."
+            )
     except (ValueError, OSError, TypeError, AttributeError, KeyError) as error:
         raise SystemExit(f"Compatibility/evidence rejected: {error}") from error
-    print(
-        f"Compatibility/evidence structure valid: {dict(sorted(counts.items()))}. "
-        "Structural validation is not conformance or phase acceptance."
-    )

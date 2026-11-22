@@ -356,11 +356,13 @@ environment remain necessary against unauthorized workflow/tag changes.
 
 ## Phase 0 compatibility and evidence integrity
 
-The repository check runs `scripts/check_conformance.py` against the two explicitly
-registered `lab/*.json` files. It enforces versioned scenarios, canonical requirement
-references, positive/negative expectations, exact contract digest and honest outcome
-accounting. Executed observations require exact client/image/source identity,
-retained bounded artifact hashes and full declared comparison coverage for a pass.
+The repository check runs `scripts/check_conformance.py` against the versioned
+matrix, reference registry and evidence records. It checks owners, success and
+refusal expectations, required artifacts, pinned sections and the matrix digest.
+The CI artifact `phase0-contract-evidence` includes the source-bound operation
+matrix report, with counts and unresolved IDs. Executed observations require exact
+client/image/source identity, retained artifact hashes and full declared comparison
+coverage for a pass.
 All current 60 scenarios remain unrun. `--require-ready` intentionally fails on
 current metadata; no empty Windows job is added to imply a lab exists. Regression
 tests use explicitly synthetic temporary fixtures, never published product results.

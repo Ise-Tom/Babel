@@ -54,13 +54,13 @@ jobs:
       - name: Design traceability and documentation links
         run: |
           python scripts/check_design.py
-          python scripts/check_conformance.py
           python scripts/check_lab_definition.py
           python scripts/build_dashboard.py --check
           python scripts/check_docs.py
-      - name: Validate functional-level and irreversible-change contracts
+      - name: Validate the protocol matrix and Phase 0 design contracts
         run: |
           mkdir -p reports
+          python scripts/check_conformance.py --revision "$GITHUB_SHA" > reports/protocol-operation-matrix.json
           python scripts/check_phase0_contract.py --revision "$GITHUB_SHA" > reports/phase0-contract.json
           python scripts/check_state_security.py --revision "$GITHUB_SHA" > reports/state-security-contract.json
           python scripts/check_security_intake.py --output reports/security-intake-offline.json
@@ -69,6 +69,7 @@ jobs:
         with:
           name: phase0-contract-evidence
           path: |
+            reports/protocol-operation-matrix.json
             reports/phase0-contract.json
             reports/state-security-contract.json
             reports/security-intake-offline.json

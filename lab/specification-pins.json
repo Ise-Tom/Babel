@@ -17,7 +17,58 @@
       "notice_sha256": "481ceceed9796139c49bac12eaeef4d1af28fd8d7f137e1f27cb9d6b32bebf80",
       "patent_coverage": "not_established",
       "image_fixture_rights": "not_granted_by_document",
-      "redistribution_approval": null
+      "redistribution_approval": null,
+      "sections": {
+        "3.1.1.1.5.1": "Tombstone Lifetime and Deleted-Object Lifetime",
+        "3.1.1.3.1.3.6": "Restrictions on rootDSE Searches",
+        "3.1.1.3.1.4": "Referrals in LDAPv2 and LDAPv3",
+        "3.1.1.3.1.5.1": "unicodePwd",
+        "3.1.1.3.1.10": "Ports",
+        "3.1.1.3.1.11": "LDAP Search Over UDP",
+        "3.1.1.3.2": "rootDSE Attributes",
+        "3.1.1.3.2.10": "isGlobalCatalogReady",
+        "3.1.1.3.2.25": "domainControllerFunctionality",
+        "3.1.1.3.2.26": "domainFunctionality",
+        "3.1.1.3.2.27": "forestFunctionality",
+        "3.1.1.3.3": "rootDSE Modify Operations",
+        "3.1.1.3.4.1": "LDAP Extended Controls",
+        "3.1.1.3.4.1.1": "LDAP_PAGED_RESULT_OID_STRING",
+        "3.1.1.3.4.1.2": "LDAP_SERVER_CROSSDOM_MOVE_TARGET_OID",
+        "3.1.1.3.4.1.11": "LDAP_SERVER_SD_FLAGS_OID",
+        "3.1.1.3.4.1.14": "LDAP_SERVER_SHOW_DELETED_OID",
+        "3.1.1.3.4.1.15": "LDAP_SERVER_TREE_DELETE_OID",
+        "3.1.1.3.4.1.26": "LDAP_SERVER_SHOW_RECYCLED_OID",
+        "3.1.1.3.4.4.3": "LDAP_MATCHING_RULE_TRANSITIVE_EVAL",
+        "3.1.1.3.4.5": "LDAP SASL Mechanisms",
+        "3.1.1.3.4.6": "LDAP Policies",
+        "3.1.1.4.3": "Access Checks",
+        "3.1.1.5.1.1": "Enforce Schema Constraints",
+        "3.1.1.5.1.4": "Transactional Semantics",
+        "3.1.1.5.2": "Add Operation",
+        "3.1.1.5.3": "Modify Operation",
+        "3.1.1.5.3.1": "Security Considerations",
+        "3.1.1.5.3.1.2": "FSMO Changes",
+        "3.1.1.5.3.2": "Constraints",
+        "3.1.1.5.3.7": "Undelete Operation",
+        "3.1.1.5.3.7.1": "Undelete Security Considerations",
+        "3.1.1.5.3.7.2": "Undelete Constraints",
+        "3.1.1.5.4.1": "Intra Domain Modify DN",
+        "3.1.1.5.4.2": "Cross Domain Move",
+        "3.1.1.5.5": "Delete Operation",
+        "3.1.1.9.1": "Recycle Bin Optional Feature",
+        "6.1.2.3.4": "DC and Partial Replica NCs Replicas",
+        "6.1.4.2": "msDS-Behavior-Version: DC Functional Level",
+        "6.1.4.3": "msDS-Behavior-Version: Domain NC Functional Level",
+        "6.1.4.4": "msDS-Behavior-Version: Forest Functional Level",
+        "6.1.5": "FSMO Roles",
+        "6.1.5.3": "RID Master FSMO Role",
+        "6.1.6": "Trust Objects",
+        "6.1.6.9.3": "msDS-TrustForestTrustInfo Attribute",
+        "6.3.3": "LDAP Ping",
+        "6.3.5": "Mailslot Ping",
+        "6.3.6.1": "DNS-Based Discovery",
+        "6.3.6.2": "NetBIOS-Based Discovery"
+      }
     },
     {
       "id": "MS-DNSP",
@@ -34,7 +85,11 @@
       "notice_sha256": "b95df8b354d8293bc3a5e3a2242c39eb0c4c18a3da9cf5106e291988d74ec74e",
       "patent_coverage": "not_established",
       "image_fixture_rights": "not_granted_by_document",
-      "redistribution_approval": null
+      "redistribution_approval": null,
+      "sections": {
+        "3.1.4.5": "R_DnssrvUpdateRecord (Opnum 4)",
+        "3.1.4.10": "R_DnssrvUpdateRecord2 (Opnum 9)"
+      }
     },
     {
       "id": "MS-DRSR",
@@ -51,7 +106,22 @@
       "notice_sha256": "3b6f2b9d7edc31dbb0f8eea693b7ab6903030dc657bc9bcd01c022d0dff0a8e8",
       "patent_coverage": "not_established",
       "image_fixture_rights": "not_granted_by_document",
-      "redistribution_approval": null
+      "redistribution_approval": null,
+      "sections": {
+        "4.1.2": "IDL_DRSAddSidHistory (Opnum 20)",
+        "4.1.2.3": "Server Behavior of the IDL_DRSAddSidHistory Method",
+        "4.1.3": "IDL_DRSBind (Opnum 0)",
+        "4.1.10.4": "Client Behavior When Sending the IDL_DRSGetNCChanges Request",
+        "4.1.10.5": "Server Behavior of the IDL_DRSGetNCChanges Method",
+        "4.1.10.5.12": "ProcessFsmoRoleRequest",
+        "4.1.10.6": "Client Behavior When Receiving the IDL_DRSGetNCChanges Response",
+        "4.1.13": "IDL_DRSGetReplInfo (Opnum 19)",
+        "4.1.15": "IDL_DRSInterDomainMove (Opnum 10)",
+        "4.1.23": "IDL_DRSReplicaSync (Opnum 2)",
+        "4.1.25": "IDL_DRSUnbind (Opnum 1)",
+        "4.1.26": "IDL_DRSUpdateRefs (Opnum 4)",
+        "5.210": "USN_VECTOR"
+      }
     },
     {
       "id": "MS-DTYP",
@@ -68,7 +138,11 @@
       "notice_sha256": "847068729c492a5db50bc7b1ac021f113cb3ff8b20e23e685732fbdd775faaf5",
       "patent_coverage": "not_established",
       "image_fixture_rights": "not_granted_by_document",
-      "redistribution_approval": null
+      "redistribution_approval": null,
+      "sections": {
+        "2.4.2": "SID",
+        "2.4.6": "SECURITY_DESCRIPTOR"
+      }
     },
     {
       "id": "MS-FRS2",
@@ -85,7 +159,13 @@
       "notice_sha256": "4a13918fb01ab12461859ed78a44a30252a866a39f0614584cb9e1ee5d2ef1c8",
       "patent_coverage": "not_established",
       "image_fixture_rights": "not_granted_by_document",
-      "redistribution_approval": null
+      "redistribution_approval": null,
+      "sections": {
+        "3.2.4.1.2": "EstablishConnection (Opnum 1)",
+        "3.2.4.1.3": "EstablishSession (Opnum 2)",
+        "3.2.4.1.5": "RequestVersionVector (Opnum 4)",
+        "3.2.4.1.7": "RequestRecords (Opnum 6)"
+      }
     },
     {
       "id": "MS-GPOL",
@@ -102,7 +182,15 @@
       "notice_sha256": "a1046373b1f0d01ca9719f59fa96947a670a9d8ae351f698ea960c848ce7bc6e",
       "patent_coverage": "not_established",
       "image_fixture_rights": "not_granted_by_document",
-      "redistribution_approval": null
+      "redistribution_approval": null,
+      "sections": {
+        "2.2.4": "GPO Search",
+        "3.2.5.1.5": "GPO Search",
+        "3.3.5.4": "GPO File System Version Update",
+        "3.3.5.7": "GPO Link Creation and Update",
+        "3.3.5.8": "GPO Link Deletion",
+        "4.10": "Sample gpt.ini File"
+      }
     },
     {
       "id": "MS-KILE",
@@ -119,7 +207,16 @@
       "notice_sha256": "e066f26ef67423f6b459d45e783fdd48ca368d6646f81995e2b4c282ea998f30",
       "patent_coverage": "not_established",
       "image_fixture_rights": "not_granted_by_document",
-      "redistribution_approval": null
+      "redistribution_approval": null,
+      "sections": {
+        "3.1.5.2": "Encryption Types",
+        "3.2.5.8": "AP Exchange",
+        "3.3.5.6": "AS Exchange",
+        "3.3.5.6.3": "Check Account Policy for Every TGT Request",
+        "3.3.5.6.4": "Initial Population of the PAC",
+        "3.3.5.7": "TGS Exchange",
+        "3.3.5.7.5": "Cross-Domain Trust and Referrals"
+      }
     },
     {
       "id": "MS-LSAD",
@@ -136,7 +233,15 @@
       "notice_sha256": "fa8fb2550190a7ced63f68f1afbc81eb339748ec47455a49446013297193ac11",
       "patent_coverage": "not_established",
       "image_fixture_rights": "not_granted_by_document",
-      "redistribution_approval": null
+      "redistribution_approval": null,
+      "sections": {
+        "3.1.4.4": "Policy Object Methods",
+        "3.1.4.4.1": "LsarOpenPolicy2 (Opnum 44)",
+        "3.1.4.4.3": "LsarQueryInformationPolicy2 (Opnum 46)",
+        "3.1.4.4.5": "LsarSetInformationPolicy2 (Opnum 47)",
+        "3.1.4.7.4": "LsarDeleteTrustedDomain (Opnum 41)",
+        "3.1.4.7.10": "LsarCreateTrustedDomainEx2 (Opnum 59)"
+      }
     },
     {
       "id": "MS-NRPC",
@@ -153,7 +258,19 @@
       "notice_sha256": "305466b0989b503fa15625aeaaa94b2a276313b45191281a608608d462777823",
       "patent_coverage": "not_established",
       "image_fixture_rights": "not_granted_by_document",
-      "redistribution_approval": null
+      "redistribution_approval": null,
+      "sections": {
+        "3.5.4.3.1": "DsrGetDcNameEx2 (Opnum 34)",
+        "3.5.4.4": "Secure Channel Establishment and Maintenance Methods",
+        "3.5.4.4.1": "NetrServerReqChallenge (Opnum 4)",
+        "3.5.4.4.2": "NetrServerAuthenticate3 (Opnum 26)",
+        "3.5.4.4.6": "NetrServerPasswordSet2 (Opnum 30)",
+        "3.5.4.4.10": "NetrLogonGetDomainInfo (Opnum 29)",
+        "3.5.4.4.11": "NetrLogonGetCapabilities (Opnum 21)",
+        "3.5.4.5": "Pass-Through Authentication Methods",
+        "3.5.4.5.1": "NetrLogonSamLogonEx (Opnum 39)",
+        "3.5.4.5.2": "NetrLogonSamLogonWithFlags (Opnum 45)"
+      }
     },
     {
       "id": "MS-PAC",
@@ -170,7 +287,11 @@
       "notice_sha256": "2b848360616cf76643ba95e2dde0bcadd55f6dfa171f00f2e4b7708faeb03f5d",
       "patent_coverage": "not_established",
       "image_fixture_rights": "not_granted_by_document",
-      "redistribution_approval": null
+      "redistribution_approval": null,
+      "sections": {
+        "2.8": "PAC_SIGNATURE_DATA",
+        "4.1.2.2": "SID Filtering and Claims Transformation"
+      }
     },
     {
       "id": "MS-SAMR",
@@ -187,7 +308,17 @@
       "notice_sha256": "4dc344258e0dbce21d79d7604dd3a26ae3d48284ace2f2a8a85b16dcc00cbe06",
       "patent_coverage": "not_established",
       "image_fixture_rights": "not_granted_by_document",
-      "redistribution_approval": null
+      "redistribution_approval": null,
+      "sections": {
+        "3.1.1.8.3": "lockoutTime",
+        "3.1.5": "Message Processing Events and Sequencing Rules",
+        "3.1.5.4.4": "SamrCreateUser2InDomain (Opnum 50)",
+        "3.1.5.6.4": "SamrSetInformationUser2 (Opnum 58)",
+        "3.1.5.10.3": "SamrUnicodeChangePasswordUser2 (Opnum 55)",
+        "3.1.5.11.2": "SamrLookupNamesInDomain (Opnum 17)",
+        "3.1.5.14.5": "Account Lockout Enforcement and Reset",
+        "3.1.5.14.6": "Account Lockout State Maintenance"
+      }
     },
     {
       "id": "MS-SMB2",
@@ -204,7 +335,17 @@
       "notice_sha256": "ff40ea3db821734f84b5bd7fdc8a7d69557aa702d419e97bbe23b606140ecd2d",
       "patent_coverage": "not_established",
       "image_fixture_rights": "not_granted_by_document",
-      "redistribution_approval": null
+      "redistribution_approval": null,
+      "sections": {
+        "3.3.5.2.4": "Verifying the Signature",
+        "3.3.5.4": "Receiving an SMB2 NEGOTIATE Request",
+        "3.3.5.5": "Receiving an SMB2 SESSION_SETUP Request",
+        "3.3.5.7": "Receiving an SMB2 TREE_CONNECT Request",
+        "3.3.5.9": "Receiving an SMB2 CREATE Request",
+        "3.3.5.10": "Receiving an SMB2 CLOSE Request",
+        "3.3.5.12": "Receiving an SMB2 READ Request",
+        "3.3.5.13": "Receiving an SMB2 WRITE Request"
+      }
     },
     {
       "id": "RFC4511",
@@ -221,7 +362,197 @@
       "notice_sha256": "d9bd887ab16bc4a83bc2cce20b925b16950e8a11d6a654d742858ea7ca835fcb",
       "patent_coverage": "not_established",
       "image_fixture_rights": "not_granted_by_document",
-      "redistribution_approval": null
+      "redistribution_approval": null,
+      "sections": {
+        "4.1.1": "Message Envelope",
+        "4.1.9": "Result Message",
+        "4.1.11": "Controls",
+        "4.2": "Bind Operation",
+        "4.3": "Unbind Operation",
+        "4.4.1": "Notice of Disconnection",
+        "4.5": "Search Operation",
+        "4.5.1": "Search Request",
+        "4.6": "Modify Operation",
+        "4.7": "Add Operation",
+        "4.8": "Delete Operation",
+        "4.9": "Modify DN Operation",
+        "4.10": "Compare Operation",
+        "4.14": "StartTLS Operation",
+        "5.1": "Protocol Encoding"
+      }
+    },
+    {
+      "id": "RFC1035",
+      "title": "Domain Names - Implementation and Specification",
+      "revision": "RFC1035-November-1987",
+      "url": "https://www.rfc-editor.org/rfc/rfc1035.txt",
+      "landing": "https://www.rfc-editor.org/info/rfc1035/",
+      "sha256": "d14ae809fc9b41bbcae26bb38c937c9515808b944f3252b00de9fe0e95f4fdfb",
+      "bytes": 122549,
+      "reviewed_on": "2026-11-22",
+      "reviewer": "Codex technical reference inspection; owner review pending",
+      "document_use": "implementation_reference_only",
+      "copyright_notice": "rfc1035_publication_status_1987",
+      "notice_sha256": "9440ce4e2d11c7d1a3d037a925bf7bb1baec8d7ad01f10009debf78b794ade37",
+      "patent_coverage": "not_established",
+      "image_fixture_rights": "not_granted_by_document",
+      "redistribution_approval": null,
+      "sections": {
+        "4.1.1": "Header section format",
+        "4.2": "Transport"
+      }
+    },
+    {
+      "id": "RFC2136",
+      "title": "Dynamic Updates in the Domain Name System (DNS UPDATE)",
+      "revision": "RFC2136-April-1997",
+      "url": "https://www.rfc-editor.org/rfc/rfc2136.txt",
+      "landing": "https://www.rfc-editor.org/info/rfc2136/",
+      "sha256": "c6ee9f06e8dd817e260734adadef806a4296ed637d8afabc508f96ae84625bd5",
+      "bytes": 56354,
+      "reviewed_on": "2026-11-22",
+      "reviewer": "Codex technical reference inspection; owner review pending",
+      "document_use": "implementation_reference_only",
+      "copyright_notice": "rfc2136_publication_status_1997",
+      "notice_sha256": "006a0a49c3a9f302ba1e8cfafa0693ea958eca044111e9d5e41cbdaa7d887ac0",
+      "patent_coverage": "not_established",
+      "image_fixture_rights": "not_granted_by_document",
+      "redistribution_approval": null,
+      "sections": {
+        "2": "Update Message Format",
+        "3": "Server Behavior",
+        "5": "Duplicate Detection, Ordering and Mutual Exclusion"
+      }
+    },
+    {
+      "id": "RFC2696",
+      "title": "LDAP Control Extension for Simple Paged Results Manipulation",
+      "revision": "RFC2696-September-1999",
+      "url": "https://www.rfc-editor.org/rfc/rfc2696.txt",
+      "landing": "https://www.rfc-editor.org/info/rfc2696/",
+      "sha256": "a10622f84e0c5117b6cb535ef31f703c6d9d2953e25ec182b9029942228879f1",
+      "bytes": 12809,
+      "reviewed_on": "2026-11-22",
+      "reviewer": "Codex technical reference inspection; owner review pending",
+      "document_use": "implementation_reference_only",
+      "copyright_notice": "rfc2696_internet_society_1999",
+      "notice_sha256": "0c8f6788975765d362e7d76f3c635f13dd8adb7e48c559b451a4818d55a6d4dc",
+      "patent_coverage": "not_established",
+      "image_fixture_rights": "not_granted_by_document",
+      "redistribution_approval": null,
+      "sections": {
+        "2": "The Control",
+        "3": "Client-Server Interaction"
+      }
+    },
+    {
+      "id": "RFC2782",
+      "title": "A DNS RR for specifying the location of services (DNS SRV)",
+      "revision": "RFC2782-February-2000",
+      "url": "https://www.rfc-editor.org/rfc/rfc2782.txt",
+      "landing": "https://www.rfc-editor.org/info/rfc2782/",
+      "sha256": "bacc8972b55f30eb47d7bb07662905ba3a3a7cdefb148174d0d9fbbb313735ac",
+      "bytes": 24013,
+      "reviewed_on": "2026-11-22",
+      "reviewer": "Codex technical reference inspection; owner review pending",
+      "document_use": "implementation_reference_only",
+      "copyright_notice": "rfc2782_internet_society_2000",
+      "notice_sha256": "77c47f72aa728ba6bd9b3e86e1fc5ca6118c0ea8bad873e29d6079f900d18164",
+      "patent_coverage": "not_established",
+      "image_fixture_rights": "not_granted_by_document",
+      "redistribution_approval": null,
+      "sections": {
+        "srv-format": "The format of the SRV RR",
+        "usage": "Usage rules"
+      }
+    },
+    {
+      "id": "RFC3244",
+      "title": "Microsoft Windows 2000 Kerberos Change Password and Set Password Protocols",
+      "revision": "RFC3244-February-2002",
+      "url": "https://www.rfc-editor.org/rfc/rfc3244.txt",
+      "landing": "https://www.rfc-editor.org/info/rfc3244/",
+      "sha256": "45b9130ff5488beb7244b38d737b061f8a473e7fb0e56028b04445b180dec378",
+      "bytes": 13334,
+      "reviewed_on": "2026-11-22",
+      "reviewer": "Codex technical reference inspection; owner review pending",
+      "document_use": "implementation_reference_only",
+      "copyright_notice": "rfc3244_internet_society_2002",
+      "notice_sha256": "b6a8bfd62f661f35ab375306c199c89d22e295b69fa60f793d75fcaee596a6a4",
+      "patent_coverage": "not_established",
+      "image_fixture_rights": "not_granted_by_document",
+      "redistribution_approval": null,
+      "sections": {
+        "2": "The Protocol",
+        "3": "Security Considerations"
+      }
+    },
+    {
+      "id": "RFC3645",
+      "title": "Generic Security Service Algorithm for Secret Key Transaction Authentication for DNS (GSS-TSIG)",
+      "revision": "RFC3645-October-2003",
+      "url": "https://www.rfc-editor.org/rfc/rfc3645.txt",
+      "landing": "https://www.rfc-editor.org/info/rfc3645/",
+      "sha256": "18443eba664ecbeff6ac63bf11f260b9e8cb801f60a963b3e89586485fa44efe",
+      "bytes": 56162,
+      "reviewed_on": "2026-11-22",
+      "reviewer": "Codex technical reference inspection; owner review pending",
+      "document_use": "implementation_reference_only",
+      "copyright_notice": "rfc3645_internet_society_2003",
+      "notice_sha256": "d3c4705234ae01eff1ce1de891c899a98c9f1ae43a6d5633deb79e0a2b7065fc",
+      "patent_coverage": "not_established",
+      "image_fixture_rights": "not_granted_by_document",
+      "redistribution_approval": null,
+      "sections": {
+        "3.1": "Negotiating Context",
+        "4.1": "Negotiating Context",
+        "5.2": "Verifying a Signed Message - Call GSS_VerifyMIC"
+      }
+    },
+    {
+      "id": "RFC4120",
+      "title": "The Kerberos Network Authentication Service (V5)",
+      "revision": "RFC4120-July-2005",
+      "url": "https://www.rfc-editor.org/rfc/rfc4120.txt",
+      "landing": "https://www.rfc-editor.org/info/rfc4120/",
+      "sha256": "368d3cd1a4248e361799e3ebb2dbd124ec4fb14651e2188b77b392b66463f75b",
+      "bytes": 340314,
+      "reviewed_on": "2026-11-22",
+      "reviewer": "Codex technical reference inspection; owner review pending",
+      "document_use": "implementation_reference_only",
+      "copyright_notice": "rfc4120_bcp78_2005",
+      "notice_sha256": "156265be265f3189b0a9311f1563d20cb7b5b37a0f0db1c0c9f2ffddd63ea2e9",
+      "patent_coverage": "not_established",
+      "image_fixture_rights": "not_granted_by_document",
+      "redistribution_approval": null,
+      "sections": {
+        "3.1": "The Authentication Service Exchange",
+        "3.2": "The Client/Server Authentication Exchange",
+        "3.2.3": "Receipt of KRB_AP_REQ Message",
+        "3.3": "The Ticket-Granting Service (TGS) Exchange",
+        "5.2.6": "AuthorizationData"
+      }
+    },
+    {
+      "id": "MS-SFU",
+      "title": "Kerberos Protocol Extensions: Service for User and Constrained Delegation Protocol",
+      "revision": "v20260330",
+      "url": "https://winprotocoldocs-bhdugrdyduf5h2e4.b02.azurefd.net/MS-SFU/%5bMS-SFU%5d-260330.pdf",
+      "landing": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-sfu/3bff5864-8135-400e-bdd9-33b552051d94",
+      "sha256": "d6ef1917cbfd113b3874a0c1e99d686d3cc44442a62576bf2fbfe83fae4653d3",
+      "bytes": 1589676,
+      "reviewed_on": "2026-11-22",
+      "reviewer": "Codex technical reference inspection; owner review pending",
+      "document_use": "implementation_reference_only",
+      "copyright_notice": "microsoft_open_specifications_notice",
+      "notice_sha256": "a2d85c1f8775d73be845011c9011978c4435926ec7f06c911e2d48d3c58fb0d6",
+      "patent_coverage": "not_established",
+      "image_fixture_rights": "not_granted_by_document",
+      "redistribution_approval": null,
+      "sections": {
+        "3.2.5.1": "KDC Receives S4U2self KRB_TGS_REQ",
+        "3.2.5.2": "KDC Receives S4U2proxy KRB_TGS_REQ"
+      }
     }
   ],
   "default_asset_disposition": "deny_without_explicit_rights",
