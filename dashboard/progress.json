@@ -440,7 +440,7 @@
     },
     "P00-17": {
       "status": "in_progress",
-      "note": "Ise-Tom approved the exact P00-17 timing amendment on 22 November 2026 for PR review; it takes effect only after merge. Phase 0 process-design acceptance is still unrequested. A live owner-receipt drill remains due before soliciting external preview users, and a real backup with verified access/escalation remains a P05-04 production gate. No report or contact was authorized, and no live evidence exists."
+      "note": "The timing amendment merged in PR #42. A criterion-by-criterion process-design packet and fresh offline rehearsal cover reporter/owner/backup roles, custody, acknowledgment, independent owner-absence escalation, failure handling and the live-drill plan. Owner acceptance remains open. The live owner-receipt drill before external preview solicitation and verified backup under P05-04 are unrun; no report or contact was authorized."
     }
   },
   "phase_acceptance": {},
@@ -2956,7 +2956,7 @@
       ],
       "how": "Applied the exact approved Phase 0 and SECURITY.md timing text, explicitly bound live intake and real backup evidence to P05-04, and preserved report-content and urgent critical-issue guidance. Recorded the additional preview disclosure/version-policy and public-preview versus external-solicitation timing differences.",
       "verification": "Ise-Tom answered Approve to the exact linked policy question in the Phase 0 worker chat on 22 November 2026. The decision record quotes the question and answer. Local documentation, design and dashboard checks pass; hosted CI is tracked in the PR.",
-      "limitations": "The policy is effective only after merge. Approval is not live-drill authorization, P00-17 acceptance, backup appointment, an active SLA or production readiness. Original policy applies pending merge.",
+      "limitations": "The policy merged in PR #42. Its approval did not authorize a live drill, accept P00-17, appoint a backup, activate an SLA or establish production readiness.",
       "source_revision": "2ed74921321e7831c2c5173d367b25d50b92479e",
       "sources": [
         {
@@ -3042,6 +3042,36 @@
       ],
       "problems": [
         "I05"
+      ]
+    },
+    {
+      "id": "W69",
+      "title": "Review amended P00-17 intake process against every Phase 0 criterion",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-17"
+      ],
+      "how": "Mapped runbook, exact draft and ledger to every amended P00-17 element; repaired the owner-absence escalation plan by assigning an independent trigger. Rehearsed four synthetic cases with explicit verifier/absence events and retained the result tied to reviewed main revision f2ddab3.",
+      "verification": "The offline validator returns the expected complete-mock and three incomplete classifications while keeping live intake/backup false. Nine negative subtests reject fabricated or corrupt evidence. Local documentation, design, scope, format, lint, type and static-security checks pass; hosted CI is tracked in the PR.",
+      "limitations": "This is Phase 0 process-design evidence only. No report, owner notification/receipt/acknowledgment, human backup access or owner-absence escalation occurred. Separate authorization is required for any live report or contact; preview and production gates remain open.",
+      "source_revision": "0d63e62ec39d769ff9d0a1267a1811b2f9c508e7",
+      "sources": [
+        {
+          "path": "docs/validation/p00-17-design-review.md",
+          "label": "Amended criterion-by-criterion review"
+        },
+        {
+          "path": "lab/security-intake/evidence/review-f2ddab3-2026-11-23.json",
+          "label": "Fresh offline rehearsal outcome"
+        },
+        {
+          "path": "docs/security-response-readiness.md",
+          "label": "Private intake and absence runbook"
+        }
+      ],
+      "problems": [
+        "I27"
       ]
     }
   ],
@@ -3645,11 +3675,15 @@
         "P00-17",
         "P05-04"
       ],
-      "detail": "P00-07 has boundary/threat/ownership design. The reporter-side private form is accessible and an exact benign draft and offline rehearsal exist, but actual owner notification/receipt/acknowledgment, escalation and a genuine backup are unverified.",
+      "detail": "The amended P00-17 process design and offline rehearsal are prepared for owner review. The reporter-side private form is accessible, but actual owner notification/receipt/acknowledgment, independent owner-absence escalation and a genuinely available backup remain unverified. This does not block process-design review; it blocks external preview solicitation and supported production at their separate checkpoints.",
       "resolution": "",
-      "next_action": "Merge the owner-approved timing amendment before applying the new criterion. Request separate authorization for a live private drill before external preview solicitation, and verify a real backup before supported production. Keep private evidence restricted and publish redacted outcomes.",
-      "source_revision": "2ed74921321e7831c2c5173d367b25d50b92479e",
+      "next_action": "Request separate authorization for a live private report before external preview solicitation. Before supported production, appoint and test a real backup and independently trigger owner-absence escalation. Keep private evidence restricted and publish redacted outcomes.",
+      "source_revision": "0d63e62ec39d769ff9d0a1267a1811b2f9c508e7",
       "sources": [
+        {
+          "path": "docs/validation/p00-17-design-review.md",
+          "label": "Process-design review and operational limits"
+        },
         {
           "path": "docs/validation/p00-17-timing-review.md",
           "label": "Approved timing scope and unresolved operational gates"
