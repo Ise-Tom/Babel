@@ -48,7 +48,7 @@ production qualification and the 60 unrun client-conformance scenarios remain op
 | P00-14 | [Full dependency-review packet](validation/p00-14.md): signed MIT krb5 1.22.3 candidate, exact Linux AES profile, synthetic signed-PAC and service/time/replay negatives, maintained alternatives, license and FFI boundary | Product Rust adapter, AD PAC/delegation/PKINIT and real-client conformance remain separate unrun gates |
 | P00-15 | [Entire original driver gate](validation/p00-15.md) explicitly accepted by owner | Native AD adapter/domain/key/backup behavior remains later implementation work |
 | P00-16 | [Thirteen byte-pinned references and actual use-notice review](reference-use-review.md); external image use/distribution denied without explicit rights | Resolve concrete patent/program and reference-fixture/image rights; no blanket clearance or legal certification |
-| P00-17 | [Solo intake/custody/absence process and explicit timing proposal](security-response-readiness.md); reporting configuration observed enabled | Original actual receipt/escalation drill and available backup remain unmet; timing change awaits owner agreement, no report sent |
+| P00-17 | [Exact synthetic draft, four-case offline ledger rehearsal and timing decision packet](validation/p00-17.md); read-only private-route observation refreshed 22 November | Original live receipt/escalation drill and real available backup remain unmet; proposed policy amendment awaits owner decision, no report sent |
 
 ## Client coverage
 
