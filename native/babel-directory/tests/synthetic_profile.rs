@@ -124,6 +124,23 @@ fn rejected_rename_leaves_both_entries_and_all_lookup_paths_unchanged() {
         .create(ALICE, "group", &[])
         .unwrap();
 
+    let state = |entry: &babel_directory::Entry| {
+        (
+            entry.identity(),
+            entry.dn().clone(),
+            entry.object_class(),
+            [
+                "cn",
+                "description",
+                "displayName",
+                "dnsHostName",
+                "uidNumber",
+            ]
+            .map(|field| entry.attribute(field).map(String::from)),
+        )
+    };
+    let before = [ALICE, BOB].map(|name| state(directory.lookup_dn(name).unwrap().unwrap()));
+
     assert!(directory.lookup_sid(foreign.sid).is_none());
     assert_eq!(
         directory.rename(foreign.guid, ALICE),
@@ -135,6 +152,10 @@ fn rejected_rename_leaves_both_entries_and_all_lookup_paths_unchanged() {
         ("CN=,DC=babel,DC=test", Error::InvalidDn),
     ] {
         assert_eq!(directory.rename(alice.guid, destination), Err(error));
+        assert_eq!(
+            [ALICE, BOB].map(|name| state(directory.lookup_dn(name).unwrap().unwrap())),
+            before
+        );
         for (name, identity, description) in
             [(ALICE, alice, "Original Value"), (BOB, bob, "Bob's group")]
         {
