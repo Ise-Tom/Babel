@@ -51,11 +51,85 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T00:17:27\+01:00.
+GitHub metadata checked: 2026-11-23T00:25:25\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#45 · Review amended P00-17 intake process-design gate](<https://github.com/Ise-Tom/Babel/pull/45>)
+
+**In review · Pending merge · CI: in\_progress** · Head a6b9cd3
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## Amended Phase 0 criterion review
+    - [Criterion-by-criterion packet](docs/validation/p00-17-design-review.md) maps the effective P00-17 row to reporter, owner and backup roles; custody; acknowledgment; independent owner-absence escalation; failure handling; and the live-drill plan.
+    - [Runbook](docs/security-response-readiness.md) and [draft/ledger](docs/validation/p00-17.md) now distinguish the owner-only live route test before external preview solicitation from the backup exercise under P05-04.
+    - [Fresh offline result](lab/security-intake/evidence/review-f2ddab3-2026-11-23.json) is tied to reviewed main `f2ddab38760d3f830200e20949eda1149e51037d`. The fixture/validator now require an independent simulated escalation trigger and owner-absence observation. Nine negative controls reject fabricated or corrupt records.
+    - Correct stale PR #42 pending-merge wording and update the dashboard without claiming acceptance.
+    
+    ## Limits and decision scope
+    The offline result says `live_intake_and_backup_ready: false`. No report was submitted, no one was contacted, and no actual owner receipt, backup access or escalation occurred. After CI passes, request a separate owner decision only on **P00-17 amended Phase 0 process-design acceptance**. The authorized live private drill remains required before soliciting external preview users; genuine backup coverage and owner-absence escalation remain P05-04 supported-production gates. Leave merge to Ise-Tom.
+
+**Changed files:**
+
+- dashboard/progress.json
+- docs/phase-00-progress.md
+- docs/security-response-readiness.md
+- docs/validation-plan.md
+- docs/validation/p00-17-design-review.md
+- docs/validation/p00-17-timing-review.md
+- docs/validation/p00-17.md
+- lab/security-intake/evidence/offline-rehearsal-result.json
+- lab/security-intake/evidence/review-f2ddab3-2026-11-23.json
+- lab/security-intake/offline-rehearsal.json
+- scripts/check\_ci\_scope.py
+- scripts/check\_security\_intake.py
+- tests/test\_security\_intake.py
+
+#### Proposed W66 · Apply owner-approved P00-17 response timing amendment
+
+**Requirements:** P00-17, P05-04
+
+**How it was done:** Applied the exact approved Phase 0 and SECURITY.md timing text, explicitly bound live intake and real backup evidence to P05-04, and preserved report-content and urgent critical-issue guidance. Recorded the additional preview disclosure/version-policy and public-preview versus external-solicitation timing differences.
+
+**Recorded validation:** Ise-Tom answered Approve to the exact linked policy question in the Phase 0 worker chat on 22 November 2026. The decision record quotes the question and answer. Local documentation, design and dashboard checks pass; hosted CI is tracked in the PR.
+
+**Limits and remaining work:** The policy merged in PR \#42. Its approval did not authorize a live drill, accept P00-17, appoint a backup, activate an SLA or establish production readiness.
+
+**PR-head evidence:** [docs/validation/p00-17-timing-review.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/validation/p00-17-timing-review.md>) · [docs/phases/phase-00.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/phases/phase-00.md>) · [docs/phases/phase-05.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/phases/phase-05.md>) · [SECURITY.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/SECURITY.md>)
+
+
+#### Proposed W69 · Review amended P00-17 intake process against every Phase 0 criterion
+
+**Requirements:** P00-17
+
+**How it was done:** Mapped runbook, exact draft and ledger to every amended P00-17 element; repaired the owner-absence escalation plan by assigning an independent trigger. Rehearsed four synthetic cases with explicit verifier/absence events and retained the result tied to reviewed main revision f2ddab3.
+
+**Recorded validation:** The offline validator returns the expected complete-mock and three incomplete classifications while keeping live intake/backup false. Nine negative subtests reject fabricated or corrupt evidence. Local documentation, design, scope, format, lint, type and static-security checks pass; hosted CI is tracked in the PR.
+
+**Limits and remaining work:** This is Phase 0 process-design evidence only. No report, owner notification/receipt/acknowledgment, human backup access or owner-absence escalation occurred. Separate authorization is required for any live report or contact; preview and production gates remain open.
+
+**PR-head evidence:** [docs/validation/p00-17-design-review.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/validation/p00-17-design-review.md>) · [lab/security-intake/evidence/review-f2ddab3-2026-11-23.json](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/lab/security-intake/evidence/review-f2ddab3-2026-11-23.json>) · [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/security-response-readiness.md>)
+
+#### Proposed problem update: I27 · Actual private receipt/escalation, backup response and production incident exercises remain unqualified
+
+**Proposed status:** open
+
+The amended P00-17 process design and offline rehearsal are prepared for owner review. The reporter-side private form is accessible, but actual owner notification/receipt/acknowledgment, independent owner-absence escalation and a genuinely available backup remain unverified. This does not block process-design review; it blocks external preview solicitation and supported production at their separate checkpoints.
+
+**Resolution:** Still open
+
+**Next action:** Request separate authorization for a live private report before external preview solicitation. Before supported production, appoint and test a real backup and independently trigger owner-absence escalation. Keep private evidence restricted and publish redacted outcomes.
+
+**Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
+
+[docs/validation/p00-17-design-review.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/validation/p00-17-design-review.md>) · [docs/validation/p00-17-timing-review.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/validation/p00-17-timing-review.md>) · [docs/validation/p00-17.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/validation/p00-17.md>) · [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/security-response-readiness.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/phase-00-security-and-dependencies.md>)
+
+
+</details>
 
 
 ## Phase 00
@@ -324,6 +398,8 @@ Ise-Tom approved the exact P00-17 timing amendment on 22 November 2026 for PR re
 **Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/f2ddab38760d3f830200e20949eda1149e51037d/docs/requirements.md>); [SEC-09: Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets](<https://github.com/Ise-Tom/Babel/blob/f2ddab38760d3f830200e20949eda1149e51037d/docs/requirements.md>)
 
 **Acceptance evidence required:** A reviewed private-intake runbook and benign offline recordkeeping rehearsal identify reporter/owner/backup roles, custody, acknowledgment, escalation, failure states and a live-drill plan. Phase 0 may accept this process-design evidence only; enabled reporting or simulated receipt is not live receipt or backup coverage. The live private drill and real available backup remain mandatory before supported production under P05-04 and cannot be waived by an unsupported preview.
+
+**Pending PR proposals:** [\#45: Review amended P00-17 intake process-design gate](<https://github.com/Ise-Tom/Babel/pull/45>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W56: Define solo vulnerability-response process and make timing proposal reviewable; W63: Prepare and rehearse the P00-17 private intake drill offline; W65: Ask for one actionable owner decision in the worker chat; W66: Apply owner-approved P00-17 response timing amendment. See the [implementation journal](#implementation-journal).
 
@@ -1284,6 +1360,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/f2ddab38760d3f830200e20949eda1149e51037d/docs/requirements.md>); [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/f2ddab38760d3f830200e20949eda1149e51037d/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/f2ddab38760d3f830200e20949eda1149e51037d/docs/requirements.md>); [UX-01: Accessible web administration and documented automation API/CLI](<https://github.com/Ise-Tom/Babel/blob/f2ddab38760d3f830200e20949eda1149e51037d/docs/requirements.md>)
 
 **Acceptance evidence required:** Every Phase 0–4 baseline gate has current passing evidence; skipped client/capacity/security acceptance does not count as a pass. Before supported production, retain the private report ID and independently verified owner notification, receipt, acknowledgment and closure from a benign live drill, plus two genuinely available contacts with independently verified private access, receipt and owner-absence escalation. A proposed contact or offline rehearsal cannot pass this gate.
+
+**Pending PR proposals:** [\#45: Review amended P00-17 intake process-design gate](<https://github.com/Ise-Tom/Babel/pull/45>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W66: Apply owner-approved P00-17 response timing amendment. See the [implementation journal](#implementation-journal).
 
