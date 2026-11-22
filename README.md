@@ -51,13 +51,13 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T10:55:07\+01:00.
+GitHub metadata checked: 2026-11-22T10:58:47\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#39 · Prepare P00-17 private intake drill and response timing decision](<https://github.com/Ise-Tom/Babel/pull/39>)
 
-**In review · Pending merge · CI: in\_progress** · Head f21670d
+**In review · Pending merge · CI: success** · Head f21670d
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
