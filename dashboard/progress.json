@@ -417,8 +417,8 @@
       "note": "Exact Windows/Linux/macOS profiles cannot qualify without the selected licensed hosts/images and actual patched OS/build/package/architecture identifiers. Profile templates are not pinned acquisitions; no image was purchased, downloaded or provisioned. This is an external lab prerequisite, not passing client evidence."
     },
     "P00-16": {
-      "status": "in_progress",
-      "note": "Thirteen actual public document editions now have publisher URLs, byte hashes, notice identity and reference-only dispositions; 58 state-design headings were verified against readable editions. Corrected the invalid DFS-R reference to MS-FRS2 and added MS-DTYP. External image/fixture uses remain denied without explicit rights. Concrete patent/program/image clearance remains unresolved; this is not blanket legal approval."
+      "status": "blocked",
+      "note": "Reviewed the uses of all 21 pinned editions, mapped observed publisher programs, and checked the actual source archive and 15 project-owned fixtures. Exact implementation patent/program scope, licensed image/host terms and external fixture/capture rights remain unresolved. The prerelease guard excludes vendor assets."
     },
     "P00-17": {
       "status": "in_progress",
@@ -2961,6 +2961,36 @@
       "problems": [
         "I27"
       ]
+    },
+    {
+      "id": "W67",
+      "title": "Inventory reference rights and verify the source archive",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-16"
+      ],
+      "how": "Bound all 21 pinned editions to use policies and publisher references, recorded actual Microsoft program-index matches, and separated original fixtures and the pinned CI database pull from unresolved external assets. Reused CI's source path scope and the fixture rights check in the actual prerelease packager.",
+      "verification": "Local source archive contained 205 regular files and 15 reviewed project assets; its checksum verified. Seven project-owned negative controls exercise unknown paths, disguised documents, publisher digest matches, unregistered fixtures, unapproved purposes, changed bytes and false external authorization. Required CI retains a source/registry/archive-bound audit.",
+      "limitations": "The package guard and inventory cover the current source prerelease. Full P00-16 stays blocked on implementation rights, exact licensed hosts/images and third-party fixtures/captures before their proposed uses. Human review still establishes authorship and permissions.",
+      "source_revision": "4cf09ea2a2da027af5565820696ecd610f28ea7b",
+      "sources": [
+        {
+          "path": "docs/validation/p00-16.md",
+          "label": "P00-16 evidence and remaining rights"
+        },
+        {
+          "path": "lab/specification-pins.json",
+          "label": "Versioned reference and fixture inventory"
+        },
+        {
+          "path": "scripts/package_source.py",
+          "label": "Source archive rights check"
+        }
+      ],
+      "problems": [
+        "I28"
+      ]
     }
   ],
   "problems": [
@@ -3601,7 +3631,7 @@
       ],
       "detail": "Thirteen actual reference editions and notices are now pinned, including corrected MS-FRS2 and added MS-DTYP. Concrete Microsoft patent/program coverage and licensed Windows/macOS image/fixture rights remain unresolved; citations do not grant them.",
       "resolution": "",
-      "next_action": "Complete actual use-rights review before acquiring or distributing affected fixtures. Resolve the remaining operation variants and scope decisions. Keep unprovided images denied and product conformance unrun pending real evidence.",
+      "next_action": "Resolve exact implementation patent/program scope and obtain terms for the selected image, fixture or capture before its use. Keep named protocol variants open pending client evidence.",
       "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
       "sources": [
         {
@@ -4212,5 +4242,5 @@
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "12 of 17 accepted. Protocol mapping, reference-use rights and security response remain in progress. Lab and client profiles are blocked."
+  "focus_summary": "12 of 17 accepted. Protocol mapping and security response remain in progress. Lab, client profiles and reference-use rights are blocked."
 }

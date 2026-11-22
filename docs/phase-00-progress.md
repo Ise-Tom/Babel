@@ -24,8 +24,8 @@ in the pinned packets.
 | P00-13 | [Reviewed packet](https://github.com/Ise-Tom/Babel/blob/292291ec4d79a03f7355e8d3646c9e850b6c0489/docs/validation/p00-13.md) | [PR #31](https://github.com/Ise-Tom/Babel/pull/31) | [Passed](https://github.com/Ise-Tom/Babel/actions/runs/44543165955) |
 | P00-14 | [Reviewed packet](https://github.com/Ise-Tom/Babel/blob/cf6681c22bc42707de6efc5b5c8db59eb70504ea/docs/validation/p00-14.md) | [PR #33](https://github.com/Ise-Tom/Babel/pull/33) | [Passed](https://github.com/Ise-Tom/Babel/actions/runs/44952652411) |
 
-Phase 0 now has **12 of 17 requirements accepted**. P00-01, P00-16 and P00-17
-remain in progress, and P00-05 and P00-12 remain blocked. Whole-phase acceptance,
+Phase 0 now has **12 of 17 requirements accepted**. P00-01 and P00-17 remain
+in progress. P00-05, P00-12 and P00-16 are blocked. Whole-phase acceptance,
 production qualification and the 60 unrun client-conformance scenarios remain open.
 
 ## Requirement history and remaining evidence
@@ -47,7 +47,7 @@ production qualification and the 60 unrun client-conformance scenarios remain op
 | P00-13 | [Full TLS/provider/channel review packet](validation/p00-13.md): exact stack, custody decision/limits, CRL rejection, in-process certificate replacement, independent exporter comparison and entropy/clock/key/signer faults | Native LDAP/EPA, general revocation freshness and production key/service/client/capacity gates remain separate |
 | P00-14 | [Full dependency-review packet](validation/p00-14.md): signed MIT krb5 1.22.3 candidate, exact Linux AES profile, synthetic signed-PAC and service/time/replay negatives, maintained alternatives, license and FFI boundary | Product Rust adapter, AD PAC/delegation/PKINIT and real-client conformance remain separate unrun gates |
 | P00-15 | [Entire original driver gate](validation/p00-15.md) explicitly accepted by owner | Native AD adapter/domain/key/backup behavior remains later implementation work |
-| P00-16 | [Thirteen byte-pinned references and actual use-notice review](reference-use-review.md); external image use/distribution denied without explicit rights | Resolve concrete patent/program and reference-fixture/image rights; no blanket clearance or legal certification |
+| P00-16 | [21 pinned reference uses, publisher program matches and inspected source archive](validation/p00-16.md). The release packager tests exact fixture permissions and bytes. | Exact implementation patent/program scope, licensed image and host terms, and asset-specific external fixture/capture rights |
 | P00-17 | [Exact synthetic draft, four-case offline ledger rehearsal and approved timing decision](validation/p00-17.md); read-only private-route observation refreshed 22 November | Timing amendment awaits PR merge; P00-17 is not accepted, and the live receipt/escalation drill and real available backup remain unrun, no report sent |
 
 ## Client coverage
