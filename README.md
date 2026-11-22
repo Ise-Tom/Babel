@@ -51,11 +51,52 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T10:21:46\+01:00.
+GitHub metadata checked: 2026-11-22T10:27:10\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#38 · Require descriptive development branches in Babel](<https://github.com/Ise-Tom/Babel/pull/38>)
+
+**In review · Pending merge · CI: in\_progress** · Head 0910b30
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## Summary
+    
+    - Put the development naming rule in root `AGENTS.md` and link it from `CONTRIBUTING.md`. Each branch identifies its scope and specific work, with examples for both worker chats.
+    - Check human development branches from this repository targeting `main` in the repository job. The active main rules already require the aggregate `CI gate`. Fork and Dependabot runs keep their normal behavior.
+    - Track the scoped governance improvement in the dashboard. This PR uses `dev/repo-worker-branch-names`.
+    
+    ## Verification
+    
+    Executed the exact workflow branch check against 11 accepted and rejected names. Actionlint, offline Zizmor, Ruff, mypy, repository scope, Markdown and dashboard checks passed. Verified the active main ruleset requires `CI gate` for up-to-date PRs.
+
+**Changed files:**
+
+- .github/workflows/ci.yml
+- AGENTS.md
+- CONTRIBUTING.md
+- dashboard/progress.json
+- docs/ci-cd.md
+- scripts/check\_ci\_scope.py
+
+#### Proposed W62 · Require descriptive development branch names
+
+**Requirements:** P00-10, P10-09
+
+**How it was done:** Added a standing repository instruction to use and reuse descriptive dev branches. The repository CI job checks the branch name on same-repository PRs into main and feeds the existing required CI gate.
+
+**Recorded validation:** Executed the workflow&\#x27;s branch check against eleven accepted and rejected names. Actionlint, offline Zizmor, repository scope and documentation checks pass. GitHub&\#x27;s active main rules require CI gate.
+
+**Limits and remaining work:** The check validates branch format during PR CI. The task and branch description supply the actual work scope. Forks and Dependabot branch names are outside this convention.
+
+**PR-head evidence:** [AGENTS.md](<https://github.com/Ise-Tom/Babel/blob/0910b308a00f95f677f82d5342f487b290d90999/AGENTS.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/0910b308a00f95f677f82d5342f487b290d90999/.github/workflows/ci.yml>)
+
+
+</details>
 
 
 ## Phase 00
@@ -220,6 +261,8 @@ Owner accepted the pinned Phase 0 scope on 22 November 2026. The full Phase 0 up
 **Acceptance review:** Project owner \(explicit approval in the Babel management chat\), 2026-11-22. The project owner explicitly approved P00-10 on 22 November 2026 as part of the Phase 0 batch decision, for the exact scope and limits in the pinned packet. Full original P00-10 Phase 0 governance design gate, including review/recovery examples and owner/expiry/production-impact exception policy; not runtime recovery. Packet: https://github.com/Ise-Tom/Babel/blob/380d564183b9217acbde16476658fe003cf72338/docs/validation/p00-10.md . Delivery: https://github.com/Ise-Tom/Babel/pull/28 . Passing CI: https://github.com/Ise-Tom/Babel/actions/runs/44351294880 .
 
 **Validation packet:** Full original P00-10 Phase 0 governance design gate, including review/recovery examples and owner/expiry/production-impact exception policy; not runtime recovery. [Merged PR \#28](<https://github.com/Ise-Tom/Babel/pull/28>) · [Review packet](<https://github.com/Ise-Tom/Babel/blob/380d564183b9217acbde16476658fe003cf72338/docs/validation/p00-10.md>)
+
+**Pending PR proposals:** [\#38: Require descriptive development branches in Babel](<https://github.com/Ise-Tom/Babel/pull/38>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI; W33: Enforce versioned conformance evidence integrity in CI; W34: Specify stable state and worked replication/recovery invariants; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence; W45: Make phase activity and recent work visible separately from acceptance; W48: Complete recovery/scope governance with enforced design-contract checks; W60: Improve dashboard refresh triggers and manual Pages retries; W61: Group owner decisions with merged PRs and pinned review packets. See the [implementation journal](#implementation-journal).
 
@@ -2258,6 +2301,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [K-06: Hardened release governance and maintainer continuity](<https://github.com/Ise-Tom/Babel/blob/9bf2856eeeed67b12fb8578184bd86052282545f/docs/security-roadmap.md>)
 
 **Acceptance evidence required:** Actual required-check/review/ref/environment protections are verified where supported; unavailable private-repo features remain explicit release risks.
+
+**Pending PR proposals:** [\#38: Require descriptive development branches in Babel](<https://github.com/Ise-Tom/Babel/pull/38>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI. See the [implementation journal](#implementation-journal).
 
