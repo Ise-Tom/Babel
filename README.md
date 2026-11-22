@@ -51,7 +51,7 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T00:50:07\+01:00.
+GitHub metadata checked: 2026-11-23T00:50:31\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -71,7 +71,7 @@ GitHub metadata checked: 2026-11-23T00:50:07\+01:00.
     The pinned packet maps reporter, owner and backup roles; custody; acknowledgment; independent owner-absence escalation; failure handling; and the live-drill plan. The [runbook](docs/security-response-readiness.md), [exact draft/ledger](docs/validation/p00-17.md), [offline result](lab/security-intake/evidence/offline-rehearsal-result.json), and nine negative controls support that design scope. The fixture/result are bound to reviewed main `f2ddab38760d3f830200e20949eda1149e51037d`; canonical asset hashes are updated in [the rights inventory](lab/specification-pins.json).
     
     ## Limits
-    No report was submitted, no person was contacted, and no actual owner receipt, backup access or escalation occurred. The offline result says `live_intake_and_backup_ready: false`. A separately authorized live owner-receipt drill is due before soliciting external preview users. A real backup and verified owner-absence escalation remain P05-04 production gates. This decision neither authorizes those actions nor accepts P05-04, production or all of Phase 0. The decision commit’s CI is in progress. Merge remains with Ise-Tom.
+    No report was submitted, no person was contacted, and no actual owner receipt, backup access or escalation occurred. The offline result says `live_intake_and_backup_ready: false`. A separately authorized live owner-receipt drill is due before soliciting external preview users. A real backup and verified owner-absence escalation remain P05-04 production gates. This decision neither authorizes those actions nor accepts P05-04, production or all of Phase 0. The combined branch at `bf7ec3c1bb2d81de033829424466162cfdeac64f` passed [CI run #119](https://github.com/Ise-Tom/Babel/actions/runs/45085026022) after merging current main; the approved packet revision remains in branch history. Merge remains with Ise-Tom.
 
 **Changed files:**
 
