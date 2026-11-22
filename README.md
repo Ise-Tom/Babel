@@ -51,32 +51,33 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T00:37:03\+01:00.
+GitHub metadata checked: 2026-11-23T00:46:43\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#45 · Review amended P00-17 intake process-design gate](<https://github.com/Ise-Tom/Babel/pull/45>)
 
-**In review · Pending merge · CI: success** · Head a5c84f2
+**In review · Pending merge · CI: in\_progress** · Head bf7ec3c
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
 
 **PR description (untrusted text):**
 
-    ## Amended Phase 0 criterion review
-    - [Criterion-by-criterion packet](docs/validation/p00-17-design-review.md) maps the effective P00-17 row to reporter, owner and backup roles; custody; acknowledgment; independent owner-absence escalation; failure handling; and the live-drill plan.
-    - [Runbook](docs/security-response-readiness.md) and [draft/ledger](docs/validation/p00-17.md) distinguish the owner-only live route test before external preview solicitation from the backup exercise under P05-04.
-    - [Fresh retained offline result](lab/security-intake/evidence/offline-rehearsal-result.json) carries reviewed main `f2ddab38760d3f830200e20949eda1149e51037d`. The fixture/validator require an independent simulated trigger and owner-absence observation. Nine negative controls reject fabricated or corrupt records. Canonical Git blob hashes are pinned in the [asset-rights inventory](lab/specification-pins.json).
-    - Correct stale PR #42 pending-merge wording and update the dashboard without claiming acceptance.
+    ## Owner decision recorded — P00-17 process design only
+    On 23 November 2026, Ise-Tom answered **Approve** in this Phase 0 worker chat to the exact question quoted in the [decision record](docs/validation/p00-17-design-review.md#owner-acceptance-of-the-amended-phase-0-scope). The question pinned the [reviewed packet at `a5c84f2`](https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/validation/p00-17-design-review.md) and [passing CI run #117](https://github.com/Ise-Tom/Babel/actions/runs/45083455765). Approval accepts only the amended Phase 0 P00-17 process-design criterion. The dashboard records this exact scope and source.
     
-    ## Limits and decision scope
-    The offline result says `live_intake_and_backup_ready: false`. No report was submitted, no one was contacted, and no actual owner receipt, backup access or escalation occurred. After CI passes, request a separate owner decision only on **P00-17 amended Phase 0 process-design acceptance**. The authorized live private drill remains required before soliciting external preview users; genuine backup coverage and owner-absence escalation remain P05-04 supported-production gates. Leave merge to Ise-Tom.
+    ## Criterion evidence
+    The pinned packet maps reporter, owner and backup roles; custody; acknowledgment; independent owner-absence escalation; failure handling; and the live-drill plan. The [runbook](docs/security-response-readiness.md), [exact draft/ledger](docs/validation/p00-17.md), [offline result](lab/security-intake/evidence/offline-rehearsal-result.json), and nine negative controls support that design scope. The fixture/result are bound to reviewed main `f2ddab38760d3f830200e20949eda1149e51037d`; canonical asset hashes are updated in [the rights inventory](lab/specification-pins.json).
+    
+    ## Limits
+    No report was submitted, no person was contacted, and no actual owner receipt, backup access or escalation occurred. The offline result says `live_intake_and_backup_ready: false`. A separately authorized live owner-receipt drill is due before soliciting external preview users. A real backup and verified owner-absence escalation remain P05-04 production gates. This decision neither authorizes those actions nor accepts P05-04, production or all of Phase 0. The decision commit’s CI is in progress. Merge remains with Ise-Tom.
 
 **Changed files:**
 
 - dashboard/progress.json
 - docs/phase-00-progress.md
+- docs/phase-00-security-and-dependencies.md
 - docs/security-response-readiness.md
 - docs/validation-plan.md
 - docs/validation/p00-17-design-review.md
@@ -98,40 +99,26 @@ GitHub metadata checked: 2026-11-23T00:37:03\+01:00.
 
 **Limits and remaining work:** The policy merged in PR \#42. Its approval did not authorize a live drill, accept P00-17, appoint a backup, activate an SLA or establish production readiness.
 
-**PR-head evidence:** [docs/validation/p00-17-timing-review.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/validation/p00-17-timing-review.md>) · [docs/phases/phase-00.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/phases/phase-00.md>) · [docs/phases/phase-05.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/phases/phase-05.md>) · [SECURITY.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/SECURITY.md>)
+**PR-head evidence:** [docs/validation/p00-17-timing-review.md](<https://github.com/Ise-Tom/Babel/blob/bf7ec3c1bb2d81de033829424466162cfdeac64f/docs/validation/p00-17-timing-review.md>) · [docs/phases/phase-00.md](<https://github.com/Ise-Tom/Babel/blob/bf7ec3c1bb2d81de033829424466162cfdeac64f/docs/phases/phase-00.md>) · [docs/phases/phase-05.md](<https://github.com/Ise-Tom/Babel/blob/bf7ec3c1bb2d81de033829424466162cfdeac64f/docs/phases/phase-05.md>) · [SECURITY.md](<https://github.com/Ise-Tom/Babel/blob/bf7ec3c1bb2d81de033829424466162cfdeac64f/SECURITY.md>)
 
 
-#### Proposed W69 · Review amended P00-17 intake process against every Phase 0 criterion
+#### Proposed W70 · Review amended P00-17 intake process against every Phase 0 criterion
 
 **Requirements:** P00-17
 
 **How it was done:** Mapped runbook, exact draft and ledger to every amended P00-17 element; repaired the owner-absence escalation plan by assigning an independent trigger. Rehearsed four synthetic cases with explicit verifier/absence events and retained the result tied to reviewed main revision f2ddab3.
 
-**Recorded validation:** The offline validator returns the expected complete-mock and three incomplete classifications while keeping live intake/backup false. Nine negative subtests reject fabricated or corrupt evidence. Local documentation, design, scope, format, lint, type and static-security checks pass; hosted CI is tracked in the PR.
+**Recorded validation:** The offline validator returns the expected complete-mock and three incomplete classifications while keeping live intake/backup false. Nine negative subtests reject fabricated or corrupt evidence. Local documentation, design, scope, format, lint, type and static-security checks pass. Hosted CI run 45083455765 passed after the unrelated PostgreSQL concurrency job succeeded on retry.
 
 **Limits and remaining work:** This is Phase 0 process-design evidence only. No report, owner notification/receipt/acknowledgment, human backup access or owner-absence escalation occurred. Separate authorization is required for any live report or contact; preview and production gates remain open.
 
-**PR-head evidence:** [docs/validation/p00-17-design-review.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/validation/p00-17-design-review.md>) · [lab/security-intake/evidence/offline-rehearsal-result.json](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/lab/security-intake/evidence/offline-rehearsal-result.json>) · [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/security-response-readiness.md>)
-
-#### Proposed problem update: I04 · Licensed Windows/Mac lab hosts and real cross-platform client evidence are missing
-
-**Proposed status:** open
-
-The existing six-VM isolated Windows reference definition is prepared but no host/images have been provisioned. The initial scope now also includes Linux SSSD/MIT Kerberos and macOS Apple Silicon/Intel; Mac hardware/image rights and exact client/package builds are not allocated or qualified.
-
-**Resolution:** Still open
-
-**Next action:** Select licensed isolated test infrastructure and exact image/package manifests; extend provisioning for Linux/macOS clients, then perform two clean deployment/discovery/cleanup runs with actual login/password/SSO evidence. No purchase or automatic VM/image download is authorized.
-
-**Provenance:** Explicitly outstanding; no Windows test is marked passed.
-
-[lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/phase-00-progress.md>)
+**PR-head evidence:** [docs/validation/p00-17-design-review.md](<https://github.com/Ise-Tom/Babel/blob/bf7ec3c1bb2d81de033829424466162cfdeac64f/docs/validation/p00-17-design-review.md>) · [lab/security-intake/evidence/offline-rehearsal-result.json](<https://github.com/Ise-Tom/Babel/blob/bf7ec3c1bb2d81de033829424466162cfdeac64f/lab/security-intake/evidence/offline-rehearsal-result.json>) · [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/bf7ec3c1bb2d81de033829424466162cfdeac64f/docs/security-response-readiness.md>)
 
 #### Proposed problem update: I27 · Actual private receipt/escalation, backup response and production incident exercises remain unqualified
 
 **Proposed status:** open
 
-The amended P00-17 process design and offline rehearsal are prepared for owner review. The reporter-side private form is accessible, but actual owner notification/receipt/acknowledgment, independent owner-absence escalation and a genuinely available backup remain unverified. This does not block process-design review; it blocks external preview solicitation and supported production at their separate checkpoints.
+The amended P00-17 process design and offline rehearsal were accepted by Ise-Tom on 23 November 2026. The reporter-side private form is accessible, but actual owner notification/receipt/acknowledgment, independent owner-absence escalation and a genuinely available backup remain unverified. These operational gaps block external preview solicitation and supported production at their separate checkpoints.
 
 **Resolution:** Still open
 
@@ -139,7 +126,7 @@ The amended P00-17 process design and offline rehearsal are prepared for owner r
 
 **Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
 
-[docs/validation/p00-17-design-review.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/validation/p00-17-design-review.md>) · [docs/validation/p00-17-timing-review.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/validation/p00-17-timing-review.md>) · [docs/validation/p00-17.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/validation/p00-17.md>) · [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/security-response-readiness.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/phase-00-security-and-dependencies.md>)
+[docs/validation/p00-17-design-review.md](<https://github.com/Ise-Tom/Babel/blob/bf7ec3c1bb2d81de033829424466162cfdeac64f/docs/validation/p00-17-design-review.md>) · [docs/validation/p00-17-timing-review.md](<https://github.com/Ise-Tom/Babel/blob/bf7ec3c1bb2d81de033829424466162cfdeac64f/docs/validation/p00-17-timing-review.md>) · [docs/validation/p00-17.md](<https://github.com/Ise-Tom/Babel/blob/bf7ec3c1bb2d81de033829424466162cfdeac64f/docs/validation/p00-17.md>) · [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/bf7ec3c1bb2d81de033829424466162cfdeac64f/docs/security-response-readiness.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/bf7ec3c1bb2d81de033829424466162cfdeac64f/docs/phase-00-security-and-dependencies.md>)
 
 
 </details>
@@ -235,8 +222,6 @@ The read-only six-guest Hyper-V preflight ran. The available Windows host falls 
 **Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/27878840af4601bb3e69a51a6f8f2ae09baf2a66/docs/requirements.md>); [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/27878840af4601bb3e69a51a6f8f2ae09baf2a66/docs/requirements.md>)
 
 **Acceptance evidence required:** Two fresh deployments run discovery probes, isolate egress, clean up resources and publish exact image/build identifiers.
-
-**Pending PR proposals:** [\#45: Review amended P00-17 intake process-design gate](<https://github.com/Ise-Tom/Babel/pull/45>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W26: Prepare an isolated Windows reference lab definition without provisioning; W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients; W69: Inventory reference lab capacity, candidate media and use rights. See the [implementation journal](#implementation-journal).
 
@@ -341,8 +326,6 @@ The host build, candidate Windows patch baselines and official Ubuntu/Debian ins
 **Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/27878840af4601bb3e69a51a6f8f2ae09baf2a66/docs/requirements.md>); [AD-03: Kerberos AS/TGS, service principals, PAC validation, time synchronization, cross-service SSO, constrained delegation, and trust authentication](<https://github.com/Ise-Tom/Babel/blob/27878840af4601bb3e69a51a6f8f2ae09baf2a66/docs/requirements.md>); [AD-04: LDAPv3/LDAPS, AD schema and controls, paging, referrals, ACL filtering, and global catalog](<https://github.com/Ise-Tom/Babel/blob/27878840af4601bb3e69a51a6f8f2ae09baf2a66/docs/requirements.md>); [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/27878840af4601bb3e69a51a6f8f2ae09baf2a66/docs/requirements.md>)
 
 **Acceptance evidence required:** Edition, architecture, OS/build, package and image identifiers are explicit; missing profiles cannot qualify compatibility.
-
-**Pending PR proposals:** [\#45: Review amended P00-17 intake process-design gate](<https://github.com/Ise-Tom/Babel/pull/45>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W69: Inventory reference lab capacity, candidate media and use rights. See the [implementation journal](#implementation-journal).
 
@@ -515,8 +498,6 @@ Windows lab, DNS/authentication and membership implementation are missing.
 **Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/27878840af4601bb3e69a51a6f8f2ae09baf2a66/docs/requirements.md>); [AD-08: Required Netlogon, SAMR, LSA, SMB and DCE/RPC behavior for domain membership and administration](<https://github.com/Ise-Tom/Babel/blob/27878840af4601bb3e69a51a6f8f2ae09baf2a66/docs/requirements.md>)
 
 **Acceptance evidence required:** A supported Windows client joins, logs in and rotates its machine password; unsigned/unauthorized membership requests fail.
-
-**Pending PR proposals:** [\#45: Review amended P00-17 intake process-design gate](<https://github.com/Ise-Tom/Babel/pull/45>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W26: Prepare an isolated Windows reference lab definition without provisioning. See the [implementation journal](#implementation-journal).
 
@@ -773,8 +754,6 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/27878840af4601bb3e69a51a6f8f2ae09baf2a66/docs/requirements.md>); [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/27878840af4601bb3e69a51a6f8f2ae09baf2a66/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/27878840af4601bb3e69a51a6f8f2ae09baf2a66/docs/requirements.md>)
 
 **Acceptance evidence required:** Every AD contract row has real-client evidence with exact builds/spec revisions and no unexplained failure, skip or unrun acceptance case.
-
-**Pending PR proposals:** [\#45: Review amended P00-17 intake process-design gate](<https://github.com/Ise-Tom/Babel/pull/45>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
