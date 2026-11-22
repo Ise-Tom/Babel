@@ -54,7 +54,18 @@ output (Windows working-tree line endings may differ):
 
 The validator checks the structure and expected classifications of synthetic
 records. It cannot verify GitHub notifications, actual maintainer access,
-human backup availability, or escalation during absence. CI must pass before
-an owner decision on this packet. Approval would accept only P00-17's amended
-Phase 0 **process-design** scope; it would not authorize the live drill or
-accept the P05-04 production gate.
+human backup availability, or escalation during absence.
+
+## Owner acceptance of the amended Phase 0 scope
+
+On 23 November 2026, Ise-Tom answered **Approve** in the Phase 0 worker chat
+to this exact question:
+
+> Approve P00-17’s amended Phase 0 process-design gate using the [pinned criterion packet](https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/validation/p00-17-design-review.md) and [passing CI](https://github.com/Ise-Tom/Babel/actions/runs/45083455765)? Approval marks only this design scope accepted; it neither authorizes a report nor satisfies the live preview drill or P05-04 backup gate.
+
+The reviewed CI run completed successfully after a retry of an unrelated Rust
+PostgreSQL concurrency test; the intake, repository and Python checks passed
+on the initial attempt. This decision accepts **only** the amended P00-17
+Phase 0 process-design scope mapped above. It does not authorize submitting a
+report or contacting anyone, prove live owner receipt, appoint a backup, accept
+P05-04, or approve supported production or whole-phase readiness.

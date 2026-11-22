@@ -1,9 +1,9 @@
 # Security response readiness for solo development
 
-Status: **timing amendment merged in PR #42; P00-17 acceptance is separate**.
+Status: **timing amendment merged in PR #42; amended P00-17 Phase 0 process design accepted**.
 The [P00-17 drill, offline rehearsal and exact timing decision packet](validation/p00-17.md)
-is prepared for review. Its simulated records and available report form do not
-meet the live-drill or backup requirement.
+supports the accepted Phase 0 process design. Its simulated records and
+available report form do not meet the live-drill or backup requirement.
 The [amended criterion review](validation/p00-17-design-review.md) maps each
 Phase 0 process obligation to the runbook and fresh offline evidence.
 Ise-Tom is the current development owner. No backup responder, verified private
@@ -27,7 +27,7 @@ available second person is necessary. An assistant is not that person.
 | Before soliciting external preview users | State unsupported/sole-responder status; run and privately close an authorized live report with independently verified owner notification, receipt and acknowledgment | A form or simulated event cannot pass; a failed route blocks solicitation |
 | Before supported production | Two genuinely available contacts, each with verified private access and receipt; backup demonstrates owner-absence escalation; live drill, assessment and recovery evidence remain current | An untested nominee or owner-dependent escalation cannot pass P05-04 |
 
-Ise-Tom approved the timing decision in the [decision record](validation/p00-17-timing-review.md#owner-decision-record), and [PR #42](https://github.com/Ise-Tom/Babel/pull/42) merged it. P00-17 is still not accepted; policy approval did not turn enabled reporting into passing evidence or authorize a synthetic report.
+Ise-Tom approved the timing decision in the [decision record](validation/p00-17-timing-review.md#owner-decision-record), and [PR #42](https://github.com/Ise-Tom/Babel/pull/42) merged it. Ise-Tom separately accepted the amended P00-17 [process-design scope](validation/p00-17-design-review.md#owner-acceptance-of-the-amended-phase-0-scope) on 23 November 2026. Neither decision turns enabled reporting into live receipt or authorizes a synthetic report.
 
 | Role | Process responsibility | Current evidence |
 | --- | --- | --- |

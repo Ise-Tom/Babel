@@ -88,8 +88,10 @@ assets/misuse/denial/fault/residual-risk and implementation-gate bindings. See t
 editions and the remaining P00-16 rights gaps are recorded in the
 [reference-use review](reference-use-review.md); no image/patent grant is inferred.
 
-The [solo response-readiness proposal](security-response-readiness.md) documents
-intake, custody, owner absence and a future drill record. It proposes moving actual
-backup coverage/live escalation evidence to a mandatory supported-production gate.
-The original P00-17 and pre-preview policy remain in force pending owner agreement;
-no private report has been authorized or sent, and no operational gate is accepted.
+The [solo response-readiness runbook](security-response-readiness.md) documents
+intake, custody, owner absence and the live-drill plan. The merged timing
+amendment and explicit owner decision accept only P00-17's Phase 0 process
+design. A verified live owner-receipt drill is required before soliciting
+external preview users, and real backup/owner-absence escalation remains a
+P05-04 supported-production gate. No private report or contact was authorized;
+neither operational gate has passed.

@@ -2,7 +2,7 @@
 
 Status: **owner approved on 22 November 2026; merged in PR #42**.
 The exact Phase 0 and `SECURITY.md` replacement wording comes from the
-[P00-17 proposal](p00-17.md#proposed-timing-decision--not-effective).
+[P00-17 timing record](p00-17.md).
 The effective [P05-04](../phases/phase-05.md) row makes the deferred operational
 gate explicit. This decision did not authorize a report, appoint a backup, or
 accept either requirement.

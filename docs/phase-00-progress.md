@@ -24,8 +24,14 @@ in the pinned packets.
 | P00-13 | [Reviewed packet](https://github.com/Ise-Tom/Babel/blob/292291ec4d79a03f7355e8d3646c9e850b6c0489/docs/validation/p00-13.md) | [PR #31](https://github.com/Ise-Tom/Babel/pull/31) | [Passed](https://github.com/Ise-Tom/Babel/actions/runs/44543165955) |
 | P00-14 | [Reviewed packet](https://github.com/Ise-Tom/Babel/blob/cf6681c22bc42707de6efc5b5c8db59eb70504ea/docs/validation/p00-14.md) | [PR #33](https://github.com/Ise-Tom/Babel/pull/33) | [Passed](https://github.com/Ise-Tom/Babel/actions/runs/44952652411) |
 
-Phase 0 now has **12 of 17 requirements accepted**. P00-01 and P00-17 remain
-in progress. P00-05, P00-12 and P00-16 are blocked. Whole-phase acceptance,
+On 23 November 2026, Ise-Tom separately approved **only** P00-17's amended
+Phase 0 process-design scope in this worker chat. The [pinned criterion packet](https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/validation/p00-17-design-review.md),
+[PR #45](https://github.com/Ise-Tom/Babel/pull/45) and [passing CI](https://github.com/Ise-Tom/Babel/actions/runs/45083455765)
+record its scope and evidence. The live owner-receipt drill and real backup
+were expressly excluded from this acceptance.
+
+Phase 0 now has **13 of 17 requirements accepted**. P00-01 remains in progress.
+P00-05, P00-12 and P00-16 are blocked. Whole-phase acceptance,
 production qualification and the 60 unrun client-conformance scenarios remain open.
 
 ## Requirement history and remaining evidence
@@ -38,7 +44,7 @@ production qualification and the 60 unrun client-conformance scenarios remain op
 | P00-04 | [Full toolchain/parser packet](validation/p00-04.md): declared Linux profiles, exact compiler/ELF facts, release overflow checks, locked debug/release/client/fuzz/security gates and maintenance review | Changes to qualified targets or parser dependencies require requalification |
 | P00-05 | Existing [isolated Windows lab definition](windows-reference-lab.md) retained | Licensed host/images, exact builds and two clean provisioning/discovery/cleanup runs; no host exists yet |
 | P00-06 | [Full license/contribution packet](validation/p00-06.md): existing Apache-2.0/DCO choice, complete obligations, strict notice archives and standalone dashboard license retention | Specification/image/fixture rights remain P00-16 |
-| P00-07 | [Full boundary/threat packet](validation/p00-07.md): eleven owned boundaries cover all twenty threats with assets, misuse, denial/fault behavior, residual risk and implementation gates | Live intake/backup coverage remains P00-17 and independent production assessment remains required |
+| P00-07 | [Full boundary/threat packet](validation/p00-07.md): eleven owned boundaries cover all twenty threats with assets, misuse, denial/fault behavior, residual risk and implementation gates | Live intake before external preview solicitation and backup coverage under P05-04 remain separate; independent production assessment remains required |
 | P00-08 | [Executable validator](../scripts/check_conformance.py) and [evidence inventory](../lab/conformance-evidence.json), included in CI | Real artifacts, exact platforms/specs and reviewer disposition; no structural check is product evidence |
 | P00-09 | [Approved workload method](phase-00-workload.md), seeded fixture tooling and [executed RootDSE workload evidence](validation/p00-09.md) | Native mixed operations, real hosts and clients, cold and sustained profiles, WAN and outage runs, resource/cost measurements and owner SLO ratification remain |
 | P00-10 | [Complete criterion packet](validation/p00-10.md): six reviewed-design transition examples, source/digest-bound CI checker and exception/invalidation controls | Runtime transitions retain their implementation gates |
@@ -48,7 +54,7 @@ production qualification and the 60 unrun client-conformance scenarios remain op
 | P00-14 | [Full dependency-review packet](validation/p00-14.md): signed MIT krb5 1.22.3 candidate, exact Linux AES profile, synthetic signed-PAC and service/time/replay negatives, maintained alternatives, license and FFI boundary | Product Rust adapter, AD PAC/delegation/PKINIT and real-client conformance remain separate unrun gates |
 | P00-15 | [Entire original driver gate](validation/p00-15.md) explicitly accepted by owner | Native AD adapter/domain/key/backup behavior remains later implementation work |
 | P00-16 | [21 pinned reference uses, publisher program matches and inspected source archive](validation/p00-16.md). The release packager tests exact fixture permissions and bytes. | Exact implementation patent/program scope, licensed image and host terms, and asset-specific external fixture/capture rights |
-| P00-17 | [Criterion-by-criterion process-design packet and fresh offline rehearsal](validation/p00-17-design-review.md), with [exact draft and ledger](validation/p00-17.md); read-only route observation on 22 November | Phase 0 owner acceptance remains open; the live owner-receipt drill before external preview solicitation and real backup before production remain unrun, no report sent |
+| P00-17 | [Owner-accepted amended process-design packet and fresh offline rehearsal](validation/p00-17-design-review.md), with [exact draft and ledger](validation/p00-17.md); read-only route observation on 22 November | The live owner-receipt drill before external preview solicitation and real backup before production remain unrun; no report or contact authorized |
 
 ## Client coverage
 
@@ -238,7 +244,7 @@ AD semantics or proof of rights. All product cases remain unrun.
 
 The owner accepted these design scopes on 22 November 2026. Detailed
 operation mapping, exact licensed lab profiles, reference-use clearance and
-P00-17 process acceptance and later operational gates remain open.
+P00-17 process design is accepted; its later operational checkpoints remain open.
 The approved solo-response timing amendment records the genuine constraint without
 pretending there is another responder or a successful intake drill.
 
