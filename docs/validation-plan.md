@@ -26,6 +26,16 @@ cannot qualify OS install/reboot, desktop behavior or endpoint sensor truth.
 Security testing is authorized and isolated with synthetic identities; CI must
 not control production endpoints or dump customer directory data.
 
+For P00-17, Phase 0 reviews the private-intake process and offline rehearsal;
+that evidence is not live receipt or backup coverage. Before soliciting external
+preview users, require an explicitly authorized, privately closed benign report
+with independently verified owner notification, receipt and acknowledgment.
+P05-04 separately requires a real available backup, independently verified
+private access and owner-absence escalation, plus current live-drill evidence
+before supported production. Keep private identifiers in restricted custody and
+publish only redacted outcome metadata. The original policy remains in force
+until the owner-approved timing amendment merges.
+
 ## Per-phase executable gates to add with implementation
 
 | Phase | Required evidence jobs / representative failures | Required retained result |

@@ -48,7 +48,7 @@ marked provisional require a reviewed ADR before their feature's production rele
 | P00-14 | Qualify Kerberos/PAC dependencies and cryptographic maintenance. | Review AES/PAC/replay/delegation support, licenses, FFI/unsafe boundaries and upstream maintenance; generic Kerberos is not AD conformance. |
 | P00-15 | Qualify the storage driver and transactional interface. | Review versions, parameterization, cancellation, commit/error mapping and recovery before credentials or stable formats persist. |
 | P00-16 | Review specification and reference-fixture use rights. | Pin document revisions and use/redistribution obligations separately from project licensing; unclear image/fixture rights block distribution. |
-| P00-17 | Exercise private vulnerability intake and backup response coverage. | A synthetic private intake drill and real backup contact demonstrate receipt/escalation; no contact, SLA or exercise is invented. |
+| P00-17 | Prepare private vulnerability intake and backup response coverage. | A reviewed private-intake runbook and benign offline recordkeeping rehearsal identify reporter/owner/backup roles, custody, acknowledgment, escalation, failure states and a live-drill plan. Phase 0 may accept this process-design evidence only; enabled reporting or simulated receipt is not live receipt or backup coverage. The live private drill and real available backup remain mandatory before supported production under P05-04 and cannot be waived by an unsupported preview. |
 
 ## Requirement refinement
 

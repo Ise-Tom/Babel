@@ -48,7 +48,7 @@ production qualification and the 60 unrun client-conformance scenarios remain op
 | P00-14 | [Full dependency-review packet](validation/p00-14.md): signed MIT krb5 1.22.3 candidate, exact Linux AES profile, synthetic signed-PAC and service/time/replay negatives, maintained alternatives, license and FFI boundary | Product Rust adapter, AD PAC/delegation/PKINIT and real-client conformance remain separate unrun gates |
 | P00-15 | [Entire original driver gate](validation/p00-15.md) explicitly accepted by owner | Native AD adapter/domain/key/backup behavior remains later implementation work |
 | P00-16 | [Thirteen byte-pinned references and actual use-notice review](reference-use-review.md); external image use/distribution denied without explicit rights | Resolve concrete patent/program and reference-fixture/image rights; no blanket clearance or legal certification |
-| P00-17 | [Exact synthetic draft, four-case offline ledger rehearsal and timing decision packet](validation/p00-17.md); read-only private-route observation refreshed 22 November | Original live receipt/escalation drill and real available backup remain unmet; proposed policy amendment awaits owner decision, no report sent |
+| P00-17 | [Exact synthetic draft, four-case offline ledger rehearsal and approved timing decision](validation/p00-17.md); read-only private-route observation refreshed 22 November | Timing amendment awaits PR merge; P00-17 is not accepted, and the live receipt/escalation drill and real available backup remain unrun, no report sent |
 
 ## Client coverage
 
@@ -238,8 +238,8 @@ AD semantics or proof of rights. All product cases remain unrun.
 
 The owner accepted these design scopes on 22 November 2026. Detailed
 operation mapping, exact licensed lab profiles, reference-use clearance and
-the current P00-17 operational gate remain open.
-The solo-response scheduling proposal records the genuine constraint without
+P00-17 process acceptance and later operational gates remain open.
+The approved solo-response timing amendment records the genuine constraint without
 pretending there is another responder or a successful intake drill.
 
 
