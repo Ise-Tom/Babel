@@ -51,7 +51,7 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T15:10:03\+01:00.
+GitHub metadata checked: 2026-11-22T15:13:09\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -70,9 +70,9 @@ GitHub metadata checked: 2026-11-22T15:10:03\+01:00.
     
     The version-1 evidence inventory changes only its matrix digest. All 60 scenarios remain unrun. The existing checker validates owners, outcomes, required evidence, section and project references, and case accounting. Required CI retains the commit-bound matrix report in `phase0-contract-evidence`.
     
-    ## Owner review requested
+    ## Scoped owner approval
     
-    Approve only the **P00-01 scoped protocol-operation matrix design increment** described in the [pinned evidence packet](https://github.com/Ise-Tom/Babel/blob/93e1dc956263db27d07fe1192e74205c60294032/docs/validation/p00-01.md). The full P00-01 exit remains open for unresolved routes, exact patched profiles, licensed client/reference runs and the resulting compatibility evidence. The dashboard keeps P00-01 in progress.
+    Ise-Tom [approved the P00-01 scoped protocol-operation matrix design increment](https://github.com/Ise-Tom/Babel/pull/40#pullrequestreview-6012632874) described in the [pinned evidence packet](https://github.com/Ise-Tom/Babel/blob/93e1dc956263db27d07fe1192e74205c60294032/docs/validation/p00-01.md). The dashboard records the decision. The full P00-01 exit remains open for unresolved routes, exact patched profiles, licensed client/reference runs and the resulting compatibility evidence. The dashboard keeps P00-01 in progress.
     
     ## Verification
     
