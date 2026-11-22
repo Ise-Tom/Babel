@@ -229,7 +229,7 @@
     },
     "P00-05": {
       "status": "blocked",
-      "note": "The isolated Windows lab definition exists; licensed Windows/Mac hosts and exact images are missing. Linux/macOS client qualification and two clean deployments have not run."
+      "note": "The read-only six-guest Hyper-V preflight ran. The available Windows host falls short on allocatable RAM and disk and the session cannot inventory VMs or switches. Approved staged media are missing. Two fresh discovery and teardown cycles remain unrun. macOS tracks separately."
     },
     "P00-06": {
       "status": "accepted",
@@ -432,11 +432,11 @@
     },
     "P00-12": {
       "status": "blocked",
-      "note": "Exact Windows/Linux/macOS profiles cannot qualify without the selected licensed hosts/images and actual patched OS/build/package/architecture identifiers. Profile templates are not pinned acquisitions; no image was purchased, downloaded or provisioned. This is an external lab prerequisite, not passing client evidence."
+      "note": "The host build, candidate Windows patch baselines and official Ubuntu/Debian installer SHA-256s are recorded. Real selected Windows/Linux guest image digests, patched builds and installed packages are still missing. Apple Silicon and Intel separately require eligible Mac hosts and exact image/build/package evidence."
     },
     "P00-16": {
       "status": "blocked",
-      "note": "Reviewed the uses of all 21 pinned editions, mapped observed publisher programs, and checked the actual source archive and 15 project-owned fixtures. Exact implementation patent/program scope, licensed image/host terms and external fixture/capture rights remain unresolved. The prerelease guard excludes vendor assets."
+      "note": "Reviewed the uses of all 21 pinned editions, mapped observed publisher programs, and checked the actual source archive and 15 project-owned fixtures. Proposed lab assets now have use-specific terms and Linux publisher digest pins. Exact Windows entitlements, eligible Apple hardware and license scope, staged Linux components and host terms, implementation patent/program scope and external fixture/capture rights remain open. The prerelease guard excludes vendor assets."
     },
     "P00-17": {
       "status": "in_progress",
@@ -3043,6 +3043,37 @@
       "problems": [
         "I05"
       ]
+    },
+    {
+      "id": "W69",
+      "title": "Inventory reference lab capacity, candidate media and use rights",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-05",
+        "P00-12",
+        "P00-16"
+      ],
+      "how": "Added the read-only Hyper-V preflight for the six-guest plan. It measures available memory and storage, checks inventory access and verifies local image digests against a private manifest with purpose-specific rights evidence. Recorded proposed asset uses, publisher terms and platform pins.",
+      "verification": "The available Windows 11 Pro x86-64 host reported inaccessible Hyper-V inventory, about 16 GiB available memory, 269 GiB free storage and six missing guest media records. Public unit tests use mocked host data and project-owned synthetic bytes.",
+      "limitations": "Both provision/discovery/teardown cycles are unrun. Guest media rights, booted builds, offline packages and DNS/time/egress evidence remain open. Apple Silicon and Intel hardware and images have a separate track. No publisher media were added.",
+      "sources": [
+        {
+          "path": "docs/validation/p00-05-p00-12.md",
+          "label": "Host inventory, platform pins and asset-specific terms"
+        },
+        {
+          "path": "scripts/preflight_reference_lab.py",
+          "label": "Read-only Hyper-V and media preflight"
+        },
+        {
+          "path": "tests/test_reference_lab_preflight.py",
+          "label": "Synthetic preflight tests"
+        }
+      ],
+      "problems": [
+        "I04"
+      ]
     }
   ],
   "problems": [
@@ -3110,7 +3141,7 @@
     },
     {
       "id": "I04",
-      "title": "Licensed Windows/Mac lab hosts and real cross-platform client evidence are missing",
+      "title": "Eligible reference lab host, authorized media and platform runs are missing",
       "status": "open",
       "kind": "infrastructure",
       "phases": [
@@ -3124,10 +3155,14 @@
         "P02-10",
         "P00-12"
       ],
-      "detail": "The existing six-VM isolated Windows reference definition is prepared but no host/images have been provisioned. The initial scope now also includes Linux SSSD/MIT Kerberos and macOS Apple Silicon/Intel; Mac hardware/image rights and exact client/package builds are not allocated or qualified.",
+      "detail": "The six-guest Hyper-V preflight found insufficient RAM/disk and unavailable VM/switch inventory on the observed host. The Windows/Linux lab needs approved local images with exact build and package manifests. macOS Apple Silicon/Intel still need eligible hosts and media in a separate lane.",
       "resolution": "",
-      "next_action": "Select licensed isolated test infrastructure and exact image/package manifests; extend provisioning for Linux/macOS clients, then perform two clean deployment/discovery/cleanup runs with actual login/password/SSO evidence. No purchase or automatic VM/image download is authorized.",
+      "next_action": "Identify an adequately sized isolated Hyper-V host with scoped access and authorized Windows/Linux media. Perform two fresh provisioning, discovery and teardown cycles. Qualify actual platform packages and client behavior separately, with independent Apple Silicon and Intel prerequisites.",
       "sources": [
+        {
+          "path": "docs/validation/p00-05-p00-12.md",
+          "label": "Host, media and rights preflight"
+        },
         {
           "path": "lab/windows-reference.toml",
           "label": "windows-reference.toml"
