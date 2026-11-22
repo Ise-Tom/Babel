@@ -15,6 +15,8 @@ REQUIRED = (
     "owner_acknowledged",
     "backup_role_accepted",
     "backup_opened",
+    "owner_absence_observed",
+    "escalation_triggered",
     "escalation_acknowledged",
     "closed",
 )
@@ -27,6 +29,8 @@ ACTORS = {
     "owner_acknowledged": "simulated-owner",
     "backup_role_accepted": "simulated-backup",
     "backup_opened": "simulated-backup",
+    "owner_absence_observed": "simulated-verifier",
+    "escalation_triggered": "simulated-verifier",
     "escalation_acknowledged": "simulated-backup",
     "closed": "simulated-owner",
 }
@@ -35,6 +39,18 @@ SCENARIOS = {
     "notification_without_owner_receipt",
     "owner_receipt_without_backup",
     "owner_opened_without_acknowledgment",
+}
+AFTER = {
+    "submitted": "draft_prepared",
+    "reporter_visible": "submitted",
+    "notification_observed": "submitted",
+    "owner_opened": "notification_observed",
+    "owner_acknowledged": "owner_opened",
+    "backup_opened": "backup_role_accepted",
+    "owner_absence_observed": "backup_opened",
+    "escalation_triggered": "owner_absence_observed",
+    "escalation_acknowledged": "escalation_triggered",
+    "closed": "submitted",
 }
 
 
@@ -72,6 +88,8 @@ def check(record: dict[str, Any]) -> dict[str, Any]:
             kind = event.get("type")
             require(kind in ACTORS and kind not in seen, f"{name}: unknown or duplicate event")
             require(event.get("actor") == ACTORS[kind], f"{name}: wrong simulated actor")
+            if kind in AFTER:
+                require(AFTER[kind] in seen, f"{name}: prerequisite missing for {kind}")
             stamp = event.get("at_utc")
             require(
                 isinstance(stamp, str) and stamp.endswith("Z"), f"{name}: UTC timestamp required"
@@ -101,8 +119,9 @@ def check(record: dict[str, Any]) -> dict[str, Any]:
     return {
         "schema_version": 1,
         "kind": "offline_recordkeeping_check",
+        "base_revision": record["base_revision"],
         "outcomes": outcomes,
-        "p00_17_ready": False,
+        "live_intake_and_backup_ready": False,
         "unmet": [
             "authorized live private drill with independently verified receipt and escalation",
             "real available backup responder",
