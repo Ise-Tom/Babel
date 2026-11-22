@@ -51,13 +51,13 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T00:26:09\+01:00.
+GitHub metadata checked: 2026-11-23T00:27:49\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#46 · Preflight the Phase 0 reference lab and pin candidate media](<https://github.com/Ise-Tom/Babel/pull/46>)
 
-**In review · Pending merge · CI: in\_progress** · Head ed81d18
+**In review · Pending merge · CI: queued** · Head be4f4c3
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -98,7 +98,7 @@ GitHub metadata checked: 2026-11-23T00:26:09\+01:00.
 
 **Limits and remaining work:** Both provision/discovery/teardown cycles are unrun. Guest media rights, booted builds, offline packages and DNS/time/egress evidence remain open. Apple Silicon and Intel hardware and images have a separate track. No publisher media were added.
 
-**PR-head evidence:** [docs/validation/p00-05-p00-12.md](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/docs/validation/p00-05-p00-12.md>) · [scripts/preflight\_reference\_lab.py](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/scripts/preflight_reference_lab.py>) · [tests/test\_reference\_lab\_preflight.py](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/tests/test_reference_lab_preflight.py>)
+**PR-head evidence:** [docs/validation/p00-05-p00-12.md](<https://github.com/Ise-Tom/Babel/blob/be4f4c380bc4192fafccd6a294db98ff200f2dd0/docs/validation/p00-05-p00-12.md>) · [scripts/preflight\_reference\_lab.py](<https://github.com/Ise-Tom/Babel/blob/be4f4c380bc4192fafccd6a294db98ff200f2dd0/scripts/preflight_reference_lab.py>) · [tests/test\_reference\_lab\_preflight.py](<https://github.com/Ise-Tom/Babel/blob/be4f4c380bc4192fafccd6a294db98ff200f2dd0/tests/test_reference_lab_preflight.py>)
 
 #### Proposed problem update: I04 · Eligible reference lab host, authorized media and platform runs are missing
 
@@ -108,11 +108,11 @@ The six-guest Hyper-V preflight found insufficient RAM/disk and unavailable VM/s
 
 **Resolution:** Still open
 
-**Next action:** Identify an adequately sized isolated Hyper-V host with scoped access and authorized Windows/Linux media. Perform two fresh provisioning, discovery and teardown cycles. Qualify actual platform packages and client behavior separately, with independent Apple Silicon and Intel prerequisites.
+**Next action:** The owner approved the existing-host and existing-license preflight route in the linked evidence. Supply an eligible Hyper-V host, scoped access and authorized staged media. Perform two fresh provisioning, discovery and teardown cycles. Qualify actual platform packages and client behavior separately, with independent Apple Silicon and Intel prerequisites.
 
 **Provenance:** Explicitly outstanding; no Windows test is marked passed.
 
-[docs/validation/p00-05-p00-12.md](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/docs/validation/p00-05-p00-12.md>) · [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/docs/phase-00-progress.md>)
+[docs/validation/p00-05-p00-12.md](<https://github.com/Ise-Tom/Babel/blob/be4f4c380bc4192fafccd6a294db98ff200f2dd0/docs/validation/p00-05-p00-12.md>) · [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/be4f4c380bc4192fafccd6a294db98ff200f2dd0/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/be4f4c380bc4192fafccd6a294db98ff200f2dd0/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/be4f4c380bc4192fafccd6a294db98ff200f2dd0/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/be4f4c380bc4192fafccd6a294db98ff200f2dd0/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/be4f4c380bc4192fafccd6a294db98ff200f2dd0/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/be4f4c380bc4192fafccd6a294db98ff200f2dd0/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/be4f4c380bc4192fafccd6a294db98ff200f2dd0/docs/phase-00-progress.md>)
 
 
 </details>
