@@ -61,13 +61,13 @@ Use the pinned packets to review exact scopes. Send the requirement IDs and pack
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T10:12:58\+01:00.
+GitHub metadata checked: 2026-11-22T10:16:01\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#37 · Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>)
 
-**In review · Pending merge · CI: in\_progress** · Head 438c6d4
+**In review · Pending merge · CI: success** · Head 438c6d4
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
