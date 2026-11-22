@@ -13,7 +13,7 @@ LIVE_URL = f"{REPO}/blob/dashboard-live/README.md"
 LABELS = {
     "planned": "Planned",
     "in_progress": "In progress",
-    "ready_for_validation": "Ready for validation",
+    "ready_for_validation": "Ready for owner decision",
     "blocked": "Blocked",
     "accepted": "Accepted",
 }
@@ -37,6 +37,40 @@ def link(label: str, url: str) -> str:
 
 def source_links(items: list[dict[str, str]]) -> str:
     return " · ".join(link(item["path"], item["url"]) for item in items)
+
+
+def delivery_link(delivery: dict[str, Any]) -> str:
+    labels = {"merged": "Merged PR", "open": "Open PR", "closed": "Closed PR"}
+    label = labels.get(delivery["state"], "Delivery PR")
+    return link(f"{label} #{delivery['number']}", delivery["url"])
+
+
+def owner_review_section(phases: list[dict[str, Any]]) -> list[str]:
+    lines = [
+        "",
+        "## Owner review",
+        "",
+        "Use the pinned packets to review exact scopes. Send the requirement IDs and packet "
+        "links you approve together in the Babel management chat.",
+        "",
+    ]
+    queue = [
+        step
+        for phase in phases
+        for step in phase["steps"]
+        if step["status"] == "ready_for_validation"
+    ]
+    if not queue:
+        return [*lines, "No requirements are waiting for an owner decision.", ""]
+    lines.extend(["| Requirement | Scope | Delivery | Evidence |", "| --- | --- | --- | --- |"])
+    for step in queue:
+        review = step["validation"]
+        delivery = delivery_link(review["delivery"]) if review["delivery"] else "—"
+        packet = link("Review packet", review["packet"]["url"])
+        lines.append(
+            f"| {escaped(step['id'])} | {escaped(review['scope'])} | {delivery} | {packet} |"
+        )
+    return [*lines, ""]
 
 
 def open_pr_section(data: dict[str, Any]) -> list[str]:
@@ -181,7 +215,8 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
         "",
         f"**Current focus:** Phase {data['focusPhase']:02} — {escaped(data['focusSummary'])}",
         "",
-        "[Phase board](#phase-board) · [Implementation journal](#implementation-journal) · "
+        "[Phase board](#phase-board) · [Owner review](#owner-review) · "
+        "[Implementation journal](#implementation-journal) · "
         "[Problems encountered](#problems-encountered) · [Feature catalog](#feature-catalog)",
         "",
         "Use your browser's Find command to search. "
@@ -191,7 +226,7 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
         "",
         "## Phase board",
         "",
-        "| Phase | Status | Accepted requirements | Ready for validation "
+        "| Phase | Status | Accepted requirements | Ready for owner decision "
         "| In progress | Blocked | Planned "
         "| Related work records |",
         "| --- | --- | --- | --- | --- | --- | --- | --- |",
@@ -211,6 +246,7 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
             f"| {LABELS[phase['status']]} | {count}/{len(phase['steps'])} "
             f"| {activity[0]} | {activity[1]} | {activity[2]} | {activity[3]} | {increments} |"
         )
+    lines.extend(owner_review_section(phases))
     lines.extend(open_pr_section(data))
     for phase in phases:
         number = phase["id"]
@@ -282,12 +318,15 @@ def render(data: dict[str, Any], *, preview: bool = False) -> str:
                 )
             if step.get("validation"):
                 packet = step["validation"]
+                references = [link("Review packet", packet["packet"]["url"])]
+                if packet["delivery"]:
+                    references.insert(0, delivery_link(packet["delivery"]))
                 lines.extend(
                     [
                         "**Validation packet:** "
                         + escaped(packet["scope"])
                         + " "
-                        + link("Review exit criteria and evidence", packet["packet"]["url"]),
+                        + " · ".join(references),
                         "",
                     ]
                 )

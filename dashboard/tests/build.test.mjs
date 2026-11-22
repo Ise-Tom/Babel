@@ -14,7 +14,10 @@ test('standalone builds are deterministic and CSP matches exact inline bytes', a
   const first = await htmlFor(model);
   assert.equal(first, await htmlFor(model));
   for (const regex of [/<style>([\s\S]*?)<\/style>/g, /<script(?: [^>]*)?>([\s\S]*?)<\/script>/g]) {
-    for (const match of first.matchAll(regex)) assert.ok(first.includes(hash(match[1])));
+    for (const match of first.matchAll(regex)) {
+      assert.ok(!match[1].includes('\r'));
+      assert.ok(first.includes(hash(match[1])));
+    }
   }
   assert.ok(first.includes("connect-src 'none'"));
   assert.ok(first.includes("img-src 'none'"));

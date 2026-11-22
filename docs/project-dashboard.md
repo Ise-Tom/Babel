@@ -224,11 +224,14 @@ test/review evidence, not an automatically incremented completion counter.
 2. Update associations for changed requirements; unknown/missing IDs fail validation.
 3. Add granular work records with what/how, verified behavior, limits and real
    source files. Keep false starts/resolved incidents with truthful provenance.
-4. Ask the project owner concrete acceptance questions when an increment meets a
-   requirement: identify the ID, exact scope, source/PR, tests and remaining limits.
-   Offer acceptance, keeping it pending, or requesting changes. Record an explicit
-   affirmative answer as reviewer/date/evidence on that requirement. A pending
-   question or silence leaves acceptance unchanged. If the delivered scope is
+4. When an increment meets a requirement, add its pinned review packet and
+   delivery PR to the dashboard. Set `validation.delivery_pr` to the PR number
+   and record its observed state in the PR snapshot. Owner review puts the scope,
+   evidence and delivery together. The owner can send one decision for selected
+   packets in the management chat or approve those scopes during implementation PR review.
+   Record the explicit decision as reviewer/date/evidence. When the owner approves
+   during PR review, include the decision in that same PR before it merges. Otherwise
+   record the decisions together in a single dashboard update. If the delivered scope is
    narrower than the requirement, keep the requirement open and propose a stable
    child requirement with its own criteria before requesting its acceptance.
    Green CI alone is insufficient; phase acceptance remains a separate review.
@@ -291,7 +294,7 @@ have been split by independent acceptance evidence. There is no ten-item quota o
 hardcoded total in dashboard/export tests. Existing accepted scopes are preserved;
 refinement adds no automatic acceptance and starts no later phase.
 
-A requirement may enter **Ready for validation** only with completed exit evidence,
+A requirement may enter **Ready for owner decision** only with completed exit evidence,
 a pinned validation packet and a recorded implementation/explanation. This is
 separate from work still in progress and from owner acceptance. The normal
 requirement filter can show that queue; a ready item does not accept a capability

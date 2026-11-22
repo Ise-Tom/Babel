@@ -48,6 +48,19 @@ class PersistentReport(unittest.TestCase):
         self.assertIn("after this change is merged", report)
         self.assertNotIn("Updated automatically after the full CI gate", report)
 
+    def test_owner_review_shows_merged_delivery_alongside_pending_scope(self):
+        step = next(s for s in self.data["phases"][0]["steps"] if s["id"] == "P00-14")
+        delivery = step["validation"]["delivery"]
+        self.assertEqual(delivery, {"number": 33, "url": view.REPO + "/pull/33", "state": "merged"})
+        step["status"] = "ready_for_validation"
+        review = view.owner_review_section(self.data["phases"])
+        row = next(line for line in review if line.startswith("| P00-14 |"))
+        self.assertIn(delivery["url"], row)
+        self.assertIn(step["validation"]["packet"]["url"], row)
+        step["status"] = "accepted"
+        review = view.owner_review_section(self.data["phases"])
+        self.assertFalse(any(line.startswith("| P00-14 |") for line in review))
+
     def test_activity_and_latest_work_are_visible_without_accepting_or_starting_phases(self):
         baseline = copy.deepcopy(self.data)
         report = view.render(self.data)

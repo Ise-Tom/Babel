@@ -16,7 +16,7 @@
 body {
   margin: 0;
 }
-button,input,select {
+button,input,select,textarea {
   font: inherit;
 }
 button,a,summary,select {
@@ -25,7 +25,7 @@ button,a,summary,select {
 button {
   cursor: pointer;
 }
-button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible {
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,textarea:focus-visible {
   outline: 3px solid #459dce;
   outline-offset: 3px;
 }
@@ -800,6 +800,19 @@ dialog .button {
 .phase-activity>h2 { font-size: 16px; margin: 16px 0 8px; }
 .badge.ready_for_validation { background: #eee7f6; color: #654184; }
 .status-unit.ready_for_validation,.legend-item.ready_for_validation::before { background: #78509c; }
+.review-actions,.review-links { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; }
+.review-actions,.review-message { margin: 16px 0; }
+.review-actions button:disabled { opacity: .65; cursor: default; }
+.review-items { display: grid; gap: 8px; }
+.review-item { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+.review-choice { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #24382f; cursor: pointer; }
+.review-choice input { flex: none; width: 18px; height: 18px; margin: 0; accent-color: #1c5b46; }
+.review-item>p { margin: 6px 0; }
+.review-links>a { min-height: 28px; display: inline-flex; align-items: center; }
+.review-message textarea { width: 100%; resize: vertical; border: 1px solid #9fac9f; border-radius: 7px; padding: 10px; background: white; color: #253b2f; }
 @media(max-width:760px) {
   .overview-page .list-heading { row-gap: 4px; margin-top: 12px; }
+  .overview-page .page-heading h1 { font-size: 21px; }
+  .overview-page .stats { margin: 10px 0; gap: 6px 10px; }
+  .overview-page .focus { margin-bottom: 12px; }
 }

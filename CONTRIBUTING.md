@@ -16,6 +16,12 @@ report reads proposed work from open PRs and labels it pending merge;
 it never adds those proposals to main-branch acceptance totals. Public static
 artifacts do not include private PR descriptions or proposal overlays.
 
+When a requirement is ready for an owner decision, link its deliverable PR and
+its pinned scope/evidence packet. If the owner approves that scope during review,
+record the decision in the same PR. For scopes delivered earlier, use the
+[Owner review queue](https://ise-tom.github.io/Babel/#view=review) to collect a
+single decision covering the selected packets.
+
 Update `dashboard/capabilities.json` whenever implemented functional scope changes.
 Record the implemented subset, missing behavior, supporting work IDs and blockers;
 keep experiments and engineering tools distinct from product features. Unlisted
