@@ -158,7 +158,12 @@
   "requirements": {
     "P00-01": {
       "status": "in_progress",
-      "note": "All 30 families have owned protocol or workflow mappings with section, success, refusal and evidence detail. Scoped owner review is pending. Twelve unresolved routes still need choices or traces, and all 60 product cases remain unrun pending exact and licensed client profiles.",
+      "note": "Ise-Tom approved the scoped matrix design on 22 November 2026. The full P00-01 gate remains in progress for unresolved routes, exact platform profiles and licensed real-client results. All 60 product conformance observations remain unrun.",
+      "acceptance": {
+        "reviewer": "Ise-Tom (project owner, explicit PR #40 review)",
+        "date": "2026-11-22",
+        "evidence": "Scoped approval covers ownership, mapped exchanges and workflows, expected success and refusal, required evidence and tracking of unresolved mappings across the 30 existing families. Full P00-01 exit, exact platform qualification, licensed real-client evidence and production compatibility remain open. Owner review: https://github.com/Ise-Tom/Babel/pull/40#pullrequestreview-6012632874 and pinned evidence at https://github.com/Ise-Tom/Babel/blob/93e1dc956263db27d07fe1192e74205c60294032/docs/validation/p00-01.md"
+      },
       "validation": {
         "scope": "P00-01 scoped matrix design increment for the 30 existing families. Covers accountable ownership, 60 wire mappings, 12 workflows, expected success/refusal, evidence requirements and tracking of 12 unresolved mappings. Full gate, exact profiles, licensed real-client runs and production compatibility stay open.",
         "source_revision": "93e1dc956263db27d07fe1192e74205c60294032",
@@ -2825,6 +2830,36 @@
     },
     {
       "id": "W63",
+      "title": "Prepare and rehearse the P00-17 private intake drill offline",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-17"
+      ],
+      "how": "Prepared the exact benign private-report draft, verifier and escalation ledger, incomplete rules, and exact proposed solo-maintainer timing wording. Rehearsed four recordkeeping cases with synthetic actors and timestamps. Kept the original criterion and SECURITY.md policy in force.",
+      "verification": "Read-only authenticated GitHub observation on 22 November found the private reporting entry and form. The retained offline result and negative-control tests verify that mock completion never passes the live gate; local format, lint, type, documentation and scope checks pass.",
+      "limitations": "The form was not submitted. Owner notification, actual receipt and acknowledgment, real backup consent/access and escalation remain unrun. Timing change awaits owner approval and a reviewed policy amendment.",
+      "source_revision": "92d74748446e9298e6384abeb7261ab385b6a306",
+      "sources": [
+        {
+          "path": "docs/validation/p00-17.md",
+          "label": "Exact P00-17 packet and proposed decision"
+        },
+        {
+          "path": "lab/security-intake/evidence/offline-rehearsal-result.json",
+          "label": "Retained offline rehearsal result"
+        },
+        {
+          "path": "scripts/check_security_intake.py",
+          "label": "Offline-only validator"
+        }
+      ],
+      "problems": [
+        "I27"
+      ]
+    },
+    {
+      "id": "W64",
       "title": "Map owned wire operations and unresolved client variants",
       "status": "implemented",
       "kind": "design",
@@ -3461,11 +3496,15 @@
       "requirements": [
         "P00-17"
       ],
-      "detail": "P00-07 now has complete boundary/threat/ownership design for review. Reporting is configured but notification/receipt/escalation and a genuine backup are unverified; sole-owner process design is not operational coverage.",
+      "detail": "P00-07 has boundary/threat/ownership design. The reporter-side private form is accessible and an exact benign draft and offline rehearsal exist, but actual owner notification/receipt/acknowledgment, escalation and a genuine backup are unverified.",
       "resolution": "",
-      "next_action": "Review the explicit solo scheduling proposal; retain the original gate until agreed. No synthetic private report may be sent without explicit authorization and an available recipient.",
-      "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
+      "next_action": "Owner reviews the exact timing proposal. Retain the original gate until an amendment is approved and merged. Run a live private drill and verify a real backup only with specific authorization; record restricted evidence and redacted outcome.",
+      "source_revision": "92d74748446e9298e6384abeb7261ab385b6a306",
       "sources": [
+        {
+          "path": "docs/validation/p00-17.md",
+          "label": "P00-17 packet, limits and pending decisions"
+        },
         {
           "path": "docs/security-response-readiness.md",
           "label": "security-response-readiness.md"

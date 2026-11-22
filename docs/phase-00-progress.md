@@ -32,7 +32,7 @@ production qualification and the 60 unrun client-conformance scenarios remain op
 
 | Requirement | Concrete result | Remaining exit evidence |
 | --- | --- | --- |
-| P00-01 | [Scoped design packet](validation/p00-01.md) with 60 wire mappings, 12 workflows and 12 explicit unknowns across all 30 families. Each row has ownership, expected success/refusal and evidence. | Owner review of the increment, unresolved route and scope decisions, exact platform profiles and licensed real-client runs |
+| P00-01 | [Owner approved the scoped design](https://github.com/Ise-Tom/Babel/pull/40#pullrequestreview-6012632874) for 60 wire mappings, 12 workflows and 12 explicit unknowns across all 30 families. See the [reviewed packet](validation/p00-01.md) for ownership, success/refusal and evidence. | Unresolved route and scope decisions, exact platform profiles and licensed real-client runs |
 | P00-02 | [Full identity/authorization packet](validation/p00-02.md): nine local cases cover stable GUID/domain SID, schema/matching, ordered ACLs, asynchronous inheritance, groups, revocation and durable receipts against pinned ADTS/DRSR/DTYP | Native identity/ACL implementation remains separate |
 | P00-03 | [Full replication/restore design packet](validation/p00-03.md): eleven cases specify attribute wrap/GUID rules, link lifetimes, naming conflicts, deletion, progress, restore and RID quarantine against actual source sections | Native DRS/reference/fault qualification remains separate |
 | P00-04 | [Full toolchain/parser packet](validation/p00-04.md): declared Linux profiles, exact compiler/ELF facts, release overflow checks, locked debug/release/client/fuzz/security gates and maintenance review | Changes to qualified targets or parser dependencies require requalification |
@@ -48,7 +48,7 @@ production qualification and the 60 unrun client-conformance scenarios remain op
 | P00-14 | [Full dependency-review packet](validation/p00-14.md): signed MIT krb5 1.22.3 candidate, exact Linux AES profile, synthetic signed-PAC and service/time/replay negatives, maintained alternatives, license and FFI boundary | Product Rust adapter, AD PAC/delegation/PKINIT and real-client conformance remain separate unrun gates |
 | P00-15 | [Entire original driver gate](validation/p00-15.md) explicitly accepted by owner | Native AD adapter/domain/key/backup behavior remains later implementation work |
 | P00-16 | [Thirteen byte-pinned references and actual use-notice review](reference-use-review.md); external image use/distribution denied without explicit rights | Resolve concrete patent/program and reference-fixture/image rights; no blanket clearance or legal certification |
-| P00-17 | [Solo intake/custody/absence process and explicit timing proposal](security-response-readiness.md); reporting configuration observed enabled | Original actual receipt/escalation drill and available backup remain unmet; timing change awaits owner agreement, no report sent |
+| P00-17 | [Exact synthetic draft, four-case offline ledger rehearsal and timing decision packet](validation/p00-17.md); read-only private-route observation refreshed 22 November | Original live receipt/escalation drill and real available backup remain unmet; proposed policy amendment awaits owner decision, no report sent |
 
 ## Client coverage
 

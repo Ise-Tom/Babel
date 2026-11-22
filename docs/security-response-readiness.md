@@ -1,6 +1,9 @@
 # Security response readiness for solo development
 
 Status: **process design and scheduling proposal, not an accepted requirement change**.
+The [P00-17 drill, offline rehearsal and exact timing decision packet](validation/p00-17.md)
+is prepared for review. Its simulated records and available report form do not
+meet the live-drill or backup requirement.
 Ise-Tom is the current development owner. No backup responder, verified private
 receipt or supported production service is claimed. On 19 November 2026, a
 read-only GitHub API check reported private vulnerability reporting enabled.
