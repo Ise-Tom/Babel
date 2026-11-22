@@ -2712,6 +2712,38 @@
       "problems": [
         "I45"
       ]
+    },
+    {
+      "id": "W61",
+      "title": "Group owner decisions with merged PRs and pinned review packets",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-08",
+        "P00-10",
+        "P01-10"
+      ],
+      "how": "Added an Owner review queue to both dashboard views. Each pending packet shows its exact scope, pinned evidence and reviewed delivery PR state. The interactive view prepares a single decision message for the selected scopes. The contributor guide puts explicit owner decisions in the same implementation PR when approved before merge.",
+      "verification": "Verified all nine existing packet revisions and files in main history and matched them to five merged PRs. Dashboard tests exercise delivery labels, pending and accepted state separation, and selected scope text on desktop and mobile.",
+      "limitations": "The queue uses the repository's recorded PR snapshot. Selecting a packet only prepares a decision message. Existing requirement, capability and phase acceptance records stay separate.",
+      "source_revision": "c71280c1ae23413588bdb219535bf31053e22c7c",
+      "sources": [
+        {
+          "path": "dashboard/src/main.ts",
+          "label": "Interactive owner review"
+        },
+        {
+          "path": "scripts/render_dashboard.py",
+          "label": "GitHub owner review queue"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "Batch decision and delivery record guide"
+        }
+      ],
+      "problems": [
+        "I46"
+      ]
     }
   ],
   "problems": [
@@ -3922,8 +3954,36 @@
         }
       ],
       "provenance": "Observed completed and canceled publisher runs on main and reproduced the manual artifact-selection case using controlled GitHub API responses."
+    },
+    {
+      "id": "I46",
+      "title": "Windows checkout line endings could hide standalone dashboard styles",
+      "status": "resolved",
+      "kind": "development-correctness",
+      "phases": [
+        0,
+        1
+      ],
+      "requirements": [
+        "P01-10"
+      ],
+      "detail": "The standalone build could hash stylesheet bytes with Windows line endings. Chromium normalizes the lines before checking the hash, so the stylesheet was blocked and the page displayed without its layout.",
+      "resolution": "Normalize stylesheet line endings before hashing and embedding. The build test checks the resulting inline text and the unchanged hash policy.",
+      "next_action": "Retain desktop, mobile and artifact verification in dashboard CI.",
+      "source_revision": "7f86508c770270980cb23f2a9cd3b136c10aa2c9",
+      "sources": [
+        {
+          "path": "dashboard/build.mjs",
+          "label": "Standalone build"
+        },
+        {
+          "path": "dashboard/tests/build.test.mjs",
+          "label": "CSP hash check"
+        }
+      ],
+      "provenance": "Reproduced by building from a Windows Git worktree and opening the standalone dashboard in pinned Chromium on WSL."
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "The MIT Kerberos 1.22.3 lab passed its synthetic AES, PAC and replay cases. AD clients, delegation, PKINIT and product FFI remain unrun. Review delivered Phase 0 packets and decide which scopes to approve together in Owner review."
+  "focus_summary": "Review the scopes and pinned evidence from merged Phase 0 PRs together in Owner review."
 }
