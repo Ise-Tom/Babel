@@ -51,13 +51,13 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T15:03:44\+01:00.
+GitHub metadata checked: 2026-11-22T15:03:59\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#40 · Map Phase 0 protocol operations and accountable ownership](<https://github.com/Ise-Tom/Babel/pull/40>)
 
-**In review · Pending merge · CI: queued** · Head f390d1e
+**In review · Pending merge · CI: in\_progress** · Head f390d1e
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
