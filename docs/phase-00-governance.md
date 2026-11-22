@@ -51,11 +51,10 @@ No acceptance is prefilled by these documents.
 
 ## Completed Phase 0 contract and executable consistency checks
 
-The original P00-10 design gate is now complete and submitted for explicit owner
-validation in the [criterion packet](validation/p00-10.md). Runtime upgrade,
-secret rotation and domain recovery are **unrun implementation gates**, rather
-than evidence this design checker manufactures. The requirements themselves have
-not been narrowed. See the [functional-level profile](functional-level-profile.md)
+The owner accepted the P00-10 design on 22 November 2026 for the scope of the
+[criterion packet](validation/p00-10.md). Runtime upgrade, secret rotation and
+domain recovery remain **unrun implementation gates**. See the
+[functional-level profile](functional-level-profile.md)
 for the selected levels and transition review.
 
 The [versioned contract](../lab/phase0-contract.json) contains all six worked
@@ -89,5 +88,5 @@ that prose is sufficient, authenticate a named reviewer or escrow, grant Tier 0
 access, enact a change, or prove runtime recovery. The owner reviews the actual
 PR/evidence using the established solo-maintainer process. Future runtime command
 handlers must enforce their own authority, version/checkpoint and fail-closed
-state machines. Owner acceptance of P00-10 remains a separate dated decision;
-Phase 0 exit and production approval are never inferred from a passing record.
+state machines. The [dated P00-10 owner decision](phase-00-progress.md#owner-decisions)
+covers the design gate. Phase 0 exit and production approval remain separate decisions.

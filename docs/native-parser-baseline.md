@@ -1,6 +1,6 @@
 # Qualified native toolchain and bounded parser baseline
 
-Status: **full P00-04 Phase 0 criterion packet complete; owner validation pending**.
+Status: **the owner accepted the P00-04 Phase 0 scope on 22 November 2026**.
 The qualified baseline is `linux-x86_64-gnu-bounded-parser-v1`. It covers the
 Rust toolchain and existing bounded BER/LDAP parser, not a functioning AD server.
 

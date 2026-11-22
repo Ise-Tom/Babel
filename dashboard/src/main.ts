@@ -214,7 +214,7 @@ function overview(): HTMLElement {
   const hasPendingDecisions = board.phases.some(phase => phase.steps.some(step => step.status === 'ready_for_validation'));
   const action = hasPendingDecisions
     ? button('Owner review →', 'button primary', openReview)
-    : button(`Review Phase ${String(board.focusPhase).padStart(2, '0')} →`, 'button primary', () => navigate({ view: 'phase', phase: board.focusPhase, q: '', status: 'all' }));
+    : button('View phase →', 'button primary', () => navigate({ view: 'phase', phase: board.focusPhase, q: '', status: 'all' }));
   focus.append(focusText, action); result.append(focus);
   const visible = board.phases.filter(phase => filtered(phase).length > 0);
   const heading = el('div', 'list-heading'); heading.append(el('h2', '', 'The delivery plan'));

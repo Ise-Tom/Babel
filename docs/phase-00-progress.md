@@ -6,24 +6,46 @@ clients**. This is a scope decision, not compatibility acceptance. The 2025
 functional level is not advertised by this initial profile; Server 2025 clients
 are still proposed test targets at the selected level.
 
+## Owner decisions
+
+On 22 November 2026 the project owner approved the nine packets below in one
+decision in the Babel management chat. The accepted scope and limits are those
+in the pinned packets.
+
+| Requirement | Exact reviewed scope and limits | Delivery | CI on the final PR revision |
+| --- | --- | --- | --- |
+| P00-02 | [Reviewed packet](https://github.com/Ise-Tom/Babel/blob/2989ed476e57297f729d0e3dffd89a703e4175ac/docs/validation/p00-02.md) | [PR #30](https://github.com/Ise-Tom/Babel/pull/30) | [Passed](https://github.com/Ise-Tom/Babel/actions/runs/44507652333) |
+| P00-03 | [Reviewed packet](https://github.com/Ise-Tom/Babel/blob/2989ed476e57297f729d0e3dffd89a703e4175ac/docs/validation/p00-03.md) | [PR #30](https://github.com/Ise-Tom/Babel/pull/30) | [Passed](https://github.com/Ise-Tom/Babel/actions/runs/44507652333) |
+| P00-04 | [Reviewed packet](https://github.com/Ise-Tom/Babel/blob/900a24e7cd38957905d00f628e0b5445511ae52d/docs/validation/p00-04.md) | [PR #29](https://github.com/Ise-Tom/Babel/pull/29) | [Passed](https://github.com/Ise-Tom/Babel/actions/runs/44376168435) |
+| P00-06 | [Reviewed packet](https://github.com/Ise-Tom/Babel/blob/900a24e7cd38957905d00f628e0b5445511ae52d/docs/validation/p00-06.md) | [PR #29](https://github.com/Ise-Tom/Babel/pull/29) | [Passed](https://github.com/Ise-Tom/Babel/actions/runs/44376168435) |
+| P00-07 | [Reviewed packet](https://github.com/Ise-Tom/Babel/blob/2989ed476e57297f729d0e3dffd89a703e4175ac/docs/validation/p00-07.md) | [PR #30](https://github.com/Ise-Tom/Babel/pull/30) | [Passed](https://github.com/Ise-Tom/Babel/actions/runs/44507652333) |
+| P00-10 | [Reviewed packet](https://github.com/Ise-Tom/Babel/blob/380d564183b9217acbde16476658fe003cf72338/docs/validation/p00-10.md) | [PR #28](https://github.com/Ise-Tom/Babel/pull/28) | [Passed](https://github.com/Ise-Tom/Babel/actions/runs/44351294880) |
+| P00-11 | [Reviewed packet](https://github.com/Ise-Tom/Babel/blob/380d564183b9217acbde16476658fe003cf72338/docs/validation/p00-11.md) | [PR #28](https://github.com/Ise-Tom/Babel/pull/28) | [Passed](https://github.com/Ise-Tom/Babel/actions/runs/44351294880) |
+| P00-13 | [Reviewed packet](https://github.com/Ise-Tom/Babel/blob/292291ec4d79a03f7355e8d3646c9e850b6c0489/docs/validation/p00-13.md) | [PR #31](https://github.com/Ise-Tom/Babel/pull/31) | [Passed](https://github.com/Ise-Tom/Babel/actions/runs/44543165955) |
+| P00-14 | [Reviewed packet](https://github.com/Ise-Tom/Babel/blob/cf6681c22bc42707de6efc5b5c8db59eb70504ea/docs/validation/p00-14.md) | [PR #33](https://github.com/Ise-Tom/Babel/pull/33) | [Passed](https://github.com/Ise-Tom/Babel/actions/runs/44952652411) |
+
+Phase 0 now has **12 of 17 requirements accepted**. P00-01, P00-16 and P00-17
+remain in progress, and P00-05 and P00-12 remain blocked. Whole-phase acceptance,
+production qualification and the 60 unrun client-conformance scenarios remain open.
+
 ## Requirement history and remaining evidence
 
 | Requirement | Concrete result | Remaining exit evidence |
 | --- | --- | --- |
 | P00-01 | [Versioned matrix](../lab/compatibility.json): 30 operation families, positive/negative scenarios, requirements, protocol references, target/client combinations and accountable owner | Exact patched images/packages, complete wire-operation/control/error decomposition, approved profile and real-client runs |
-| P00-02 | [Full identity/authorization packet](validation/p00-02.md): nine local cases cover stable GUID/domain SID, schema/matching, ordered ACLs, asynchronous inheritance, groups, revocation and durable receipts against pinned ADTS/DRSR/DTYP | Explicit owner validation of the original Phase 0 design gate; native identity/ACL implementation remains separate |
-| P00-03 | [Full replication/restore design packet](validation/p00-03.md): eleven cases specify attribute wrap/GUID rules, link lifetimes, naming conflicts, deletion, progress, restore and RID quarantine against actual source sections | Explicit owner validation of the original Phase 0 design gate; native DRS/reference/fault qualification remains separate |
-| P00-04 | [Full toolchain/parser packet](validation/p00-04.md): declared Linux profiles, exact compiler/ELF facts, release overflow checks, locked debug/release/client/fuzz/security gates and maintenance review | Explicit owner validation of the original Phase 0 toolchain/parser gate; TLS/Kerberos/storage retain separate requirements |
+| P00-02 | [Full identity/authorization packet](validation/p00-02.md): nine local cases cover stable GUID/domain SID, schema/matching, ordered ACLs, asynchronous inheritance, groups, revocation and durable receipts against pinned ADTS/DRSR/DTYP | Native identity/ACL implementation remains separate |
+| P00-03 | [Full replication/restore design packet](validation/p00-03.md): eleven cases specify attribute wrap/GUID rules, link lifetimes, naming conflicts, deletion, progress, restore and RID quarantine against actual source sections | Native DRS/reference/fault qualification remains separate |
+| P00-04 | [Full toolchain/parser packet](validation/p00-04.md): declared Linux profiles, exact compiler/ELF facts, release overflow checks, locked debug/release/client/fuzz/security gates and maintenance review | Changes to qualified targets or parser dependencies require requalification |
 | P00-05 | Existing [isolated Windows lab definition](windows-reference-lab.md) retained | Licensed host/images, exact builds and two clean provisioning/discovery/cleanup runs; no host exists yet |
-| P00-06 | [Full license/contribution packet](validation/p00-06.md): existing Apache-2.0/DCO choice, complete obligations, strict notice archives and standalone dashboard license retention | Explicit owner validation of the original project-license gate; specification/image/fixture rights remain P00-16 |
-| P00-07 | [Full boundary/threat packet](validation/p00-07.md): eleven owned boundaries cover all twenty threats with assets, misuse, denial/fault behavior, residual risk and implementation gates | Explicit owner validation of the original Phase 0 design gate; live intake/backup coverage remains P00-17 and independent production assessment remains required |
+| P00-06 | [Full license/contribution packet](validation/p00-06.md): existing Apache-2.0/DCO choice, complete obligations, strict notice archives and standalone dashboard license retention | Specification/image/fixture rights remain P00-16 |
+| P00-07 | [Full boundary/threat packet](validation/p00-07.md): eleven owned boundaries cover all twenty threats with assets, misuse, denial/fault behavior, residual risk and implementation gates | Live intake/backup coverage remains P00-17 and independent production assessment remains required |
 | P00-08 | [Executable validator](../scripts/check_conformance.py) and [evidence inventory](../lab/conformance-evidence.json), included in CI | Real artifacts, exact platforms/specs and reviewer disposition; no structural check is product evidence |
 | P00-09 | [Approved workload method](phase-00-workload.md), seeded fixture tooling and [executed RootDSE workload evidence](validation/p00-09.md) | Native mixed operations, real hosts and clients, cold and sustained profiles, WAN and outage runs, resource/cost measurements and owner SLO ratification remain |
-| P00-10 | [Complete criterion packet](validation/p00-10.md): six reviewed-design transition examples, source/digest-bound CI checker and exception/invalidation controls | Explicit owner validation of the full Phase 0 design gate; runtime transitions retain their implementation gates |
-| P00-11 | [Complete functional-level profile](functional-level-profile.md): 2016/2016 Linux-hosted creation contract, level/OS distinction, incompatibilities and transition refusal | Explicit owner validation of the full Phase 0 design gate; exact builds, native behavior and client runs remain separate |
+| P00-10 | [Complete criterion packet](validation/p00-10.md): six reviewed-design transition examples, source/digest-bound CI checker and exception/invalidation controls | Runtime transitions retain their implementation gates |
+| P00-11 | [Complete functional-level profile](functional-level-profile.md): 2016/2016 Linux-hosted creation contract, level/OS distinction, incompatibilities and transition refusal | Exact builds, native behavior and client runs remain separate |
 | P00-12 | Windows/Linux/macOS profile templates remain explicit and unqualified | Exact owned/licensed host/image/build/package/architecture identifiers and rights are missing; no image has been acquired |
-| P00-13 | [Full TLS/provider/channel review packet](validation/p00-13.md): exact stack, custody decision/limits, CRL rejection, in-process certificate replacement, independent exporter comparison and entropy/clock/key/signer faults | Explicit owner validation of the original Phase 0 selected-profile review; native LDAP/EPA, general revocation freshness and production key/service/client/capacity gates remain separate |
-| P00-14 | [Full dependency-review packet](validation/p00-14.md): signed MIT krb5 1.22.3 candidate, exact Linux AES profile, synthetic signed-PAC and service/time/replay negatives, maintained alternatives, license and FFI boundary | Explicit owner validation of Phase 0 decision; product Rust adapter, AD PAC/delegation/PKINIT and real-client conformance remain separate unrun gates |
+| P00-13 | [Full TLS/provider/channel review packet](validation/p00-13.md): exact stack, custody decision/limits, CRL rejection, in-process certificate replacement, independent exporter comparison and entropy/clock/key/signer faults | Native LDAP/EPA, general revocation freshness and production key/service/client/capacity gates remain separate |
+| P00-14 | [Full dependency-review packet](validation/p00-14.md): signed MIT krb5 1.22.3 candidate, exact Linux AES profile, synthetic signed-PAC and service/time/replay negatives, maintained alternatives, license and FFI boundary | Product Rust adapter, AD PAC/delegation/PKINIT and real-client conformance remain separate unrun gates |
 | P00-15 | [Entire original driver gate](validation/p00-15.md) explicitly accepted by owner | Native AD adapter/domain/key/backup behavior remains later implementation work |
 | P00-16 | [Thirteen byte-pinned references and actual use-notice review](reference-use-review.md); external image use/distribution denied without explicit rights | Resolve concrete patent/program and reference-fixture/image rights; no blanket clearance or legal certification |
 | P00-17 | [Solo intake/custody/absence process and explicit timing proposal](security-response-readiness.md); reporting configuration observed enabled | Original actual receipt/escalation drill and available backup remain unmet; timing change awaits owner agreement, no report sent |
@@ -168,7 +190,7 @@ replay with reauthorization, actual COMMIT reply-loss evidence and two coordinat
 PostgreSQL process-crash recoveries. These close the gaps left by the candidate
 increment. After reviewing the full packet and [passing 14-job CI](https://github.com/Ise-Tom/Babel/actions/runs/44327591957),
 the owner explicitly answered **“Validate P00-15”** on 18 November 2026. This
-accepts the entire original Phase 0 gate and selected profile. Phase 0 now has
+accepted the entire original Phase 0 gate and selected profile. Phase 0 then had
 **3 accepted, 8 in progress, 1 blocked and 5 planned requirements**. The four
 earlier acceptance proofs remain unchanged. Later native directory/key/backup/
 capacity gates remain under their actual Phase 1/3/4 requirements; neither
@@ -177,7 +199,7 @@ Phase 0 as a whole nor production AD compatibility is accepted.
 
 ## Completed functional-profile and governance exit packets
 
-P00-10 and P00-11 now have complete Phase 0 design packets for owner validation:
+The Phase 0 design packets for P00-10 and P00-11 cover
 [upgrade/recovery/scope governance](validation/p00-10.md) and
 [domain/forest functional profile](validation/p00-11.md). The original requirements
 are unchanged. Six worked interrupted transitions cover schema, keys, domain
@@ -186,22 +208,20 @@ invalidation material, expired exceptions, baseline waivers and false outcomes.
 The Linux-hosted 2016/2016 creation profile preserves Windows/Linux/macOS clients
 and explicitly refuses unqualified advertisements or level transitions. Immutable
 reference review distinguishes 2025 DC operating systems from the 2025 level and
-records a stale-source conflict. Both gates await explicit owner validation;
-actual upgrades, domain recovery and all 60 client conformance cases remain unrun.
+records a stale-source conflict. The owner accepted both scopes on 22 November
+2026. Actual upgrades, domain recovery and all 60 client conformance cases remain unrun.
 
 
 ## Completed toolchain/parser and project-license gates
 
-P00-04 and P00-06 now have full original-criterion packets for explicit owner
-validation. Actual native evidence binds the Linux/compiler/ELF/lockfile/binary;
+The owner accepted the P00-04 and P00-06 packets on 22 November 2026.
+Actual native evidence binds the Linux/compiler/ELF/lockfile/binary;
 debug and release arithmetic checks expose overflow, and required probes/fuzz/
 audits retain their separate results. Contribution/redistribution terms are
 recorded against real package notices. Notice extraction rejects omissions,
 unlisted files and rewritten manifests; the standalone dashboard safely retains
 full terms and blocks new unreviewed bundled runtime inputs. These close the
-original Phase 0 foundation gates without starting a new phase or claiming
-native AD conformance. P00-10/P00-11 remain awaiting their earlier owner reviews;
-all five existing accepted proofs are preserved.
+original Phase 0 foundation gates. Native AD conformance remains separate.
 
 
 ## Completed state, replication and threat-design gates
@@ -216,11 +236,9 @@ checker rejects missing cases/owners, source drift, false runtime/independent
 assessment and unjustified external-asset use. It checks design integrity, not
 AD semantics or proof of rights. All product cases remain unrun.
 
-Seven Phase 0 requirements are now prepared for explicit owner validation:
-P00-02/03/04/06/07/10/11. The three accepted Phase 0 scopes and both accepted
-Phase 1 scopes are unchanged. Whole Phase 0 is still incomplete: detailed
-operation mapping, exact licensed lab profiles, TLS/Kerberos qualification,
-reference-use clearance and the current P00-17 operational gate remain open.
+The owner accepted these design scopes on 22 November 2026. Detailed
+operation mapping, exact licensed lab profiles, reference-use clearance and
+the current P00-17 operational gate remain open.
 The solo-response scheduling proposal records the genuine constraint without
 pretending there is another responder or a successful intake drill.
 
@@ -238,10 +256,8 @@ unimplemented LDAP/SASL/EPA as explicit constraints; it does not claim productio
 revocation or AD compatibility. Required CI retains source/input/binary evidence
 and repeats coverage, sanitizer fuzz and packaged-binary probes.
 
-Eight Phase 0 gates now await owner validation: P00-02/03/04/06/07/10/11/13.
-The accepted scopes are unchanged. Detailed operation mapping, licensed lab
-profiles, Kerberos/PAC dependency qualification, use rights and actual response
-evidence remain open. No scheduling proposal or live drill is silently approved.
+The owner accepted the selected TLS review scope on 22 November 2026. Production
+TLS qualification remains open.
 
 ## Kerberos/PAC dependency review candidate
 
@@ -251,5 +267,5 @@ AES-256/AES-128 AP requests, signed minimal PAC verification, and negative
 wrong-service, replay, expired, missing-PAC, tampered-PAC and wrong-client cases.
 The library accepts a valid AP request without a PAC; Babel must reject
 PAC-dependent authority separately. Delegation, PKINIT, production FFI and AD
-client conformance remain explicitly unrun. The P00-14 dependency-review gate
-awaits owner validation; the previously accepted scopes are unchanged.
+client conformance remain explicitly unrun. The owner accepted the bounded
+P00-14 dependency review on 22 November 2026.

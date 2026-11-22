@@ -1,6 +1,6 @@
 # Initial domain and forest functional-level profile
 
-Status: **Phase 0 design complete; P00-11 owner validation pending**. This specifies
+Status: **the owner accepted the P00-11 Phase 0 design on 22 November 2026**. This specifies
 Babel's initial compatibility contract. No native DC currently implements or
 advertises a functional level. The server remains Linux-hosted; Windows, Linux
 and macOS devices remain explicit clients. Full identity, password and GPO scope

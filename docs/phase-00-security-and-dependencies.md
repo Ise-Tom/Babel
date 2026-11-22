@@ -1,7 +1,7 @@
 # Phase 0 security ownership and dependency qualification
 
-Status: full P00-07 boundary/threat/ownership design prepared for owner review;
-not an independent assessment or support promise.
+Status: the owner accepted the P00-07 boundary, threat and ownership design on
+22 November 2026. Independent assessment and supported operation remain open.
 Current accountable development owner is **Ise-Tom**, the repository owner. The solo
 PR policy requires owner diff review plus CI; it does not claim independent review.
 No additional maintainer, security mailbox or private report exercise is invented.
@@ -46,9 +46,9 @@ coverage remain gates even though daily development uses solo approvals.
 
 | Component | Current decision / alternatives | Qualification required before broader use |
 | --- | --- | --- |
-| Native toolchain/parser | [Complete P00-04 packet](validation/p00-04.md): Rust 1.100.0 Linux x86_64 GNU parser baseline, debug/release/overflow/client/fuzz/audit and actual compiler/ELF evidence | Owner validation pending; new targets/dependencies require requalification. TLS/Kerberos/storage and native AD behavior retain their separate gates |
-| TLS | [ADR 0006](adr/0006-tls-qualification-lab.md): Rustls 0.23.46/ring 0.17.14 standalone Linux lab candidate, with real OpenSSL/certificate/fuzz tests and retained notices; [full P00-13 provider/channel packet](validation/p00-13.md) now prepared for owner review | Native LDAP/SASL/EPA, general revocation freshness/OCSP, protected product key custody, real OS clients and concurrency retain their implementation/qualification gates; no custom cryptography |
-| Kerberos/PAC | [P00-14 packet](validation/p00-14.md): signed MIT krb5 1.22.3 selected for a bounded Linux AES/PAC/replay qualification profile after comparison with Heimdal 7.8.0 and libkrimes; synthetic loopback negative cases pass | Owner validation pending. Rust FFI, product replay/key custody, AD PAC/S4U/PKINIT and real Windows/Linux/macOS conformance are separate unrun integration gates; MIT's minimal PAC does not prove AD authority |
+| Native toolchain/parser | [Owner-accepted P00-04 packet](validation/p00-04.md): Rust 1.100.0 Linux x86_64 GNU parser baseline, debug/release/overflow/client/fuzz/audit and actual compiler/ELF evidence | New targets/dependencies require requalification. Native AD behavior remains open |
+| TLS | [Owner-accepted P00-13 provider/channel review](validation/p00-13.md) for the Rustls 0.23.46/ring 0.17.14 standalone Linux lab described in [ADR 0006](adr/0006-tls-qualification-lab.md) | Native LDAP/SASL/EPA, general revocation freshness/OCSP, protected product key custody, real OS clients and concurrency retain their implementation/qualification gates |
+| Kerberos/PAC | [Owner-accepted P00-14 decision](validation/p00-14.md) selects signed MIT krb5 1.22.3 for a bounded Linux AES/PAC/replay qualification profile | Rust FFI, product replay/key custody, AD PAC/S4U/PKINIT and real Windows/Linux/macOS conformance are separate unrun integration gates |
 | PostgreSQL | Owner selected backend family; PostgreSQL 18.7/psql SQL experiment and [tokio-postgres 0.7.18/Tokio 1.54.1 profile](validation/p00-15.md) now completes the Phase 0 driver review with typed/bounded operations, dropped-future safety, reply-loss/idempotency and process-crash evidence | The owner validated the full P00-15 gate on 18 November 2026. Native AD adapter/authorization, service auth provisioning, host/disk/backup/upgrade and key custody remain subsequent implementation/qualification gates |
 | DNS/SMB/RPC | Production parsers/transports not selected; reuse reviewed libraries where suitable without requiring Samba | Exact supported operation/encoding/signing/sealing matrix, adversarial bounds, licenses and fuzz/reference evidence |
 | Python / TypeScript | Current test/report tooling and dashboard, not native domain-server language | Hash-locked/pinned dependencies and current CI; tool/compiler changes must preserve security checks |
@@ -78,7 +78,7 @@ import another directory server's code/database as the native implementation.
 
 The complete [P00-06 contribution/redistribution register](licensing-and-redistribution.md)
 now records the existing owner decision, actual terms and enforced artifact handling.
-Its full Phase 0 criterion packet awaits owner validation; P00-16 remains separate.
+The owner accepted its Phase 0 scope on 22 November 2026. P00-16 remains open.
 
 
 The [complete boundary register](../lab/state-security-contract.json) expands the

@@ -1,6 +1,6 @@
 # Project licensing, contributions and redistribution register
 
-Status: **full P00-06 Phase 0 criterion packet complete; owner validation pending**.
+Status: **the owner accepted the P00-06 Phase 0 scope on 22 November 2026**.
 The project owner explicitly selected **Apache-2.0 + DCO** on 17 November 2026.
 The full [LICENSE](../LICENSE), [NOTICE](../NOTICE), verbatim [DCO 1.1](../DCO) and
 [contribution terms](../CONTRIBUTING.md) are applied. This records the actual
