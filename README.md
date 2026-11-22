@@ -61,11 +61,268 @@ Use the pinned packets to review exact scopes. Send the requirement IDs and pack
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T10:04:40\+01:00.
+GitHub metadata checked: 2026-11-22T10:12:58\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#37 · Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>)
+
+**In review · Pending merge · CI: in\_progress** · Head 438c6d4
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## Owner decision
+    
+    On 22 November 2026, the project owner approved P00-02, P00-03, P00-04, P00-06, P00-07, P00-10, P00-11, P00-13 and P00-14 for the exact Phase 0 scopes and limits of their pinned packets. The [decision record](https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/phase-00-progress.md#owner-decisions) links each original packet, its delivery PR and passing CI.
+    
+    The dashboard renders 12 of 17 Phase 0 requirements as accepted, 3 in progress and 2 blocked, with an empty Owner review queue. P00-01, P00-05, P00-12, P00-16 and P00-17 remain open. Whole-phase, capability and production acceptance remain separate.
+    
+    ## Verification
+    
+    Verified that the only requirement status changes are the nine approvals, their validation objects and original pins are preserved, and all earlier requirement, capability and whole-phase decisions match main. All 30 dashboard model/report tests and 36 desktop/mobile checks passed. Design and Markdown link checks passed. A small mobile spacing adjustment keeps the phase card fully visible with the new two-digit count.
+
+**Changed files:**
+
+- dashboard/capabilities.json
+- dashboard/progress.json
+- dashboard/src/main.ts
+- dashboard/src/style.css
+- docs/functional-level-profile.md
+- docs/licensing-and-redistribution.md
+- docs/native-parser-baseline.md
+- docs/phase-00-governance.md
+- docs/phase-00-progress.md
+- docs/phase-00-security-and-dependencies.md
+- docs/validation/p00-02.md
+- docs/validation/p00-03.md
+- docs/validation/p00-04.md
+- docs/validation/p00-06.md
+- docs/validation/p00-07.md
+- docs/validation/p00-10.md
+- docs/validation/p00-11.md
+- docs/validation/p00-13.md
+- docs/validation/p00-14.md
+
+#### Proposed W48 · Complete recovery/scope governance with enforced design-contract checks
+
+**Requirements:** P00-10
+
+**How it was done:** Added a versioned contract and strict planning checker with six complete worked schema/key/domain-restore/functional-level/storage/GPO records. Each contains owner/scope/requirements, all five impact classes, interruption and recovery controls, evidence invalidation/reruns and proposed review. Exceptions require named operation/client/site, owner/control/review, UTC activation/expiry and production impact; baseline/unknown/phase-gate waivers and rewriting observed outcomes fail. Required CI validates the contract and retains source/contract/matrix digest/time evidence. Prepared the complete original P00-10 criterion packet.
+
+**Recorded validation:** All 172 repository tests pass at 99% combined statement/branch coverage. The new checker has 100% statement/branch coverage. Negative tests reject omitted controls, false runtime passes, partial invalidation, unreviewed exceptions, expiry at its exact boundary, unknown IDs, protected baseline/phase-gate waivers and mutable/duplicate references. Strict mypy/Ruff and Bandit/workflow lint/security checks pass.
+
+**Limits and remaining work:** This implements planning consistency checks and completes the Phase 0 design gate; it neither authenticates prose/reviewer claims nor performs/authorizes a live migration or recovery. No current exception is active. Actual native migration, key/domain recovery and independent production review remain their own gates.
+
+**PR-head evidence:** [docs/validation/p00-10.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-10.md>) · [docs/phase-00-governance.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/phase-00-governance.md>) · [lab/phase0-contract.json](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/lab/phase0-contract.json>) · [scripts/check\_phase0\_contract.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/scripts/check_phase0_contract.py>) · [tests/test\_phase0\_contract.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/tests/test_phase0_contract.py>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/.github/workflows/ci.yml>)
+
+
+#### Proposed W50 · Complete the qualified Linux/Rust toolchain and bounded parser baseline
+
+**Requirements:** P00-04
+
+**How it was done:** Declared and qualified a Linux x86\_64 GNU parser profile, with Ubuntu 24.04 CI and Debian 13 observations. Added source/lock/policy/compiler/LLVM/readelf/host/binary facts and runtime Cargo-closure checks; new parser normal/build/FFI expansion or missing PIE/full RELRO/non-executable-stack protections fails. Enabled optimized overflow checks and added a real debug/release overflow test. Required CI now retains actual parser-baseline evidence alongside existing probes, coverage, audit and sanitizer-fuzz results. Recorded alternatives and upstream maintenance responsibilities in the full original P00-04 packet.
+
+**Recorded validation:** 185 repository tests pass at 99% combined statement/branch coverage; the new qualification collector has 100% coverage. Local all-feature Clippy, workspace tests and real release LDAP/OpenSSL probes pass, including all 19 TLS methods. Release arithmetic visibly fails rather than wrapping. The actual Debian 13.6 binary shows PIE, full RELRO and a non-executable stack, exact Rust 1.100.0/LLVM 23.1.5 and a dependency-free parser normal/runtime crate closure. Required CI separately repeats the real tests, &gt;=90% native coverage, locked graph audits and bounded sanitizer fuzz.
+
+**Limits and remaining work:** Std/libc internals remain upstream trust, and ring native code is a separate TLS boundary. Other targets/new parser dependencies require requalification. Linux server baseline qualification does not qualify Windows/Linux/macOS client behavior or native AD semantics, capacity, credential handling or full-server operation. All 60 conformance scenarios remain unrun.
+
+**PR-head evidence:** [docs/validation/p00-04.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-04.md>) · [docs/native-parser-baseline.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/native-parser-baseline.md>) · [scripts/qualify\_parser\_baseline.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/scripts/qualify_parser_baseline.py>) · [tests/test\_parser\_baseline.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/tests/test_parser_baseline.py>) · [Cargo.toml](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/Cargo.toml>) · [native/babel-ldap/tests/toolchain.rs](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/native/babel-ldap/tests/toolchain.rs>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/.github/workflows/native.yml>)
+
+
+#### Proposed W51 · Complete project contribution and redistribution obligations with omission-safe artifacts
+
+**Requirements:** P00-06
+
+**How it was done:** Preserved the owner-selected Apache-2.0/DCO and documented the complete contribution/selected-third-party obligation register. Hardened notice verification against missing required terms, omitted/unlisted files, symlinks and missing/duplicate/unaccounted package inventories; extraction compares a manifest SHA-256 captured before archiving. Standalone dashboard HTML now retains full project and actual esbuild terms inertly; esbuild input accounting refuses new unreviewed bundled runtime sources. One-pass template substitution also preserves authored placeholder text. Prepared the full original P00-06 criterion packet. Native bundles also retain actual glibc/libgcc package copyright and LGPL/GPL texts; system libraries remain dynamically replaceable and are not bundled.
+
+**Recorded validation:** 185 repository tests pass at 99% combined coverage, including 13 notice-verifier methods with omission, changed-manifest, package-binding, digest and symlink denials. A real protocol notice bundle \(11 packages/46 files\) was archived, extracted and verified against its original manifest digest; the real driver bundle \(62 packages/150 files\) also passes strict verification. Nine dashboard build/security tests pass, checking full retained license text, inert escaping, literal placeholder preservation and rejected runtime inputs. No dependency or Cargo license allowance was added; actual GNU runtime terms are retained separately, with no fabricated DCO sign-off.
+
+**Limits and remaining work:** Inventories and trusted CI digests are not independent legal certification, complete binary-link analysis or public release signatures. Actual system shared-library names are recorded separately from Cargo; broader installers/containers must assess their contents. Exact protocol/reference-image/fixture rights stay P00-16, and future product/agent distribution retains its own review.
+
+**PR-head evidence:** [docs/validation/p00-06.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-06.md>) · [docs/licensing-and-redistribution.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/licensing-and-redistribution.md>) · [CONTRIBUTING.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/CONTRIBUTING.md>) · [scripts/collect\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/scripts/collect_native_notices.py>) · [tests/test\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/tests/test_native_notices.py>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/.github/workflows/native.yml>) · [dashboard/build.mjs](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/dashboard/build.mjs>) · [dashboard/tests/build.test.mjs](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/dashboard/tests/build.test.mjs>) · [dashboard/src/index.html](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/dashboard/src/index.html>)
+
+
+#### Proposed W52 · Complete identity, schema, authorization and local commit design
+
+**Requirements:** P00-02
+
+**How it was done:** Replaced ambiguous draft invariants with nine original worked cases against actual pinned ADTS/DRSR/DTYP editions. Distinguished GUID from domain-move SID changes, local uniqueness from replica name repair, ordered object/attribute/control checks, move-parent rights, hidden filter attributes, asynchronous inheritance, group/GC/token freshness and durable reauthorized receipts.
+
+**Recorded validation:** 196 repository tests pass at 99% combined statement/branch coverage. The new checker has 99% coverage and exercises missing-case/owner/source/rights/runtime denials. Actual public bytes for 13 document editions and all 58 referenced section headings were checked locally; required CI validates committed source bindings offline.
+
+**Limits and remaining work:** Native GUID/SID/schema/matching/ACL/token behavior remains unimplemented and unqualified. Inheritance, existing PAC and cross-site freshness are not instantaneous revocation promises. All 60 client cases remain unrun.
+
+**PR-head evidence:** [docs/validation/p00-02.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-02.md>) · [docs/adr/0005-directory-and-replication-invariants.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/adr/0005-directory-and-replication-invariants.md>) · [lab/state-security-contract.json](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/lab/state-security-contract.json>) · [scripts/check\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/scripts/check_state_security.py>) · [tests/test\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/tests/test_state_security.py>)
+
+
+#### Proposed W53 · Complete source-pinned replication, conflicts and restore epoch design
+
+**Requirements:** P00-03
+
+**How it was done:** Specified eleven worked cases for per-attribute origin/local progress, modular version comparison, little-endian GUID ordering, distinct link lifetimes, timestamp/object-GUID naming conflicts, deletion repair, safe response/cycle progress, invocation epochs, stale-retention quarantine and RID authority. The disk format remains unfrozen.
+
+**Recorded validation:** The selected ADTS/DRSR/DTYP PDF bytes and exact section headings were inspected and checked. Required consistency checks reject lost cases, stale heading hashes and invented passing outcomes; 196 repository tests pass. Attribute, link and naming rules are expressly distinct rather than an unqualified generic comparator.
+
+**Limits and remaining work:** No native DRS comparator, convergent multi-DC service, Windows observation, VM-generation detection, clean-domain recovery or RID seizure is implemented or accepted.
+
+**PR-head evidence:** [docs/validation/p00-03.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-03.md>) · [docs/adr/0005-directory-and-replication-invariants.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/adr/0005-directory-and-replication-invariants.md>) · [lab/state-security-contract.json](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/lab/state-security-contract.json>) · [lab/specification-pins.json](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/lab/specification-pins.json>) · [scripts/check\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/scripts/check_state_security.py>)
+
+
+#### Proposed W54 · Complete accountable Tier 0 and later-module threat-boundary design
+
+**Requirements:** P00-07
+
+**How it was done:** Bound eleven named trust boundaries to all twenty canonical threats, with current owner Ise-Tom, assets, misuse cases, required denial/fault behavior, residual risk and actual implementation gates. Covered core/store/keys/replicas/web/restore/supply chain/external/fleet/support-files/EDR authority without starting later phases.
+
+**Recorded validation:** CI consistency checks require all original boundaries, every threat, nonempty owners and known implementation gates; regression tests reject absent coverage, unknown threats, lost residual risks and false independent/runtime qualification. All 196 repository tests pass.
+
+**Limits and remaining work:** Solo ownership is not independent assessment, operational backup coverage or implemented service security. Actual response exercises remain P00-17 and later production safeguards.
+
+**PR-head evidence:** [docs/validation/p00-07.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-07.md>) · [docs/threat-model.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/threat-model.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/phase-00-security-and-dependencies.md>) · [lab/state-security-contract.json](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/lab/state-security-contract.json>) · [tests/test\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/tests/test_state_security.py>)
+
+
+#### Proposed W57 · Complete the TLS provider and channel-boundary qualification review
+
+**Requirements:** P00-13
+
+**How it was done:** Added an expiry-enforcing direct-issuer leaf-CRL profile with unknown status denied, complete configuration replacement, private key-file permission checks and a bounded TLS 1.3 RFC 9266 exporter request. Independent OpenSSL validates current/revoked/expired/foreign/tampered status and session-bound exporter behavior; Python SSL observes actual certificate replacement in the same process. Test-only Rustls provider interfaces fail entropy, clock, key loading and live signing without authentication. The fuzzer now also reaches real CRL decoding. Prepared the complete original Phase 0 review packet with exact versions/features, alternatives, custody/FFI/maintenance and explicit limits.
+
+**Recorded validation:** All 10 Rust TLS tests pass, including four real provider-interface failure modes and retained old configurations. All 27 independent release/instrumented probe methods pass, including wrong/truncated/replayed bindings, eight mandatory boundary methods and no skips. TLS-library line coverage is 95.45%, above its separate 90% gate. Address-sanitizer fuzz completed 20,000 iterations; all workspace tests and all-feature Clippy pass. The 196 repository tests retain 99% combined coverage; types/lint/security/design checks pass. JSON retains source/input/probe/binary hashes and actual OpenSSL/method/failure/skip facts.
+
+**Limits and remaining work:** No new crate, feature, custom TLS/crypto/verifier or permissive production switch was added. WebPKI checks CRL nextUpdate but not thisUpdate: external/rollback-resistant freshness, OCSP and intermediate revocation are unqualified. Software key files are disposable lab material, not encrypted/HSM custody, zeroization, owner/ancestor-safe product loading or operator provisioning. Exporter matching is not LDAP/SASL/EPA/tls-server-end-point or an authorization grant. Existing sessions retain their config; no instant revocation, full service, real OS-client or production load/security acceptance is claimed. All 60 client cases remain unrun.
+
+**PR-head evidence:** [docs/validation/p00-13.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-13.md>) · [docs/adr/0006-tls-qualification-lab.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/adr/0006-tls-qualification-lab.md>) · [native/babel-tls-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/native/babel-tls-lab/src/lib.rs>) · [native/babel-tls-lab/src/main.rs](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/native/babel-tls-lab/src/main.rs>) · [native/babel-tls-lab/src/budget\_tests.rs](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/native/babel-tls-lab/src/budget_tests.rs>) · [native/babel-tls-lab/tests/handshake.rs](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/native/babel-tls-lab/tests/handshake.rs>) · [native/babel-tls-lab/tests/interop\_tls.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/native/babel-tls-lab/tests/interop_tls.py>) · [fuzz/fuzz\_targets/tls\_record.rs](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/fuzz/fuzz_targets/tls_record.rs>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/.github/workflows/native.yml>)
+
+
+#### Proposed W59 · Qualify the signed MIT Kerberos/PAC dependency candidate
+
+**Requirements:** P00-14
+
+**How it was done:** Compared MIT krb5 1.22.3, Heimdal 7.8.0 and libkrimes. Added a signed-source, SHA-256-pinned disposable Linux KDC and C API probe with synthetic principals, AES-only keys, a local replay cache and PAC signature/client checks. Reviewed maintenance, licensing, unsafe/FFI and Babel&\#x27;s separate authorization obligations in the complete Phase 0 packet.
+
+**Recorded validation:** A fresh WSL2 run built MIT krb5 1.22.3 from the verified upstream archive with exact compiler/build inputs and selected MIT dynamic libraries recorded. AES-256 and AES-128 AP requests plus signed minimal PACs pass; wrong service, one-process replay, expired ticket, changed PAC and wrong PAC client reject. A no-PAC request authenticates but returns null PAC. The final PR \#33 CI passed all 15 jobs, including the required native lab with retained JSON evidence.
+
+**Limits and remaining work:** No Rust product FFI or AD KDC/client conformance was exercised. S4U/delegation, PKINIT, cross-realm, replay durability/replicas, production key custody and actual Windows/Linux/macOS clients remain unrun. MIT&\#x27;s synthetic minimal PAC supplies no AD group/SID authorization. No Babel production binary or notice bundle is qualified.
+
+**PR-head evidence:** [docs/validation/p00-14.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-14.md>) · [lab/kerberos/run.sh](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/lab/kerberos/run.sh>) · [lab/kerberos/ap\_req\_probe.c](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/lab/kerberos/ap_req_probe.c>) · [lab/kerberos/evidence/local-wsl-2026-11-21.json](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/lab/kerberos/evidence/local-wsl-2026-11-21.json>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/.github/workflows/native.yml>)
+
+#### Proposed problem update: I26 · Kerberos candidate ready for review; product transport integration remains unqualified
+
+**Proposed status:** open
+
+The owner accepted the P00-04 parser, P00-13 TLS/provider/channel, P00-14 Kerberos/PAC and P00-15 driver reviews for their documented Phase 0 scopes. The P00-14 synthetic AES/PAC/replay results do not establish native AD authority. Actual Rust FFI, LDAP/SASL/EPA, key/service integration, S4U/PKINIT and client conformance remain unfinished.
+
+**Resolution:** Still open
+
+**Next action:** Review the P00-14 dependency packet, then implement the narrow Rust FFI and fail-closed PAC/authorization interface with product replay and key custody. Run actual client/reference S4U, PKINIT and AD cases under their separate gates.
+
+**Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
+
+[docs/validation/p00-13.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-13.md>) · [docs/validation/p00-14.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-14.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/phase-00-security-and-dependencies.md>) · [docs/phases/phase-01.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/phases/phase-01.md>)
+
+#### Proposed problem update: I36 · Functional-level scope lacked a complete transition contract and current reference precedence
+
+**Proposed status:** resolved
+
+The owner-selected 2016 baseline did not yet distinguish current Windows DC OS support from functional levels or enumerate unsupported transition/optional-feature behavior. The pinned upgrade article also says no levels were added since 2016, contradicting the current functional-level table’s 2025 profile.
+
+**Resolution:** Completed the 2016/2016 Linux-hosted design, preserved Windows/Linux/macOS clients, reviewed inherited/optional/2025/FRS/coexistence/rollback boundaries, and documented current-table precedence. CI checks exact matrix/profile consistency, immutable distinct references and the empty advertised-level set.
+
+**Next action:** Qualify actual native levels/features/clients and exact platforms under their separate requirements before advertisement.
+
+**Provenance:** Concrete design/reference conflict found by reading the current upstream source revisions; not a GitHub setup issue.
+
+[docs/functional-level-profile.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/functional-level-profile.md>) · [docs/validation/p00-11.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-11.md>)
+
+#### Proposed problem update: I37 · Recovery governance lacked enforced complete review and exception records
+
+**Proposed status:** resolved
+
+The earlier prose outlined transitions but had no versioned complete records or CI guard against omitted recovery controls, expired exceptions, unknown/baseline waivers and observations being relabeled passed. Future design changes could drift without a source-bound consistency report.
+
+**Resolution:** Implemented all six worked transition records, the strict source/digest-bound checker and required CI artifact. Added negative tests for recovery, evidence invalidation, review material, exact UTC expiry, unknown/phase-gate/baseline waivers and false outcomes. Completed the original Phase 0 governance criterion packet.
+
+**Next action:** Preserve the review contract and implement/test real runtime state machines at their native phase gates. Passing record structure does not authenticate review identity or prove recovery.
+
+**Provenance:** Development design-integrity gap resolved with concrete CI/tooling and full criterion evidence; not an account/hosting incident.
+
+[docs/phase-00-governance.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/phase-00-governance.md>) · [scripts/check\_phase0\_contract.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/scripts/check_phase0_contract.py>) · [tests/test\_phase0\_contract.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/tests/test_phase0_contract.py>)
+
+#### Proposed problem update: I38 · Optimized arithmetic and observed native build protections lacked an explicit qualification gate
+
+**Proposed status:** resolved
+
+The release profile inherited disabled overflow checks, while current host/compiler/ELF facts were not bound to the exact tested parser artifact. The original Phase 0 parser/toolchain gate also lacked a complete platforms/alternatives/maintenance exit packet.
+
+**Resolution:** Enabled release overflow checks with a real debug/release failure test. Added compiler/host/lock/binary-bound evidence, parser dependency/FFI guards and actual PIE/full-RELRO/NX-stack checks to required CI, plus the full original criterion packet.
+
+**Next action:** Keep the profile bounded and requalify toolchain/target/dependency changes. Native AD and client behavior retain their separate requirements.
+
+**Provenance:** Concrete development/build/distribution gap verified against existing code and closed with negative regression tests; not a GitHub setup issue.
+
+[docs/native-parser-baseline.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/native-parser-baseline.md>) · [scripts/qualify\_parser\_baseline.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/scripts/qualify_parser_baseline.py>) · [native/babel-ldap/tests/toolchain.rs](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/native/babel-ldap/tests/toolchain.rs>)
+
+#### Proposed problem update: I39 · Notice verification could miss omitted inventory entries and standalone HTML lacked retained full terms
+
+**Proposed status:** resolved
+
+The verifier checked only listed files. Dropping a file/package entry could therefore escape self-manifest checks, and the standalone dashboard did not retain the full project license and applicable build-tool notice text.
+
+**Resolution:** Require complete file/package accounting, mandatory project/Rust terms, no symlink roots/trees/manifests, and the original pre-archive manifest digest at extraction. Retain full project/esbuild terms inside inert dashboard HTML and block newly bundled runtime inputs until their notice policy is reviewed. Retain actual GNU runtime copyright/LGPL/GPL terms as well as Cargo/Rust terms, without broadening the Cargo license policy.
+
+**Next action:** Re-evaluate actual contents before broader distributions. Keep specification/image/fixture rights under P00-16.
+
+**Provenance:** Concrete development/build/distribution gap verified against existing code and closed with negative regression tests; not a GitHub setup issue.
+
+[docs/licensing-and-redistribution.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/licensing-and-redistribution.md>) · [scripts/collect\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/scripts/collect_native_notices.py>) · [tests/test\_native\_notices.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/tests/test_native_notices.py>) · [dashboard/build.mjs](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/dashboard/build.mjs>)
+
+#### Proposed problem update: I41 · Earlier state draft conflated immutable SIDs, ordered ACLs, propagation and token freshness
+
+**Proposed status:** resolved
+
+The draft could suggest an unchanging SID across domain moves, global deny-first evaluation, immediate inheritance/revocation and invalidity of every group cycle. Those assumptions would lead to incorrect native authorization behavior.
+
+**Resolution:** Replaced draft assumptions with pinned GUID/SID move exceptions, ordered access checks, hidden-filter semantics, asynchronous inheritance and separate GC/token freshness, with nine worked design cases. Native implementation remains its own gate.
+
+**Next action:** Qualify actual native/client/fault behavior under its implementation gates.
+
+**Provenance:** Concrete design/reference interpretation gap found by inspecting actual readable publisher editions; resolved at the design layer only, not a GitHub setup incident.
+
+[docs/validation/p00-02.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-02.md>) · [docs/adr/0005-directory-and-replication-invariants.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/adr/0005-directory-and-replication-invariants.md>) · [lab/state-security-contract.json](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/lab/state-security-contract.json>)
+
+#### Proposed problem update: I42 · Draft replication conflict rules needed distinct attribute, link and name procedures
+
+**Proposed status:** resolved
+
+A generic version/time/origin comparator misses attribute wrap/half-range rules, linked lifetimes, little-endian GUID comparison and the name timestamp/object-GUID conflict rule. Unqualified cursor/restore assumptions could advertise unseen data.
+
+**Resolution:** Pinned actual DRSR/ADTS rules and eleven worked cases, distinguishing scalar/link/name algorithms, safe progress, deletion repair, invocation epochs and RID/retention quarantine. No unimplemented runtime comparator is labeled passing.
+
+**Next action:** Qualify actual native/client/fault behavior under its implementation gates.
+
+**Provenance:** Concrete design/reference interpretation gap found by inspecting actual readable publisher editions; resolved at the design layer only, not a GitHub setup incident.
+
+[docs/validation/p00-03.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-03.md>) · [docs/adr/0005-directory-and-replication-invariants.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/adr/0005-directory-and-replication-invariants.md>) · [lab/state-security-contract.json](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/lab/state-security-contract.json>)
+
+#### Proposed problem update: I43 · TLS candidate lacked executed revocation, replacement, exact binding and provider-loss evidence
+
+**Proposed status:** resolved
+
+The original lab only qualified ordinary certificate handshakes and a generic exporter prerequisite. It did not exercise actual CRL status/expiry, certificate replacement, exact session-binding rejection or unavailable clock/entropy/key/signer interfaces. Rustls ignores CRL expiry unless explicitly enabled.
+
+**Resolution:** Added the bounded CRL profile with explicit expiration enforcement and unknown-status denial, replacement/retained-config semantics, RFC 9266 session binding and provider-fault tests. Independent probes and sanitizer/coverage gates now exercise the selected profile; missing boundary methods or skipped probes fail.
+
+**Next action:** Preserve the declared profile limits and separately qualify actual native product integration.
+
+**Provenance:** Concrete native qualification gap and upstream default found by inspecting the selected library APIs and running owned synthetic handshakes; resolved for the stated engineering profile only.
+
+[docs/validation/p00-13.md](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/docs/validation/p00-13.md>) · [native/babel-tls-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/native/babel-tls-lab/src/lib.rs>) · [native/babel-tls-lab/src/budget\_tests.rs](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/native/babel-tls-lab/src/budget_tests.rs>) · [native/babel-tls-lab/tests/interop\_tls.py](<https://github.com/Ise-Tom/Babel/blob/438c6d4b8d3ddc15bd2d725892ffd9344cae8478/native/babel-tls-lab/tests/interop_tls.py>)
+
+
+</details>
 
 
 ## Phase 00
@@ -109,6 +366,8 @@ Nine worked local cases cover GUID/domain SID rules, schema/matching and collisi
 
 **Validation packet:** Full original P00-02 Phase 0 Identity/schema/authorization/local commit design gate; no native AD behavior, independent production assessment or whole-phase acceptance. [Merged PR \#30](<https://github.com/Ise-Tom/Babel/pull/30>) · [Review packet](<https://github.com/Ise-Tom/Babel/blob/2989ed476e57297f729d0e3dffd89a703e4175ac/docs/validation/p00-02.md>)
 
+**Pending PR proposals:** [\#37: Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W12: Threat model and open decision register; W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments; W34: Specify stable state and worked replication/recovery invariants; W52: Complete identity, schema, authorization and local commit design. See the [implementation journal](#implementation-journal).
 
 ### P00-03
@@ -123,6 +382,8 @@ Eleven worked cases specify independent updates, version wrap/half-range, little
 
 **Validation packet:** Full original P00-03 Phase 0 Replication/versioning/conflict/restore epoch design gate; no native AD behavior, independent production assessment or whole-phase acceptance. [Merged PR \#30](<https://github.com/Ise-Tom/Babel/pull/30>) · [Review packet](<https://github.com/Ise-Tom/Babel/blob/2989ed476e57297f729d0e3dffd89a703e4175ac/docs/validation/p00-03.md>)
 
+**Pending PR proposals:** [\#37: Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W12: Threat model and open decision register; W34: Specify stable state and worked replication/recovery invariants; W53: Complete source-pinned replication, conflicts and restore epoch design. See the [implementation journal](#implementation-journal).
 
 ### P00-04
@@ -136,6 +397,8 @@ The full original Phase 0 toolchain/parser gate is complete: Linux x86\_64 GNU o
 **Acceptance evidence required:** Record supported platforms, alternatives, license/advisory maintenance and locked build/fuzz/security jobs.
 
 **Validation packet:** Full original P00-04 memory-safe toolchain/parser-baseline gate for linux-x86\_64-gnu-bounded-parser-v1; no native AD or whole-server qualification. [Merged PR \#29](<https://github.com/Ise-Tom/Babel/pull/29>) · [Review packet](<https://github.com/Ise-Tom/Babel/blob/900a24e7cd38957905d00f628e0b5445511ae52d/docs/validation/p00-04.md>)
+
+**Pending PR proposals:** [\#37: Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W01: Native Rust workspace and reproducible builds; W27: Record PostgreSQL selection and a reviewable native state contract; W35: Map security ownership and dependency/rights qualification gaps; W39: Refine phase requirements by independent acceptance obligations; W42: Qualify a bounded Rustls/ring TLS candidate with independent enforcement tests; W50: Complete the qualified Linux/Rust toolchain and bounded parser baseline. See the [implementation journal](#implementation-journal).
 
@@ -163,6 +426,8 @@ The full original Phase 0 license/contribution gate is complete: existing owner-
 
 **Validation packet:** Full original P00-06 project-license/contributor/third-party-obligation-recording gate; preserves the existing license decision, with specification/image/fixture and future product release rights separate. [Merged PR \#29](<https://github.com/Ise-Tom/Babel/pull/29>) · [Review packet](<https://github.com/Ise-Tom/Babel/blob/900a24e7cd38957905d00f628e0b5445511ae52d/docs/validation/p00-06.md>)
 
+**Pending PR proposals:** [\#37: Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W25: Apply owner-selected Apache-2.0 license and DCO contribution terms; W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients; W35: Map security ownership and dependency/rights qualification gaps; W39: Refine phase requirements by independent acceptance obligations; W43: Retain and verify actual license notices in experimental native archives; W44: Qualify an async PostgreSQL driver and prevent false transaction acknowledgments; W51: Complete project contribution and redistribution obligations with omission-safe artifacts. See the [implementation journal](#implementation-journal).
 
 ### P00-07
@@ -176,6 +441,8 @@ Eleven separately owned trust boundaries map all twenty threats to assets, misus
 **Acceptance evidence required:** Every boundary has misuse cases and accountable review; solo development review is not independent production assessment.
 
 **Validation packet:** Full original P00-07 Phase 0 Tier 0 boundary/threat/ownership design gate; no native AD behavior, independent production assessment or whole-phase acceptance. [Merged PR \#30](<https://github.com/Ise-Tom/Babel/pull/30>) · [Review packet](<https://github.com/Ise-Tom/Babel/blob/2989ed476e57297f729d0e3dffd89a703e4175ac/docs/validation/p00-07.md>)
+
+**Pending PR proposals:** [\#37: Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W12: Threat model and open decision register; W35: Map security ownership and dependency/rights qualification gaps; W39: Refine phase requirements by independent acceptance obligations; W54: Complete accountable Tier 0 and later-module threat-boundary design. See the [implementation journal](#implementation-journal).
 
@@ -219,6 +486,8 @@ The full Phase 0 upgrade/recovery/scope-governance design gate is complete. Six 
 
 **Validation packet:** Full original P00-10 Phase 0 governance design gate, including review/recovery examples and owner/expiry/production-impact exception policy; not runtime recovery. [Merged PR \#28](<https://github.com/Ise-Tom/Babel/pull/28>) · [Review packet](<https://github.com/Ise-Tom/Babel/blob/380d564183b9217acbde16476658fe003cf72338/docs/validation/p00-10.md>)
 
+**Pending PR proposals:** [\#37: Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI; W33: Enforce versioned conformance evidence integrity in CI; W34: Specify stable state and worked replication/recovery invariants; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence; W45: Make phase activity and recent work visible separately from acceptance; W48: Complete recovery/scope governance with enforced design-contract checks; W60: Improve dashboard refresh triggers and manual Pages retries; W61: Group owner decisions with merged PRs and pinned review packets. See the [implementation journal](#implementation-journal).
 
 ### P00-11
@@ -232,6 +501,8 @@ The full Phase 0 functional-level design gate is complete: Linux-hosted 2016 dom
 **Acceptance evidence required:** Review supported levels, transitions and incompatible behavior; do not advertise unqualified levels.
 
 **Validation packet:** Full original P00-11 Phase 0 level/transition/incompatibility design gate; no native functional-level or client-conformance acceptance. [Merged PR \#28](<https://github.com/Ise-Tom/Babel/pull/28>) · [Review packet](<https://github.com/Ise-Tom/Babel/blob/380d564183b9217acbde16476658fe003cf72338/docs/validation/p00-11.md>)
+
+**Pending PR proposals:** [\#37: Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W49: Complete the Linux-hosted 2016 domain/forest functional-level contract. See the [implementation journal](#implementation-journal).
 
@@ -259,6 +530,8 @@ The full original Phase 0 library/provider/channel qualification-review packet i
 
 **Validation packet:** Full original P00-13 TLS library/provider/channel qualification-review gate for linux-rustls-ring-transport-v1; disposable software keys and owned current direct-issuer CRL fixtures only, with explicit production/AD integration limits. [Merged PR \#31](<https://github.com/Ise-Tom/Babel/pull/31>) · [Review packet](<https://github.com/Ise-Tom/Babel/blob/292291ec4d79a03f7355e8d3646c9e850b6c0489/docs/validation/p00-13.md>)
 
+**Pending PR proposals:** [\#37: Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W42: Qualify a bounded Rustls/ring TLS candidate with independent enforcement tests; W57: Complete the TLS provider and channel-boundary qualification review. See the [implementation journal](#implementation-journal).
 
 ### P00-14
@@ -272,6 +545,8 @@ The Phase 0 dependency and cryptographic-maintenance review recommends signed MI
 **Acceptance evidence required:** Review AES/PAC/replay/delegation support, licenses, FFI/unsafe boundaries and upstream maintenance; generic Kerberos is not AD conformance.
 
 **Validation packet:** Full original P00-14 Phase 0 dependency-selection and cryptographic-maintenance review for mit-krb5-1.22.3-linux-x86\_64-aes-cts-lab-v1; generic synthetic Kerberos evidence only, with explicit AD and product limits. [Merged PR \#33](<https://github.com/Ise-Tom/Babel/pull/33>) · [Review packet](<https://github.com/Ise-Tom/Babel/blob/cf6681c22bc42707de6efc5b5c8db59eb70504ea/docs/validation/p00-14.md>)
+
+**Pending PR proposals:** [\#37: Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W59: Qualify the signed MIT Kerberos/PAC dependency candidate. See the [implementation journal](#implementation-journal).
 
@@ -395,6 +670,8 @@ Credential rejection is implemented; real Kerberos/password/key behavior awaits 
 
 **Acceptance evidence required:** Positive/denied authentication, replay, expiry and downgrade tests pass without credential disclosure.
 
+**Pending PR proposals:** [\#37: Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W04: Credential rejection and safe diagnostics; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
 ### P01-06
@@ -505,6 +782,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Authorized/denied password operations enforce policy; key custody, rotation and redaction precede valuable credential storage.
 
+**Pending PR proposals:** [\#37: Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P01-15
@@ -528,6 +807,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [PLAT-02: Repeatable Linux installation, service supervision, reboot recovery, upgrade and removal that preserves directory data by default](<https://github.com/Ise-Tom/Babel/blob/49ced42fa429eb14571d8d1f852961dbce014bca/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/49ced42fa429eb14571d8d1f852961dbce014bca/docs/requirements.md>); [SEC-04: TLS 1.2 minimum, TLS 1.3 preferred; certificate identity validation and rotation; trust roots managed explicitly](<https://github.com/Ise-Tom/Babel/blob/49ced42fa429eb14571d8d1f852961dbce014bca/docs/requirements.md>)
 
 **Acceptance evidence required:** Missing/expired/untrusted certificates and unsafe channel settings stop affected operations without disabling verification.
+
+**Pending PR proposals:** [\#37: Record the nine Phase 0 owner approvals](<https://github.com/Ise-Tom/Babel/pull/37>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
