@@ -753,7 +753,7 @@ dialog .button {
   .crumb { font-size: 10px; }
   .phase-card { padding: 10px; }
   .phase-card.in_progress { padding-top: 8px; }
-  .phase-card h3 { min-height: 68px; }
+  .phase-card h3 { min-height: 54px; }
 }
 @media(prefers-reduced-motion:no-preference) {
   button,a { transition: background .12s ease,color .12s ease; }

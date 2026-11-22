@@ -103,7 +103,7 @@
     "OPS-01": {
       "status": "planned",
       "category": "experiment",
-      "scope": "The P00-15 driver/transaction foundation is owner-accepted; the complete six-transition P00-10 governance contract now has enforced CI consistency and awaits review. Native directory backup/restore/upgrade operations remain unimplemented.",
+      "scope": "The owner accepted the P00-15 driver/transaction foundation and the P00-10 governance design covering six transitions. Native directory backup, restore and upgrade operations remain unimplemented.",
       "implemented": [],
       "missing": [
         "Native directory backup/restore and upgrade",
@@ -148,7 +148,7 @@
     "SEC-04": {
       "status": "prototype",
       "category": "experiment",
-      "scope": "Selected Linux/Rustls/ring provider/channel qualification profile complete for Phase 0 owner review. Bounded synthetic mutual TLS, CRL/replacement/exporter/fault controls are implemented; native LDAP/SASL/EPA and general production lifecycle are unqualified.",
+      "scope": "The owner accepted the selected Linux/Rustls/ring lab review at P00-13. Bounded synthetic mutual TLS, CRL/replacement/exporter/fault controls are implemented. Native LDAP/SASL/EPA and general production lifecycle remain unqualified.",
       "implemented": [
         "Explicit trust root and mandatory certificate validation in a bounded TLS 1.2/1.3 lab",
         "Certificate identity/trust/time/purpose, obsolete-protocol and unapproved-cipher rejection tests",
@@ -177,7 +177,7 @@
     "AD-01": {
       "status": "planned",
       "category": "product",
-      "scope": "Full P00-02 identity/schema/ACL/local commit design and P00-11 functional-profile design are prepared for owner validation. Native domain/object/account/password behavior is unimplemented.",
+      "scope": "The owner accepted the P00-02 identity/schema/ACL/local commit design and the P00-11 functional-level design. Native domain, object, account and password behavior remain unimplemented.",
       "implemented": [],
       "missing": [
         "Native domain/forest creation and qualified functional-level behavior",
@@ -198,7 +198,7 @@
     "PLAT-01": {
       "status": "planned",
       "category": "runtime_lab",
-      "scope": "The existing parser lab has a completed Linux x86_64 GNU compiler/binary qualification packet (P00-04), pending owner review. Full domain-server installation and operation remain unimplemented.",
+      "scope": "The owner accepted the parser lab's Linux x86_64 GNU compiler and binary qualification at P00-04. Full domain server installation and operation remain unimplemented.",
       "implemented": [],
       "missing": [
         "Qualified installation/service lifecycle of all native Linux server roles",
@@ -217,7 +217,7 @@
     "AD-07": {
       "status": "planned",
       "category": "product",
-      "scope": "Full P00-03 replication/conflict/restore epoch design is prepared for owner validation; no native replica transport, convergence or recovery service is implemented.",
+      "scope": "The owner accepted the P00-03 replication, conflict and restore epoch design. Native replica transport, convergence and recovery remain unimplemented.",
       "implemented": [],
       "missing": [
         "Authenticated DRS peer/NC authority and actual wire replication",
@@ -236,7 +236,7 @@
     "SEC-01": {
       "status": "planned",
       "category": "product",
-      "scope": "Full P00-07 boundary/threat/ownership design and P00-02 ordered authorization design are prepared for review. Production privilege enforcement and separation remain unimplemented.",
+      "scope": "The owner accepted the P00-07 boundary, threat and ownership design and the P00-02 ordered authorization design. Production privilege enforcement and separation remain unimplemented.",
       "implemented": [],
       "missing": [
         "Native operation/attribute/control authorization and privilege separation",
