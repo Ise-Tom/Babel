@@ -124,6 +124,7 @@ def allowed_path(name: str) -> bool:
             "lab/kerberos/evidence/local-wsl-2026-11-21.json",
             "lab/security-intake/offline-rehearsal.json",
             "lab/security-intake/evidence/offline-rehearsal-result.json",
+                "lab/security-intake/evidence/review-f2ddab3-2026-11-23.json",
         }
         or (path.parts[0] in {"scripts", "tests"} and path.suffix == ".py")
         or (path.parts[0] == ".github" and path.suffix in {".yml", ".yaml", ".md"})

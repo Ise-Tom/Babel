@@ -23,7 +23,13 @@ class SecurityIntakeRecordTest(unittest.TestCase):
             )
         )
         self.assertEqual(result, retained)
-        self.assertIs(result["p00_17_ready"], False)
+        fresh = json.loads(
+            Path("lab/security-intake/evidence/review-f2ddab3-2026-11-23.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(result, fresh)
+        self.assertIs(result["live_intake_and_backup_ready"], False)
         self.assertEqual(
             result["outcomes"]["all_mock_fields"], "offline_complete_not_gate_evidence"
         )
@@ -39,6 +45,8 @@ class SecurityIntakeRecordTest(unittest.TestCase):
             "false_pass",
             "wrong_actor",
             "duplicate_event",
+            "missing_trigger",
+            "owner_trigger",
             "reverse_time",
         ):
             with self.subTest(change=change):
@@ -56,6 +64,18 @@ class SecurityIntakeRecordTest(unittest.TestCase):
                     first["events"][4]["actor"] = "simulated-reporter"
                 elif change == "duplicate_event":
                     first["events"].insert(5, copy.deepcopy(first["events"][4]))
+                elif change == "missing_trigger":
+                    first["events"] = [
+                        event
+                        for event in first["events"]
+                        if event["type"] != "escalation_triggered"
+                    ]
+                elif change == "owner_trigger":
+                    next(
+                        event
+                        for event in first["events"]
+                        if event["type"] == "escalation_triggered"
+                    )["actor"] = "simulated-owner"
                 else:
                     first["events"][2]["at_utc"] = "2026-11-22T08:00:00Z"
                 with self.assertRaises(ValueError):

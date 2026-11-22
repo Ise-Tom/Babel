@@ -1,34 +1,40 @@
 # Security response readiness for solo development
 
-Status: **timing amendment approved for PR review, not a requirement acceptance**.
+Status: **timing amendment merged in PR #42; P00-17 acceptance is separate**.
 The [P00-17 drill, offline rehearsal and exact timing decision packet](validation/p00-17.md)
 is prepared for review. Its simulated records and available report form do not
 meet the live-drill or backup requirement.
+The [amended criterion review](validation/p00-17-design-review.md) maps each
+Phase 0 process obligation to the runbook and fresh offline evidence.
 Ise-Tom is the current development owner. No backup responder, verified private
 receipt or supported production service is claimed. On 19 November 2026, a
 read-only GitHub API check reported private vulnerability reporting enabled.
 Configuration alone does not test notification delivery, owner access or response.
 No report or message was submitted.
 
-## Original gate and approved timing amendment
+## Effective timing and roles
 
-Before this amendment, P00-17 required an actual private intake drill and a
-real backup contact; `SECURITY.md` required two contacts before public previews.
-Those original rules remain in force on main until the approved amendment
-merges. A second
-developer is not necessary for a backup role, but a genuinely available second
-person is necessary to claim backup coverage. An assistant is not that person.
+The [effective P00-17](phases/phase-00.md) is a process-design review. A live
+owner-receipt drill is required before soliciting external preview users; the
+[P05-04](phases/phase-05.md) production gate also requires a real backup with
+independently verified private access, receipt and owner-absence escalation.
+A second developer is not necessary for the backup role, but a genuinely
+available second person is necessary. An assistant is not that person.
 
-| Decision | Current requirement | Proposed solo-development timing |
+| Milestone | Effective requirement | Evidence limit |
 | --- | --- | --- |
-| Phase 0 | Live intake drill and real backup demonstrate receipt/escalation | Review intake, custody, triage and owner-absence process; record untested routing and sole-responder risk |
-| Experimental preview | Two contacts and tested reporting route before public previews | Clearly unsupported development preview; visible sole-responder limitation, tested private route before soliciting external testers |
-| Supported production release | Independent assessment and operational response remain required | Mandatory verified receipt/escalation drill and genuinely available backup before supported production; no silent exception |
+| Phase 0 | Review intake, custody, acknowledgment, escalation, failure handling and live-drill plan with a benign offline rehearsal | Design evidence does not prove live receipt or backup coverage |
+| Before soliciting external preview users | State unsupported/sole-responder status; run and privately close an authorized live report with independently verified owner notification, receipt and acknowledgment | A form or simulated event cannot pass; a failed route blocks solicitation |
+| Before supported production | Two genuinely available contacts, each with verified private access and receipt; backup demonstrates owner-absence escalation; live drill, assessment and recovery evidence remain current | An untested nominee or owner-dependent escalation cannot pass P05-04 |
 
-Ise-Tom approved the exact timing decision in the [decision record](validation/p00-17-timing-review.md#owner-decision-record).
-The canonical policy change is in this review branch. P00-17 is not accepted;
-approval does not turn enabled reporting into passing evidence or authorize a
-synthetic report.
+Ise-Tom approved the timing decision in the [decision record](validation/p00-17-timing-review.md#owner-decision-record), and [PR #42](https://github.com/Ise-Tom/Babel/pull/42) merged it. P00-17 is still not accepted; policy approval did not turn enabled reporting into passing evidence or authorize a synthetic report.
+
+| Role | Process responsibility | Current evidence |
+| --- | --- | --- |
+| Reporter | Uses only the private route after exact authorization, supplies synthetic data, retains submission confirmation and private report ID | Draft and reporter-side form observation only; no submission |
+| Owner — Ise-Tom | Checks notification independently, opens/acknowledges privately, triages, protects the record and closes the drill | Named accountable owner; notification/open/acknowledgment unrun |
+| Backup — future consenting person | Confirms limited private access and receipt, can acknowledge and coordinate escalation when the owner is absent | Role defined; no person appointed, contacted or tested |
+| Independent escalation verifier — designated for a future drill | Triggers the agreed private backup route while the owner is unavailable and records the observed result | Role defined; no person appointed or exercise run |
 
 ## Intake and custody process
 
@@ -61,9 +67,11 @@ backup coverage or incident recovery remain unverified.
 
 A future backup must explicitly agree to the role, have tested private access,
 know the escalation/absence procedure and be able to coordinate containment and
-disclosure. Do not grant general deployment/domain authority just to read reports;
-review least-privilege access and recovery custody separately. No contact details
-should be invented or exposed by this document.
+disclosure. An independent verifier must be able to trigger the backup route
+without the owner initiating or forwarding it; the owner reviews the record
+after returning. Do not grant general deployment/domain authority just to read
+reports; review least-privilege access and recovery custody separately. No
+contact details should be invented or exposed by this document.
 
 ## Drill record to complete after explicit authorization
 
@@ -75,6 +83,6 @@ acknowledgment or unavailable backup is a failed/incomplete drill, never a pass.
 Each participant must verify their own receipt. The current record is **unrun**;
 no private identifier, recipient or successful escalation is recorded.
 
-The proposal is tracked separately from the completed P00-07 threat/boundary
-design. It does not claim independent assessment, real incident response or
-whole-phase acceptance.
+This process design is tracked separately from the completed P00-07 threat/
+boundary design. It does not claim independent assessment, real incident
+response or whole-phase acceptance.

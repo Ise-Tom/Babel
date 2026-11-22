@@ -33,8 +33,8 @@ with independently verified owner notification, receipt and acknowledgment.
 P05-04 separately requires a real available backup, independently verified
 private access and owner-absence escalation, plus current live-drill evidence
 before supported production. Keep private identifiers in restricted custody and
-publish only redacted outcome metadata. The original policy remains in force
-until the owner-approved timing amendment merges.
+publish only redacted outcome metadata. The owner-approved timing amendment
+merged in PR #42; design acceptance and operational gates are still separate.
 
 ## Per-phase executable gates to add with implementation
 
