@@ -51,13 +51,13 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T16:13:18\+01:00.
+GitHub metadata checked: 2026-11-22T16:16:35\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#44 · Implement native stable identity and synthetic schema primitives](<https://github.com/Ise-Tom/Babel/pull/44>)
 
-**In review · Pending merge · CI: in\_progress** · Head 6d63eca
+**In review · Pending merge · CI: success** · Head 6d63eca
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
