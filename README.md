@@ -51,9 +51,71 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T00:25:25\+01:00.
+GitHub metadata checked: 2026-11-23T00:25:49\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
+
+### [\#46 · Preflight the Phase 0 reference lab and pin candidate media](<https://github.com/Ise-Tom/Babel/pull/46>)
+
+**In review · Pending merge · CI: queued** · Head ed81d18
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## Scope
+    
+    - Add a read-only Hyper-V preflight for the six-guest P00-05 topology and verify local media digests against a private manifest with explicit install/run rights evidence.
+    - Record the observed host capacity and access, P00-12 publisher platform and media pins, and P00-16 dispositions for the proposed Windows, Linux and macOS assets.
+    - Keep Apple Silicon and Intel on a separate track and retain both live Windows/Linux cycles as unrun.
+    
+    ## Verification
+    
+    The available host has about 16 GiB free guest memory, 269 GiB free storage, inaccessible Hyper-V VM/switch inventory and no supplied approved media. The topology needs 30 GiB guest memory and 344 GiB guest disk. Python tests use synthetic bytes and mocked inventory. Repository validation and the prerelease source asset audit passed locally.
+    
+    ## Review
+    
+    The [pinned preflight and terms](https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/docs/validation/p00-05-p00-12.md) state the host/media option and outstanding run evidence. All three requirements remain blocked.
+
+**Changed files:**
+
+- dashboard/progress.json
+- docs/phase-00-progress.md
+- docs/reference-use-review.md
+- docs/validation/p00-05-p00-12.md
+- docs/windows-reference-lab.md
+- scripts/preflight\_reference\_lab.py
+- tests/test\_reference\_lab\_preflight.py
+
+#### Proposed W69 · Inventory reference lab capacity, candidate media and use rights
+
+**Requirements:** P00-05, P00-12, P00-16
+
+**How it was done:** Added the read-only Hyper-V preflight for the six-guest plan. It measures available memory and storage, checks inventory access and verifies local image digests against a private manifest with purpose-specific rights evidence. Recorded proposed asset uses, publisher terms and platform pins.
+
+**Recorded validation:** The available Windows 11 Pro x86-64 host reported inaccessible Hyper-V inventory, about 16 GiB available memory, 269 GiB free storage and six missing guest media records. Public unit tests use mocked host data and project-owned synthetic bytes.
+
+**Limits and remaining work:** Both provision/discovery/teardown cycles are unrun. Guest media rights, booted builds, offline packages and DNS/time/egress evidence remain open. Apple Silicon and Intel hardware and images have a separate track. No publisher media were added.
+
+**PR-head evidence:** [docs/validation/p00-05-p00-12.md](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/docs/validation/p00-05-p00-12.md>) · [scripts/preflight\_reference\_lab.py](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/scripts/preflight_reference_lab.py>) · [tests/test\_reference\_lab\_preflight.py](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/tests/test_reference_lab_preflight.py>)
+
+#### Proposed problem update: I04 · Eligible reference lab host, authorized media and platform runs are missing
+
+**Proposed status:** open
+
+The six-guest Hyper-V preflight found insufficient RAM/disk and unavailable VM/switch inventory on the observed host. The Windows/Linux lab needs approved local images with exact build and package manifests. macOS Apple Silicon/Intel still need eligible hosts and media in a separate lane.
+
+**Resolution:** Still open
+
+**Next action:** Identify an adequately sized isolated Hyper-V host with scoped access and authorized Windows/Linux media. Perform two fresh provisioning, discovery and teardown cycles. Qualify actual platform packages and client behavior separately, with independent Apple Silicon and Intel prerequisites.
+
+**Provenance:** Explicitly outstanding; no Windows test is marked passed.
+
+[docs/validation/p00-05-p00-12.md](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/docs/validation/p00-05-p00-12.md>) · [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/ed81d181a536bb4fe6f64a74ccb306bcc1f4b29d/docs/phase-00-progress.md>)
+
+
+</details>
 
 ### [\#45 · Review amended P00-17 intake process-design gate](<https://github.com/Ise-Tom/Babel/pull/45>)
 
@@ -223,6 +285,8 @@ The isolated Windows lab definition exists; licensed Windows/Mac hosts and exact
 
 **Acceptance evidence required:** Two fresh deployments run discovery probes, isolate egress, clean up resources and publish exact image/build identifiers.
 
+**Pending PR proposals:** [\#46: Preflight the Phase 0 reference lab and pin candidate media](<https://github.com/Ise-Tom/Babel/pull/46>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W26: Prepare an isolated Windows reference lab definition without provisioning; W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients. See the [implementation journal](#implementation-journal).
 
 ### P00-06
@@ -327,6 +391,8 @@ Exact Windows/Linux/macOS profiles cannot qualify without the selected licensed 
 
 **Acceptance evidence required:** Edition, architecture, OS/build, package and image identifiers are explicit; missing profiles cannot qualify compatibility.
 
+**Pending PR proposals:** [\#46: Preflight the Phase 0 reference lab and pin candidate media](<https://github.com/Ise-Tom/Babel/pull/46>). See [open PR progress](#open-pull-requests).
+
 No implemented increment is recorded for this requirement.
 
 ### P00-13
@@ -386,6 +452,8 @@ Reviewed the uses of all 21 pinned editions, mapped observed publisher programs,
 **Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/f2ddab38760d3f830200e20949eda1149e51037d/docs/requirements.md>)
 
 **Acceptance evidence required:** Pin document revisions and use/redistribution obligations separately from project licensing; unclear image/fixture rights block distribution.
+
+**Pending PR proposals:** [\#46: Preflight the Phase 0 reference lab and pin candidate media](<https://github.com/Ise-Tom/Babel/pull/46>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W55: Pin actual public protocol editions and separate reference use from image/patent clearance; W67: Inventory reference rights and verify the source archive. See the [implementation journal](#implementation-journal).
 
@@ -498,6 +566,8 @@ Windows lab, DNS/authentication and membership implementation are missing.
 **Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/f2ddab38760d3f830200e20949eda1149e51037d/docs/requirements.md>); [AD-08: Required Netlogon, SAMR, LSA, SMB and DCE/RPC behavior for domain membership and administration](<https://github.com/Ise-Tom/Babel/blob/f2ddab38760d3f830200e20949eda1149e51037d/docs/requirements.md>)
 
 **Acceptance evidence required:** A supported Windows client joins, logs in and rotates its machine password; unsigned/unauthorized membership requests fail.
+
+**Pending PR proposals:** [\#46: Preflight the Phase 0 reference lab and pin candidate media](<https://github.com/Ise-Tom/Babel/pull/46>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W26: Prepare an isolated Windows reference lab definition without provisioning. See the [implementation journal](#implementation-journal).
 
@@ -754,6 +824,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/f2ddab38760d3f830200e20949eda1149e51037d/docs/requirements.md>); [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/f2ddab38760d3f830200e20949eda1149e51037d/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/f2ddab38760d3f830200e20949eda1149e51037d/docs/requirements.md>)
 
 **Acceptance evidence required:** Every AD contract row has real-client evidence with exact builds/spec revisions and no unexplained failure, skip or unrun acceptance case.
+
+**Pending PR proposals:** [\#46: Preflight the Phase 0 reference lab and pin candidate media](<https://github.com/Ise-Tom/Babel/pull/46>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
