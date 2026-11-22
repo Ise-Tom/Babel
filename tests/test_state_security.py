@@ -38,6 +38,19 @@ class StateSecurityContract(unittest.TestCase):
         shutil.copytree(ROOT / "docs/phases", self.root / "docs/phases")
         self.state = json.loads((self.root / "lab/state-security-contract.json").read_text())
         self.registry = json.loads((self.root / "lab/specification-pins.json").read_text())
+        shutil.copytree(ROOT / "lab", self.root / "lab", dirs_exist_ok=True)
+        for relative in (
+            "fuzz/corpus",
+            "experiments/postgres_store/Dockerfile",
+            "experiments/postgres_store/schema.sql",
+            "native/babel-store-driver-lab/tests/fixture.sql",
+        ):
+            target = self.root / relative
+            if (ROOT / relative).is_dir():
+                shutil.copytree(ROOT / relative, target)
+            else:
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(ROOT / relative, target)
 
     def write(self):
         source = self.root / "lab/state-security-contract.json"
@@ -182,6 +195,31 @@ class StateSecurityContract(unittest.TestCase):
         rfc["copyright_notice"] = "modern_bsd"
         with self.assertRaisesRegex(ValueError, "actual dated rights"):
             self.validate()
+
+    def test_use_inventory_is_bound_to_pins_and_remains_unresolved(self):
+        original = copy.deepcopy(self.registry)
+        for change, message in (
+            (
+                lambda r: r["use_review"].update(full_rights_disposition="approved"),
+                "unresolved disposition",
+            ),
+            (lambda r: r["documents"][0].update(use_policy="rfc-bcp78"), "applicable use policy"),
+            (lambda r: r["use_review"]["microsoft_program_index"].update(sha256=""), "index pin"),
+            (
+                lambda r: r["documents"][0]["patent_index_observations"].update(
+                    program_map_rows=[]
+                ),
+                "index observations",
+            ),
+            (
+                lambda r: r["use_review"]["pulled_ci_images"][0].update(redistribute="approved"),
+                "pinned manifest",
+            ),
+        ):
+            self.registry = copy.deepcopy(original)
+            change(self.registry)
+            with self.subTest(message=message), self.assertRaisesRegex(ValueError, message):
+                self.validate()
 
     def test_external_assets_are_denied_even_if_a_caller_lists_a_purpose(self):
         for identifier in ("unknown", "windows-reference-image", "macos-reference-image"):

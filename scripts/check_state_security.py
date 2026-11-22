@@ -71,25 +71,154 @@ def source_file(root: Path, name: Any) -> Path:
     return target
 
 
-def authorize_asset(root: Path, registry: dict[str, Any], identifier: str, purpose: str) -> None:
-    """A distribution-planning check, not authentication or a license grant."""
-    assets = indexed(registry.get("assets"), "assets")
-    require(identifier in assets, "Unknown asset is denied")
-    asset = assets[identifier]
+ASSET_LIMIT = 8 * 1024 * 1024
+
+
+def asset_for_use(asset: dict[str, Any], purpose: str) -> None:
     require(
         asset.get("kind") == "project_synthetic"
         and asset.get("rights") == "owner_selected_project_license"
         and text(asset.get("review_evidence")),
         "Unprovided external-image/capture rights block use/distribution",
     )
-    require(purpose in asset.get("allowed_uses", []), "Asset purpose not approved")
-    target = source_file(root, asset.get("path"))
+    uses = asset.get("allowed_uses")
+    require(
+        isinstance(uses, list)
+        and all(use in ("source_distribution", "unit_testing") for use in uses)
+        and purpose in uses,
+        "Asset purpose not approved",
+    )
+
+
+def verify_asset_bytes(asset: dict[str, Any], raw: bytes) -> None:
     require(
         digest(asset.get("sha256"))
-        and 0 < target.stat().st_size <= 8 * 1024 * 1024
-        and hashlib.sha256(target.read_bytes()).hexdigest() == asset["sha256"],
+        and 0 < len(raw) <= ASSET_LIMIT
+        and hashlib.sha256(raw).hexdigest() == asset["sha256"],
         "Asset source digest changed; rights review must be rebound",
     )
+
+
+def authorize_asset(root: Path, registry: dict[str, Any], identifier: str, purpose: str) -> None:
+    """Check the declared use against the reviewed source bytes."""
+    assets = indexed(registry.get("assets"), "assets")
+    require(identifier in assets, "Unknown asset is denied")
+    asset = assets[identifier]
+    asset_for_use(asset, purpose)
+    target = source_file(root, asset.get("path"))
+    require(target.stat().st_size <= ASSET_LIMIT, "Asset exceeds review size limit")
+    verify_asset_bytes(asset, target.read_bytes())
+
+
+def pending_external_asset(asset: dict[str, Any]) -> None:
+    terms = asset.get("publisher_terms")
+    require(
+        asset.get("rights") == "unprovided"
+        and asset.get("allowed_uses") == []
+        and all(
+            key in asset and asset[key] is None
+            for key in ("path", "sha256", "review_evidence", "selected_version")
+        )
+        and text(asset.get("candidate"))
+        and text(asset.get("missing_evidence"))
+        and isinstance(terms, list)
+        and (bool(terms) or asset.get("kind") == "external_capture")
+        and all(text(term) and term.startswith("https://") for term in terms),
+        "Unacquired external assets cannot be approved without exact rights evidence",
+    )
+
+
+def verify_use_inventory(root: Path, registry: dict[str, Any]) -> None:
+    review = registry.get("use_review", {})
+    dt.date.fromisoformat(review.get("reviewed_on", ""))
+    terms = review.get("publisher_terms")
+    require(
+        review.get("full_rights_disposition") == "unresolved"
+        and text(review.get("scope"))
+        and isinstance(terms, dict)
+        and bool(terms)
+        and all(text(url) and url.startswith("https://") for url in terms.values()),
+        "Review requires exact publisher terms and unresolved disposition",
+    )
+    program = review.get("microsoft_program_index", {})
+    require(
+        text(program.get("data_url"))
+        and program["data_url"].startswith("https://")
+        and digest(program.get("sha256"))
+        and type(program.get("bytes")) is int
+        and program["bytes"] > 0,
+        "Microsoft program observations require the publisher index pin",
+    )
+    policies = indexed(review.get("document_policies"), "document use policies")
+    for name, policy in policies.items():
+        require(
+            policy.get("cite") == "bibliographic_metadata"
+            and policy.get("develop")
+            == (
+                "private_reference_under_edition_notice"
+                if name == "microsoft-notice"
+                else "independent_reference_only"
+            )
+            and policy.get("redistribute") == "excluded"
+            and text(policy.get("conditions")),
+            "Reference policies retain scope and exclude redistribution",
+        )
+        references(policy.get("terms"), set(terms), "publisher terms")
+
+    for doc in registry["documents"]:
+        notice = doc["copyright_notice"]
+        expected = (
+            "microsoft-notice"
+            if doc["id"].startswith("MS-")
+            else "rfc-publication-status"
+            if "_publication_status_" in notice
+            else "rfc-internet-society"
+            if "_internet_society_" in notice
+            else "rfc-bcp78"
+        )
+        require(
+            doc.get("use_policy") == expected and expected in policies,
+            "Every pinned edition must bind its applicable use policy",
+        )
+        observations = doc.get("patent_index_observations", {})
+        rows = observations.get("program_map_rows")
+        require(
+            type(observations.get("osp_identifier_listed")) is bool
+            and type(observations.get("community_promise_identifier_listed")) is bool
+            and isinstance(rows, list)
+            and (bool(rows) or not doc["id"].startswith("MS-")),
+            "Record publisher index observations separately from patent clearance",
+        )
+        for row in rows:
+            require(
+                type(row.get("row_id")) is int
+                and row["row_id"] > 0
+                and type(row.get("patent_numbers_listed")) is bool
+                and type(row.get("patent_applications_listed")) is bool,
+                "Publisher index row requires observed metadata",
+            )
+            programs = row.get("programs")
+            require(
+                isinstance(programs, list) and bool(programs) and all(text(p) for p in programs),
+                "Publisher index row requires observed programs",
+            )
+
+    images = indexed(review.get("pulled_ci_images"), "pulled CI images")
+    for image in images.values():
+        manifest = source_file(root, image.get("manifest"))
+        publisher = image.get("publisher_terms")
+        require(
+            text(image.get("image"))
+            and re.fullmatch(r"[^\s]+@sha256:[a-f0-9]{64}", image["image"]) is not None
+            and f"FROM {image['image']}" in manifest.read_text(encoding="utf-8").splitlines()
+            and image.get("use") == "isolated_ci_pull_and_run"
+            and image.get("redistribute") == "excluded"
+            and isinstance(publisher, list)
+            and bool(publisher)
+            and all(text(url) and url.startswith("https://") for url in publisher)
+            and text(image.get("conditions")),
+            "CI image use requires a pinned manifest, publisher terms and no bundled layers",
+        )
 
 
 def validate(root: Path) -> tuple[dict[str, Any], dict[str, Any]]:
@@ -245,22 +374,28 @@ def validate(root: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     require(covered == threats, "Every threat needs accountable boundary coverage")
     assets = indexed(registry.get("assets"), "assets")
     require(
-        {"state-design-examples", "windows-reference-image", "macos-reference-image"}
+        {
+            "state-design-examples",
+            "windows-reference-image",
+            "windows-client-image",
+            "macos-reference-image",
+            "linux-lab-image",
+            "vendor-reference-fixture",
+            "external-reference-capture",
+        }
         <= set(assets),
         "Missing synthetic/external asset dispositions",
     )
     for id, asset in assets.items():
         if asset.get("kind") == "project_synthetic":
+            require(
+                asset.get("publisher_terms") == ["LICENSE", "CONTRIBUTING.md"],
+                "Project fixtures require the Babel contribution and license terms",
+            )
             authorize_asset(root, registry, id, "source_distribution")
         else:
-            require(
-                asset.get("rights") == "unprovided"
-                and asset.get("allowed_uses") == []
-                and asset.get("path") is None
-                and asset.get("sha256") is None
-                and asset.get("review_evidence") is None,
-                "Unacquired external assets cannot be approved",
-            )
+            pending_external_asset(asset)
+    verify_use_inventory(root, registry)
     return state, registry
 
 

@@ -68,6 +68,25 @@
         "6.3.5": "Mailslot Ping",
         "6.3.6.1": "DNS-Based Discovery",
         "6.3.6.2": "NetBIOS-Based Discovery"
+      },
+      "use_policy": "microsoft-notice",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": [
+          {
+            "row_id": 55,
+            "programs": [
+              "Interop – Windows Client PC Operating System (including the .NET Framework) Protocols",
+              "Interop – Windows Server Protocols",
+              "MCPP - Legacy",
+              "MIP – Windows Client PC Operating System (including .NET Framework)",
+              "WSPP"
+            ],
+            "patent_numbers_listed": true,
+            "patent_applications_listed": false
+          }
+        ]
       }
     },
     {
@@ -89,6 +108,25 @@
       "sections": {
         "3.1.4.5": "R_DnssrvUpdateRecord (Opnum 4)",
         "3.1.4.10": "R_DnssrvUpdateRecord2 (Opnum 9)"
+      },
+      "use_policy": "microsoft-notice",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": [
+          {
+            "row_id": 185,
+            "programs": [
+              "Interop – Windows Client PC Operating System (including the .NET Framework) Protocols",
+              "Interop – Windows Server Protocols",
+              "MCPP - Legacy",
+              "MIP – Windows Client PC Operating System (including .NET Framework)",
+              "WSPP"
+            ],
+            "patent_numbers_listed": false,
+            "patent_applications_listed": false
+          }
+        ]
       }
     },
     {
@@ -121,6 +159,25 @@
         "4.1.25": "IDL_DRSUnbind (Opnum 1)",
         "4.1.26": "IDL_DRSUpdateRefs (Opnum 4)",
         "5.210": "USN_VECTOR"
+      },
+      "use_policy": "microsoft-notice",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": [
+          {
+            "row_id": 227,
+            "programs": [
+              "Interop – Windows Client PC Operating System (including the .NET Framework) Protocols",
+              "Interop – Windows Server Protocols",
+              "MCPP - Legacy",
+              "MIP – Windows Client PC Operating System (including .NET Framework)",
+              "WSPP"
+            ],
+            "patent_numbers_listed": true,
+            "patent_applications_listed": false
+          }
+        ]
       }
     },
     {
@@ -142,6 +199,22 @@
       "sections": {
         "2.4.2": "SID",
         "2.4.6": "SECURITY_DESCRIPTOR"
+      },
+      "use_policy": "microsoft-notice",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": [
+          {
+            "row_id": 246,
+            "programs": [
+              "MCPP - Legacy",
+              "WSPP"
+            ],
+            "patent_numbers_listed": false,
+            "patent_applications_listed": false
+          }
+        ]
       }
     },
     {
@@ -165,6 +238,23 @@
         "3.2.4.1.3": "EstablishSession (Opnum 2)",
         "3.2.4.1.5": "RequestVersionVector (Opnum 4)",
         "3.2.4.1.7": "RequestRecords (Opnum 6)"
+      },
+      "use_policy": "microsoft-notice",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": [
+          {
+            "row_id": 298,
+            "programs": [
+              "WSPP",
+              "MIP – Windows Server",
+              "Interop – Windows Server Protocols"
+            ],
+            "patent_numbers_listed": true,
+            "patent_applications_listed": false
+          }
+        ]
       }
     },
     {
@@ -190,6 +280,26 @@
         "3.3.5.7": "GPO Link Creation and Update",
         "3.3.5.8": "GPO Link Deletion",
         "4.10": "Sample gpt.ini File"
+      },
+      "use_policy": "microsoft-notice",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": [
+          {
+            "row_id": 326,
+            "programs": [
+              "Interop – Windows Client PC Operating System (including the .NET Framework) Protocols",
+              "Interop – Windows Server Protocols",
+              "MCPP - Legacy",
+              "MIP – Windows Client PC Operating System (including .NET Framework)",
+              "WSPP",
+              "MIP – Windows Server"
+            ],
+            "patent_numbers_listed": false,
+            "patent_applications_listed": false
+          }
+        ]
       }
     },
     {
@@ -216,6 +326,25 @@
         "3.3.5.6.4": "Initial Population of the PAC",
         "3.3.5.7": "TGS Exchange",
         "3.3.5.7.5": "Cross-Domain Trust and Referrals"
+      },
+      "use_policy": "microsoft-notice",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": [
+          {
+            "row_id": 385,
+            "programs": [
+              "Interop – Windows Client PC Operating System (including the .NET Framework) Protocols",
+              "Interop – Windows Server Protocols",
+              "MIP – Windows Client PC Operating System (including .NET Framework)",
+              "WSPP",
+              "MIP – Windows Server"
+            ],
+            "patent_numbers_listed": false,
+            "patent_applications_listed": false
+          }
+        ]
       }
     },
     {
@@ -241,6 +370,24 @@
         "3.1.4.4.5": "LsarSetInformationPolicy2 (Opnum 47)",
         "3.1.4.7.4": "LsarDeleteTrustedDomain (Opnum 41)",
         "3.1.4.7.10": "LsarCreateTrustedDomainEx2 (Opnum 59)"
+      },
+      "use_policy": "microsoft-notice",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": [
+          {
+            "row_id": 398,
+            "programs": [
+              "WSPP",
+              "MIP – Windows Client PC Operating System (including .NET Framework)",
+              "Interop – Windows Server Protocols",
+              "Interop – Windows Client PC Operating System (including the .NET Framework) Protocols"
+            ],
+            "patent_numbers_listed": false,
+            "patent_applications_listed": false
+          }
+        ]
       }
     },
     {
@@ -270,6 +417,25 @@
         "3.5.4.5": "Pass-Through Authentication Methods",
         "3.5.4.5.1": "NetrLogonSamLogonEx (Opnum 39)",
         "3.5.4.5.2": "NetrLogonSamLogonWithFlags (Opnum 45)"
+      },
+      "use_policy": "microsoft-notice",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": [
+          {
+            "row_id": 455,
+            "programs": [
+              "MCPP - Legacy",
+              "WSPP",
+              "MIP – Windows Client PC Operating System (including .NET Framework)",
+              "Interop – Windows Server Protocols",
+              "Interop – Windows Client PC Operating System (including the .NET Framework) Protocols"
+            ],
+            "patent_numbers_listed": false,
+            "patent_applications_listed": false
+          }
+        ]
       }
     },
     {
@@ -291,6 +457,24 @@
       "sections": {
         "2.8": "PAC_SIGNATURE_DATA",
         "4.1.2.2": "SID Filtering and Claims Transformation"
+      },
+      "use_policy": "microsoft-notice",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": [
+          {
+            "row_id": 627,
+            "programs": [
+              "Interop – Windows Client PC Operating System (including the .NET Framework) Protocols",
+              "Interop – Windows Server Protocols",
+              "MIP – Windows Client PC Operating System (including .NET Framework)",
+              "WSPP"
+            ],
+            "patent_numbers_listed": false,
+            "patent_applications_listed": false
+          }
+        ]
       }
     },
     {
@@ -318,6 +502,26 @@
         "3.1.5.11.2": "SamrLookupNamesInDomain (Opnum 17)",
         "3.1.5.14.5": "Account Lockout Enforcement and Reset",
         "3.1.5.14.6": "Account Lockout State Maintenance"
+      },
+      "use_policy": "microsoft-notice",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": [
+          {
+            "row_id": 779,
+            "programs": [
+              "MCPP - Legacy",
+              "WSPP",
+              "MIP – Windows Client PC Operating System (including .NET Framework)",
+              "Interop – Windows Server Protocols",
+              "Interop – Windows Client PC Operating System (including the .NET Framework) Protocols",
+              "MIP – Windows Server"
+            ],
+            "patent_numbers_listed": false,
+            "patent_applications_listed": false
+          }
+        ]
       }
     },
     {
@@ -345,6 +549,25 @@
         "3.3.5.10": "Receiving an SMB2 CLOSE Request",
         "3.3.5.12": "Receiving an SMB2 READ Request",
         "3.3.5.13": "Receiving an SMB2 WRITE Request"
+      },
+      "use_policy": "microsoft-notice",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": [
+          {
+            "row_id": 805,
+            "programs": [
+              "Interop – Windows Client PC Operating System (including the .NET Framework) Protocols",
+              "Interop – Windows Server Protocols",
+              "MIP – Windows Client PC Operating System (including .NET Framework)",
+              "WSPP",
+              "MIP – Windows Server"
+            ],
+            "patent_numbers_listed": true,
+            "patent_applications_listed": false
+          }
+        ]
       }
     },
     {
@@ -379,6 +602,12 @@
         "4.10": "Compare Operation",
         "4.14": "StartTLS Operation",
         "5.1": "Protocol Encoding"
+      },
+      "use_policy": "rfc-bcp78",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": []
       }
     },
     {
@@ -400,6 +629,12 @@
       "sections": {
         "4.1.1": "Header section format",
         "4.2": "Transport"
+      },
+      "use_policy": "rfc-publication-status",
+      "patent_index_observations": {
+        "osp_identifier_listed": true,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": []
       }
     },
     {
@@ -422,6 +657,12 @@
         "2": "Update Message Format",
         "3": "Server Behavior",
         "5": "Duplicate Detection, Ordering and Mutual Exclusion"
+      },
+      "use_policy": "rfc-publication-status",
+      "patent_index_observations": {
+        "osp_identifier_listed": true,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": []
       }
     },
     {
@@ -443,6 +684,12 @@
       "sections": {
         "2": "The Control",
         "3": "Client-Server Interaction"
+      },
+      "use_policy": "rfc-internet-society",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": []
       }
     },
     {
@@ -464,6 +711,12 @@
       "sections": {
         "srv-format": "The format of the SRV RR",
         "usage": "Usage rules"
+      },
+      "use_policy": "rfc-internet-society",
+      "patent_index_observations": {
+        "osp_identifier_listed": true,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": []
       }
     },
     {
@@ -485,6 +738,12 @@
       "sections": {
         "2": "The Protocol",
         "3": "Security Considerations"
+      },
+      "use_policy": "rfc-internet-society",
+      "patent_index_observations": {
+        "osp_identifier_listed": true,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": []
       }
     },
     {
@@ -507,6 +766,12 @@
         "3.1": "Negotiating Context",
         "4.1": "Negotiating Context",
         "5.2": "Verifying a Signed Message - Call GSS_VerifyMIC"
+      },
+      "use_policy": "rfc-internet-society",
+      "patent_index_observations": {
+        "osp_identifier_listed": true,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": []
       }
     },
     {
@@ -531,6 +796,12 @@
         "3.2.3": "Receipt of KRB_AP_REQ Message",
         "3.3": "The Ticket-Granting Service (TGS) Exchange",
         "5.2.6": "AuthorizationData"
+      },
+      "use_policy": "rfc-bcp78",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": []
       }
     },
     {
@@ -552,6 +823,26 @@
       "sections": {
         "3.2.5.1": "KDC Receives S4U2self KRB_TGS_REQ",
         "3.2.5.2": "KDC Receives S4U2proxy KRB_TGS_REQ"
+      },
+      "use_policy": "microsoft-notice",
+      "patent_index_observations": {
+        "osp_identifier_listed": false,
+        "community_promise_identifier_listed": false,
+        "program_map_rows": [
+          {
+            "row_id": 789,
+            "programs": [
+              "Interop – Windows Client PC Operating System (including the .NET Framework) Protocols",
+              "Interop – Windows Server Protocols",
+              "MCPP - Legacy",
+              "MIP – Windows Client PC Operating System (including .NET Framework)",
+              "WSPP",
+              "MIP – Windows Server"
+            ],
+            "patent_numbers_listed": true,
+            "patent_applications_listed": false
+          }
+        ]
       }
     }
   ],
@@ -572,7 +863,11 @@
         "source_distribution",
         "unit_testing"
       ],
-      "review_evidence": "Original synthetic design records written for Babel under the owner-selected Apache-2.0/DCO policy; no upstream code, raw PDF, real directory record or external trace is copied."
+      "review_evidence": "Original synthetic design records written for Babel under the owner-selected Apache-2.0/DCO policy; no upstream code, raw PDF, real directory record or external trace is copied.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
     },
     {
       "id": "windows-reference-image",
@@ -581,7 +876,16 @@
       "sha256": null,
       "rights": "unprovided",
       "allowed_uses": [],
-      "review_evidence": null
+      "review_evidence": null,
+      "candidate": "Windows Server 2022 or 2025 Standard/Datacenter",
+      "selected_version": null,
+      "publisher_terms": [
+        "https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2022",
+        "https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2025",
+        "https://www.microsoft.com/en-us/useterms",
+        "https://www.microsoft.com/licensing/terms/"
+      ],
+      "missing_evidence": "Select the acquisition channel, exact edition/build/media digest, licensed user/host and virtualization rights. Evaluation expiry/activation and permitted isolated use must match the actual terms."
     },
     {
       "id": "macos-reference-image",
@@ -590,7 +894,382 @@
       "sha256": null,
       "rights": "unprovided",
       "allowed_uses": [],
-      "review_evidence": null
+      "review_evidence": null,
+      "candidate": "macOS Apple Silicon and Intel",
+      "selected_version": null,
+      "publisher_terms": [
+        "https://www.apple.com/legal/sla/",
+        "https://www.apple.com/legal/sla/docs/macOSSequoia.pdf",
+        "https://www.apple.com/legal/sla/docs/macOSTahoe.pdf"
+      ],
+      "missing_evidence": "Select supported release/build and architecture, identified compatible Apple-branded hosts and applicable acquisition and virtualization conditions. Provide digest and authorization for proposed lab use."
+    },
+    {
+      "id": "windows-client-image",
+      "kind": "windows_image",
+      "path": null,
+      "sha256": null,
+      "rights": "unprovided",
+      "allowed_uses": [],
+      "review_evidence": null,
+      "candidate": "Windows 11 Pro and Enterprise",
+      "selected_version": null,
+      "publisher_terms": [
+        "https://www.microsoft.com/en-us/evalcenter/evaluate-windows-11-enterprise",
+        "https://www.microsoft.com/en-us/useterms",
+        "https://www.microsoft.com/licensing/terms/"
+      ],
+      "missing_evidence": "Provide the exact patch/build and digest for each edition, activation/access/VM rights and expiry where applicable. The Enterprise evaluation does not cover Pro."
+    },
+    {
+      "id": "linux-lab-image",
+      "kind": "linux_image",
+      "path": null,
+      "sha256": null,
+      "rights": "unprovided",
+      "allowed_uses": [],
+      "review_evidence": null,
+      "candidate": "Ubuntu 24.04 LTS and Debian 13",
+      "selected_version": null,
+      "publisher_terms": [
+        "https://canonical.com/legal/intellectual-property-policy",
+        "https://www.debian.org/CD/vendors/legal",
+        "https://www.debian.org/social_contract.en.html"
+      ],
+      "missing_evidence": "Pin exact image, host/cloud terms, digest and component manifest. Modified images, package notices and trademarks require separate redistribution review."
+    },
+    {
+      "id": "vendor-reference-fixture",
+      "kind": "external_fixture",
+      "path": null,
+      "sha256": null,
+      "rights": "unprovided",
+      "allowed_uses": [],
+      "review_evidence": null,
+      "candidate": "Microsoft Windows Protocol Test Suites candidate",
+      "selected_version": null,
+      "publisher_terms": [
+        "https://github.com/microsoft/WindowsProtocolTestSuites/blob/29ddb4238a5443b7499e82934c90cc898861c5e7/LICENSE.txt"
+      ],
+      "missing_evidence": "Identify the actual source file or prebuilt package, version/hash, embedded data and applicable notices/EULA. The source repository MIT terms do not determine rights to an arbitrary prebuilt payload."
+    },
+    {
+      "id": "external-reference-capture",
+      "kind": "external_capture",
+      "path": null,
+      "sha256": null,
+      "rights": "unprovided",
+      "allowed_uses": [],
+      "review_evidence": null,
+      "candidate": "No publisher or capture selected",
+      "selected_version": null,
+      "publisher_terms": [],
+      "missing_evidence": "Obtain the exact capture digest, source owner, collection and reuse permission, third-party terms and redaction review. Distinguish private test use from public summary or raw capture redistribution."
+    },
+    {
+      "id": "phase0-governance-examples",
+      "kind": "project_synthetic",
+      "path": "lab/phase0-contract.json",
+      "sha256": "51cbf4d1b3375c23bcb4d58617692e7380d8fff417a10a2bb595489c6acab57d",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Original synthetic governance and functional-profile examples.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "rootdse-smoke-report",
+      "kind": "project_synthetic",
+      "path": "lab/p00-09-workload-smoke.json",
+      "sha256": "d573343c43d4f128653e3d8cd6b478fa6aee20d68dc589581d649d734daaf538",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Babel loopback smoke metrics using a generated synthetic dataset.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "kerberos-lab-report",
+      "kind": "project_synthetic",
+      "path": "lab/kerberos/evidence/local-wsl-2026-11-21.json",
+      "sha256": "91d471f042f3e4289568515e3a2671ede382ddf3c23b02d1b69376045608f986",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Redacted result metadata from Babel's disposable synthetic realm.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "offline-intake-fixture",
+      "kind": "project_synthetic",
+      "path": "lab/security-intake/offline-rehearsal.json",
+      "sha256": "5b8b31ef1172e8d3874dc39257828620d120162badc03931c5c1a4932c7bdb97",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Babel-authored benign report template and synthetic rehearsal inputs; no private report was submitted.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "offline-intake-report",
+      "kind": "project_synthetic",
+      "path": "lab/security-intake/evidence/offline-rehearsal-result.json",
+      "sha256": "5974d134dbeb335a2719ba6842e8013995f41cc651d1b7e08212ca0bab1261e6",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Babel-generated redacted offline rehearsal result.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "postgres-schema",
+      "kind": "project_synthetic",
+      "path": "experiments/postgres_store/schema.sql",
+      "sha256": "ed603eafa8baefd7389ef4b128219593f5597fcf44425edf764c195ca9da6c29",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Original Babel schema and synthetic test inputs.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "driver-test-fixture",
+      "kind": "project_synthetic",
+      "path": "native/babel-store-driver-lab/tests/fixture.sql",
+      "sha256": "4afb29e20aab574ca2ccf2b75972f5409e7da59c2cdfb92ba10a22935ec4baf0",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Original test-only Babel SQL fixture for the disposable driver lab.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "ldap-frame-anonymous-bind",
+      "kind": "project_synthetic",
+      "path": "fuzz/corpus/ldap_frame/anonymous-bind",
+      "sha256": "c7e753b8dc97d2b69ef2b16aeea82a1ef89d1bbe19ba480221049bdac6aaf3e9",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Original bounded synthetic protocol seed for Babel's local parser fuzzer.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "ldap-frame-oversized",
+      "kind": "project_synthetic",
+      "path": "fuzz/corpus/ldap_frame/oversized",
+      "sha256": "03be4f3e4e403f4c5ff6622fc384f5599bd187d0b61d9c06f4ab4cdb93724752",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Original bounded synthetic protocol seed for Babel's local parser fuzzer.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "ldap-frame-rootdse",
+      "kind": "project_synthetic",
+      "path": "fuzz/corpus/ldap_frame/rootdse",
+      "sha256": "21b8c8beba1c9978736adf3dca47d84582f6ff6e0cce07d4a18f0bf49b04d644",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Original bounded synthetic protocol seed for Babel's local parser fuzzer.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "ldap-frame-rootdse-filter",
+      "kind": "project_synthetic",
+      "path": "fuzz/corpus/ldap_frame/rootdse-filter",
+      "sha256": "b366e372ea07c059b0922d3cc98b0c1f37a1c1e7acdd268d42cddb79f6c6a0aa",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Original bounded synthetic protocol seed for Babel's local parser fuzzer.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "ldap-frame-unbind",
+      "kind": "project_synthetic",
+      "path": "fuzz/corpus/ldap_frame/unbind",
+      "sha256": "1d88e50c42ba6cae3d0816021164e839d3dcbc120db544ede3ede0488658d72c",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Original bounded synthetic protocol seed for Babel's local parser fuzzer.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "tls-record-empty-record",
+      "kind": "project_synthetic",
+      "path": "fuzz/corpus/tls_record/empty-record",
+      "sha256": "1d4a7cb76d38591ca1d062056e6bb4e409097663d2bf4866e91094e4e317a7a3",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Original bounded synthetic protocol seed for Babel's local parser fuzzer.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "tls-record-plaintext",
+      "kind": "project_synthetic",
+      "path": "fuzz/corpus/tls_record/plaintext",
+      "sha256": "37ec8e57d4fcf34483beb1059a0eab2588999a0039a589c6ec6cba1b9211808d",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Original bounded synthetic protocol seed for Babel's local parser fuzzer.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
     }
-  ]
+  ],
+  "use_review": {
+    "reviewed_on": "2026-11-22",
+    "scope": "Bibliographic citation and independent development from public reference editions. Public source includes original Babel work, synthetic fixtures and pin metadata.",
+    "full_rights_disposition": "unresolved",
+    "publisher_terms": {
+      "microsoft_osp": "https://learn.microsoft.com/en-us/openspecs/dev_center/ms-devcentlp/1c24c7c8-28b0-4ce1-a47d-95fe1ff504bc",
+      "microsoft_community_promise": "https://learn.microsoft.com/en-us/openspecs/dev_center/ms-devcentlp/8b8d1b7a-a10a-4667-9558-6d9c43adf60d",
+      "microsoft_program_map": "https://learn.microsoft.com/en-us/openspecs/dev_center/ms-devcentlp/13571077-e344-4e6f-a477-369894979798",
+      "ietf_as_published": "https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/",
+      "ietf_bcp78_2005": "https://www.rfc-editor.org/rfc/rfc3978.html",
+      "ietf_disclosures": "https://datatracker.ietf.org/ipr/"
+    },
+    "microsoft_program_index": {
+      "data_url": "https://officeprotocoldoc.z19.web.core.windows.net/files/public-patents-export/PatentMapList.xml",
+      "sha256": "9670bef686dfc5bef2764f805b7942e166f4c52c02a4652b23fb556d93304a70",
+      "bytes": 356069
+    },
+    "document_policies": [
+      {
+        "id": "microsoft-notice",
+        "cite": "bibliographic_metadata",
+        "develop": "private_reference_under_edition_notice",
+        "redistribute": "excluded",
+        "terms": [
+          "microsoft_osp",
+          "microsoft_community_promise",
+          "microsoft_program_map"
+        ],
+        "conditions": "Use the rights notice in the pinned PDF for documentation copies. Review actual excerpts/schema/IDL or samples before importing them, retain required notices, and determine the exact patent/program and trademark scope separately."
+      },
+      {
+        "id": "rfc-publication-status",
+        "cite": "bibliographic_metadata",
+        "develop": "independent_reference_only",
+        "redistribute": "excluded",
+        "terms": [
+          "ietf_as_published",
+          "ietf_disclosures"
+        ],
+        "conditions": "Use the publication status of the pinned RFC. Its memo distribution statement does not settle reuse of modified text, copied examples or implementation patents."
+      },
+      {
+        "id": "rfc-internet-society",
+        "cite": "bibliographic_metadata",
+        "develop": "independent_reference_only",
+        "redistribute": "excluded",
+        "terms": [
+          "ietf_as_published",
+          "ietf_disclosures"
+        ],
+        "conditions": "Apply the document's own Internet Society notice and limited derivative terms if material is ever copied. Preserve the original notice and required attribution; no copied text or code is included."
+      },
+      {
+        "id": "rfc-bcp78",
+        "cite": "bibliographic_metadata",
+        "develop": "independent_reference_only",
+        "redistribute": "excluded",
+        "terms": [
+          "ietf_bcp78_2005",
+          "ietf_as_published",
+          "ietf_disclosures"
+        ],
+        "conditions": "Apply the dated BCP 78 and IPR notices in the pinned editions. Check actual attribution and excerpt conditions for any copied material; modern IETF code-component terms do not supply blanket clearance."
+      }
+    ],
+    "pulled_ci_images": [
+      {
+        "id": "postgresql-ci-image",
+        "manifest": "experiments/postgres_store/Dockerfile",
+        "image": "postgres:18-bookworm@sha256:ece55f7868da684e400f82f1030a050718adbdd65c23aa500c486f6e2950dc0f",
+        "use": "isolated_ci_pull_and_run",
+        "publisher_terms": [
+          "https://github.com/docker-library/docs/blob/master/postgres/README.md#license",
+          "https://www.postgresql.org/about/licence/",
+          "https://www.debian.org/CD/vendors/legal"
+        ],
+        "redistribute": "excluded",
+        "conditions": "The official image is pulled by digest for the existing harness. Package-specific terms and notices would need review for any redistribution of layers."
+      }
+    ]
+  }
 }

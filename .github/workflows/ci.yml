@@ -64,6 +64,12 @@ jobs:
           python scripts/check_phase0_contract.py --revision "$GITHUB_SHA" > reports/phase0-contract.json
           python scripts/check_state_security.py --revision "$GITHUB_SHA" > reports/state-security-contract.json
           python scripts/check_security_intake.py --output reports/security-intake-offline.json
+      - name: Inspect the exact prerelease source archive and its asset rights
+        run: |
+          python scripts/package_source.py --tag v0.0.0-alpha.0 \
+            --output "$RUNNER_TEMP/babel-source" --audit-report reports/source-rights-audit.json
+          cd "$RUNNER_TEMP/babel-source"
+          sha256sum -c SHA256SUMS
       - name: Preserve Phase 0 design-contract evidence
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -72,6 +78,7 @@ jobs:
             reports/protocol-operation-matrix.json
             reports/phase0-contract.json
             reports/state-security-contract.json
+            reports/source-rights-audit.json
             reports/security-intake-offline.json
           retention-days: 14
       - name: Formatting, lint and strict types
@@ -95,11 +102,6 @@ jobs:
             reports/workload-manifest.json
             reports/workload-verification.json
           retention-days: 14
-      - name: Source archive smoke test
-        run: |
-          python scripts/package_source.py --tag v0.0.0-alpha.0 --output "$RUNNER_TEMP/babel-source"
-          cd "$RUNNER_TEMP/babel-source"
-          sha256sum -c SHA256SUMS
 
   tests:
     name: Tests (${{ matrix.python }})
