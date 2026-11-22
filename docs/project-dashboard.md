@@ -224,17 +224,17 @@ test/review evidence, not an automatically incremented completion counter.
 2. Update associations for changed requirements; unknown/missing IDs fail validation.
 3. Add granular work records with what/how, verified behavior, limits and real
    source files. Keep false starts/resolved incidents with truthful provenance.
-4. When an increment meets a requirement, add its pinned review packet and
+4. When the evidence meets the requirement, add its pinned review packet and
    delivery PR to the dashboard. Set `validation.delivery_pr` to the PR number
    and record its observed state in the PR snapshot. Owner review puts the scope,
-   evidence and delivery together. The owner can send one decision for selected
-   packets in the management chat or approve those scopes during implementation PR review.
-   Record the explicit decision as reviewer/date/evidence. When the owner approves
-   during PR review, include the decision in that same PR before it merges. Otherwise
-   record the decisions together in a single dashboard update. If the delivered scope is
-   narrower than the requirement, keep the requirement open and propose a stable
-   child requirement with its own criteria before requesting its acceptance.
-   Green CI alone is insufficient; phase acceptance remains a separate review.
+   evidence and delivery together. For current work, ask one short question in
+   the worker chat about the decision the owner can make now. Include the exact
+   scope, pinned packet and effect of approval. Record the explicit answer as
+   reviewer/date/evidence in the open PR. If the work has already merged, collect
+   decisions for selected packets in the management chat and record them together.
+   Routine progress can go through normal PR review. Keep incomplete requirements
+   open with their blockers. Policy decisions and permission for external actions
+   have their own records. Phase acceptance remains a separate owner decision.
 5. Refresh snapshot commit/date/CI/PR observations when actually checked. Set
    `source_revision` on work/problem records to preserve historical source links
    independently of that snapshot. Review
