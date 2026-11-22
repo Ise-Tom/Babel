@@ -51,13 +51,13 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T15:19:09\+01:00.
+GitHub metadata checked: 2026-11-22T15:22:43\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#41 · Ask for one actionable approval in the worker chat](<https://github.com/Ise-Tom/Babel/pull/41>)
 
-**In review · Pending merge · CI: in\_progress** · Head ca26c86
+**In review · Pending merge · CI: success** · Head ca26c86
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
