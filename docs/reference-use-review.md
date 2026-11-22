@@ -8,10 +8,10 @@ rights-notice identity. The compatibility/evidence schema remains version 1; its
 No existing product pass or owner acceptance was created.
 
 The DFS-R protocol is **MS-FRS2**, not the former nonexistent `MS-DFSR` reference.
-MS-DNSP is the **DNS server management** protocol, not the whole standard DNS wire
-protocol. P00-01 still needs detailed wire-operation decomposition and the DNS
-RFC/extension bindings; pinning this registry does not claim that matrix complete.
-MS-DTYP is now explicit for descriptor/SID/GUID rules.
+MS-DNSP describes DNS server management. The [P00-01 matrix](validation/p00-01.md)
+keeps that administrative candidate separate from DNS query, SRV discovery,
+dynamic update and GSS-TSIG wire mappings. It also uses MS-DTYP for
+descriptor/SID/GUID rules and MS-SFU for constrained delegation.
 
 | Document | Selected edition |
 | --- | --- |
@@ -26,7 +26,15 @@ MS-DTYP is now explicit for descriptor/SID/GUID rules.
 | MS-NRPC | v20260209 |
 | MS-PAC | v20240610 |
 | MS-SAMR | v20260309 |
+| MS-SFU | v20260330 |
 | MS-SMB2 | v20260714 |
+| RFC 1035 | November 1987 |
+| RFC 2136 | April 1997 |
+| RFC 2696 | September 1999 |
+| RFC 2782 | February 2000 |
+| RFC 3244 | February 2002 |
+| RFC 3645 | October 2003 |
+| RFC 4120 | July 2005 |
 | RFC 4511 | June 2006 |
 
 These are selected editions, not an assertion that each is the newest publication
@@ -53,10 +61,11 @@ been established here. It is not an automatic grant inferred from the PDF notice
 Patent/program/trademark and concrete downstream use review remain unresolved
 parts of P00-16. This is a record of observed terms, not legal certification.
 
-RFC 4511's own 2006 notice points to BCP 78/79 and reserves other rights. A modern
-IETF Trust software-license label must not be applied retroactively by assumption.
-This work cites the document and writes original synthetic design examples; it
-does not import RFC code components, upstream pseudocode or full publications.
+RFC 4511 and RFC 4120 reference the BCP 78/79 terms of their editions. The
+older RFCs retain their as-published Internet Society notices or publication
+status statements. The registry preserves each dated notice identity and digest
+for reference use. Babel cites protocol sections and writes original test
+expectations. Source archives contain only the reference metadata and citations.
 
 The registry gives **no** permission to download, run or redistribute a Windows
 or macOS image. Both image records have no path/digest/rights evidence and no
@@ -84,8 +93,8 @@ python scripts/check_state_security.py --revision "$(git rev-parse HEAD)" \
   --document-cache /path/to/public-reference-cache
 ```
 
-The optional check compares all 13 raw documents and 58 reviewed heading bindings;
-it uses the installed `pdftotext` for the selected readable PDFs. It refuses changed
-bytes, protected/unreadable editions and mismatched headings. Default CI remains
-offline and validates committed review metadata; neither check authenticates a
-human review, proves protocol semantics or grants copyright/patent/image rights.
+The optional check compares all 21 raw documents, the 153 operation headings and
+the 58 existing state-case reference bindings. It uses `pdftotext` for the pinned
+PDFs and rejects changed bytes, unreadable editions and mismatched locators.
+Default CI validates committed metadata offline. Human review, runtime
+conformance and copyright/patent/image rights have their own criteria.

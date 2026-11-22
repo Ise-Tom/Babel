@@ -32,7 +32,7 @@ production qualification and the 60 unrun client-conformance scenarios remain op
 
 | Requirement | Concrete result | Remaining exit evidence |
 | --- | --- | --- |
-| P00-01 | [Versioned matrix](../lab/compatibility.json): 30 operation families, positive/negative scenarios, requirements, protocol references, target/client combinations and accountable owner | Exact patched images/packages, complete wire-operation/control/error decomposition, approved profile and real-client runs |
+| P00-01 | [Scoped design packet](validation/p00-01.md) with 60 wire mappings, 12 workflows and 12 explicit unknowns across all 30 families. Each row has ownership, expected success/refusal and evidence. | Owner review of the increment, unresolved route and scope decisions, exact platform profiles and licensed real-client runs |
 | P00-02 | [Full identity/authorization packet](validation/p00-02.md): nine local cases cover stable GUID/domain SID, schema/matching, ordered ACLs, asynchronous inheritance, groups, revocation and durable receipts against pinned ADTS/DRSR/DTYP | Native identity/ACL implementation remains separate |
 | P00-03 | [Full replication/restore design packet](validation/p00-03.md): eleven cases specify attribute wrap/GUID rules, link lifetimes, naming conflicts, deletion, progress, restore and RID quarantine against actual source sections | Native DRS/reference/fault qualification remains separate |
 | P00-04 | [Full toolchain/parser packet](validation/p00-04.md): declared Linux profiles, exact compiler/ELF facts, release overflow checks, locked debug/release/client/fuzz/security gates and maintenance review | Changes to qualified targets or parser dependencies require requalification |

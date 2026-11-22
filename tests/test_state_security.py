@@ -53,7 +53,7 @@ class StateSecurityContract(unittest.TestCase):
         state, registry = contract.validate(ROOT)
         self.assertEqual(len(state["cases"]), 20)
         self.assertEqual(len(state["boundaries"]), 11)
-        self.assertEqual(len(registry["documents"]), 13)
+        self.assertEqual(len(registry["documents"]), 21)
         report = contract.check(ROOT, "a" * 40)
         self.assertEqual(report["native_runtime_outcomes"], "unrun")
         self.assertEqual(report["independent_assessment"], "not_performed")

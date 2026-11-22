@@ -307,8 +307,13 @@ def verify_cache(cache: Path, state: dict[str, Any], registry: dict[str, Any]) -
     count = 0
     for case in state["cases"]:
         for ref in case["references"]:
+            match = re.search(
+                r"^(?:\f)?" + re.escape(ref["section"]) + r"\s+([^\n]+)",
+                texts[ref["document"]],
+                re.M,
+            )
             require(
-                matches_heading(texts[ref["document"]], ref["section"], ref["heading"]),
+                match is not None and " ".join(match.group(1).split()) == ref["heading"],
                 "Reviewed heading no longer matches document bytes",
             )
             count += 1
