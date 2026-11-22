@@ -51,11 +51,78 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T10:38:57\+01:00.
+GitHub metadata checked: 2026-11-22T10:53:05\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#39 · Prepare P00-17 private intake drill and response timing decision](<https://github.com/Ise-Tom/Babel/pull/39>)
+
+**In review · Pending merge · CI: in\_progress** · Head 701c4c8
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## Scope
+    - Record the read-only private reporting route observation and its limits.
+    - Add an exact benign report draft, verification ledger, offline rehearsal and negative controls.
+    - Propose exact solo-maintainer timing wording for review while keeping the current SECURITY.md and Phase 0 criterion in force.
+    - Update P00-17 progress and dashboard without claiming acceptance.
+    
+    ## Evidence
+    - [Criterion packet](docs/validation/p00-17.md)
+    - [Retained offline result](lab/security-intake/evidence/offline-rehearsal-result.json)
+    - [Offline validator](scripts/check_security_intake.py)
+    
+    ## Decisions requested separately
+    1. Specific authorization for the live private report and named backup contact. **No report or contact has been sent.**
+    2. Approval or rejection of the exact policy timing amendment in the packet.
+    3. P00-17 acceptance only after actual live receipt, escalation, and real backup evidence under the current criterion, or the narrower amended criterion after an approved policy change.
+    
+    The live drill and real backup remain blockers. Leave merge to Ise-Tom.
+
+**Changed files:**
+
+- .github/workflows/ci.yml
+- dashboard/progress.json
+- docs/phase-00-progress.md
+- docs/security-response-readiness.md
+- docs/validation/p00-17.md
+- lab/security-intake/evidence/offline-rehearsal-result.json
+- lab/security-intake/offline-rehearsal.json
+- scripts/check\_ci\_scope.py
+- scripts/check\_security\_intake.py
+- tests/test\_security\_intake.py
+
+#### Proposed W63 · Prepare and rehearse the P00-17 private intake drill offline
+
+**Requirements:** P00-17
+
+**How it was done:** Prepared the exact benign private-report draft, verifier and escalation ledger, incomplete rules, and exact proposed solo-maintainer timing wording. Rehearsed four recordkeeping cases with synthetic actors and timestamps. Kept the original criterion and SECURITY.md policy in force.
+
+**Recorded validation:** Read-only authenticated GitHub observation on 22 November found the private reporting entry and form. The retained offline result and negative-control tests verify that mock completion never passes the live gate; local format, lint, type, documentation and scope checks pass.
+
+**Limits and remaining work:** The form was not submitted. Owner notification, actual receipt and acknowledgment, real backup consent/access and escalation remain unrun. Timing change awaits owner approval and a reviewed policy amendment.
+
+**PR-head evidence:** [docs/validation/p00-17.md](<https://github.com/Ise-Tom/Babel/blob/701c4c8a92e4527324cbd5b7d69ca4a92fd49e14/docs/validation/p00-17.md>) · [lab/security-intake/evidence/offline-rehearsal-result.json](<https://github.com/Ise-Tom/Babel/blob/701c4c8a92e4527324cbd5b7d69ca4a92fd49e14/lab/security-intake/evidence/offline-rehearsal-result.json>) · [scripts/check\_security\_intake.py](<https://github.com/Ise-Tom/Babel/blob/701c4c8a92e4527324cbd5b7d69ca4a92fd49e14/scripts/check_security_intake.py>)
+
+#### Proposed problem update: I27 · Actual private receipt/escalation, backup response and production incident exercises remain unqualified
+
+**Proposed status:** open
+
+P00-07 has boundary/threat/ownership design. The reporter-side private form is accessible and an exact benign draft and offline rehearsal exist, but actual owner notification/receipt/acknowledgment, escalation and a genuine backup are unverified.
+
+**Resolution:** Still open
+
+**Next action:** Owner reviews the exact timing proposal. Retain the original gate until an amendment is approved and merged. Run a live private drill and verify a real backup only with specific authorization; record restricted evidence and redacted outcome.
+
+**Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
+
+[docs/validation/p00-17.md](<https://github.com/Ise-Tom/Babel/blob/701c4c8a92e4527324cbd5b7d69ca4a92fd49e14/docs/validation/p00-17.md>) · [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/701c4c8a92e4527324cbd5b7d69ca4a92fd49e14/docs/security-response-readiness.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/701c4c8a92e4527324cbd5b7d69ca4a92fd49e14/docs/phase-00-security-and-dependencies.md>)
+
+
+</details>
 
 
 ## Phase 00
@@ -320,6 +387,8 @@ Documented solo intake, private custody, triage/disclosure, owner absence and an
 **Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/fba0c6039ddfb66941a471bee2e1ecb0bddc866f/docs/requirements.md>); [SEC-09: Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets](<https://github.com/Ise-Tom/Babel/blob/fba0c6039ddfb66941a471bee2e1ecb0bddc866f/docs/requirements.md>)
 
 **Acceptance evidence required:** A synthetic private intake drill and real backup contact demonstrate receipt/escalation; no contact, SLA or exercise is invented.
+
+**Pending PR proposals:** [\#39: Prepare P00-17 private intake drill and response timing decision](<https://github.com/Ise-Tom/Babel/pull/39>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W56: Define solo vulnerability-response process and make timing proposal reviewable. See the [implementation journal](#implementation-journal).
 
