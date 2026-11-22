@@ -51,11 +51,83 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T15:49:24\+01:00.
+GitHub metadata checked: 2026-11-22T16:07:25\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#44 · Implement native stable identity and synthetic schema primitives](<https://github.com/Ise-Tom/Babel/pull/44>)
+
+**In review · Pending merge · CI: in\_progress** · Head 11927f6
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## P01-02
+    
+    - Add `babel-directory` to the required Rust workspace, with a public in-memory create, DN/GUID/SID and attribute-equality lookup, and same-domain leaf rename API.
+    - Allocate GUIDs and domain-scoped SIDs in the core. Enforce the declared synthetic classes, attribute syntax, and matched equality rules. Refuse collisions and invalid mutations before changing either object or the lookup indexes.
+    - Exercise the public API in debug and release and keep the independent RootDSE smoke in required CI. The new crate has its own line-coverage check, and the existing package path guard includes the source.
+    
+    ## Evidence
+    
+    The local x86-64 Linux run passed eight core tests in debug and release, 93.96% directory line coverage, the locked workspace build and the independent RootDSE smoke.
+    
+    ```sh
+    cargo test --locked -p babel-directory --test synthetic_profile
+    cargo test --locked --release -p babel-directory --all-targets
+    ```
+    
+    [Pinned profile, criterion evidence and reproduction](https://github.com/Ise-Tom/Babel/blob/d3d8b291823f1831583e5f94323cf9a21f673028/docs/validation/p01-02.md)
+    
+    The original identity/schema primitive criterion is exercised in `babel-synthetic-directory-v1`. Broader LDAP schema and DN behavior, persistence, authorization, network writes, credentials and client conformance remain separate work. Merge remains with the owner.
+
+**Changed files:**
+
+- .github/workflows/native.yml
+- Cargo.lock
+- Cargo.toml
+- dashboard/progress.json
+- docs/adr/0005-directory-and-replication-invariants.md
+- docs/phase-01-progress.md
+- docs/validation/p01-02.md
+- native/babel-directory/Cargo.toml
+- native/babel-directory/src/identity.rs
+- native/babel-directory/src/lib.rs
+- native/babel-directory/src/schema.rs
+- native/babel-directory/tests/synthetic\_profile.rs
+- scripts/check\_ci\_scope.py
+- tests/test\_delivery.py
+
+#### Proposed W68 · Implement stable native identity and synthetic schema primitives
+
+**Requirements:** P01-02
+
+**How it was done:** Added an unpublished workspace crate with core-allocated UUIDv4 GUIDs and per-domain SIDs, a bounded flat naming context, class and attribute validation, and atomic in-memory name index updates. The public API provides DN, GUID, SID and schema-bound equality lookup.
+
+**Recorded validation:** Seven public API tests and one identifier allocation fault test pass in debug and release. Directory line coverage is 93.96% locally and has a dedicated required CI threshold. The release LDAP RootDSE smoke passes.
+
+**Limits and remaining work:** The original primitive gate is ready for owner review within the synthetic profile. Broader DN/schema and matching semantics, persisted identity, ACLs/links, credentials, network mutations and real-client conformance require separate work.
+
+**PR-head evidence:** [docs/validation/p01-02.md](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/docs/validation/p01-02.md>) · [native/babel-directory/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/native/babel-directory/src/lib.rs>) · [native/babel-directory/tests/synthetic\_profile.rs](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/native/babel-directory/tests/synthetic_profile.rs>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/.github/workflows/native.yml>)
+
+#### Proposed problem update: I05 · Qualified driver profile available; native AD directory storage still needs implementation
+
+**Proposed status:** open
+
+P00-15 driver/transaction qualification is complete and explicitly owner-accepted, including typed bounds, dropped futures, real durable-reply loss and Rust-client process recovery. The native AD identity/schema/ACL/store and domain formats remain separate implementation obligations; the fixture is not a directory server.
+
+**Resolution:** Still open
+
+**Next action:** Integrate the synthetic native identity/schema primitives and owner-accepted driver profile with the durable store, ACL authority and journal/receipts under P01-03/P01-11/P01-12. Service/key custody, replication, recovery and capacity retain their own gates.
+
+**Provenance:** Design blocker, not an implemented storage defect.
+
+[docs/validation/p00-15.md](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/docs/validation/p00-15.md>) · [native/babel-store-driver-lab/src/lib.rs](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/native/babel-store-driver-lab/src/lib.rs>) · [docs/phases/phase-01.md](<https://github.com/Ise-Tom/Babel/blob/11927f62c8e728f335a1557b66265cc2d2b264c2/docs/phases/phase-01.md>)
+
+
+</details>
 
 
 ## Phase 00
@@ -105,6 +177,8 @@ Owner accepted the pinned Phase 0 scope on 22 November 2026. Nine worked local c
 
 **Validation packet:** Full original P00-02 Phase 0 Identity/schema/authorization/local commit design gate; no native AD behavior, independent production assessment or whole-phase acceptance. [Merged PR \#30](<https://github.com/Ise-Tom/Babel/pull/30>) · [Review packet](<https://github.com/Ise-Tom/Babel/blob/2989ed476e57297f729d0e3dffd89a703e4175ac/docs/validation/p00-02.md>)
 
+**Pending PR proposals:** [\#44: Implement native stable identity and synthetic schema primitives](<https://github.com/Ise-Tom/Babel/pull/44>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W12: Threat model and open decision register; W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments; W34: Specify stable state and worked replication/recovery invariants; W52: Complete identity, schema, authorization and local commit design. See the [implementation journal](#implementation-journal).
 
 ### P00-03
@@ -120,6 +194,8 @@ Owner accepted the pinned Phase 0 scope on 22 November 2026. Eleven worked cases
 **Acceptance review:** Project owner \(explicit approval in the Babel management chat\), 2026-11-22. The project owner explicitly approved P00-03 on 22 November 2026 as part of the Phase 0 batch decision, for the exact scope and limits in the pinned packet. Full original P00-03 Phase 0 Replication/versioning/conflict/restore epoch design gate; no native AD behavior, independent production assessment or whole-phase acceptance. Packet: https://github.com/Ise-Tom/Babel/blob/2989ed476e57297f729d0e3dffd89a703e4175ac/docs/validation/p00-03.md . Delivery: https://github.com/Ise-Tom/Babel/pull/30 . Passing CI: https://github.com/Ise-Tom/Babel/actions/runs/44507652333 .
 
 **Validation packet:** Full original P00-03 Phase 0 Replication/versioning/conflict/restore epoch design gate; no native AD behavior, independent production assessment or whole-phase acceptance. [Merged PR \#30](<https://github.com/Ise-Tom/Babel/pull/30>) · [Review packet](<https://github.com/Ise-Tom/Babel/blob/2989ed476e57297f729d0e3dffd89a703e4175ac/docs/validation/p00-03.md>)
+
+**Pending PR proposals:** [\#44: Implement native stable identity and synthetic schema primitives](<https://github.com/Ise-Tom/Babel/pull/44>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W12: Threat model and open decision register; W34: Specify stable state and worked replication/recovery invariants; W53: Complete source-pinned replication, conflicts and restore epoch design. See the [implementation journal](#implementation-journal).
 
@@ -371,6 +447,8 @@ No implementation or acceptance evidence recorded.
 
 **Acceptance evidence required:** Preserve GUID/SID on rename and reject DN collisions, invalid classes and matching-rule violations.
 
+**Pending PR proposals:** [\#44: Implement native stable identity and synthetic schema primitives](<https://github.com/Ise-Tom/Babel/pull/44>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
 ### P01-03
@@ -382,6 +460,8 @@ The P00-15 driver/transaction profile is now technically complete and ready for 
 **Associated features:** [OPS-01: Backup/restore, upgrades, rotation, audit export, health and capacity visibility](<https://github.com/Ise-Tom/Babel/blob/bd1569e4ed01ef64670e902f1cbc05b59fe741dc/docs/requirements.md>); [PLAT-03: Linux host hardening and persistent data integrity](<https://github.com/Ise-Tom/Babel/blob/bd1569e4ed01ef64670e902f1cbc05b59fe741dc/docs/requirements.md>)
 
 **Acceptance evidence required:** Commit-boundary kills recover old or new complete state; never acknowledge an undurable mutation.
+
+**Pending PR proposals:** [\#44: Implement native stable identity and synthetic schema primitives](<https://github.com/Ise-Tom/Babel/pull/44>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W27: Record PostgreSQL selection and a reviewable native state contract; W28: Run real PostgreSQL synthetic transaction and process-crash experiments; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
