@@ -1,5 +1,10 @@
 [workspace]
-members = ["native/babel-ldap", "native/babel-tls-lab", "native/babel-store-driver-lab"]
+members = [
+    "native/babel-directory",
+    "native/babel-ldap",
+    "native/babel-tls-lab",
+    "native/babel-store-driver-lab",
+]
 exclude = ["fuzz"]
 resolver = "2"
 
