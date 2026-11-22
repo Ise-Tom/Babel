@@ -56,11 +56,8 @@ def check(record: dict[str, Any]) -> dict[str, Any]:
         "Base revision required",
     )
     scenarios = record.get("scenarios")
-    require(
-        isinstance(scenarios, list) and len(scenarios) == len(SCENARIOS),
-        "All rehearsal cases required",
-    )
-    assert isinstance(scenarios, list)
+    if not isinstance(scenarios, list) or len(scenarios) != len(SCENARIOS):
+        raise ValueError("All rehearsal cases required")
     outcomes = {}
     for scenario in scenarios:
         require(isinstance(scenario, dict), "Case must be an object")
