@@ -26,6 +26,21 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
+      - name: Require a descriptive development branch
+        if: >-
+          github.event_name == 'pull_request' &&
+          github.base_ref == 'main' &&
+          github.event.pull_request.head.repo.full_name == github.repository &&
+          (github.event.pull_request.user.login != 'dependabot[bot]' ||
+           !startsWith(github.head_ref, 'dependabot/'))
+        shell: bash
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          if [[ ! "$HEAD_BRANCH" =~ ^dev/[a-z0-9]+(-[a-z0-9]+){2,}$ ]]; then
+            echo '::error::Use dev/<scope>-<descriptive-task> with at least three hyphen-separated lowercase words, for example dev/phase0-protocol-operation-matrix. See AGENTS.md.'
+            exit 1
+          fi
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false

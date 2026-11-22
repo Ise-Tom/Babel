@@ -7,6 +7,7 @@ from collections.abc import Iterable
 from pathlib import Path
 
 ROOT_FILES = {
+    "AGENTS.md",
     "README.md",
     "CONTRIBUTING.md",
     "SECURITY.md",

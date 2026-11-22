@@ -2789,6 +2789,31 @@
       "problems": [
         "I46"
       ]
+    },
+    {
+      "id": "W62",
+      "title": "Require descriptive development branch names",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-10",
+        "P10-09"
+      ],
+      "how": "Added a standing repository instruction to use and reuse descriptive dev branches. The repository CI job checks the branch name on same-repository PRs into main and feeds the existing required CI gate.",
+      "verification": "Executed the workflow's branch check against eleven accepted and rejected names. Actionlint, offline Zizmor, repository scope and documentation checks pass. GitHub's active main rules require CI gate.",
+      "limitations": "The check validates branch format during PR CI. The task and branch description supply the actual work scope. Forks and Dependabot branch names are outside this convention.",
+      "source_revision": "0fda14b42b6db05bf7ab0443683e2280ed57ac99",
+      "sources": [
+        {
+          "path": "AGENTS.md",
+          "label": "Babel development branch convention"
+        },
+        {
+          "path": ".github/workflows/ci.yml",
+          "label": "Required CI branch check"
+        }
+      ],
+      "problems": []
     }
   ],
   "problems": [
