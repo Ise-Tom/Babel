@@ -51,7 +51,7 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T00:28:11\+01:00.
+GitHub metadata checked: 2026-11-23T00:28:37\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -128,8 +128,8 @@ The six-guest Hyper-V preflight found insufficient RAM/disk and unavailable VM/s
 
     ## Amended Phase 0 criterion review
     - [Criterion-by-criterion packet](docs/validation/p00-17-design-review.md) maps the effective P00-17 row to reporter, owner and backup roles; custody; acknowledgment; independent owner-absence escalation; failure handling; and the live-drill plan.
-    - [Runbook](docs/security-response-readiness.md) and [draft/ledger](docs/validation/p00-17.md) now distinguish the owner-only live route test before external preview solicitation from the backup exercise under P05-04.
-    - [Fresh offline result](lab/security-intake/evidence/review-f2ddab3-2026-11-23.json) is tied to reviewed main `f2ddab38760d3f830200e20949eda1149e51037d`. The fixture/validator now require an independent simulated escalation trigger and owner-absence observation. Nine negative controls reject fabricated or corrupt records.
+    - [Runbook](docs/security-response-readiness.md) and [draft/ledger](docs/validation/p00-17.md) distinguish the owner-only live route test before external preview solicitation from the backup exercise under P05-04.
+    - [Fresh retained offline result](lab/security-intake/evidence/offline-rehearsal-result.json) carries reviewed main `f2ddab38760d3f830200e20949eda1149e51037d`. The fixture/validator require an independent simulated trigger and owner-absence observation. Nine negative controls reject fabricated or corrupt records. Canonical Git blob hashes are pinned in the [asset-rights inventory](lab/specification-pins.json).
     - Correct stale PR #42 pending-merge wording and update the dashboard without claiming acceptance.
     
     ## Limits and decision scope
