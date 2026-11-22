@@ -16,7 +16,6 @@ from urllib.parse import urlsplit
 
 from check_lab_definition import PROFILE, validate
 
-MIB = 1024**2
 GIB = 1024**3
 HYPER_V_INVENTORY = r"""
 $ErrorActionPreference = 'Stop'

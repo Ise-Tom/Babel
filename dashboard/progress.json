@@ -3157,7 +3157,7 @@
       ],
       "detail": "The six-guest Hyper-V preflight found insufficient RAM/disk and unavailable VM/switch inventory on the observed host. The Windows/Linux lab needs approved local images with exact build and package manifests. macOS Apple Silicon/Intel still need eligible hosts and media in a separate lane.",
       "resolution": "",
-      "next_action": "Identify an adequately sized isolated Hyper-V host with scoped access and authorized Windows/Linux media. Perform two fresh provisioning, discovery and teardown cycles. Qualify actual platform packages and client behavior separately, with independent Apple Silicon and Intel prerequisites.",
+      "next_action": "The owner approved the existing-host and existing-license preflight route in the linked evidence. Supply an eligible Hyper-V host, scoped access and authorized staged media. Perform two fresh provisioning, discovery and teardown cycles. Qualify actual platform packages and client behavior separately, with independent Apple Silicon and Intel prerequisites.",
       "sources": [
         {
           "path": "docs/validation/p00-05-p00-12.md",
