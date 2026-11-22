@@ -51,13 +51,13 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T15:06:32\+01:00.
+GitHub metadata checked: 2026-11-22T15:10:03\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#40 · Map Phase 0 protocol operations and accountable ownership](<https://github.com/Ise-Tom/Babel/pull/40>)
 
-**In review · Pending merge · CI: success** · Head f390d1e
+**In review · Pending merge · CI: in\_progress** · Head 02b0f76
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -96,7 +96,7 @@ GitHub metadata checked: 2026-11-22T15:06:32\+01:00.
 - tests/test\_conformance.py
 - tests/test\_state\_security.py
 
-#### Proposed W63 · Map owned wire operations and unresolved client variants
+#### Proposed W64 · Map owned wire operations and unresolved client variants
 
 **Requirements:** P00-01
 
@@ -106,7 +106,7 @@ GitHub metadata checked: 2026-11-22T15:06:32\+01:00.
 
 **Limits and remaining work:** Scoped design review only. The full P00-01 gate stays open for unresolved paths and exact licensed client evidence. Existing functional-level scope, all unrun observations and the specification/fixture rights gates are preserved.
 
-**PR-head evidence:** [docs/validation/p00-01.md](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/docs/validation/p00-01.md>) · [lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/lab/compatibility.json>) · [lab/specification-pins.json](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/lab/specification-pins.json>) · [lab/conformance-evidence.json](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/lab/conformance-evidence.json>) · [scripts/check\_conformance.py](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/scripts/check_conformance.py>)
+**PR-head evidence:** [docs/validation/p00-01.md](<https://github.com/Ise-Tom/Babel/blob/02b0f766f43012f16fc450858dd6075c38efd074/docs/validation/p00-01.md>) · [lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/02b0f766f43012f16fc450858dd6075c38efd074/lab/compatibility.json>) · [lab/specification-pins.json](<https://github.com/Ise-Tom/Babel/blob/02b0f766f43012f16fc450858dd6075c38efd074/lab/specification-pins.json>) · [lab/conformance-evidence.json](<https://github.com/Ise-Tom/Babel/blob/02b0f766f43012f16fc450858dd6075c38efd074/lab/conformance-evidence.json>) · [scripts/check\_conformance.py](<https://github.com/Ise-Tom/Babel/blob/02b0f766f43012f16fc450858dd6075c38efd074/scripts/check_conformance.py>)
 
 #### Proposed problem update: I25 · Exact compatibility builds and detailed wire cases remain unqualified
 
@@ -120,21 +120,7 @@ The initial profile and 30 operation families are explicit, but exact Windows/Li
 
 **Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
 
-[lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/lab/compatibility.json>) · [lab/conformance-evidence.json](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/lab/conformance-evidence.json>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/docs/phase-00-progress.md>)
-
-#### Proposed problem update: I27 · Actual private receipt/escalation, backup response and production incident exercises remain unqualified
-
-**Proposed status:** open
-
-P00-07 now has complete boundary/threat/ownership design for review. Reporting is configured but notification/receipt/escalation and a genuine backup are unverified; sole-owner process design is not operational coverage.
-
-**Resolution:** Still open
-
-**Next action:** Review the explicit solo scheduling proposal; retain the original gate until agreed. No synthetic private report may be sent without explicit authorization and an available recipient.
-
-**Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
-
-[docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/docs/security-response-readiness.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/docs/phase-00-security-and-dependencies.md>)
+[lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/02b0f766f43012f16fc450858dd6075c38efd074/lab/compatibility.json>) · [lab/conformance-evidence.json](<https://github.com/Ise-Tom/Babel/blob/02b0f766f43012f16fc450858dd6075c38efd074/lab/conformance-evidence.json>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/02b0f766f43012f16fc450858dd6075c38efd074/docs/phase-00-progress.md>)
 
 #### Proposed problem update: I28 · Exact references pinned; concrete program/patent/image use rights and detailed operation mapping remain open
 
@@ -148,7 +134,7 @@ Thirteen actual reference editions and notices are now pinned, including correct
 
 **Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
 
-[docs/reference-use-review.md](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/docs/reference-use-review.md>) · [lab/specification-pins.json](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/lab/specification-pins.json>) · [scripts/check\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/scripts/check_state_security.py>)
+[docs/reference-use-review.md](<https://github.com/Ise-Tom/Babel/blob/02b0f766f43012f16fc450858dd6075c38efd074/docs/reference-use-review.md>) · [lab/specification-pins.json](<https://github.com/Ise-Tom/Babel/blob/02b0f766f43012f16fc450858dd6075c38efd074/lab/specification-pins.json>) · [scripts/check\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/02b0f766f43012f16fc450858dd6075c38efd074/scripts/check_state_security.py>)
 
 
 </details>
@@ -424,8 +410,6 @@ Documented solo intake, private custody, triage/disclosure, owner absence and an
 **Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/1cfacb0757524b9ea1a5d1f6c576b61fd91bec9c/docs/requirements.md>); [SEC-09: Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets](<https://github.com/Ise-Tom/Babel/blob/1cfacb0757524b9ea1a5d1f6c576b61fd91bec9c/docs/requirements.md>)
 
 **Acceptance evidence required:** A synthetic private intake drill and real backup contact demonstrate receipt/escalation; no contact, SLA or exercise is invented.
-
-**Pending PR proposals:** [\#40: Map Phase 0 protocol operations and accountable ownership](<https://github.com/Ise-Tom/Babel/pull/40>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W56: Define solo vulnerability-response process and make timing proposal reviewable; W63: Prepare and rehearse the P00-17 private intake drill offline. See the [implementation journal](#implementation-journal).
 
