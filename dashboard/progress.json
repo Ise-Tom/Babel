@@ -3067,7 +3067,7 @@
         "P00-17"
       ],
       "how": "Mapped runbook, exact draft and ledger to every amended P00-17 element; repaired the owner-absence escalation plan by assigning an independent trigger. Rehearsed four synthetic cases with explicit verifier/absence events and retained the result tied to reviewed main revision f2ddab3.",
-      "verification": "The offline validator returns the expected complete-mock and three incomplete classifications while keeping live intake/backup false. Nine negative subtests reject fabricated or corrupt evidence. Local documentation, design, scope, format, lint, type and static-security checks pass; hosted CI is tracked in the PR.",
+      "verification": "The offline validator returns the expected complete-mock and three incomplete classifications while keeping live intake/backup false. Nine negative subtests reject fabricated or corrupt evidence. Local documentation, design, scope, format, lint, type and static-security checks pass. Hosted CI run 45083455765 passed after the unrelated PostgreSQL concurrency job succeeded on retry.",
       "limitations": "This is Phase 0 process-design evidence only. No report, owner notification/receipt/acknowledgment, human backup access or owner-absence escalation occurred. Separate authorization is required for any live report or contact; preview and production gates remain open.",
       "source_revision": "0d63e62ec39d769ff9d0a1267a1811b2f9c508e7",
       "sources": [
