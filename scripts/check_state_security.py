@@ -160,9 +160,17 @@ def validate(root: Path) -> tuple[dict[str, Any], dict[str, Any]]:
             )
         else:
             require(
-                id == "RFC4511"
-                and doc.get("url") == "https://www.rfc-editor.org/rfc/rfc4511.txt"
-                and doc.get("copyright_notice") == "rfc4511_bcp78_2006",
+                re.fullmatch(r"RFC[0-9]+", id) is not None
+                and re.fullmatch(id + r"-[A-Za-z]+-[0-9]{4}", doc["revision"]) is not None
+                and doc.get("url") == f"https://www.rfc-editor.org/rfc/{id.lower()}.txt"
+                and doc.get("landing") == f"https://www.rfc-editor.org/info/{id.lower()}/"
+                and re.fullmatch(
+                    id.lower()
+                    + r"_(publication_status|internet_society|bcp78)_"
+                    + doc["revision"][-4:],
+                    doc.get("copyright_notice", ""),
+                )
+                is not None,
                 "Use the RFC's actual dated rights notice, not a retroactive license",
             )
         require(
@@ -256,6 +264,14 @@ def validate(root: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     return state, registry
 
 
+def matches_heading(source: str, section: str, heading: str) -> bool:
+    if not section[0].isdigit():
+        # RFC 2782 uses unnumbered headings.
+        return re.search(r"^" + re.escape(heading) + r"$", source, re.M) is not None
+    match = re.search(r"^\f?" + re.escape(section) + r"(?:\.| -)?[ \t]+([^\n]+)", source, re.M)
+    return match is not None and " ".join(match.group(1).split()) == heading
+
+
 def verify_cache(cache: Path, state: dict[str, Any], registry: dict[str, Any]) -> int:
     """Reproduce raw-byte and actual heading checks with caller-supplied public documents."""
     texts: dict[str, str] = {}
@@ -287,18 +303,20 @@ def verify_cache(cache: Path, state: dict[str, Any], registry: dict[str, Any]) -
                 "Readable matching document edition required",
             )
         else:
-            texts[id] = path.read_text()
+            texts[id] = path.read_text(encoding="utf-8")
     count = 0
     for case in state["cases"]:
         for ref in case["references"]:
-            match = re.search(
-                r"^(?:\f)?" + re.escape(ref["section"]) + r"\s+([^\n]+)",
-                texts[ref["document"]],
-                re.M,
-            )
             require(
-                match is not None and " ".join(match.group(1).split()) == ref["heading"],
+                matches_heading(texts[ref["document"]], ref["section"], ref["heading"]),
                 "Reviewed heading no longer matches document bytes",
+            )
+            count += 1
+    for doc in registry["documents"]:
+        for section, heading in doc.get("sections", {}).items():
+            require(
+                matches_heading(texts[doc["id"]], section, heading),
+                f"{doc['id']}#{section}: Pinned operation heading does not match document bytes",
             )
             count += 1
     return count

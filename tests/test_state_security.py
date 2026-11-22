@@ -273,6 +273,19 @@ class StateSecurityContract(unittest.TestCase):
         with self.assertRaises(subprocess.SubprocessError):
             contract.verify_cache(cache, state, registry)
 
+    def test_cache_checks_numbered_and_named_operation_headings(self):
+        self.assertTrue(
+            contract.matches_heading("2 - Update Message Format", "2", "Update Message Format")
+        )
+        self.assertTrue(contract.matches_heading("Usage rules", "usage", "Usage rules"))
+        self.assertFalse(contract.matches_heading("Different heading", "usage", "Usage rules"))
+        cache, state, registry = self.cache_fixture()
+        registry["documents"][1]["sections"] = {"1": "Wrong operation heading"}
+        with patch.object(contract.subprocess, "run") as run:
+            run.return_value.stdout = "[MS-ADTS]: v20260824\n1.2 A heading"
+            with self.assertRaisesRegex(ValueError, "Pinned operation heading"):
+                contract.verify_cache(cache, state, registry)
+
     def test_missing_changed_duplicate_and_symlinked_cached_documents_are_rejected(self):
         cache, state, registry = self.cache_fixture()
         pdf = cache / "MS-ADTS.pdf"

@@ -169,6 +169,54 @@
       "revision": "v20231212",
       "rights_review": "pending",
       "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-dtyp/cca27429-5689-4a16-b2b4-9325d93e4ba2"
+    },
+    {
+      "id": "RFC1035",
+      "url": "https://www.rfc-editor.org/info/rfc1035/",
+      "revision": "RFC1035-November-1987",
+      "rights_review": "pending"
+    },
+    {
+      "id": "RFC2136",
+      "url": "https://www.rfc-editor.org/info/rfc2136/",
+      "revision": "RFC2136-April-1997",
+      "rights_review": "pending"
+    },
+    {
+      "id": "RFC2696",
+      "url": "https://www.rfc-editor.org/info/rfc2696/",
+      "revision": "RFC2696-September-1999",
+      "rights_review": "pending"
+    },
+    {
+      "id": "RFC2782",
+      "url": "https://www.rfc-editor.org/info/rfc2782/",
+      "revision": "RFC2782-February-2000",
+      "rights_review": "pending"
+    },
+    {
+      "id": "RFC3244",
+      "url": "https://www.rfc-editor.org/info/rfc3244/",
+      "revision": "RFC3244-February-2002",
+      "rights_review": "pending"
+    },
+    {
+      "id": "RFC3645",
+      "url": "https://www.rfc-editor.org/info/rfc3645/",
+      "revision": "RFC3645-October-2003",
+      "rights_review": "pending"
+    },
+    {
+      "id": "RFC4120",
+      "url": "https://www.rfc-editor.org/info/rfc4120/",
+      "revision": "RFC4120-July-2005",
+      "rights_review": "pending"
+    },
+    {
+      "id": "MS-SFU",
+      "url": "https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-sfu/3bff5864-8135-400e-bdd9-33b552051d94",
+      "revision": "v20260330",
+      "rights_review": "pending"
     }
   ],
   "operations": [
@@ -179,7 +227,8 @@
         "AD-01"
       ],
       "specifications": [
-        "MS-ADTS"
+        "MS-ADTS",
+        "RFC4511"
       ],
       "profiles": [
         "win11-pro",
@@ -196,6 +245,58 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "add",
+          "kind": "wire",
+          "exchange": "LDAP AddRequest for users, computers and groups",
+          "references": [
+            "RFC4511#4.7",
+            "MS-ADTS#3.1.1.5.2"
+          ],
+          "expected_success": "Create the authorized child with a server-assigned GUID and SID where applicable.",
+          "expected_refusal": "Return entryAlreadyExists for a DN collision and deny missing create rights; create no duplicate.",
+          "required_evidence": "LDAP result and before/after DN, GUID and SID inventory."
+        },
+        {
+          "id": "modify",
+          "kind": "wire",
+          "exchange": "LDAP ModifyRequest for attributes and group links",
+          "references": [
+            "RFC4511#4.6",
+            "MS-ADTS#3.1.1.5.3",
+            "MS-ADTS#3.1.1.5.1.4"
+          ],
+          "expected_success": "Commit the permitted change list atomically.",
+          "expected_refusal": "An invalid or denied change leaves the whole list unapplied.",
+          "required_evidence": "Result, redacted change types and before/after attributes and links."
+        },
+        {
+          "id": "rename",
+          "kind": "wire",
+          "exchange": "LDAP ModifyDNRequest within one domain, including newSuperior",
+          "references": [
+            "RFC4511#4.9",
+            "MS-ADTS#3.1.1.5.4.1"
+          ],
+          "expected_success": "Move or rename an authorized object with its GUID and SID intact.",
+          "expected_refusal": "A collision or missing move rights leaves the original object.",
+          "required_evidence": "Old and new DN, GUID, SID and result."
+        },
+        {
+          "id": "delete",
+          "kind": "wire",
+          "exchange": "LDAP DeleteRequest and Tree Delete control 1.2.840.113556.1.4.805",
+          "references": [
+            "RFC4511#4.8",
+            "MS-ADTS#3.1.1.5.5",
+            "MS-ADTS#3.1.1.3.4.1.15"
+          ],
+          "expected_success": "Delete an authorized leaf or selected authorized subtree.",
+          "expected_refusal": "An ordinary delete of a nonleaf returns notAllowedOnNonLeaf. Record any partial tree-delete progress.",
+          "required_evidence": "Result and per-entry deletion state."
+        }
       ]
     },
     {
@@ -206,7 +307,8 @@
       ],
       "specifications": [
         "MS-ADTS",
-        "MS-DTYP"
+        "MS-DTYP",
+        "RFC4511"
       ],
       "profiles": [
         "win11-pro",
@@ -223,6 +325,48 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "schema-update",
+          "kind": "wire",
+          "exchange": "LDAP Add or Modify with schema and attribute constraints",
+          "references": [
+            "MS-ADTS#3.1.1.5.1.1",
+            "MS-ADTS#3.1.1.5.3.2",
+            "RFC4511#4.1.9",
+            "MS-DTYP#2.4.2"
+          ],
+          "expected_success": "Accept a valid authorized object or schema-scoped update.",
+          "expected_refusal": "Reject missing required attributes, invalid class, invalid syntax or malformed SID.",
+          "required_evidence": "Schema edition, result and before/after attributes."
+        },
+        {
+          "id": "sd-flags",
+          "kind": "wire",
+          "exchange": "LDAP Search and Modify with SD Flags control 1.2.840.113556.1.4.801",
+          "references": [
+            "MS-ADTS#3.1.1.3.4.1.11",
+            "MS-ADTS#3.1.1.4.3",
+            "MS-DTYP#2.4.6"
+          ],
+          "expected_success": "Return permitted descriptor fields and apply authorized ACL changes with observable inheritance.",
+          "expected_refusal": "Withhold protected fields and deny unauthorized writes without granting effective rights.",
+          "required_evidence": "SD mask, sanitized ACEs and effective rights before and after."
+        },
+        {
+          "id": "filter-and-groups",
+          "kind": "wire",
+          "exchange": "LDAP Search with Transitive Eval matching rule 1.2.840.113556.1.4.1941",
+          "references": [
+            "MS-ADTS#3.1.1.4.3",
+            "MS-ADTS#3.1.1.3.4.4.3",
+            "RFC4511#4.5.1"
+          ],
+          "expected_success": "Observe authorized nested membership and exclude hidden values from results and filters.",
+          "expected_refusal": "Hidden values remain unobservable; cycles grant no extra access and an exceeded Babel budget fails explicitly.",
+          "required_evidence": "Paired principals, search/filter outcomes and bounded cyclic/over-budget fixtures."
+        }
       ]
     },
     {
@@ -249,6 +393,34 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "deleted-search",
+          "kind": "wire",
+          "exchange": "LDAP Search with Show Deleted 1.2.840.113556.1.4.417 or Show Recycled 1.2.840.113556.1.4.2064",
+          "references": [
+            "MS-ADTS#3.1.1.3.4.1.14",
+            "MS-ADTS#3.1.1.3.4.1.26",
+            "MS-ADTS#3.1.1.9.1"
+          ],
+          "expected_success": "Authorized views expose the eligible lifecycle stages under the declared Recycle Bin profile.",
+          "expected_refusal": "A normal or unauthorized search does not expose protected deleted objects.",
+          "required_evidence": "Results for both controls, lifecycle state and scoped access identities."
+        },
+        {
+          "id": "undelete",
+          "kind": "wire",
+          "exchange": "LDAP Modify with Show Deleted, removal of isDeleted and replacement of distinguishedName",
+          "references": [
+            "MS-ADTS#3.1.1.5.3.7",
+            "MS-ADTS#3.1.1.5.3.7.1",
+            "MS-ADTS#3.1.1.5.3.7.2"
+          ],
+          "expected_success": "Restore an eligible object with its stable identity at a permitted DN.",
+          "expected_refusal": "Refuse expired, recycled, colliding or unauthorized restore without reviving privileges.",
+          "required_evidence": "GUID/SID, lifecycle state, target DN, result and effective access."
+        }
       ]
     },
     {
@@ -258,7 +430,11 @@
         "AD-02"
       ],
       "specifications": [
-        "MS-NRPC"
+        "MS-NRPC",
+        "MS-ADTS",
+        "MS-SAMR",
+        "MS-KILE",
+        "RFC4120"
       ],
       "profiles": [
         "win11-pro",
@@ -275,6 +451,59 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "account-create",
+          "kind": "wire",
+          "exchange": "LDAP computer Add or SAMR SamrCreateUser2InDomain (opnum 50)",
+          "references": [
+            "MS-ADTS#3.1.1.5.2",
+            "MS-SAMR#3.1.5.4.4"
+          ],
+          "expected_success": "Provision a computer account with intended trust role and scoped rights.",
+          "expected_refusal": "Reject a conflicting account or unauthorized takeover.",
+          "required_evidence": "Actual provisioning path, account ACL, directory identity and result."
+        },
+        {
+          "id": "secure-channel",
+          "kind": "wire",
+          "exchange": "Netlogon NetrServerReqChallenge (4) and NetrServerAuthenticate3 (26)",
+          "references": [
+            "MS-NRPC#3.5.4.4.1",
+            "MS-NRPC#3.5.4.4.2"
+          ],
+          "expected_success": "Establish the protected channel for the enrolled machine.",
+          "expected_refusal": "Refuse wrong or revoked machine credentials and inadequate protection.",
+          "required_evidence": "RPC result, effective protection flags and successful post-join verification."
+        },
+        {
+          "id": "online-logon",
+          "kind": "wire",
+          "exchange": "Kerberos AS/TGS/AP or protected Netlogon SamLogonEx (39) when selected",
+          "references": [
+            "MS-KILE#3.3.5.6",
+            "MS-KILE#3.3.5.7",
+            "RFC4120#3.2",
+            "MS-NRPC#3.5.4.5.1"
+          ],
+          "expected_success": "A licensed Windows client proves online sign-in using the observed mechanism.",
+          "expected_refusal": "Wrong, expired per policy or revoked credentials yield no online session.",
+          "required_evidence": "Actual sign-in, correlated DC result, selected mechanism and cache classification."
+        },
+        {
+          "id": "join-variants",
+          "kind": "unresolved",
+          "exchange": "Workstation join management RPC and pre-staged join selection",
+          "references": [
+            "MS-NRPC#3.5.4.4.2",
+            "BABEL-CLIENT"
+          ],
+          "expected_success": "A declared build selects a supported path and completes enrollment.",
+          "expected_refusal": "Unknown or rejected routes grant no machine channel.",
+          "required_evidence": "Fresh and pre-staged joins with selected interfaces and reply codes.",
+          "blocker": "Exact Windows builds and licensed traces are needed to identify the workstation-side calls."
+        }
       ]
     },
     {
@@ -301,6 +530,32 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "set2",
+          "kind": "wire",
+          "exchange": "Netlogon NetrServerPasswordSet2 (opnum 30)",
+          "references": [
+            "MS-NRPC#3.5.4.4.6",
+            "MS-NRPC#3.5.4.4.2"
+          ],
+          "expected_success": "Rotate on the valid machine channel and authenticate after restart.",
+          "expected_refusal": "Invalid authenticator or unauthorized machine leaves credential state intact.",
+          "required_evidence": "Redacted status, authenticated scope, generation marker and restart probe."
+        },
+        {
+          "id": "recovery",
+          "kind": "workflow",
+          "exchange": "Re-establish channel after reply loss during machine password rotation",
+          "references": [
+            "MS-NRPC#3.5.4.4",
+            "BABEL-RECOVERY"
+          ],
+          "expected_success": "Reconcile only a permitted credential generation under the declared recovery policy.",
+          "expected_refusal": "Replay or out-of-policy old credentials gain no session.",
+          "required_evidence": "Before/after-commit interruption, account state and online result."
+        }
       ]
     },
     {
@@ -310,7 +565,8 @@
         "AD-02"
       ],
       "specifications": [
-        "MS-NRPC"
+        "MS-NRPC",
+        "RFC4120"
       ],
       "profiles": [
         "win11-pro",
@@ -327,6 +583,31 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "offline",
+          "kind": "workflow",
+          "exchange": "Windows local cached interactive logon while isolated from all DCs",
+          "references": [
+            "BABEL-CLIENT"
+          ],
+          "expected_success": "A previously enrolled user signs in offline only if local policy permits it.",
+          "expected_refusal": "Missing or disallowed cache prevents sign-in; offline success never counts as online.",
+          "required_evidence": "Policy and sign-in events, DC isolation and absence of server authentication."
+        },
+        {
+          "id": "reconnect",
+          "kind": "wire",
+          "exchange": "Fresh Kerberos AS or protected Netlogon authentication after reconnect",
+          "references": [
+            "RFC4120#3.1",
+            "MS-NRPC#3.5.4.5.1"
+          ],
+          "expected_success": "A valid identity obtains separately observed online authentication.",
+          "expected_refusal": "A subsequently revoked account fails the online attempt even with an existing cached desktop session.",
+          "required_evidence": "Offline/online classification, correlated times and DC state."
+        }
       ]
     },
     {
@@ -336,7 +617,10 @@
         "IAM-01"
       ],
       "specifications": [
-        "MS-SAMR"
+        "MS-SAMR",
+        "RFC4511",
+        "MS-ADTS",
+        "RFC3244"
       ],
       "profiles": [
         "debian-client",
@@ -357,6 +641,54 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "samr-change",
+          "kind": "wire",
+          "exchange": "SamrUnicodeChangePasswordUser2 (opnum 55) for self-service change",
+          "references": [
+            "MS-SAMR#3.1.5.10.3"
+          ],
+          "expected_success": "Holder of old password changes it under effective policy and proves the new state.",
+          "expected_refusal": "Wrong old password or policy failure leaves the prior state.",
+          "required_evidence": "Redacted NTSTATUS and old/new login probes without passwords."
+        },
+        {
+          "id": "samr-reset",
+          "kind": "wire",
+          "exchange": "SamrSetInformationUser2 (opnum 58) with permitted password information class",
+          "references": [
+            "MS-SAMR#3.1.5.6.4"
+          ],
+          "expected_success": "Delegated reset changes only the scoped account.",
+          "expected_refusal": "Out-of-scope helpdesk reset fails without changing the credential.",
+          "required_evidence": "Selected information class, granted scope, status, audit and post-reset probe."
+        },
+        {
+          "id": "ldap-password",
+          "kind": "wire",
+          "exchange": "Protected LDAP Modify of unicodePwd with change or reset semantics",
+          "references": [
+            "RFC4511#4.6",
+            "MS-ADTS#3.1.1.3.1.5.1"
+          ],
+          "expected_success": "Change or reset succeeds under its distinct rights and protection requirements.",
+          "expected_refusal": "Weak password, inadequate protection or missing rights do not change credentials.",
+          "required_evidence": "Transport, redacted change shape, LDAP result and login probe."
+        },
+        {
+          "id": "kerberos-password",
+          "kind": "wire",
+          "exchange": "Kerberos change/set-password request and reply on port 464",
+          "references": [
+            "RFC3244#2",
+            "RFC3244#3"
+          ],
+          "expected_success": "An authorized change or reset returns application success.",
+          "expected_refusal": "Wrong old credentials or policy/rights failure leaves state unchanged.",
+          "required_evidence": "Actual client route, redacted application code and post-attempt login."
+        }
       ]
     },
     {
@@ -366,7 +698,10 @@
         "IAM-01"
       ],
       "specifications": [
-        "MS-SAMR"
+        "MS-SAMR",
+        "MS-KILE",
+        "RFC4511",
+        "MS-ADTS"
       ],
       "profiles": [
         "debian-client",
@@ -387,6 +722,34 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "effective-policy",
+          "kind": "wire",
+          "exchange": "Observe account lockout during controlled AS/authentication attempts and SAMR policy checks",
+          "references": [
+            "MS-SAMR#3.1.5.14.5",
+            "MS-SAMR#3.1.5.14.6",
+            "MS-KILE#3.3.5.6.3"
+          ],
+          "expected_success": "Apply the effective threshold and permit an eligible identity after authorized unlock.",
+          "expected_refusal": "Locked or disabled account fails online; outward behavior limits enumeration.",
+          "required_evidence": "Ordered attempts, effective policy, counters, redacted outcomes and unlock audit."
+        },
+        {
+          "id": "unlock",
+          "kind": "wire",
+          "exchange": "LDAP Modify to clear lockoutTime under delegated rights",
+          "references": [
+            "RFC4511#4.6",
+            "MS-SAMR#3.1.1.8.3",
+            "MS-ADTS#3.1.1.5.3.1"
+          ],
+          "expected_success": "Clear the authorized lockout while leaving the disabled flag intact.",
+          "expected_refusal": "Unauthorized unlock leaves state and online refusal unchanged.",
+          "required_evidence": "Before/after attributes, result and online check."
+        }
       ]
     },
     {
@@ -396,7 +759,8 @@
         "AD-03"
       ],
       "specifications": [
-        "MS-KILE"
+        "MS-KILE",
+        "RFC4120"
       ],
       "profiles": [
         "debian-client",
@@ -417,6 +781,57 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "as",
+          "kind": "wire",
+          "exchange": "KRB_AS_REQ / KRB_AS_REP for AES TGT and preauthentication",
+          "references": [
+            "RFC4120#3.1",
+            "MS-KILE#3.3.5.6",
+            "MS-KILE#3.1.5.2"
+          ],
+          "expected_success": "A valid client obtains a TGT with a permitted AES enctype.",
+          "expected_refusal": "Invalid preauthentication, disabled account or no common approved enctype yields an applicable KRB_ERROR and no usable TGT.",
+          "required_evidence": "AS status/enctype and policy decision; distinguish initial preauthentication challenge from final refusal."
+        },
+        {
+          "id": "tgs",
+          "kind": "wire",
+          "exchange": "KRB_TGS_REQ / KRB_TGS_REP for a selected service principal",
+          "references": [
+            "RFC4120#3.3",
+            "MS-KILE#3.3.5.7"
+          ],
+          "expected_success": "A valid TGT obtains a service ticket bounded to the selected SPN.",
+          "expected_refusal": "Expired or invalid authorization or unknown SPN yields no usable ticket.",
+          "required_evidence": "TGS status, enctype and masked principal/realm/SPN."
+        },
+        {
+          "id": "ap",
+          "kind": "wire",
+          "exchange": "KRB_AP_REQ and mutual KRB_AP_REP at a separate service",
+          "references": [
+            "RFC4120#3.2",
+            "MS-KILE#3.2.5.8"
+          ],
+          "expected_success": "The service accepts its own ticket and provides proof when mutual authentication is requested.",
+          "expected_refusal": "Wrong audience, expiry, replayed authenticator or unacceptable skew yields no authenticated session.",
+          "required_evidence": "Client/service results, replay/skew timing and exact protocol or application refusal."
+        },
+        {
+          "id": "clock-baseline",
+          "kind": "workflow",
+          "exchange": "Isolated DNS and time sources before Kerberos login",
+          "references": [
+            "BABEL-CLIENT",
+            "RFC4120#3.2.3"
+          ],
+          "expected_success": "Observe successful online tickets and AP exchange with time within policy.",
+          "expected_refusal": "With isolated clock skew above policy, the request fails and no service session is established.",
+          "required_evidence": "Record both clocks, skew, authenticating protocol result and recovery after synchronization."
+        }
       ]
     },
     {
@@ -426,7 +841,10 @@
         "AD-03"
       ],
       "specifications": [
-        "MS-PAC"
+        "MS-PAC",
+        "RFC4120",
+        "MS-KILE",
+        "MS-SFU"
       ],
       "profiles": [
         "win11-pro",
@@ -443,6 +861,43 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "pac",
+          "kind": "wire",
+          "exchange": "Ticket AuthorizationData with PAC and context-appropriate signatures",
+          "references": [
+            "RFC4120#5.2.6",
+            "MS-PAC#2.8",
+            "MS-KILE#3.3.5.6.4"
+          ],
+          "expected_success": "Verify applicable signatures and derive the expected user/group authority.",
+          "expected_refusal": "Reject tampered PAC or wrong signing context; grant no PAC-derived authority.",
+          "required_evidence": "Redacted ticket context, verification by signature role and effective rights."
+        },
+        {
+          "id": "s4u-self",
+          "kind": "wire",
+          "exchange": "S4U2self TGS extension with PA-S4U-X509-USER or PA-FOR-USER as selected",
+          "references": [
+            "MS-SFU#3.2.5.1"
+          ],
+          "expected_success": "Permitted service obtains a ticket to itself for the expected represented user.",
+          "expected_refusal": "Invalid or disallowed request fails; a fallback ticket naming the service as client is insufficient.",
+          "required_evidence": "Service, represented user, target and KDC result as redacted metadata."
+        },
+        {
+          "id": "s4u-proxy",
+          "kind": "wire",
+          "exchange": "S4U2proxy TGS extension with permitted evidence ticket and delegation policy",
+          "references": [
+            "MS-SFU#3.2.5.2"
+          ],
+          "expected_success": "Permitted delegator receives a ticket to the intended target for the user.",
+          "expected_refusal": "Ineligible evidence or target yields no usable delegated ticket.",
+          "required_evidence": "Scoped policy, KDC decision and destination service result."
+        }
       ]
     },
     {
@@ -452,7 +907,8 @@
         "AD-04"
       ],
       "specifications": [
-        "RFC4511"
+        "RFC4511",
+        "MS-ADTS"
       ],
       "profiles": [
         "debian-client",
@@ -473,6 +929,46 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "bind",
+          "kind": "wire",
+          "exchange": "LDAPv3 anonymous Bind followed by Unbind",
+          "references": [
+            "RFC4511#4.2",
+            "RFC4511#4.3"
+          ],
+          "expected_success": "Anonymous bind permits declared public discovery and Unbind terminates without a response PDU.",
+          "expected_refusal": "Invalid version or disallowed credential path yields no authenticated access.",
+          "required_evidence": "Sanitized bind/unbind and connection lifecycle with scope verification."
+        },
+        {
+          "id": "rootdse",
+          "kind": "wire",
+          "exchange": "LDAP Search on empty base DN with baseObject scope and selected RootDSE attributes",
+          "references": [
+            "RFC4511#4.5",
+            "MS-ADTS#3.1.1.3.1.3.6",
+            "MS-ADTS#3.1.1.3.2"
+          ],
+          "expected_success": "Return declared discovery data and SearchResultDone; false filter yields no entries.",
+          "expected_refusal": "Unsupported scope or filter receives declared refusal without wider directory data.",
+          "required_evidence": "Scope, attributes, filter and terminal code; distinguish Babel smoke from Windows comparison."
+        },
+        {
+          "id": "framing",
+          "kind": "wire",
+          "exchange": "LDAP BER message framing and Notice of Disconnection where applicable",
+          "references": [
+            "RFC4511#4.1.1",
+            "RFC4511#4.4.1",
+            "RFC4511#5.1"
+          ],
+          "expected_success": "Valid bounded messages complete and unrelated sessions remain available.",
+          "expected_refusal": "Undecodable input closes under the framing rules. Record a notice or protocolError if available.",
+          "required_evidence": "Bounded parser diagnostics, disconnect outcome and next clean session."
+        }
       ]
     },
     {
@@ -482,7 +978,9 @@
         "AD-04"
       ],
       "specifications": [
-        "MS-ADTS"
+        "MS-ADTS",
+        "RFC4511",
+        "RFC2696"
       ],
       "profiles": [
         "debian-client",
@@ -503,6 +1001,75 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "session-protection",
+          "kind": "wire",
+          "exchange": "LDAP StartTLS 1.3.6.1.4.1.1466.20037, LDAPS and SASL GSSAPI/GSS-SPNEGO Bind",
+          "references": [
+            "RFC4511#4.2",
+            "RFC4511#4.14",
+            "MS-ADTS#3.1.1.3.1.10",
+            "MS-ADTS#3.1.1.3.4.5",
+            "MS-ADTS#3.1.1.3.4.6"
+          ],
+          "expected_success": "Authorize a bind in the approved TLS or SASL context.",
+          "expected_refusal": "Unsigned or unprotected credential path or failed TLS/channel-binding policy grants no session or cleartext fallback.",
+          "required_evidence": "Transport, certificate/binding decision, SASL security and LDAP result."
+        },
+        {
+          "id": "search-and-compare",
+          "kind": "wire",
+          "exchange": "LDAP Search and Compare with authorized referrals",
+          "references": [
+            "RFC4511#4.5",
+            "RFC4511#4.10",
+            "MS-ADTS#3.1.1.3.1.4",
+            "MS-ADTS#3.1.1.4.3"
+          ],
+          "expected_success": "Return authorized projections, the applicable compare result or a declared eligible referral.",
+          "expected_refusal": "Do not disclose hidden values or forward credentials to an untrusted referral.",
+          "required_evidence": "Result entries, LDAP code, referral and actual client handling."
+        },
+        {
+          "id": "paging",
+          "kind": "wire",
+          "exchange": "Simple Paged Results control 1.2.840.113556.1.4.319 with continuation and abandonment",
+          "references": [
+            "RFC2696#2",
+            "RFC2696#3",
+            "MS-ADTS#3.1.1.3.4.1.1"
+          ],
+          "expected_success": "Return complete pages over fixed data with opaque continuation and empty final cookie.",
+          "expected_refusal": "Invalid, expired or wrong-scope cookies do not expose a different result set.",
+          "required_evidence": "Counts and authorized IDs by page, cookie presence and terminal code."
+        },
+        {
+          "id": "criticality",
+          "kind": "wire",
+          "exchange": "LDAP control criticality and unsupported OID handling",
+          "references": [
+            "RFC4511#4.1.11",
+            "MS-ADTS#3.1.1.3.4.1"
+          ],
+          "expected_success": "Apply a supported control and use the ignore rule for unknown noncritical controls.",
+          "expected_refusal": "Unknown critical control returns unavailableCriticalExtension and suppresses the operation.",
+          "required_evidence": "Advertised set, requested OID/criticality, result and absence of side effects."
+        },
+        {
+          "id": "control-variants",
+          "kind": "unresolved",
+          "exchange": "Additional RSAT controls including DirSync, VLV, sorting and range-retrieval combinations",
+          "references": [
+            "MS-ADTS#3.1.1.3.4.1",
+            "BABEL-CLIENT"
+          ],
+          "expected_success": "Publish a combination after its semantics and authorization are qualified.",
+          "expected_refusal": "Unknown critical controls fail and unqualified controls remain outside support.",
+          "required_evidence": "Exact tool/build traces, continuation and refusal behavior.",
+          "blocker": "Tool- and build-specific combinations are undecided and need real client traces."
+        }
       ]
     },
     {
@@ -512,7 +1079,8 @@
         "AD-04"
       ],
       "specifications": [
-        "MS-ADTS"
+        "MS-ADTS",
+        "RFC4511"
       ],
       "profiles": [
         "win11-pro",
@@ -529,6 +1097,22 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "gc-search",
+          "kind": "wire",
+          "exchange": "GC LDAP/LDAPS, isGlobalCatalogReady and search of partial replica naming contexts",
+          "references": [
+            "MS-ADTS#3.1.1.3.1.10",
+            "MS-ADTS#3.1.1.3.2.10",
+            "MS-ADTS#6.1.2.3.4",
+            "RFC4511#4.5"
+          ],
+          "expected_success": "Ready catalog returns authorized partial attributes across qualified domains.",
+          "expected_refusal": "Do not return out-of-scope secrets or advertise unavailable catalog readiness.",
+          "required_evidence": "Two-domain full/partial comparisons, freshness/readiness and result."
+        }
       ]
     },
     {
@@ -538,7 +1122,10 @@
         "AD-05"
       ],
       "specifications": [
-        "MS-ADTS"
+        "MS-ADTS",
+        "RFC1035",
+        "RFC2782",
+        "MS-NRPC"
       ],
       "profiles": [
         "win11-pro",
@@ -555,6 +1142,49 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "dns-query",
+          "kind": "wire",
+          "exchange": "DNS QUERY for site/domain SRV and target host records",
+          "references": [
+            "RFC1035#4.1.1",
+            "RFC1035#4.2",
+            "RFC2782#srv-format",
+            "RFC2782#usage",
+            "MS-ADTS#6.3.6.1"
+          ],
+          "expected_success": "Locate an eligible service with matching site and priority/weight selection.",
+          "expected_refusal": "Separate NXDOMAIN from empty answer; stale or unreachable records do not qualify as live DCs.",
+          "required_evidence": "Redacted queries/RRsets/TTLs, selected DC and bounded failover time."
+        },
+        {
+          "id": "ldap-ping",
+          "kind": "wire",
+          "exchange": "UDP LDAP Netlogon ping and DsrGetDcNameEx2 (34) where invoked",
+          "references": [
+            "MS-ADTS#3.1.1.3.1.11",
+            "MS-ADTS#6.3.3",
+            "MS-NRPC#3.5.4.3.1"
+          ],
+          "expected_success": "Selected reachable responder satisfies domain, capability and site flags.",
+          "expected_refusal": "Wrong-domain or disallowed-site reply does not satisfy lookup; only declared fallback is allowed.",
+          "required_evidence": "Probe flags, resulting DC selection, actual reachability and timed loss."
+        },
+        {
+          "id": "legacy-discovery",
+          "kind": "unresolved",
+          "exchange": "NetBIOS/mailslot or build-dependent fallback",
+          "references": [
+            "MS-ADTS#6.3.5",
+            "MS-ADTS#6.3.6.2"
+          ],
+          "expected_success": "Use the selected DNS path on the supported baseline.",
+          "expected_refusal": "Unqualified legacy fallback earns no support and cannot route outside the isolated topology.",
+          "required_evidence": "Exact builds/settings and observed behavior under DNS loss.",
+          "blocker": "Pinned client builds and policy are needed to identify any required legacy variants."
+        }
       ]
     },
     {
@@ -564,7 +1194,9 @@
         "AD-05"
       ],
       "specifications": [
-        "MS-DNSP"
+        "MS-DNSP",
+        "RFC3645",
+        "RFC2136"
       ],
       "profiles": [
         "win11-pro",
@@ -581,6 +1213,47 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "tkey",
+          "kind": "wire",
+          "exchange": "TKEY exchanges for GSS-TSIG context establishment",
+          "references": [
+            "RFC3645#3.1",
+            "RFC3645#4.1"
+          ],
+          "expected_success": "Establish a context for the permitted machine and DNS service.",
+          "expected_refusal": "Invalid GSS authentication yields no update context.",
+          "required_evidence": "Redacted TKEY/GSS state, scoped identities and return status."
+        },
+        {
+          "id": "secure-update",
+          "kind": "wire",
+          "exchange": "DNS UPDATE with prerequisites, update sections and GSS-TSIG signature",
+          "references": [
+            "RFC2136#2",
+            "RFC2136#3",
+            "RFC2136#5",
+            "RFC3645#5.2"
+          ],
+          "expected_success": "Commit only the authorized RRset change for a valid signed update.",
+          "expected_refusal": "Reject unsigned, invalid, unauthorized or stale updates and failed prerequisites without RRset mutation.",
+          "required_evidence": "RCODE and TSIG outcome, before/after RRsets and duplicate/retry observation."
+        },
+        {
+          "id": "management-rpc",
+          "kind": "unresolved",
+          "exchange": "Administrative DNS R_DnssrvUpdateRecord (4) and versioned variants",
+          "references": [
+            "MS-DNSP#3.1.4.5",
+            "MS-DNSP#3.1.4.10"
+          ],
+          "expected_success": "Evaluate the selected administrative method independently of wire UPDATE.",
+          "expected_refusal": "No administrative method bypasses record ACLs or qualifies DNS UPDATE.",
+          "required_evidence": "Exact DNS management client, RPC authorization and outcomes.",
+          "blocker": "Select the DNS administration method set and determine which builds require it."
+        }
       ]
     },
     {
@@ -590,7 +1263,9 @@
         "AD-06"
       ],
       "specifications": [
-        "MS-GPOL"
+        "MS-GPOL",
+        "MS-SMB2",
+        "RFC4511"
       ],
       "profiles": [
         "win11-pro",
@@ -607,6 +1282,49 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "read-gpo",
+          "kind": "wire",
+          "exchange": "LDAP GPO/SOM search and SMB read of the paired file version",
+          "references": [
+            "MS-GPOL#2.2.4",
+            "MS-GPOL#3.2.5.1.5",
+            "MS-GPOL#4.10",
+            "MS-SMB2#3.3.5.12"
+          ],
+          "expected_success": "Windows evaluates eligible links and consumes coherent directory/file versions.",
+          "expected_refusal": "Incomplete publication never counts as a newly applied policy; record prior cached policy separately.",
+          "required_evidence": "Selected links, GPC/GPT versions, client resultant policy and incomplete-publication observation."
+        },
+        {
+          "id": "edit-links",
+          "kind": "wire",
+          "exchange": "LDAP GPO-link update and directory/SYSVOL versioned publishing",
+          "references": [
+            "MS-GPOL#3.3.5.7",
+            "MS-GPOL#3.3.5.8",
+            "MS-GPOL#3.3.5.4",
+            "RFC4511#4.6"
+          ],
+          "expected_success": "A delegated editor updates the intended link and publishes a coherent version.",
+          "expected_refusal": "Unauthorized change fails, and partial publication remains visible as incomplete.",
+          "required_evidence": "LDAP/SMB results, before/after link and version state, actual client application."
+        },
+        {
+          "id": "extensions",
+          "kind": "unresolved",
+          "exchange": "Per-client Group Policy extension set for scripts and security policy",
+          "references": [
+            "MS-GPOL#3.2.5.1.5",
+            "BABEL-CLIENT"
+          ],
+          "expected_success": "Apply each selected extension on exact Windows clients with resultant settings.",
+          "expected_refusal": "Unqualified extensions and stale policy do not earn application evidence.",
+          "required_evidence": "Extension/version and client-side settings and events.",
+          "blocker": "Select extension scope and pin individual protocol/file-format sections against real builds."
+        }
       ]
     },
     {
@@ -616,7 +1334,8 @@
         "AD-06"
       ],
       "specifications": [
-        "MS-SMB2"
+        "MS-SMB2",
+        "MS-FRS2"
       ],
       "profiles": [
         "win11-pro",
@@ -633,6 +1352,51 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "smb-session",
+          "kind": "wire",
+          "exchange": "SMB2 NEGOTIATE, SESSION_SETUP and TREE_CONNECT to SYSVOL/NETLOGON",
+          "references": [
+            "MS-SMB2#3.3.5.4",
+            "MS-SMB2#3.3.5.5",
+            "MS-SMB2#3.3.5.7",
+            "MS-SMB2#3.3.5.2.4"
+          ],
+          "expected_success": "Authenticate to the intended share with declared dialect and signing/sealing.",
+          "expected_refusal": "Invalid signature, inadequate protection or missing share rights yields no file access.",
+          "required_evidence": "Negotiated protection, SMB status, share and ACL."
+        },
+        {
+          "id": "smb-content",
+          "kind": "wire",
+          "exchange": "SMB2 CREATE, READ, WRITE and CLOSE for policy content",
+          "references": [
+            "MS-SMB2#3.3.5.9",
+            "MS-SMB2#3.3.5.12",
+            "MS-SMB2#3.3.5.13",
+            "MS-SMB2#3.3.5.10"
+          ],
+          "expected_success": "Authorized reads see expected files and an approved writer publishes a coherent version.",
+          "expected_refusal": "Unauthorized writes fail, and interrupted publication cannot advance the complete version.",
+          "required_evidence": "SMB status, file/version hashes, before/after interruption evidence."
+        },
+        {
+          "id": "dfsr",
+          "kind": "unresolved",
+          "exchange": "DFSR candidate EstablishConnection (1), EstablishSession (2), version vector (4) and records (6)",
+          "references": [
+            "MS-FRS2#3.2.4.1.2",
+            "MS-FRS2#3.2.4.1.3",
+            "MS-FRS2#3.2.4.1.5",
+            "MS-FRS2#3.2.4.1.7"
+          ],
+          "expected_success": "Selected replication mechanism converges coherent policy files across DCs.",
+          "expected_refusal": "Deny unauthorized peers; incomplete file sets never count as converged.",
+          "required_evidence": "Two-site file convergence, peer authorization and interrupted propagation.",
+          "blocker": "Select the SYSVOL replication mechanism and decide if FRS2 interoperability is required."
+        }
       ]
     },
     {
@@ -659,6 +1423,46 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "bind",
+          "kind": "wire",
+          "exchange": "IDL_DRSBind (0) and IDL_DRSUnbind (1) with supported extensions",
+          "references": [
+            "MS-DRSR#4.1.3",
+            "MS-DRSR#4.1.25"
+          ],
+          "expected_success": "An authorized protected peer negotiates a supported context and releases it.",
+          "expected_refusal": "Unauthorized or insufficiently protected peer receives no context/data.",
+          "required_evidence": "Peer role, RPC protection, negotiated extensions and context lifetime."
+        },
+        {
+          "id": "changes",
+          "kind": "wire",
+          "exchange": "IDL_DRSGetNCChanges (3) with NC, cursors, linked values and continuation",
+          "references": [
+            "MS-DRSR#4.1.10.4",
+            "MS-DRSR#4.1.10.5",
+            "MS-DRSR#4.1.10.6"
+          ],
+          "expected_success": "Apply authorized changes, deduplicate retries and atomically commit progress with state.",
+          "expected_refusal": "Invalid cursor, stale epoch or unapproved peer does not advance progress.",
+          "required_evidence": "Partition/rejoin, redacted epochs/USNs, and transaction and object/link observations."
+        },
+        {
+          "id": "topology",
+          "kind": "wire",
+          "exchange": "IDL_DRSUpdateRefs (4), IDL_DRSReplicaSync (2) and IDL_DRSGetReplInfo (19)",
+          "references": [
+            "MS-DRSR#4.1.26",
+            "MS-DRSR#4.1.23",
+            "MS-DRSR#4.1.13"
+          ],
+          "expected_success": "Permit scoped topology/sync and report actual replica state.",
+          "expected_refusal": "Unauthorized NC changes fail; queued sync is not successful convergence.",
+          "required_evidence": "Neighbors, requested NC, RPC result and follow-up cursors/metadata."
+        }
       ]
     },
     {
@@ -668,7 +1472,8 @@
         "AD-07"
       ],
       "specifications": [
-        "MS-DRSR"
+        "MS-DRSR",
+        "MS-ADTS"
       ],
       "profiles": [
         "win11-pro",
@@ -685,6 +1490,34 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "delete-propagation",
+          "kind": "wire",
+          "exchange": "GetNCChanges replication of retained deletions and link updates",
+          "references": [
+            "MS-DRSR#4.1.10.5",
+            "MS-DRSR#4.1.10.6",
+            "MS-ADTS#3.1.1.1.5.1"
+          ],
+          "expected_success": "Deletion and link lifecycle converge under the declared retention interval.",
+          "expected_refusal": "An obsolete replica cannot silently resurrect a deleted identity.",
+          "required_evidence": "Two-sided object/link states, lifetime settings, cursors and isolated rejoin."
+        },
+        {
+          "id": "restore-epoch",
+          "kind": "workflow",
+          "exchange": "Offline restore and newly qualified invocation epoch before allowing replication",
+          "references": [
+            "BABEL-RECOVERY",
+            "MS-DRSR#4.1.3",
+            "MS-DRSR#5.210"
+          ],
+          "expected_success": "Reconcile a valid backup and resume under a coherent new epoch.",
+          "expected_refusal": "Quarantine reused epochs, rollback or incompatible snapshots without advancing peers.",
+          "required_evidence": "Backup ancestry, old/new invocation IDs and post-restore replication checks."
+        }
       ]
     },
     {
@@ -711,6 +1544,46 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "capabilities",
+          "kind": "wire",
+          "exchange": "Protected NetrLogonGetCapabilities (21) and NetrLogonGetDomainInfo (29)",
+          "references": [
+            "MS-NRPC#3.5.4.4.10",
+            "MS-NRPC#3.5.4.4.11"
+          ],
+          "expected_success": "Return approved domain and capability data to the authenticated channel.",
+          "expected_refusal": "Bad authenticator, wrong machine or weak protection yields no protected result.",
+          "required_evidence": "Interface UUID/version, opnum, selected flags and NTSTATUS."
+        },
+        {
+          "id": "pass-through",
+          "kind": "wire",
+          "exchange": "NetrLogonSamLogonEx (39) or NetrLogonSamLogonWithFlags (45)",
+          "references": [
+            "MS-NRPC#3.5.4.5.1",
+            "MS-NRPC#3.5.4.5.2"
+          ],
+          "expected_success": "Return scoped validation data using a declared information level and protected channel.",
+          "expected_refusal": "Wrong identity, replay or unsupported information level grants no logon.",
+          "required_evidence": "Selected call/level, RPC protection and sanitized validation outcome."
+        },
+        {
+          "id": "rpc-variants",
+          "kind": "unresolved",
+          "exchange": "Legacy opnums, interface versions, authentication levels and exact RPC faults",
+          "references": [
+            "MS-NRPC#3.5.4.4",
+            "MS-NRPC#3.5.4.5",
+            "BABEL-CLIENT"
+          ],
+          "expected_success": "Offer only declared calls and interface versions.",
+          "expected_refusal": "Unknown opnum or unsupported authentication receives a bounded refusal or RPC fault.",
+          "required_evidence": "Pinned UUID/opnum/authentication and result/fault pairing.",
+          "blocker": "Pin the RPC runtime mapping and observe exact patched-client variants."
+        }
       ]
     },
     {
@@ -720,7 +1593,8 @@
         "AD-08"
       ],
       "specifications": [
-        "MS-LSAD"
+        "MS-LSAD",
+        "MS-SAMR"
       ],
       "profiles": [
         "win11-pro",
@@ -737,6 +1611,46 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "lsa-policy",
+          "kind": "wire",
+          "exchange": "LsarOpenPolicy2 (44), LsarQueryInformationPolicy2 (46) and LsarSetInformationPolicy2 (47)",
+          "references": [
+            "MS-LSAD#3.1.4.4.1",
+            "MS-LSAD#3.1.4.4.3",
+            "MS-LSAD#3.1.4.4.5"
+          ],
+          "expected_success": "A delegated caller performs its authorized policy operation with scoped rights.",
+          "expected_refusal": "Anonymous or underprivileged requests fail without exporting secrets or altering policy.",
+          "required_evidence": "Requested and granted access, information class, protection, NTSTATUS and audit."
+        },
+        {
+          "id": "samr-lookup",
+          "kind": "wire",
+          "exchange": "SamrLookupNamesInDomain (17) under a scoped domain handle",
+          "references": [
+            "MS-SAMR#3.1.5.11.2"
+          ],
+          "expected_success": "Authorized lookup returns expected identity/RID mapping.",
+          "expected_refusal": "Deny unauthorized enumeration and return the appropriate unmapped-name result.",
+          "required_evidence": "Known, unknown and denied results with scope and returned count."
+        },
+        {
+          "id": "rsat-surface",
+          "kind": "unresolved",
+          "exchange": "RSAT route and complete LSA/SAMR/LDAP call and information-level selection",
+          "references": [
+            "MS-LSAD#3.1.4.4",
+            "MS-SAMR#3.1.5",
+            "BABEL-CLIENT"
+          ],
+          "expected_success": "Each approved journey uses a mapped delegated path.",
+          "expected_refusal": "Unknown routes stay unsupported and cannot grant authority.",
+          "required_evidence": "Exact RSAT package, request shapes, rights and observed statuses.",
+          "blocker": "Licensed pinned RSAT clients are needed to enumerate and compare the actual administrative calls."
+        }
       ]
     },
     {
@@ -746,7 +1660,11 @@
         "AD-09"
       ],
       "specifications": [
-        "MS-ADTS"
+        "MS-ADTS",
+        "MS-LSAD",
+        "MS-KILE",
+        "RFC4120",
+        "MS-PAC"
       ],
       "profiles": [
         "win11-pro",
@@ -763,6 +1681,35 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "trust-management",
+          "kind": "wire",
+          "exchange": "LsarCreateTrustedDomainEx2 (59) and LsarDeleteTrustedDomain (41)",
+          "references": [
+            "MS-LSAD#3.1.4.7.10",
+            "MS-LSAD#3.1.4.7.4",
+            "MS-ADTS#6.1.6"
+          ],
+          "expected_success": "Authorized tooling creates/removes the selected directional trust between isolated forests.",
+          "expected_refusal": "Unauthorized changes fail; removed trust cannot supply new online authority.",
+          "required_evidence": "Directional TDO observations, audit and independent online checks without trust secrets."
+        },
+        {
+          "id": "cross-realm",
+          "kind": "wire",
+          "exchange": "Cross-realm KRB_TGS referral and service authentication with SID filtering",
+          "references": [
+            "MS-KILE#3.3.5.7.5",
+            "MS-ADTS#6.1.6.9.3",
+            "RFC4120#3.3",
+            "MS-PAC#4.1.2.2"
+          ],
+          "expected_success": "Allowed origin obtains a service ticket and only approved SID-derived access.",
+          "expected_refusal": "Untrusted SID history, wrong direction or disallowed destination yields no protected access.",
+          "required_evidence": "Realm referral chain, filtered identity metadata and destination authorization results."
+        }
       ]
     },
     {
@@ -772,7 +1719,8 @@
         "AD-09"
       ],
       "specifications": [
-        "MS-ADTS"
+        "MS-ADTS",
+        "MS-DRSR"
       ],
       "profiles": [
         "win11-pro",
@@ -789,6 +1737,46 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "inter-domain-move",
+          "kind": "wire",
+          "exchange": "LDAP cross-domain ModifyDN with target control and IDL_DRSInterDomainMove (10)",
+          "references": [
+            "MS-ADTS#3.1.1.3.4.1.2",
+            "MS-ADTS#3.1.1.5.4.2",
+            "MS-DRSR#4.1.15"
+          ],
+          "expected_success": "Authorized same-forest move preserves GUID with declared destination SID semantics.",
+          "expected_refusal": "Reject invalid target or unauthorized move without a duplicate live identity.",
+          "required_evidence": "Source/target DN, GUID/SID, transfer status and interrupted retry."
+        },
+        {
+          "id": "sid-history",
+          "kind": "wire",
+          "exchange": "IDL_DRSAddSidHistory (20) under explicitly qualified authority",
+          "references": [
+            "MS-DRSR#4.1.2",
+            "MS-DRSR#4.1.2.3"
+          ],
+          "expected_success": "Permitted migration maps the selected source and destination identities under SID-history policy.",
+          "expected_refusal": "Reject unauthorized additions and any raw credential export.",
+          "required_evidence": "Identity correspondence, audit and scoped access before/after."
+        },
+        {
+          "id": "migration-tool",
+          "kind": "unresolved",
+          "exchange": "Cross-forest migration/coexistence tool and cutover path",
+          "references": [
+            "MS-DRSR#4.1.2",
+            "BABEL-RECOVERY"
+          ],
+          "expected_success": "Cut over the selected synthetic identity mapping with tested rollback.",
+          "expected_refusal": "Incomplete cutover leaves no duplicate live identity or exported credentials.",
+          "required_evidence": "Tool/build, actual calls, identity mapping and staged recovery.",
+          "blocker": "Real forest-pair profiles and the migration tool and credential policy are undecided."
+        }
       ]
     },
     {
@@ -815,6 +1803,50 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "advertise",
+          "kind": "wire",
+          "exchange": "Read domainFunctionality, forestFunctionality and domainControllerFunctionality in RootDSE",
+          "references": [
+            "MS-ADTS#3.1.1.3.2.25",
+            "MS-ADTS#3.1.1.3.2.26",
+            "MS-ADTS#3.1.1.3.2.27",
+            "BABEL-LEVELS"
+          ],
+          "expected_success": "Advertise only the declared qualified functional profile and capabilities.",
+          "expected_refusal": "Exclude unqualified capabilities and refuse incompatible transitions.",
+          "required_evidence": "RootDSE results, platform build and corresponding level-gated behavior."
+        },
+        {
+          "id": "transition",
+          "kind": "wire",
+          "exchange": "LDAP level-related msDS-Behavior-Version updates",
+          "references": [
+            "MS-ADTS#6.1.4.2",
+            "MS-ADTS#6.1.4.3",
+            "MS-ADTS#6.1.4.4",
+            "BABEL-LEVELS"
+          ],
+          "expected_success": "Validate the accepted 2016 creation state with transitions closed pending qualification.",
+          "expected_refusal": "Refuse undeclared raise/downgrade without partial advertisement or update.",
+          "required_evidence": "Before/after level state, LDAP result and interruption result."
+        },
+        {
+          "id": "domain-create",
+          "kind": "workflow",
+          "exchange": "Isolated forest/domain bootstrap and functional-profile verification",
+          "references": [
+            "BABEL-LEVELS",
+            "BABEL-CLIENT",
+            "MS-ADTS#6.1.4.3",
+            "MS-ADTS#6.1.4.4"
+          ],
+          "expected_success": "Create the selected 2016 domain/forest with distinct identities and the expected naming contexts.",
+          "expected_refusal": "Refuse unqualified levels, unsafe provisioning and partial initialization without exposing the service.",
+          "required_evidence": "Exact provisioning inputs, resulting NCs and identifiers, plus interrupted creation and cleanup artifacts."
+        }
       ]
     },
     {
@@ -824,7 +1856,8 @@
         "AD-10"
       ],
       "specifications": [
-        "MS-DRSR"
+        "MS-DRSR",
+        "MS-ADTS"
       ],
       "profiles": [
         "win11-pro",
@@ -841,6 +1874,46 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "role-transfer",
+          "kind": "wire",
+          "exchange": "RootDSE transfer triggers and DRSGetNCChanges FSMO role request",
+          "references": [
+            "MS-ADTS#3.1.1.3.3",
+            "MS-ADTS#3.1.1.5.3.1.2",
+            "MS-DRSR#4.1.10.5.12"
+          ],
+          "expected_success": "Transfer a scoped role and observe exactly one authoritative owner.",
+          "expected_refusal": "Unauthorized or stale-owner request cannot create dual authority.",
+          "required_evidence": "Owner DN/epoch, RPC/LDAP outcomes and guarded writes at both peers."
+        },
+        {
+          "id": "rid-allocate",
+          "kind": "wire",
+          "exchange": "RID master and DRS FSMO RID allocation request",
+          "references": [
+            "MS-ADTS#6.1.5.3",
+            "MS-DRSR#4.1.10.5.12"
+          ],
+          "expected_success": "An eligible peer receives a non-overlapping RID allocation.",
+          "expected_refusal": "Reject stale authority and prevent RID range reuse after crash or restore.",
+          "required_evidence": "RID intervals, role epoch and SID uniqueness through a fault."
+        },
+        {
+          "id": "seizure",
+          "kind": "unresolved",
+          "exchange": "Emergency FSMO seizure and former-owner quarantine",
+          "references": [
+            "MS-ADTS#6.1.5",
+            "BABEL-RECOVERY"
+          ],
+          "expected_success": "A qualified emergency workflow establishes exactly one new authority.",
+          "expected_refusal": "Exclude former authority and previously allocated RID ranges.",
+          "required_evidence": "Licensed tool/role traces and isolated fault/rejoin evidence.",
+          "blocker": "Select the supported seizure interface and qualify former-owner exclusion in a disposable multi-DC lab."
+        }
       ]
     },
     {
@@ -865,6 +1938,31 @@
       },
       "targets": [
         "babel"
+      ],
+      "exchanges": [
+        {
+          "id": "service-lifecycle",
+          "kind": "workflow",
+          "exchange": "Native Linux install, supervision, restart, upgrade and removal",
+          "references": [
+            "BABEL-HOST"
+          ],
+          "expected_success": "Install and run on the pinned host with correct ordering and preserved data.",
+          "expected_refusal": "Reject unsafe configuration/privileges and protect data on removal.",
+          "required_evidence": "OS/image/package identities, service ordering, reboot and interrupted upgrade logs."
+        },
+        {
+          "id": "keys-and-storage",
+          "kind": "workflow",
+          "exchange": "Service account, key provider and durable storage startup checks",
+          "references": [
+            "BABEL-ARCH",
+            "BABEL-HOST"
+          ],
+          "expected_success": "Start with least privilege, approved secrets and mounted persistent data.",
+          "expected_refusal": "Missing provider, unsafe permission or unusable storage blocks startup.",
+          "required_evidence": "UID, effective privileges, mount policy and faulted service result."
+        }
       ]
     },
     {
@@ -877,7 +1975,11 @@
         "IAM-01"
       ],
       "specifications": [
-        "MS-KILE"
+        "MS-KILE",
+        "RFC4511",
+        "MS-ADTS",
+        "RFC4120",
+        "RFC3244"
       ],
       "profiles": [
         "linux-client",
@@ -894,6 +1996,48 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "identity",
+          "kind": "wire",
+          "exchange": "Linux/macOS protected LDAP identity and group lookup when selected",
+          "references": [
+            "RFC4511#4.5",
+            "MS-ADTS#3.1.1.4.3",
+            "BABEL-CLIENT"
+          ],
+          "expected_success": "Correct visible users/groups resolve through the declared OS integration.",
+          "expected_refusal": "Hidden values and disallowed lookups remain unavailable.",
+          "required_evidence": "Exact OS/package, lookup source, authorized/denied results and correlated wire evidence."
+        },
+        {
+          "id": "online-auth",
+          "kind": "wire",
+          "exchange": "Kerberos AS/AP and RFC 3244 password exchange where selected",
+          "references": [
+            "RFC4120#3.1",
+            "RFC4120#3.2",
+            "RFC3244#2",
+            "BABEL-CLIENT"
+          ],
+          "expected_success": "Real OS proves online login, password change and scoped service SSO.",
+          "expected_refusal": "Rejected identity or wrong realm yields no online authentication; caches are separate.",
+          "required_evidence": "Exact Linux/macOS OS and package, login source, service result and negative probes."
+        },
+        {
+          "id": "enrollment",
+          "kind": "unresolved",
+          "exchange": "Linux realm enrollment and macOS directory-binding tool path",
+          "references": [
+            "BABEL-CLIENT",
+            "MS-ADTS#3.1.1.5.2"
+          ],
+          "expected_success": "Prove the selected enrollment route on the qualified platform.",
+          "expected_refusal": "Unqualified routes and Windows-only GPO stay outside the profile.",
+          "required_evidence": "Per-build DNS, account provisioning, credential establishment and cleanup.",
+          "blocker": "Pin actual client routes, packages, architecture and license/hardware rights."
+        }
       ]
     },
     {
@@ -917,6 +2061,32 @@
       },
       "targets": [
         "babel"
+      ],
+      "exchanges": [
+        {
+          "id": "native-host",
+          "kind": "workflow",
+          "exchange": "Native Linux process, package and dependency boundary",
+          "references": [
+            "BABEL-HOST",
+            "BABEL-ARCH"
+          ],
+          "expected_success": "Serve from Babel without Windows or Samba daemon/database dependencies on the host.",
+          "expected_refusal": "An unsupported integration must not become a runtime dependency or support claim.",
+          "required_evidence": "Package/process inventory and isolated Linux installation proof."
+        },
+        {
+          "id": "authority-boundary",
+          "kind": "workflow",
+          "exchange": "Delegated management command crossing into the native service",
+          "references": [
+            "BABEL-ARCH",
+            "BABEL-UX"
+          ],
+          "expected_success": "The native service checks authorization and records the authenticated actor.",
+          "expected_refusal": "Direct store writes and unauthorized actions are blocked.",
+          "required_evidence": "Correlated API and service audit, isolation and durable-state observations."
+        }
       ]
     },
     {
@@ -943,6 +2113,33 @@
       "targets": [
         "babel",
         "reference"
+      ],
+      "exchanges": [
+        {
+          "id": "restore",
+          "kind": "workflow",
+          "exchange": "Backup manifest, key availability, isolated restore and service return",
+          "references": [
+            "BABEL-RECOVERY",
+            "BABEL-OPS",
+            "MS-DRSR#5.210"
+          ],
+          "expected_success": "Recover coherent state under a qualified new epoch and measure RPO/RTO.",
+          "expected_refusal": "Reject incompatible format, missing keys and stale epochs before opening service.",
+          "required_evidence": "Backup/source digests, recovery timeline and online verification."
+        },
+        {
+          "id": "upgrade-rotate-audit",
+          "kind": "workflow",
+          "exchange": "Operator upgrade, rotation, audit export and degraded health",
+          "references": [
+            "BABEL-ARCH",
+            "BABEL-OPS"
+          ],
+          "expected_success": "Observe successful audited lifecycle operations and declared recovery.",
+          "expected_refusal": "Disk-full, audit loss or expired certificate exposes degraded/refusal status without false completion.",
+          "required_evidence": "Owned fault timeline, redacted audit/health evidence and durable-state check."
+        }
       ]
     },
     {
@@ -968,6 +2165,33 @@
       },
       "targets": [
         "babel"
+      ],
+      "exchanges": [
+        {
+          "id": "delegated-journey",
+          "kind": "workflow",
+          "exchange": "Authenticated web/API/CLI action through the authorized directory service",
+          "references": [
+            "BABEL-UX",
+            "BABEL-ARCH"
+          ],
+          "expected_success": "Complete a delegated accessible journey with auditable outcome.",
+          "expected_refusal": "Refuse unauthorized actions and CSRF and expose partial failures accurately.",
+          "required_evidence": "Accessibility results, API authorization tests, audit and durable state."
+        },
+        {
+          "id": "admin-api",
+          "kind": "unresolved",
+          "exchange": "Exact management routes, versioned request/result schema and commands",
+          "references": [
+            "BABEL-UX",
+            "BABEL-ARCH"
+          ],
+          "expected_success": "Expose only contract-versioned authorized routes after design and qualification.",
+          "expected_refusal": "Unknown or denied routes cannot mutate storage.",
+          "required_evidence": "Versioned API contract, identity, request/status, audit and UI correlation.",
+          "blocker": "Native administration route and command schemas are pending their implementation phase."
+        }
       ]
     }
   ],
@@ -979,5 +2203,48 @@
     "No production support or multi-master compatibility is established by this inventory.",
     "Non-Windows Linux and macOS identity/authentication are in the initial client profile. Native Windows GPO is not claimed on those systems; cross-platform policy/patch/remote/EDR agents have separate roadmap gates.",
     "Mobile devices and network appliances are inventoried integration targets, not Windows domain-join/GPO clients; web federation, certificates and RADIUS require explicit later protocol/module qualification."
-  ]
+  ],
+  "project_references": [
+    {
+      "id": "BABEL-ARCH",
+      "path": "docs/architecture.md",
+      "heading": "Components, authority and interfaces"
+    },
+    {
+      "id": "BABEL-CLIENT",
+      "path": "docs/windows-reference-lab.md",
+      "heading": "Qualification scenarios and evidence"
+    },
+    {
+      "id": "BABEL-HOST",
+      "path": "docs/requirements.md",
+      "heading": "Linux server hosting"
+    },
+    {
+      "id": "BABEL-LEVELS",
+      "path": "docs/validation/p00-11.md",
+      "heading": "P00-11 — Domain and forest functional-level profile"
+    },
+    {
+      "id": "BABEL-OPS",
+      "path": "docs/architecture.md",
+      "heading": "Runtime security, failure and recovery"
+    },
+    {
+      "id": "BABEL-RECOVERY",
+      "path": "docs/validation/p00-10.md",
+      "heading": "P00-10 — Upgrade, recovery and scope-change governance"
+    },
+    {
+      "id": "BABEL-UX",
+      "path": "docs/requirements.md",
+      "heading": "Ergonomics as an acceptance requirement"
+    }
+  ],
+  "unmapped_exchange_policy": {
+    "owner": "Ise-Tom",
+    "disposition": "unresolved",
+    "expected_refusal": "Keep unclassified operations outside advertised support. Apply the applicable protocol criticality, bounded rejection or ignore rule without granting access or mutating state.",
+    "required_evidence": "Retain a redacted interface, opcode, OID or method and client/build, endpoint, security context, observed result and state effects. Review and map before claiming support."
+  }
 }
