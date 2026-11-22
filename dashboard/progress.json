@@ -164,6 +164,7 @@
       "status": "ready_for_validation",
       "note": "Nine worked local cases cover GUID/domain SID rules, schema/matching and collisions, ordered ACLs and asynchronous inheritance, nested groups/token freshness, locally serialized revocation and durable receipts. Actual readable ADTS/DRSR/DTYP sections are bound by edition/raw digest/heading. The full original Phase 0 design gate is prepared; explicit owner validation is pending. Native directory/ACL implementation is not claimed.",
       "validation": {
+        "delivery_pr": 30,
         "scope": "Full original P00-02 Phase 0 Identity/schema/authorization/local commit design gate; no native AD behavior, independent production assessment or whole-phase acceptance.",
         "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
         "packet": {
@@ -176,6 +177,7 @@
       "status": "ready_for_validation",
       "note": "Eleven worked cases specify independent updates, version wrap/half-range, little-endian GUIDs, separate link lifetimes and naming conflicts, lifecycle repair, progress commits, invocation epochs, retention and RID authority. Exact ADTS/DRSR sections are pinned; no disk format is frozen. The full original Phase 0 design gate is prepared; explicit owner validation is pending. Native replication/reference/fault evidence remains unrun.",
       "validation": {
+        "delivery_pr": 30,
         "scope": "Full original P00-03 Phase 0 Replication/versioning/conflict/restore epoch design gate; no native AD behavior, independent production assessment or whole-phase acceptance.",
         "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
         "packet": {
@@ -188,6 +190,7 @@
       "status": "ready_for_validation",
       "note": "The full original Phase 0 toolchain/parser gate is complete: Linux x86_64 GNU on Ubuntu 24.04 CI/Debian 13 locally, exact pinned Rust/compiler/LLVM/ELF/binary/lock evidence, dependency-free unsafe-forbidden parser roots, reviewed alternatives and advisory/license maintenance. Debug/release overflow tests, real independent probes, coverage, locked audits and bounded sanitizer fuzz are required. Owner validation is pending. TLS/Kerberos/storage and all native AD/client behavior remain their separate gates.",
       "validation": {
+        "delivery_pr": 29,
         "scope": "Full original P00-04 memory-safe toolchain/parser-baseline gate for linux-x86_64-gnu-bounded-parser-v1; no native AD or whole-server qualification.",
         "source_revision": "900a24e7cd38957905d00f628e0b5445511ae52d",
         "packet": {
@@ -204,6 +207,7 @@
       "status": "ready_for_validation",
       "note": "The full original Phase 0 license/contribution gate is complete: existing owner-selected Apache-2.0/DCO, actual contribution terms, selected third-party obligations and source/native/driver/dashboard distribution handling. Strict complete notice/package accounting and trusted pre-archive manifest integrity are enforced; standalone HTML retains full terms and rejects unreviewed bundled runtime inputs. Owner validation is pending; specification/image/fixture rights stay P00-16 and no certification is invented.",
       "validation": {
+        "delivery_pr": 29,
         "scope": "Full original P00-06 project-license/contributor/third-party-obligation-recording gate; preserves the existing license decision, with specification/image/fixture and future product release rights separate.",
         "source_revision": "900a24e7cd38957905d00f628e0b5445511ae52d",
         "packet": {
@@ -216,6 +220,7 @@
       "status": "ready_for_validation",
       "note": "Eleven separately owned trust boundaries map all twenty threats to assets, misuse, denial/fault behavior, residual risk and canonical implementation gates. CI rejects missing owners or false runtime/independent-assessment claims. The full original Phase 0 design gate is prepared; explicit owner validation is pending. No second reviewer, operational backup or successful private drill is invented; P00-17 remains separate.",
       "validation": {
+        "delivery_pr": 30,
         "scope": "Full original P00-07 Phase 0 Tier 0 boundary/threat/ownership design gate; no native AD behavior, independent production assessment or whole-phase acceptance.",
         "source_revision": "2989ed476e57297f729d0e3dffd89a703e4175ac",
         "packet": {
@@ -246,6 +251,7 @@
       "status": "ready_for_validation",
       "note": "The full Phase 0 upgrade/recovery/scope-governance design gate is complete. Six worked transitions define forward checkpoints, interruption, kind-specific recovery and invalidation. Required CI checks owner/review material, UTC expiry, baseline/phase-gate waiver rejection and unchanged unrun observations; its report binds the source and input digests. Explicit owner validation remains pending. Runtime recovery remains its actual implementation gates.",
       "validation": {
+        "delivery_pr": 28,
         "scope": "Full original P00-10 Phase 0 governance design gate, including review/recovery examples and owner/expiry/production-impact exception policy; not runtime recovery.",
         "source_revision": "380d564183b9217acbde16476658fe003cf72338",
         "packet": {
@@ -296,6 +302,7 @@
       "status": "ready_for_validation",
       "note": "The full original Phase 0 library/provider/channel qualification-review packet is prepared for the selected Linux/Rustls/ring engineering profile. Ten Rust tests and 27 independent methods exercise certificate/downgrade policy, strict leaf-CRL expiry/status, in-process certificate replacement, exact TLS 1.3 exporter bindings and entropy/clock/key/signer loss. Actual custody and revocation-freshness limits are reviewed explicitly. Owner validation is pending; native LDAP/SASL/EPA, protected product keys and general CRL/OCSP/client/capacity qualification remain their implementation gates.",
       "validation": {
+        "delivery_pr": 31,
         "scope": "Full original P00-13 TLS library/provider/channel qualification-review gate for linux-rustls-ring-transport-v1; disposable software keys and owned current direct-issuer CRL fixtures only, with explicit production/AD integration limits.",
         "source_revision": "292291ec4d79a03f7355e8d3646c9e850b6c0489",
         "packet": {
@@ -308,6 +315,7 @@
       "status": "ready_for_validation",
       "note": "The Phase 0 dependency and cryptographic-maintenance review recommends signed MIT krb5 1.22.3 for a bounded Linux AES/PAC/replay lab profile. Fresh synthetic tests pass AES-256/AES-128 AP requests and signed PAC checks; wrong-service, replay, expired, changed-PAC and client-mismatch cases reject. A no-PAC AP request succeeds but yields null PAC, requiring Babel to deny PAC-dependent authority. The C/FFI and licensing boundary is recorded. Owner validation is pending; Rust product integration, AD PAC/S4U/PKINIT and real-client conformance remain unrun.",
       "validation": {
+        "delivery_pr": 33,
         "scope": "Full original P00-14 Phase 0 dependency-selection and cryptographic-maintenance review for mit-krb5-1.22.3-linux-x86_64-aes-cts-lab-v1; generic synthetic Kerberos evidence only, with explicit AD and product limits.",
         "source_revision": "cf6681c22bc42707de6efc5b5c8db59eb70504ea",
         "packet": {
@@ -337,6 +345,7 @@
       "status": "ready_for_validation",
       "note": "The full Phase 0 functional-level design gate is complete: Linux-hosted 2016 domain/2016 forest creation profile, reference DC OS versus client OS distinction, inherited/optional/2025 incompatibilities and explicit refusal of unimplemented transitions. Immutable source review resolves a stale 2025-level statement. CI binds the matrix, preserves non-Windows clients and rejects false level advertisements. Owner validation is pending; no native level/client conformance is claimed.",
       "validation": {
+        "delivery_pr": 28,
         "scope": "Full original P00-11 Phase 0 level/transition/incompatibility design gate; no native functional-level or client-conformance acceptance.",
         "source_revision": "380d564183b9217acbde16476658fe003cf72338",
         "packet": {
@@ -3916,5 +3925,5 @@
     }
   ],
   "focus_phase": 0,
-  "focus_summary": "MIT Kerberos 1.22.3 dependency review is ready for owner validation: synthetic AES, PAC and replay cases pass. AD clients, delegation, PKINIT and product FFI remain unrun. Nine Phase 0 gates await validation; three accepted scopes remain unchanged."
+  "focus_summary": "The MIT Kerberos 1.22.3 lab passed its synthetic AES, PAC and replay cases. AD clients, delegation, PKINIT and product FFI remain unrun. Review delivered Phase 0 packets and decide which scopes to approve together in Owner review."
 }

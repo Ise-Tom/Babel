@@ -48,6 +48,37 @@ test('every phase exposes its own requirements, feature associations and source 
   }
 });
 
+test('owner review links merged delivery and prepares only the selected packet scopes', async ({ page }) => {
+  const data = JSON.parse(await readFile(resolve('generated/data.json'), 'utf8')) as Board;
+  const steps = data.phases.flatMap(item => item.steps);
+  const records = ['P00-02', 'P00-14'].map(id => {
+    const step = steps.find(item => item.id === id);
+    if (!step?.validation) throw new Error(`Missing review fixture for ${id}`);
+    step.status = 'ready_for_validation';
+    return { step, review: step.validation };
+  });
+  await page.setContent(await htmlFor(data));
+  await page.getByRole('button', { name: /Owner review/ }).click();
+  await expect(page.getByRole('heading', { name: 'Owner review' })).toBeVisible();
+  await expect(page).toHaveURL(/view=review/);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  const prepare = page.getByRole('button', { name: 'Prepare decision message' });
+  await expect(prepare).toBeDisabled();
+  for (const { step, review } of records) {
+    const row = page.getByTestId(`review-${step.id}`);
+    await expect(row.getByRole('link', { name: 'Review packet' })).toHaveAttribute('href', review.packet.url);
+    await expect(row.getByRole('link', { name: /^Merged PR/ })).toHaveAttribute('href', review.delivery?.url ?? '');
+    await row.getByRole('checkbox').check();
+  }
+  await prepare.click();
+  const message = page.getByRole('textbox', { name: 'Decision message' });
+  await expect(message).toBeFocused();
+  const lines = (await message.inputValue()).split('\n');
+  expect(lines.slice(1)).toEqual(records.map(({ step, review }) => `- ${step.id} · ${review.scope} · ${review.packet.url}`));
+  await page.getByTestId('review-P00-02').getByRole('checkbox').uncheck();
+  await expect(message).toBeHidden();
+});
+
 test('implemented work explains how, validation, limitations and encountered problems', async ({ page }, info) => {
   await phase(page, 1);
   const step = page.getByTestId('P01-01'); await step.locator(':scope > summary').click();
@@ -265,7 +296,7 @@ test('completed exit work can await validation without being accepted', async ({
   const current = facts.phases[0]; const step = current?.steps.find(s => s.id === 'P00-15');
   if (!current || !step) throw new Error('Missing storage gate');
   step.status = 'ready_for_validation'; step.acceptance = null;
-  step.validation = { scope: 'Full driver exit review', packet: { path: 'docs/validation/p00-15.md', label: 'Exit packet', url: `https://github.com/Ise-Tom/Babel/blob/${facts.buildRevision}/docs/validation/p00-15.md` } };
+  step.validation = { scope: 'Full driver exit review', delivery: null, packet: { path: 'docs/validation/p00-15.md', label: 'Exit packet', url: `https://github.com/Ise-Tom/Babel/blob/${facts.buildRevision}/docs/validation/p00-15.md` } };
   await page.setContent(await htmlFor(facts));
   const ready = current.steps.filter(s => s.status === 'ready_for_validation').length;
   await expect(page.getByTestId('phase-card-0').locator('.badge')).toHaveText(`${ready} ready`);
@@ -275,7 +306,7 @@ test('completed exit work can await validation without being accepted', async ({
   await page.getByLabel('Requirement status', { exact: true }).selectOption('ready_for_validation');
   await expect(page.locator('.requirement')).toHaveCount(ready);
   const item = page.getByTestId('P00-15'); await item.locator(':scope > summary').click();
-  await expect(item).toContainText('EXIT CRITERIA COMPLETE');
-  await expect(item.getByRole('link', { name: 'Review exit criteria and evidence' })).toBeVisible();
+  await expect(item.getByText('Ready for owner decision')).toBeVisible();
+  await expect(item.getByRole('link', { name: 'Review packet' })).toBeVisible();
   await expect(item).not.toContainText('Accepted by');
 });

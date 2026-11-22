@@ -1,6 +1,8 @@
 export type Status = 'planned' | 'in_progress' | 'blocked' | 'ready_for_validation' | 'accepted';
 export interface Source { path: string; label: string; url: string }
-export interface Step { id: string; title: string; verification: string; status: Status; note: string; features: string[]; acceptance: { reviewer: string; date: string; evidence: string } | null; validation: { scope: string; packet: Source } | null }
+export interface Delivery { number: number; url: string; state: 'merged' | 'open' | 'closed' | 'unknown' }
+export interface Review { scope: string; packet: Source; delivery: Delivery | null }
+export interface Step { id: string; title: string; verification: string; status: Status; note: string; features: string[]; acceptance: { reviewer: string; date: string; evidence: string } | null; validation: Review | null }
 export interface Phase { id: number; title: string; owner: string; sections: Record<string, string>; steps: Step[]; features: string[]; status: Status; url: string }
 export type CapabilityStatus = 'planned' | 'prototype' | 'partial' | 'implemented';
 export interface CapabilityImplementation { status: CapabilityStatus; category: 'product' | 'runtime_lab' | 'experiment' | 'engineering'; scope: string; implemented: string[]; missing: string[]; work_items: string[]; blockers: string[]; acceptance: { reviewer: string; date: string; evidence: string } | null }

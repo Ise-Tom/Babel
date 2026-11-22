@@ -1,4 +1,4 @@
-import type { Board, CapabilityStatus, Feature, Phase, Problem, Source, Status, Step, Work } from './types';
+import type { Board, CapabilityStatus, Delivery, Feature, Phase, Problem, Review, Source, Status, Step, Work } from './types';
 
 function get<T extends HTMLElement = HTMLElement>(id: string): T {
   const element = document.getElementById(id);
@@ -19,13 +19,14 @@ function link(label: string, url: string, className = ''): HTMLAnchorElement {
 }
 const board = JSON.parse(get('dashboard-data').textContent ?? '{}') as Board;
 const featureMap = new Map(board.features.map(feature => [feature.id, feature]));
-const names: Record<Status, string> = { planned: 'Planned', in_progress: 'In progress', blocked: 'Blocked', ready_for_validation: 'Ready for validation', accepted: 'Accepted' };
+const names: Record<Status, string> = { planned: 'Planned', in_progress: 'In progress', blocked: 'Blocked', ready_for_validation: 'Ready for owner decision', accepted: 'Accepted' };
 function badge(status: Status | 'implemented' | 'open' | 'resolved', label?: string): HTMLElement {
   return el('span', `badge ${status}`, label ?? (Object.hasOwn(names, status) ? names[status as Status] : status === 'implemented' ? 'Implemented increment' : status === 'resolved' ? 'Resolved' : 'Open'));
 }
 const capabilityNames: Record<CapabilityStatus, string> = { planned: 'Planned', prototype: 'Prototype', partial: 'Partial implementation', implemented: 'Implemented' };
 const categoryNames = { product: 'Product capability', runtime_lab: 'Runtime lab', experiment: 'Qualification experiment', engineering: 'Engineering tooling' };
-interface State { view: 'overview' | 'phase' | 'log' | 'capabilities'; phase: number | null; q: string; status: Status | 'all'; step: string | null; capability: string | null; capabilityStatus: CapabilityStatus | 'all' }
+type View = 'overview' | 'phase' | 'log' | 'capabilities' | 'review';
+interface State { view: View; phase: number | null; q: string; status: Status | 'all'; step: string | null; capability: string | null; capabilityStatus: CapabilityStatus | 'all' }
 function readState(): State {
   const params = new URLSearchParams(location.hash.slice(1));
   const phase = params.has('phase') ? Number(params.get('phase')) : null;
@@ -33,7 +34,8 @@ function readState(): State {
   const selected = params.get('status') ?? 'all';
   const capabilityStatus = params.get('capability_status') ?? 'all';
   const capability = params.get('capability');
-  return { view: valid ? 'phase' : params.get('view') === 'log' ? 'log' : params.get('view') === 'capabilities' ? 'capabilities' : 'overview', phase: valid ? phase : null,
+  const view = params.get('view');
+  return { view: valid ? 'phase' : view === 'log' || view === 'capabilities' || view === 'review' ? view : 'overview', phase: valid ? phase : null,
     capability: capability && featureMap.has(capability) ? capability : null, capabilityStatus: Object.hasOwn(capabilityNames, capabilityStatus) ? capabilityStatus as CapabilityStatus : 'all',
     q: params.get('q') ?? '', status: Object.hasOwn(names, selected) ? selected as Status : 'all', step: params.get('step') };
 }
@@ -44,7 +46,7 @@ function navigate(change: Partial<State>, push = true): void {
   state = { ...state, step: null, capability: null, ...change };
   const params = new URLSearchParams();
   if (state.view === 'phase' && state.phase !== null) params.set('phase', String(state.phase));
-  if (state.view === 'log' || state.view === 'capabilities') params.set('view', state.view);
+  if (state.view === 'log' || state.view === 'capabilities' || state.view === 'review') params.set('view', state.view);
   if (state.capability) params.set('capability', state.capability);
   if (state.capabilityStatus !== 'all') params.set('capability_status', state.capabilityStatus);
   if (state.q) params.set('q', state.q);
@@ -110,7 +112,7 @@ function header(eyebrow: string, title: string, description: string): HTMLElemen
   const result = el('section', 'page-heading'); result.append(el('div', 'eyebrow', eyebrow), el('h1', '', title), el('p', 'intro', description)); return result;
 }
 function notice(): HTMLElement {
-  return el('div', 'notice', 'Implemented increments are narrower than accepted requirements. Acceptance follows an explicit owner review of the scope, evidence and limits. Phase sizes vary; counts are not effort percentages.');
+  return el('div', 'notice', 'A merged PR lands the work. Owner acceptance records the decision on its stated scope and evidence. Review pending decisions together in Owner review.');
 }
 function stats(): HTMLElement {
   const result = el('section', 'stats'); result.setAttribute('aria-label', 'Snapshot summary');
@@ -140,6 +142,69 @@ function statusStrip(phase: Phase): HTMLElement {
 }
 function empty(text: string): HTMLElement {
   const result = el('div', 'empty'); result.append(el('h3', '', 'No matches'), el('p', '', text), reset()); return result;
+}
+function openReview(): void { navigate({ view: 'review', phase: null, q: '', status: 'all' }); }
+function deliveryLink(delivery: Delivery): HTMLAnchorElement {
+  const labels = { merged: 'Merged PR', open: 'Open PR', closed: 'Closed PR', unknown: 'Delivery PR' };
+  return link(`${labels[delivery.state]} #${delivery.number}`, delivery.url, 'text-link');
+}
+function reviewView(): HTMLElement {
+  const heading = header('PROJECT DECISIONS', 'Owner review', 'Review the exact scope and evidence for each item. Select the scopes you approve, then copy one decision message into the Babel management chat.');
+  const result = el('div', 'owner-review');
+  result.append(heading);
+  const choices: { step: Step; review: Review; checkbox: HTMLInputElement }[] = [];
+  const list = el('div', 'review-items');
+  for (const phase of board.phases) for (const step of phase.steps) {
+    if (step.status !== 'ready_for_validation' || !step.validation) continue;
+    const review = step.validation;
+    const row = el('article', 'review-item'); row.dataset.testid = `review-${step.id}`;
+    const checkbox = el('input'); checkbox.type = 'checkbox';
+    const title = el('label', 'review-choice');
+    title.append(checkbox, el('span', '', `${step.id} · ${step.title}`));
+    const references = el('div', 'review-links');
+    if (review.delivery) references.append(deliveryLink(review.delivery));
+    references.append(link('Review packet', review.packet.url, 'text-link'));
+    row.append(title, el('p', '', review.scope), references);
+    list.append(row);
+    choices.push({ step, review, checkbox });
+  }
+  if (!choices.length) {
+    result.append(el('p', '', 'No requirements are waiting for an owner decision.'));
+    return result;
+  }
+  heading.append(el('p', 'muted', `${choices.length} awaiting decision · ${choices.filter(choice => choice.review.delivery?.state === 'merged').length} delivered in merged PRs`));
+  const message = el('textarea'); message.id = 'approval-message'; message.readOnly = true; message.rows = 7;
+  const messageField = el('div', 'review-message'); messageField.hidden = true;
+  const messageLabel = el('label', '', 'Decision message'); messageLabel.htmlFor = message.id;
+  messageField.append(messageLabel, message, el('p', 'muted', 'Copy this message and send it in the Babel management chat to record your decision.'));
+  const prepare = button('Prepare decision message', 'button primary', () => {
+    const selected = choices.filter(choice => choice.checkbox.checked);
+    message.value = [
+      'I approve the following Babel requirement scopes as described in these pinned packets. Record this batch decision in the dashboard.',
+      ...selected.map(({ step, review }) => `- ${step.id} · ${review.scope} · ${review.packet.url}`),
+    ].join('\n');
+    messageField.hidden = false;
+    message.focus(); message.select();
+  });
+  const selectAll = button('Select all', 'button secondary', () => {
+    const checked = choices.some(({ checkbox }) => !checkbox.checked);
+    for (const { checkbox } of choices) checkbox.checked = checked;
+    updateSelection();
+  });
+  const selectionCount = el('span', 'muted'); selectionCount.setAttribute('role', 'status');
+  function updateSelection(): void {
+    const selected = choices.filter(({ checkbox }) => checkbox.checked).length;
+    selectAll.textContent = selected === choices.length ? 'Clear selection' : 'Select all';
+    selectionCount.textContent = `${selected} selected`;
+    prepare.disabled = selected === 0;
+    messageField.hidden = true;
+    message.value = '';
+  }
+  for (const { checkbox } of choices) checkbox.addEventListener('change', updateSelection);
+  const actions = el('div', 'review-actions'); actions.append(selectAll, prepare, selectionCount);
+  result.append(actions, messageField, list);
+  updateSelection();
+  return result;
 }
 function overview(): HTMLElement {
   const result = el('div', 'overview-page'); result.append(header('PROJECT OVERVIEW', 'Roadmap & implementation', 'Choose a phase. Open only the steps and evidence you need.'), stats());
@@ -172,7 +237,14 @@ function requirement(step: Step): HTMLDetailsElement {
   const summary = el('summary'); summary.append(el('code', 'step-code', step.id), el('span', 'step-title', step.title), badge(step.status)); detail.append(summary);
   const body = el('div', 'requirement-body'); body.append(el('p', 'step-note', step.note), el('div', 'section-label', 'ASSOCIATED FEATURES'), chips(step.features), el('div', 'section-label', step.status === 'accepted' ? 'ACCEPTANCE EVIDENCE' : 'ACCEPTANCE STILL REQUIRED'), el('p', '', step.verification));
   if (step.acceptance) body.append(el('p', 'step-note', `Accepted by ${step.acceptance.reviewer} on ${step.acceptance.date}. ${step.acceptance.evidence}`));
-  if (step.validation) body.append(el('div', 'section-label', step.status === 'ready_for_validation' ? 'EXIT CRITERIA COMPLETE · OWNER VALIDATION PENDING' : 'VALIDATION PACKET'), el('p', '', step.validation.scope), link('Review exit criteria and evidence →', step.validation.packet.url, 'text-link'));
+  if (step.validation) {
+    body.append(el('div', 'section-label', 'REVIEW SCOPE'), el('p', '', step.validation.scope));
+    const references = el('div', 'review-links');
+    if (step.validation.delivery) references.append(deliveryLink(step.validation.delivery));
+    references.append(link('Review packet', step.validation.packet.url, 'text-link'));
+    if (step.status === 'ready_for_validation') references.append(button('Open Owner review', 'button secondary compact', openReview));
+    body.append(references);
+  }
   const work = workFor(step);
   if (step.status === 'planned' && work.length) body.append(el('p', 'muted', 'Related preparation is recorded below. This requirement remains planned; links to shared work do not start a phase.'));
   body.append(el('h3', '', 'Related work & evidence'));
@@ -273,7 +345,7 @@ function capabilityView(): HTMLElement {
   return result;
 }
 function renderNav(): void {
-  for (const [id, view] of [['overview-tab', 'overview'], ['capabilities-tab', 'capabilities'], ['log-tab', 'log']]) {
+  for (const [id, view] of [['overview-tab', 'overview'], ['review-tab', 'review'], ['capabilities-tab', 'capabilities'], ['log-tab', 'log']]) {
     const tab = get(id ?? ''); if (state.view === view) tab.setAttribute('aria-current', 'page'); else tab.removeAttribute('aria-current');
   }
 }
@@ -281,13 +353,15 @@ function render(): void {
   renderNav();
   get<HTMLInputElement>('search').value = state.q;
   get<HTMLSelectElement>('status').value = state.status;
-  get('status-field').hidden = state.view === 'log' || state.view === 'capabilities';
+  get('status-field').hidden = state.view === 'log' || state.view === 'capabilities' || state.view === 'review';
+  const searchField = get('search').parentElement;
+  if (searchField) searchField.hidden = state.view === 'review';
   get('capability-status-field').hidden = state.view !== 'capabilities';
   get<HTMLSelectElement>('capability-status').value = state.capabilityStatus;
   get<HTMLSelectElement>('mobile-phase').value = state.view === 'phase' ? `phase:${state.phase}` : state.view;
   const current = board.phases.find(phase => phase.id === state.phase);
-  get('content').replaceChildren(state.view === 'capabilities' ? capabilityView() : state.view === 'log' ? logView() : state.view === 'phase' && current ? phaseView(current) : overview());
-  get('announcer').textContent = state.view === 'phase' && current ? `Phase ${current.id}: ${filtered(current).length} requirements shown` : state.view === 'capabilities' ? `Capability tracker: ${get('content').querySelectorAll('.capability-card').length} capabilities shown` : state.view === 'log' ? 'Implementation journal displayed' : 'Delivery phase board displayed';
+  get('content').replaceChildren(state.view === 'review' ? reviewView() : state.view === 'capabilities' ? capabilityView() : state.view === 'log' ? logView() : state.view === 'phase' && current ? phaseView(current) : overview());
+  get('announcer').textContent = state.view === 'phase' && current ? `Phase ${current.id}: ${filtered(current).length} requirements shown` : state.view === 'capabilities' ? `Capability tracker: ${get('content').querySelectorAll('.capability-card').length} capabilities shown` : state.view === 'log' ? 'Implementation journal displayed' : state.view === 'review' ? 'Owner review displayed' : 'Delivery phase board displayed';
   if (state.view === 'capabilities' && state.capability) { const target = document.getElementById(`capability-${state.capability}`); if (target instanceof HTMLDetailsElement) { target.open = true; target.scrollIntoView({ block: 'start' }); } }
   if (state.step && /^P\d{2}-\d{2}$/.test(state.step)) {
     const target = document.getElementById(`step-${state.step}`);
@@ -295,6 +369,7 @@ function render(): void {
   }
 }
 get('overview-tab').addEventListener('click', () => navigate({ view: 'overview', phase: null }));
+get('review-tab').addEventListener('click', openReview);
 get('capabilities-tab').addEventListener('click', () => navigate({ view: 'capabilities', phase: null, q: '', status: 'all', capabilityStatus: 'all' }));
 get<HTMLSelectElement>('capability-status').addEventListener('change', event => navigate({ capabilityStatus: (event.target as HTMLSelectElement).value as State['capabilityStatus'] }, false));
 get('log-tab').addEventListener('click', () => navigate({ view: 'log', phase: null }));
@@ -302,10 +377,10 @@ get<HTMLInputElement>('search').addEventListener('input', event => navigate({ q:
 get<HTMLSelectElement>('status').addEventListener('change', event => navigate({ status: (event.target as HTMLSelectElement).value as State['status'] }, false));
 get('close-dialog').addEventListener('click', () => get<HTMLDialogElement>('feature-dialog').close());
 const picker = get<HTMLSelectElement>('mobile-phase');
-for (const [value, label] of [['overview', 'Phase board'], ['capabilities', 'Capabilities'], ['log', 'Implementation & issues'], ...board.phases.map(p => [`phase:${p.id}`, `${String(p.id).padStart(2, '0')} · ${p.title}`])]) {
+for (const [value, label] of [['overview', 'Phase board'], ['review', 'Owner review'], ['capabilities', 'Capabilities'], ['log', 'Implementation & issues'], ...board.phases.map(p => [`phase:${p.id}`, `${String(p.id).padStart(2, '0')} · ${p.title}`])]) {
   const option = el('option', '', label); option.value = value ?? ''; picker.append(option);
 }
-picker.addEventListener('change', () => picker.value.startsWith('phase:') ? navigate({ view: 'phase', phase: Number(picker.value.split(':')[1]) }) : navigate({ view: picker.value as 'overview' | 'log' | 'capabilities', phase: null }));
+picker.addEventListener('change', () => picker.value.startsWith('phase:') ? navigate({ view: 'phase', phase: Number(picker.value.split(':')[1]) }) : picker.value === 'review' ? openReview() : navigate({ view: picker.value as View, phase: null }));
 get('download').addEventListener('click', () => {
   const url = URL.createObjectURL(new Blob([JSON.stringify(board, null, 2)], { type: 'application/json' }));
   const anchor = el('a'); anchor.href = url; anchor.download = `babel-progress-${board.snapshot.date}.json`; anchor.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);

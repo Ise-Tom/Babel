@@ -22,7 +22,8 @@ export async function htmlFor(data) {
   const result = await bundle({ absWorkingDir: root, entryPoints: ['src/main.ts'], bundle: true, minify: true, write: false, format: 'iife', target: 'es2022', metafile: true });
   validateBundledInputs(result.metafile.inputs);
   const script = result.outputFiles[0].text.replaceAll('</script', '<\\/script');
-  const css = await readFile(resolve(root, 'src/style.css'), 'utf8');
+  // HTML parsing normalizes line endings before the browser checks the CSP hash.
+  const css = (await readFile(resolve(root, 'src/style.css'), 'utf8')).replace(/\r\n?/g, '\n');
   const embedded = jsonForHtml(data);
   const csp = `default-src 'none'; script-src '${hash(script)}' '${hash(embedded)}'; style-src '${hash(css)}'; img-src 'none'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'`;
   const notices = await Promise.all([

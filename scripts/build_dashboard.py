@@ -109,12 +109,15 @@ def build(root: Path, revision: str) -> dict[str, Any]:
     )
     text(snapshot.get("note"), "snapshot.note")
     require(isinstance(snapshot.get("pull_requests"), list), "PR snapshot required")
+    pull_requests = {}
     for pr in snapshot["pull_requests"]:
         require(type(pr.get("number")) is int and pr["number"] > 0, "Invalid PR number")
         require(
             pr.get("state") in {"open", "closed", "merged"} and type(pr.get("draft")) is bool,
             "Invalid PR state",
         )
+        require(pr["number"] not in pull_requests, "Duplicate PR in snapshot")
+        pull_requests[pr["number"]] = pr["state"]
     features: dict[str, dict[str, Any]] = {}
     for filename in GLOBAL_SOURCES:
         content = (root / "docs" / filename).read_text()
@@ -170,6 +173,18 @@ def build(root: Path, revision: str) -> dict[str, Any]:
                 validation = record(validation, identifier + " validation")
                 text(validation.get("scope"), identifier + " validation scope")
                 packet_revision = text(validation.get("source_revision"), "validation revision")
+                pr_number = validation.get("delivery_pr")
+                delivery = None
+                if pr_number is not None:
+                    require(
+                        type(pr_number) is int and pr_number > 0,
+                        f"{identifier}: invalid delivery PR",
+                    )
+                    delivery = {
+                        "number": pr_number,
+                        "url": f"{REPO}/pull/{pr_number}",
+                        "state": pull_requests.get(pr_number, "unknown"),
+                    }
                 require(
                     bool(re.fullmatch(r"[a-f0-9]{40}", packet_revision)),
                     "Invalid validation revision",
@@ -177,6 +192,7 @@ def build(root: Path, revision: str) -> dict[str, Any]:
                 validation = {
                     "scope": validation["scope"],
                     "packet": sources(root, [validation.get("packet")], packet_revision)[0],
+                    "delivery": delivery,
                 }
             steps.append(
                 {

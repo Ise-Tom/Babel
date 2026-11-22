@@ -14,14 +14,14 @@
 <div class="app">
   <header class="sidebar" aria-label="Project navigation">
     <div class="brand"><span class="brand-mark" aria-hidden="true">B</span><div>BABEL<small>DELIVERY WORKSPACE</small></div></div>
-    <nav aria-label="Dashboard views"><button id="overview-tab" class="nav-tab">▦ <span>Phase board</span></button><button id="capabilities-tab" class="nav-tab">◇ <span>Capabilities</span></button><button id="log-tab" class="nav-tab">≡ <span>Implementation & issues</span></button></nav>
+    <nav aria-label="Dashboard views"><button id="overview-tab" class="nav-tab">▦ <span>Phase board</span></button><button id="review-tab" class="nav-tab">✓ <span>Owner review</span></button><button id="capabilities-tab" class="nav-tab">◇ <span>Capabilities</span></button><button id="log-tab" class="nav-tab">≡ <span>Implementation & issues</span></button></nav>
   </header>
   <div class="workspace">
     <div class="topbar"><span id="snapshot-short" class="crumb"></span><button id="download" class="button secondary">Export JSON</button></div>
     <section class="toolbar" aria-label="Dashboard filters">
       <div class="phase-picker"><label for="mobile-phase">Jump to a phase</label><select id="mobile-phase"></select></div>
       <div class="search-field"><label for="search">Search phases, requirements, features or implementation notes</label><input id="search" type="search" placeholder="Try “Kerberos”, “P01-04” or “RootDSE”…" autocomplete="off"></div>
-      <div id="status-field"><label for="status">Requirement status</label><select id="status"><option value="all">All requirements</option><option value="planned">Planned</option><option value="in_progress">In progress</option><option value="ready_for_validation">Ready for validation</option><option value="blocked">Blocked</option><option value="accepted">Accepted</option></select></div>
+      <div id="status-field"><label for="status">Requirement status</label><select id="status"><option value="all">All requirements</option><option value="planned">Planned</option><option value="in_progress">In progress</option><option value="ready_for_validation">Ready for owner decision</option><option value="blocked">Blocked</option><option value="accepted">Accepted</option></select></div>
       <div id="capability-status-field" hidden><label for="capability-status">Implementation status</label><select id="capability-status"><option value="all">All capabilities</option><option value="planned">Planned</option><option value="prototype">Prototype</option><option value="partial">Partial implementation</option><option value="implemented">Implemented</option></select></div>
     </section>
     <main id="content" tabindex="-1"></main>
