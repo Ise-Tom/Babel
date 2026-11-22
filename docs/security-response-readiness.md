@@ -1,6 +1,6 @@
 # Security response readiness for solo development
 
-Status: **process design and scheduling proposal, not an accepted requirement change**.
+Status: **timing amendment approved for PR review, not a requirement acceptance**.
 The [P00-17 drill, offline rehearsal and exact timing decision packet](validation/p00-17.md)
 is prepared for review. Its simulated records and available report form do not
 meet the live-drill or backup requirement.
@@ -10,11 +10,12 @@ read-only GitHub API check reported private vulnerability reporting enabled.
 Configuration alone does not test notification delivery, owner access or response.
 No report or message was submitted.
 
-## Current gate and proposed scheduling
+## Original gate and approved timing amendment
 
-The current [P00-17](phases/phase-00.md) requires an actual private intake drill
-and a real backup contact. [SECURITY.md](../SECURITY.md) currently requires two
-contacts before public previews. Both remain unchanged by this proposal. A second
+Before this amendment, P00-17 required an actual private intake drill and a
+real backup contact; `SECURITY.md` required two contacts before public previews.
+Those original rules remain in force on main until the approved amendment
+merges. A second
 developer is not necessary for a backup role, but a genuinely available second
 person is necessary to claim backup coverage. An assistant is not that person.
 
@@ -24,10 +25,10 @@ person is necessary to claim backup coverage. An assistant is not that person.
 | Experimental preview | Two contacts and tested reporting route before public previews | Clearly unsupported development preview; visible sole-responder limitation, tested private route before soliciting external testers |
 | Supported production release | Independent assessment and operational response remain required | Mandatory verified receipt/escalation drill and genuinely available backup before supported production; no silent exception |
 
-Owner agreement and a concrete change to the canonical roadmap/security policy
-are still needed before applying the timing change. Until then, P00-17 is not
-complete. This proposal does not turn enabled reporting into passing evidence,
-erase an operational safeguard or authorize sending a synthetic report.
+Ise-Tom approved the exact timing decision in the [decision record](validation/p00-17-timing-review.md#owner-decision-record).
+The canonical policy change is in this review branch. P00-17 is not accepted;
+approval does not turn enabled reporting into passing evidence or authorize a
+synthetic report.
 
 ## Intake and custody process
 
