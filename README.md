@@ -44,11 +44,74 @@ Use your browser's Find command to search. Expand a phase's requirements to read
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-21T23:11:09\+01:00.
+GitHub metadata checked: 2026-11-22T09:56:46\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#36 · Group Phase 0 owner decisions in the dashboard](<https://github.com/Ise-Tom/Babel/pull/36>)
+
+**In review · Pending merge · CI: in\_progress** · Head 9320a93
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## What changes
+    
+    - Add a single Owner review view to the standalone dashboard and GitHub report. Show exact scopes, pinned packets and recorded delivery PR state together. The interactive view prepares one approval message for the selected scopes.
+    - Link all nine waiting Phase 0 packets to their five verified merged PRs. Keep them pending for the owner's batch decision, as requested.
+    - Document that an explicit owner decision made during implementation PR review can be recorded in that same PR.
+    - Fix standalone stylesheet hashing on Windows checkouts by normalizing the inline CSS before computing its CSP hash.
+    
+    ## Verification
+    
+    All 36 desktop/mobile checks, 30 Python dashboard tests and nine Node build/lint tests passed locally. Type checking, dashboard validation, Markdown links, Ruff and mypy passed. All nine packet paths exist at their pinned commits in main history.
+
+**Changed files:**
+
+- CONTRIBUTING.md
+- dashboard/build.mjs
+- dashboard/progress.json
+- dashboard/src/index.html
+- dashboard/src/main.ts
+- dashboard/src/style.css
+- dashboard/src/types.ts
+- dashboard/tests/build.test.mjs
+- dashboard/tests/dashboard.spec.ts
+- docs/project-dashboard.md
+- scripts/build\_dashboard.py
+- scripts/render\_dashboard.py
+- tests/test\_dashboard\_delivery.py
+
+#### Proposed W61 · Group owner decisions with merged PRs and pinned review packets
+
+**Requirements:** P00-08, P00-10, P01-10
+
+**How it was done:** Added an Owner review queue to both dashboard views. Each pending packet shows its exact scope, pinned evidence and reviewed delivery PR state. The interactive view prepares a single decision message for the selected scopes. The contributor guide puts explicit owner decisions in the same implementation PR when approved before merge.
+
+**Recorded validation:** Verified all nine existing packet revisions and files in main history and matched them to five merged PRs. Dashboard tests exercise delivery labels, pending and accepted state separation, and selected scope text on desktop and mobile.
+
+**Limits and remaining work:** The queue uses the repository&\#x27;s recorded PR snapshot. Selecting a packet only prepares a decision message. Existing requirement, capability and phase acceptance records stay separate.
+
+**PR-head evidence:** [dashboard/src/main.ts](<https://github.com/Ise-Tom/Babel/blob/9320a938c9b4b444208c596e2e9af104a1dab0b1/dashboard/src/main.ts>) · [scripts/render\_dashboard.py](<https://github.com/Ise-Tom/Babel/blob/9320a938c9b4b444208c596e2e9af104a1dab0b1/scripts/render_dashboard.py>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/9320a938c9b4b444208c596e2e9af104a1dab0b1/docs/project-dashboard.md>)
+
+#### Proposed problem update: I46 · Windows checkout line endings could hide standalone dashboard styles
+
+**Proposed status:** resolved
+
+The standalone build could hash stylesheet bytes with Windows line endings. Chromium normalizes the lines before checking the hash, so the stylesheet was blocked and the page displayed without its layout.
+
+**Resolution:** Normalize stylesheet line endings before hashing and embedding. The build test checks the resulting inline text and the unchanged hash policy.
+
+**Next action:** Retain desktop, mobile and artifact verification in dashboard CI.
+
+**Provenance:** Reproduced by building from a Windows Git worktree and opening the standalone dashboard in pinned Chromium on WSL.
+
+[dashboard/build.mjs](<https://github.com/Ise-Tom/Babel/blob/9320a938c9b4b444208c596e2e9af104a1dab0b1/dashboard/build.mjs>) · [dashboard/tests/build.test.mjs](<https://github.com/Ise-Tom/Babel/blob/9320a938c9b4b444208c596e2e9af104a1dab0b1/dashboard/tests/build.test.mjs>)
+
+
+</details>
 
 
 ## Phase 00
@@ -174,6 +237,8 @@ Current version-1 compatibility/evidence schema and traceability tooling accepte
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-18. The project owner explicitly answered “Accept this schema/tooling scope” in this conversation on 18 November 2026. Scope: current version-1 schema and traceability implementation in PR \#22, not client compatibility or phase acceptance. Implementation/tests pinned to b98dac7d33b20bef1ab6ccfb4a295f40d2330500: https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/scripts/check\_conformance.py ; https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/tests/test\_conformance.py . 118 local repository tests passed; all 60 conformance scenarios are explicitly unrun.
 
+**Pending PR proposals:** [\#36: Group Phase 0 owner decisions in the dashboard](<https://github.com/Ise-Tom/Babel/pull/36>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W10: Required native and repository CI gates; W11: Complete phase specifications and traceability; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W18: Open-PR-aware private progress reporting; W33: Enforce versioned conformance evidence integrity in CI; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence; W45: Make phase activity and recent work visible separately from acceptance; W60: Improve dashboard refresh triggers and manual Pages retries. See the [implementation journal](#implementation-journal).
 
 ### P00-09
@@ -201,6 +266,8 @@ The full Phase 0 upgrade/recovery/scope-governance design gate is complete. Six 
 **Acceptance evidence required:** Irreversible schema/key/storage decisions require review and recovery examples; scope exceptions have owner, expiry and production impact.
 
 **Validation packet:** Full original P00-10 Phase 0 governance design gate, including review/recovery examples and owner/expiry/production-impact exception policy; not runtime recovery. [Review exit criteria and evidence](<https://github.com/Ise-Tom/Babel/blob/380d564183b9217acbde16476658fe003cf72338/docs/validation/p00-10.md>)
+
+**Pending PR proposals:** [\#36: Group Phase 0 owner decisions in the dashboard](<https://github.com/Ise-Tom/Babel/pull/36>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI; W33: Enforce versioned conformance evidence integrity in CI; W34: Specify stable state and worked replication/recovery invariants; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence; W45: Make phase activity and recent work visible separately from acceptance; W48: Complete recovery/scope governance with enforced design-contract checks; W60: Improve dashboard refresh triggers and manual Pages retries. See the [implementation journal](#implementation-journal).
 
@@ -439,6 +506,8 @@ Project owner accepted the current prototype’s scope inventory and limitation 
 **Acceptance evidence required:** Each public operation has a tested/unsupported status; lab credentials and incomplete protocol behavior cannot be promoted as a production release.
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-17. Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: documentation, tests and CLI label the current prototype as a loopback-only LDAP discovery lab and disclose missing production/domain functionality. Evidence pinned to merged main: https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/docs/phase-01-progress.md ; https://github.com/Ise-Tom/Babel/blob/cd6ad149870a05db4ab2a4f7fbca3e4d461af848/native/babel-ldap/src/main.rs . This accepts scope reporting, not those missing features or production readiness.
+
+**Pending PR proposals:** [\#36: Group Phase 0 owner decisions in the dashboard](<https://github.com/Ise-Tom/Babel/pull/36>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W17: Bounded LDAP RootDSE filter discovery; W18: Open-PR-aware private progress reporting; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W60: Improve dashboard refresh triggers and manual Pages retries. See the [implementation journal](#implementation-journal).
 
