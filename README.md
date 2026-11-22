@@ -51,7 +51,7 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T00:31:50\+01:00.
+GitHub metadata checked: 2026-11-23T00:32:06\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -119,7 +119,7 @@ The six-guest Hyper-V preflight found insufficient RAM/disk and unavailable VM/s
 
 ### [\#45 · Review amended P00-17 intake process-design gate](<https://github.com/Ise-Tom/Babel/pull/45>)
 
-**In review · Pending merge · CI: in\_progress** · Head a5c84f2
+**In review · Pending merge · CI: queued** · Head a5c84f2
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
