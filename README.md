@@ -51,7 +51,7 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T00:28:37\+01:00.
+GitHub metadata checked: 2026-11-23T00:29:03\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -119,7 +119,7 @@ The six-guest Hyper-V preflight found insufficient RAM/disk and unavailable VM/s
 
 ### [\#45 · Review amended P00-17 intake process-design gate](<https://github.com/Ise-Tom/Babel/pull/45>)
 
-**In review · Pending merge · CI: in\_progress** · Head a6b9cd3
+**In review · Pending merge · CI: in\_progress** · Head a5c84f2
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -145,9 +145,8 @@ The six-guest Hyper-V preflight found insufficient RAM/disk and unavailable VM/s
 - docs/validation/p00-17-timing-review.md
 - docs/validation/p00-17.md
 - lab/security-intake/evidence/offline-rehearsal-result.json
-- lab/security-intake/evidence/review-f2ddab3-2026-11-23.json
 - lab/security-intake/offline-rehearsal.json
-- scripts/check\_ci\_scope.py
+- lab/specification-pins.json
 - scripts/check\_security\_intake.py
 - tests/test\_security\_intake.py
 
@@ -161,7 +160,7 @@ The six-guest Hyper-V preflight found insufficient RAM/disk and unavailable VM/s
 
 **Limits and remaining work:** The policy merged in PR \#42. Its approval did not authorize a live drill, accept P00-17, appoint a backup, activate an SLA or establish production readiness.
 
-**PR-head evidence:** [docs/validation/p00-17-timing-review.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/validation/p00-17-timing-review.md>) · [docs/phases/phase-00.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/phases/phase-00.md>) · [docs/phases/phase-05.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/phases/phase-05.md>) · [SECURITY.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/SECURITY.md>)
+**PR-head evidence:** [docs/validation/p00-17-timing-review.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/validation/p00-17-timing-review.md>) · [docs/phases/phase-00.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/phases/phase-00.md>) · [docs/phases/phase-05.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/phases/phase-05.md>) · [SECURITY.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/SECURITY.md>)
 
 
 #### Proposed W69 · Review amended P00-17 intake process against every Phase 0 criterion
@@ -174,7 +173,7 @@ The six-guest Hyper-V preflight found insufficient RAM/disk and unavailable VM/s
 
 **Limits and remaining work:** This is Phase 0 process-design evidence only. No report, owner notification/receipt/acknowledgment, human backup access or owner-absence escalation occurred. Separate authorization is required for any live report or contact; preview and production gates remain open.
 
-**PR-head evidence:** [docs/validation/p00-17-design-review.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/validation/p00-17-design-review.md>) · [lab/security-intake/evidence/review-f2ddab3-2026-11-23.json](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/lab/security-intake/evidence/review-f2ddab3-2026-11-23.json>) · [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/security-response-readiness.md>)
+**PR-head evidence:** [docs/validation/p00-17-design-review.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/validation/p00-17-design-review.md>) · [lab/security-intake/evidence/offline-rehearsal-result.json](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/lab/security-intake/evidence/offline-rehearsal-result.json>) · [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/security-response-readiness.md>)
 
 #### Proposed problem update: I27 · Actual private receipt/escalation, backup response and production incident exercises remain unqualified
 
@@ -188,7 +187,7 @@ The amended P00-17 process design and offline rehearsal are prepared for owner r
 
 **Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
 
-[docs/validation/p00-17-design-review.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/validation/p00-17-design-review.md>) · [docs/validation/p00-17-timing-review.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/validation/p00-17-timing-review.md>) · [docs/validation/p00-17.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/validation/p00-17.md>) · [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/security-response-readiness.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/a6b9cd39f6269806921fef3774812f47cd64c400/docs/phase-00-security-and-dependencies.md>)
+[docs/validation/p00-17-design-review.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/validation/p00-17-design-review.md>) · [docs/validation/p00-17-timing-review.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/validation/p00-17-timing-review.md>) · [docs/validation/p00-17.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/validation/p00-17.md>) · [docs/security-response-readiness.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/security-response-readiness.md>) · [docs/phase-00-security-and-dependencies.md](<https://github.com/Ise-Tom/Babel/blob/a5c84f236aca833a7c4f050e13f14e3afc8122eb/docs/phase-00-security-and-dependencies.md>)
 
 
 </details>
