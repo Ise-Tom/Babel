@@ -163,6 +163,28 @@ class ConformanceEvidence(unittest.TestCase):
             hashlib.sha256((self.root / "lab/compatibility.json").read_bytes()).hexdigest(),
         )
 
+    def test_readiness_report_enumerates_blockers_before_strict_check(self):
+        status = policy.check(self.root)["readiness"]
+        self.assertFalse(status["ready"])
+        self.assertEqual(len(status["unimplemented_families"]), 30)
+        self.assertTrue(status["contract_approval_pending"])
+        self.assertIn("win11-pro", status["unqualified_profiles"])
+        self.assertIn("MS-ADTS", status["unreviewed_specifications"])
+        self.assertEqual(status["scenario_blockers"]["ldap-directory/positive"], "unrun")
+        self.assertEqual(len(status["scenario_blockers"]), 60)
+        self.assertIn("join-login/join-variants", status["unresolved_mappings"])
+
+        self.passing_fixture()
+        proof = self.evidence["records"][0].pop("review")
+        self.save()
+        self.assertEqual(
+            policy.check(self.root)["readiness"]["scenario_blockers"],
+            {"objects/positive": "review_pending"},
+        )
+        self.evidence["records"][0]["review"] = proof
+        self.save()
+        self.assertTrue(policy.check(self.root, require_ready=True)["readiness"]["ready"])
+
     def test_exchange_mappings_require_assertions_and_resolvable_sections(self):
         operation = self.contract["operations"][0]
         exchanges = copy.deepcopy(operation["exchanges"])

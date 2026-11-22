@@ -30,15 +30,15 @@ Phase 0 process-design scope in this worker chat. The [pinned criterion packet](
 record its scope and evidence. The live owner-receipt drill and real backup
 were expressly excluded from this acceptance.
 
-Phase 0 now has **13 of 17 requirements accepted**. P00-01 remains in progress.
-P00-05, P00-12 and P00-16 are blocked. Whole-phase acceptance,
-production qualification and the 60 unrun client-conformance scenarios remain open.
+Phase 0 now has **13 of 17 requirements accepted**. P00-01, P00-05, P00-12
+and P00-16 are blocked. Whole-phase acceptance, production qualification and
+the 60 unrun client-conformance scenarios remain open.
 
 ## Requirement history and remaining evidence
 
 | Requirement | Concrete result | Remaining exit evidence |
 | --- | --- | --- |
-| P00-01 | [Owner approved the scoped design](https://github.com/Ise-Tom/Babel/pull/40#pullrequestreview-6012632874) for 60 wire mappings, 12 workflows and 12 explicit unknowns across all 30 families. See the [reviewed packet](validation/p00-01.md) for ownership, success/refusal and evidence. | Unresolved route and scope decisions, exact platform profiles and licensed real-client runs |
+| P00-01 | [Conformance follow-up](validation/p00-01-conformance.md) verifies 67 wire mappings and 13 workflows across 30 families, details 12 open route decisions and records a local Babel LDAP smoke. [PR #40 scoped design approval](https://github.com/Ise-Tom/Babel/pull/40#pullrequestreview-6012632874) remains recorded. | Native AD operations, exact platform profiles, asset rights and licensed positive/refusal comparisons. All 60 product scenarios remain unrun. |
 | P00-02 | [Full identity/authorization packet](validation/p00-02.md): nine local cases cover stable GUID/domain SID, schema/matching, ordered ACLs, asynchronous inheritance, groups, revocation and durable receipts against pinned ADTS/DRSR/DTYP | Native identity/ACL implementation remains separate |
 | P00-03 | [Full replication/restore design packet](validation/p00-03.md): eleven cases specify attribute wrap/GUID rules, link lifetimes, naming conflicts, deletion, progress, restore and RID quarantine against actual source sections | Native DRS/reference/fault qualification remains separate |
 | P00-04 | [Full toolchain/parser packet](validation/p00-04.md): declared Linux profiles, exact compiler/ELF facts, release overflow checks, locked debug/release/client/fuzz/security gates and maintenance review | Changes to qualified targets or parser dependencies require requalification |

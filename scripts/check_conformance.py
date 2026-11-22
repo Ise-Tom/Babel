@@ -328,25 +328,40 @@ def check(root: Path, *, require_ready: bool = False) -> dict[str, Any]:
             text(spec.get("url")) and spec["url"].startswith("https://"),
             "HTTPS spec reference required",
         )
+    readiness = {
+        "unimplemented_families": {
+            op["id"]: op["implementation"]
+            for op in operations.values()
+            if op["implementation"] != "implemented"
+        },
+        "contract_approval_pending": contract["status"] != "approved"
+        or not review(contract.get("approval")),
+        "unqualified_profiles": [
+            profile["id"]
+            for profile in profiles.values()
+            if profile["qualification"] != "qualified"
+        ],
+        "unreviewed_specifications": [
+            spec["id"]
+            for spec in specs.values()
+            if not text(spec.get("revision")) or spec["rights_review"] != "approved"
+        ],
+        "unresolved_mappings": unresolved,
+    }
     if require_ready:
-        require(
-            all(op["implementation"] == "implemented" for op in operations.values()),
-            "Planned/lab-only operations cannot qualify production conformance",
-        )
-        require(
-            contract["status"] == "approved" and review(contract.get("approval")),
-            "Contract is not reviewed/approved",
-        )
-        require(
-            all(p["qualification"] == "qualified" for p in profiles.values()),
-            "Unqualified client profiles remain",
-        )
-        require(
-            all(
-                text(s.get("revision")) and s["rights_review"] == "approved" for s in specs.values()
+        for blocked, message in (
+            (
+                readiness["unimplemented_families"],
+                "Planned/lab-only operations cannot qualify production conformance",
             ),
-            "Specification revision/rights review incomplete",
-        )
+            (readiness["contract_approval_pending"], "Contract is not reviewed/approved"),
+            (readiness["unqualified_profiles"], "Unqualified client profiles remain"),
+            (
+                readiness["unreviewed_specifications"],
+                "Specification revision/rights review incomplete",
+            ),
+        ):
+            require(not blocked, message)
     records = evidence.get("records")
     require(isinstance(records, list) and bool(records), "Zero-case evidence is not qualification")
     expected = {
@@ -354,6 +369,7 @@ def check(root: Path, *, require_ready: bool = False) -> dict[str, Any]:
     }
     seen = set()
     counts: Counter[str] = Counter()
+    scenario_blockers = {}
     for row in records:
         key = (row.get("operation"), row.get("scenario"))
         require(key in expected and key not in seen, "Unknown or duplicate evidence scenario")
@@ -393,13 +409,14 @@ def check(root: Path, *, require_ready: bool = False) -> dict[str, Any]:
                     and any(r.get("result") == "failed" for r in runs),
                     "Failed case needs a failed execution",
                 )
-        if require_ready:
-            require(
-                outcome == "passed" and review(row.get("review")),
-                "Unaccepted or non-passing scenario blocks qualification",
-            )
+        if outcome != "passed":
+            scenario_blockers[f"{key[0]}/{key[1]}"] = outcome
+        elif not review(row.get("review")):
+            scenario_blockers[f"{key[0]}/{key[1]}"] = "review_pending"
     require(seen == expected, "Missing positive/negative evidence scenarios")
+    readiness["scenario_blockers"] = scenario_blockers
     if require_ready:
+        require(not scenario_blockers, "Unaccepted or non-passing scenario blocks qualification")
         require(not unresolved, "Unresolved exchange mappings block conformance readiness")
     return {
         "requirement": "P00-01",
@@ -408,6 +425,7 @@ def check(root: Path, *, require_ready: bool = False) -> dict[str, Any]:
         "unique_protocol_sections": len(section_refs),
         "unresolved_mappings": unresolved,
         "conformance_outcomes": dict(sorted(counts.items())),
+        "readiness": {"ready": not any(readiness.values()), **readiness},
         "input_sha256": {
             name: hashlib.sha256((root / name).read_bytes()).hexdigest()
             for name in sorted(

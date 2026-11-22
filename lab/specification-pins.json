@@ -20,6 +20,7 @@
       "redistribution_approval": null,
       "sections": {
         "3.1.1.1.5.1": "Tombstone Lifetime and Deleted-Object Lifetime",
+        "3.1.1.3.1.3.3": "Range Retrieval of Attribute Values",
         "3.1.1.3.1.3.6": "Restrictions on rootDSE Searches",
         "3.1.1.3.1.4": "Referrals in LDAPv2 and LDAPv3",
         "3.1.1.3.1.5.1": "unicodePwd",
@@ -34,9 +35,12 @@
         "3.1.1.3.4.1": "LDAP Extended Controls",
         "3.1.1.3.4.1.1": "LDAP_PAGED_RESULT_OID_STRING",
         "3.1.1.3.4.1.2": "LDAP_SERVER_CROSSDOM_MOVE_TARGET_OID",
+        "3.1.1.3.4.1.3": "LDAP_SERVER_DIRSYNC_OID",
         "3.1.1.3.4.1.11": "LDAP_SERVER_SD_FLAGS_OID",
+        "3.1.1.3.4.1.13": "LDAP_SERVER_SORT_OID and LDAP_SERVER_RESP_SORT_OID",
         "3.1.1.3.4.1.14": "LDAP_SERVER_SHOW_DELETED_OID",
         "3.1.1.3.4.1.15": "LDAP_SERVER_TREE_DELETE_OID",
+        "3.1.1.3.4.1.17": "LDAP_CONTROL_VLVREQUEST and LDAP_CONTROL_VLVRESPONSE",
         "3.1.1.3.4.1.26": "LDAP_SERVER_SHOW_RECYCLED_OID",
         "3.1.1.3.4.4.3": "LDAP_MATCHING_RULE_TRANSITIVE_EVAL",
         "3.1.1.3.4.5": "LDAP SASL Mechanisms",
@@ -107,7 +111,8 @@
       "redistribution_approval": null,
       "sections": {
         "3.1.4.5": "R_DnssrvUpdateRecord (Opnum 4)",
-        "3.1.4.10": "R_DnssrvUpdateRecord2 (Opnum 9)"
+        "3.1.4.10": "R_DnssrvUpdateRecord2 (Opnum 9)",
+        "3.1.4.11": "R_DnssrvUpdateRecord3 (Opnum 10)"
       },
       "use_policy": "microsoft-notice",
       "patent_index_observations": {
@@ -276,6 +281,7 @@
       "sections": {
         "2.2.4": "GPO Search",
         "3.2.5.1.5": "GPO Search",
+        "3.2.5.1.10": "Extension Protocol Sequences",
         "3.3.5.4": "GPO File System Version Update",
         "3.3.5.7": "GPO Link Creation and Update",
         "3.3.5.8": "GPO Link Deletion",
@@ -407,16 +413,20 @@
       "image_fixture_rights": "not_granted_by_document",
       "redistribution_approval": null,
       "sections": {
+        "2.1": "Transport",
         "3.5.4.3.1": "DsrGetDcNameEx2 (Opnum 34)",
         "3.5.4.4": "Secure Channel Establishment and Maintenance Methods",
         "3.5.4.4.1": "NetrServerReqChallenge (Opnum 4)",
         "3.5.4.4.2": "NetrServerAuthenticate3 (Opnum 26)",
+        "3.5.4.4.4": "NetrServerAuthenticate2 (Opnum 15)",
+        "3.5.4.4.5": "NetrServerAuthenticate (Opnum 5)",
         "3.5.4.4.6": "NetrServerPasswordSet2 (Opnum 30)",
         "3.5.4.4.10": "NetrLogonGetDomainInfo (Opnum 29)",
         "3.5.4.4.11": "NetrLogonGetCapabilities (Opnum 21)",
         "3.5.4.5": "Pass-Through Authentication Methods",
         "3.5.4.5.1": "NetrLogonSamLogonEx (Opnum 39)",
-        "3.5.4.5.2": "NetrLogonSamLogonWithFlags (Opnum 45)"
+        "3.5.4.5.2": "NetrLogonSamLogonWithFlags (Opnum 45)",
+        "6": "Appendix A: Full IDL"
       },
       "use_policy": "microsoft-notice",
       "patent_index_observations": {
@@ -1185,6 +1195,21 @@
         "unit_testing"
       ],
       "review_evidence": "Original bounded synthetic protocol seed for Babel's local parser fuzzer.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "p00-01-local-ldap-smoke",
+      "kind": "project_synthetic",
+      "path": "docs/validation/p00-01-ldap-smoke.md",
+      "sha256": "1d776c6f5b59627a2e9670f7e580878014ae0e8d43d8a040dd0ee43d38fd7c2a",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution"
+      ],
+      "review_evidence": "Babel-authored redacted receipt for the local loopback LDAP smoke using project synthetic inputs. No vendor captures, image bytes or third-party fixtures.",
       "publisher_terms": [
         "LICENSE",
         "CONTRIBUTING.md"
