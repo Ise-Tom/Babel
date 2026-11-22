@@ -2896,6 +2896,36 @@
         "I25",
         "I28"
       ]
+    },
+    {
+      "id": "W65",
+      "title": "Ask for one actionable owner decision in the worker chat",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-08",
+        "P00-10",
+        "P00-17"
+      ],
+      "how": "Made a short question in the worker chat the default for decisions ready now. The worker records the exact decision in its open PR. Routine progress goes through normal review and blocked work identifies its prerequisites.",
+      "verification": "Compared the approval handoffs and recorded outcomes for PRs #39 and #40. The owner selected one short decision in the worker chat. Repository scope, documentation links and dashboard validation pass.",
+      "limitations": "This changes the approval workflow. The original P00-17 policy, intake evidence, and all recorded requirement decisions retain their current scope and status.",
+      "source_revision": "addf87376901393af1aaae44a9f74b03396f4cc5",
+      "sources": [
+        {
+          "path": "AGENTS.md",
+          "label": "Standing worker decision instructions"
+        },
+        {
+          "path": "docs/project-dashboard.md",
+          "label": "Dashboard decision recording"
+        },
+        {
+          "path": "docs/validation/p00-17.md",
+          "label": "P00-17 decision and blockers"
+        }
+      ],
+      "problems": []
     }
   ],
   "problems": [
