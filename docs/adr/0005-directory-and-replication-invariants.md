@@ -1,8 +1,10 @@
 # ADR 0005 — Directory state, authority and replication contract
 
 Status: **full P00-02/P00-03 Phase 0 design specified for owner review**.
-PostgreSQL remains the selected engine; native identity/ACL/replication behavior
-is not implemented. No credential, ACL, RID, replication or backup format is frozen.
+PostgreSQL remains the selected engine. The
+[synthetic directory core](../validation/p01-02.md) exercises native identity and
+schema primitives in memory. ACL, replication and durable storage integration
+remain open. Credential, ACL, RID, replication and backup formats remain unfrozen.
 [Twenty worked cases](../../lab/state-security-contract.json) bind the design to
 [exact source editions and hashes](../../lab/specification-pins.json). The check
 validates review coverage and source bindings; it does not execute AD semantics.

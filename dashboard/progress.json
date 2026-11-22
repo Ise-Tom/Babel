@@ -312,6 +312,24 @@
         "evidence": "Project owner explicitly answered “Accept this scope” in this conversation on 2026-11-17. Scope: development safeguards for the current native LDAP component, not the full server or future components. PR #16 and its 12-job successful CI run: https://github.com/Ise-Tom/Babel/pull/16 ; https://github.com/Ise-Tom/Babel/actions/runs/44152161324 . Merged main cd6ad149870a05db4ab2a4f7fbca3e4d461af848 also passed all 12 jobs in run 44153995669."
       }
     },
+    "P01-02": {
+      "status": "accepted",
+      "note": "Ise-Tom approved the original P01-02 stable identity and schema primitive gate on 22 November 2026 for babel-synthetic-directory-v1. The public Rust API exercises create, DN/GUID/SID and equality lookup, same-domain leaf rename and refusal without partial changes. Broader directory semantics, persistence, authorization, network writes and client conformance retain their own gates.",
+      "validation": {
+        "scope": "Original P01-02 identity and schema primitive gate for babel-synthetic-directory-v1. Covers core-owned GUID/SID, validated creation and lookup, same-domain leaf rename, collision and unsupported matcher refusal, and preserved in-memory state on failure. Durability, ACLs, LDAP writes, credentials and client conformance stay in their own gates.",
+        "source_revision": "d3d8b291823f1831583e5f94323cf9a21f673028",
+        "packet": {
+          "path": "docs/validation/p01-02.md",
+          "label": "P01-02 executable profile and evidence"
+        },
+        "delivery_pr": 44
+      },
+      "acceptance": {
+        "reviewer": "Ise-Tom (explicit approval in the P01-02 worker chat)",
+        "date": "2026-11-22",
+        "evidence": "Ise-Tom selected “Approve” in this worker chat when asked whether to accept the original P01-02 stable identity and schema primitive gate for the tested in-memory babel-synthetic-directory-v1 profile. Delivery: https://github.com/Ise-Tom/Babel/pull/44 . Pinned reviewed packet: https://github.com/Ise-Tom/Babel/blob/d3d8b291823f1831583e5f94323cf9a21f673028/docs/validation/p01-02.md . Review CI passed all 15 jobs: https://github.com/Ise-Tom/Babel/actions/runs/45036491181"
+      }
+    },
     "P01-03": {
       "status": "in_progress",
       "note": "The P00-15 driver/transaction profile is now technically complete and ready for validation, including typed writes, bounds, abandoned futures, durable reply loss and actual before/after-commit Rust-driver recovery. Native AD identity/schema/ACL integration and the production directory store remain Phase 1 implementation work; this does not accept that store."
@@ -2991,6 +3009,40 @@
       "problems": [
         "I28"
       ]
+    },
+    {
+      "id": "W68",
+      "title": "Implement stable native identity and synthetic schema primitives",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-02"
+      ],
+      "how": "Added an unpublished workspace crate with core-allocated UUIDv4 GUIDs and per-domain SIDs, a bounded flat naming context, class and attribute validation, and atomic in-memory name index updates. The public API provides DN, GUID, SID and schema-bound equality lookup.",
+      "verification": "Seven public API tests and one identifier allocation fault test pass in debug and release. Directory line coverage is 93.96% locally and has a dedicated required CI threshold. The release LDAP RootDSE smoke passes.",
+      "limitations": "The owner approved the original primitive gate within the tested synthetic profile. Broader DN/schema and matching semantics, persisted identity, ACLs/links, credentials, network mutations and real-client conformance require separate work.",
+      "source_revision": "d3d8b291823f1831583e5f94323cf9a21f673028",
+      "sources": [
+        {
+          "path": "docs/validation/p01-02.md",
+          "label": "P01-02 executable profile and evidence"
+        },
+        {
+          "path": "native/babel-directory/src/lib.rs",
+          "label": "Native directory API"
+        },
+        {
+          "path": "native/babel-directory/tests/synthetic_profile.rs",
+          "label": "Public API tests"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "Required native build and test gates"
+        }
+      ],
+      "problems": [
+        "I05"
+      ]
     }
   ],
   "problems": [
@@ -3127,7 +3179,7 @@
       ],
       "detail": "P00-15 driver/transaction qualification is complete and explicitly owner-accepted, including typed bounds, dropped futures, real durable-reply loss and Rust-client process recovery. The native AD identity/schema/ACL/store and domain formats remain separate implementation obligations; the fixture is not a directory server.",
       "resolution": "",
-      "next_action": "Integrate the owner-accepted driver profile into P01-02/P01-03/P01-11/P01-12 with native identity/schema/ACL and durable journal semantics. Service/key custody, domain replication/backup/upgrade and production capacity retain their separate gates.",
+      "next_action": "Integrate the synthetic native identity/schema primitives and owner-accepted driver profile with the durable store, ACL authority and journal/receipts under P01-03/P01-11/P01-12. Service/key custody, replication, recovery and capacity retain their own gates.",
       "sources": [
         {
           "path": "docs/validation/p00-15.md",

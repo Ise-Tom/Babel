@@ -65,6 +65,7 @@ def allowed_path(name: str) -> bool:
         or (
             path.parts[:2]
             in {
+                ("native", "babel-directory"),
                 ("native", "babel-ldap"),
                 ("native", "babel-tls-lab"),
                 ("native", "babel-store-driver-lab"),
@@ -72,6 +73,7 @@ def allowed_path(name: str) -> bool:
             and (
                 name
                 in {
+                    "native/babel-directory/Cargo.toml",
                     "native/babel-ldap/Cargo.toml",
                     "native/babel-tls-lab/Cargo.toml",
                     "native/babel-store-driver-lab/Cargo.toml",

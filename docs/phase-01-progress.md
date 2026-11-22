@@ -1,8 +1,7 @@
 # Phase 1 development progress
 
-Status: native parser/RootDSE lab implemented; bounded filter extension in development;
-Phase 1 acceptance
-is **not complete**. The [phase specification](phases/phase-01.md) remains the
+The native parser and RootDSE lab run alongside the synthetic identity and
+schema core. Phase 1 acceptance remains open. The [phase specification](phases/phase-01.md) remains the
 normative contract. [ADR 0001](adr/0001-native-ldap-lab.md) defines the narrow
 implementation, resource bounds, toolchain choice and outstanding prerequisites.
 
@@ -11,7 +10,7 @@ implementation, resource bounds, toolchain choice and outstanding prerequisites.
 | Requirement | Current evidence scope | Remaining gate |
 | --- | --- | --- |
 | P01-01 | Rust workspace, pinned compiler/locks, formatting/Clippy, generated parser tests, sanitizer fuzz, dependency/license/SBOM and packaging gates | All later native components need corresponding checks; no general security assessment |
-| P01-02 | Not implemented | Stable SID/GUID/schema/ACL and denied-state invariants |
+| P01-02 | [Native synthetic identity and schema](validation/p01-02.md). Public Rust API tests cover create, lookup, same-domain rename, collision and schema/matching refusal. | Ise-Tom accepted the primitive gate for the declared profile on 22 November 2026. Broader LDAP schema and DN semantics, durable storage and authorization retain their gates. |
 | P01-03 | Not implemented; lab has no state | Transactional store/journal and kill/recovery tests after design approval |
 | P01-04 | RootDSE base-search subset; bounded presence/objectClass equality/boolean filter extension exercised by ldap3 in the development PR | DNS, general directory/schema/matching rules and Windows reference-client evidence |
 | P01-05 | Credential binds explicitly rejected, not authenticated | Reviewed Kerberos/PAC/password/key lifecycle, secure transport and actual authentication |
