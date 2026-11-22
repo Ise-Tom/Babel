@@ -51,9 +51,93 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T10:59:02\+01:00.
+GitHub metadata checked: 2026-11-22T14:59:25\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
+
+### [\#40 · Map Phase 0 protocol operations and accountable ownership](<https://github.com/Ise-Tom/Babel/pull/40>)
+
+**In review · Pending merge · CI: in\_progress** · Head f390d1e
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## Scope
+    
+    Extend all 30 existing operation families with accountable ownership, 60 wire mappings, 12 workflows, expected success/refusal and required evidence. Track 12 unresolved variants and give unrecognized operations an explicit intake and refusal policy. Bind 153 operation sections to 21 exact publisher documents.
+    
+    The version-1 evidence inventory changes only its matrix digest. All 60 scenarios remain unrun. The existing checker validates owners, outcomes, required evidence, section and project references, and case accounting. Required CI retains the commit-bound matrix report in `phase0-contract-evidence`.
+    
+    ## Owner review requested
+    
+    Approve only the **P00-01 scoped protocol-operation matrix design increment** described in the [pinned evidence packet](https://github.com/Ise-Tom/Babel/blob/93e1dc956263db27d07fe1192e74205c60294032/docs/validation/p00-01.md). The full P00-01 exit remains open for unresolved routes, exact patched profiles, licensed client/reference runs and the resulting compatibility evidence. The dashboard keeps P00-01 in progress.
+    
+    ## Verification
+    
+    - Local reference-cache verification matched the exact raw bytes and 153 operation headings.
+    - The readiness command rejects the current unqualified inventory as expected.
+    - CI runs the matrix integrity check, existing product-evidence checks and regression tests.
+
+**Changed files:**
+
+- .github/workflows/ci.yml
+- dashboard/progress.json
+- docs/ci-cd.md
+- docs/phase-00-progress.md
+- docs/reference-use-review.md
+- docs/validation/p00-01.md
+- lab/compatibility.json
+- lab/conformance-evidence.json
+- lab/specification-pins.json
+- scripts/check\_conformance.py
+- scripts/check\_state\_security.py
+- tests/test\_conformance.py
+- tests/test\_state\_security.py
+
+#### Proposed W63 · Map owned wire operations and unresolved client variants
+
+**Requirements:** P00-01
+
+**How it was done:** Specified 60 wire mappings and 12 workflows across all 30 families. Every row states the expected success and refusal and required evidence. Twelve unresolved mappings document blockers, and the general unmapped policy keeps newly observed operations visible.
+
+**Recorded validation:** Validated 21 exact public reference files and 153 operation section headings. Required CI checks the matrix and pins and retains a commit-bound report. Rebinding the matrix digest preserved all 60 evidence records byte for byte.
+
+**Limits and remaining work:** Scoped design review only. The full P00-01 gate stays open for unresolved paths and exact licensed client evidence. Existing functional-level scope, all unrun observations and the specification/fixture rights gates are preserved.
+
+**PR-head evidence:** [docs/validation/p00-01.md](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/docs/validation/p00-01.md>) · [lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/lab/compatibility.json>) · [lab/specification-pins.json](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/lab/specification-pins.json>) · [lab/conformance-evidence.json](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/lab/conformance-evidence.json>) · [scripts/check\_conformance.py](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/scripts/check_conformance.py>)
+
+#### Proposed problem update: I25 · Exact compatibility builds and detailed wire cases remain unqualified
+
+**Proposed status:** open
+
+The initial profile and 30 operation families are explicit, but exact Windows/Linux/macOS image/package builds and detailed control/opnum/error fixtures are not approved. Every one of the 60 initial product conformance scenarios is unrun.
+
+**Resolution:** Still open
+
+**Next action:** Pin exact licensed images/packages, resolve the named client and platform variants, and turn mapped success/refusal assertions into executable cases with reviewed evidence per client and target.
+
+**Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
+
+[lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/lab/compatibility.json>) · [lab/conformance-evidence.json](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/lab/conformance-evidence.json>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/docs/phase-00-progress.md>)
+
+#### Proposed problem update: I28 · Exact references pinned; concrete program/patent/image use rights and detailed operation mapping remain open
+
+**Proposed status:** open
+
+Thirteen actual reference editions and notices are now pinned, including corrected MS-FRS2 and added MS-DTYP. Concrete Microsoft patent/program coverage and licensed Windows/macOS image/fixture rights remain unresolved; citations do not grant them.
+
+**Resolution:** Still open
+
+**Next action:** Complete actual use-rights review before acquiring or distributing affected fixtures. Resolve the remaining operation variants and scope decisions. Keep unprovided images denied and product conformance unrun pending real evidence.
+
+**Provenance:** Current repository implementation/design inventory; this is a development gap, not a GitHub account or hosting setting.
+
+[docs/reference-use-review.md](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/docs/reference-use-review.md>) · [lab/specification-pins.json](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/lab/specification-pins.json>) · [scripts/check\_state\_security.py](<https://github.com/Ise-Tom/Babel/blob/f390d1ea2a03ba43f9e5ee46d51e4039b62b3c48/scripts/check_state_security.py>)
+
+
+</details>
 
 ### [\#39 · Prepare P00-17 private intake drill and response timing decision](<https://github.com/Ise-Tom/Babel/pull/39>)
 
@@ -152,6 +236,8 @@ The protocol-operation inventory is drafted. P00-11 covers the accepted function
 
 **Acceptance evidence required:** Every AD operation maps to expected positive/negative behavior and an owner; unknown operations remain visible.
 
+**Pending PR proposals:** [\#40: Map Phase 0 protocol operations and accountable ownership](<https://github.com/Ise-Tom/Babel/pull/40>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients; W33: Enforce versioned conformance evidence integrity in CI; W39: Refine phase requirements by independent acceptance obligations; W55: Pin actual public protocol editions and separate reference use from image/patent clearance. See the [implementation journal](#implementation-journal).
 
 ### P00-02
@@ -212,6 +298,8 @@ The isolated Windows lab definition exists; licensed Windows/Mac hosts and exact
 
 **Acceptance evidence required:** Two fresh deployments run discovery probes, isolate egress, clean up resources and publish exact image/build identifiers.
 
+**Pending PR proposals:** [\#40: Map Phase 0 protocol operations and accountable ownership](<https://github.com/Ise-Tom/Babel/pull/40>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W26: Prepare an isolated Windows reference lab definition without provisioning; W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients. See the [implementation journal](#implementation-journal).
 
 ### P00-06
@@ -257,6 +345,8 @@ Current version-1 compatibility/evidence schema and traceability tooling accepte
 **Acceptance evidence required:** Evidence records commit, test/client/spec revision, requirement, outcome and redacted artifacts; skipped/unrun are never passing.
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-18. The project owner explicitly answered “Accept this schema/tooling scope” in this conversation on 18 November 2026. Scope: current version-1 schema and traceability implementation in PR \#22, not client compatibility or phase acceptance. Implementation/tests pinned to b98dac7d33b20bef1ab6ccfb4a295f40d2330500: https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/scripts/check\_conformance.py ; https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/tests/test\_conformance.py . 118 local repository tests passed; all 60 conformance scenarios are explicitly unrun.
+
+**Pending PR proposals:** [\#40: Map Phase 0 protocol operations and accountable ownership](<https://github.com/Ise-Tom/Babel/pull/40>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W10: Required native and repository CI gates; W11: Complete phase specifications and traceability; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W18: Open-PR-aware private progress reporting; W33: Enforce versioned conformance evidence integrity in CI; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence; W45: Make phase activity and recent work visible separately from acceptance; W60: Improve dashboard refresh triggers and manual Pages retries; W61: Group owner decisions with merged PRs and pinned review packets. See the [implementation journal](#implementation-journal).
 
@@ -375,6 +465,8 @@ Thirteen actual public document editions now have publisher URLs, byte hashes, n
 **Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/fba0c6039ddfb66941a471bee2e1ecb0bddc866f/docs/requirements.md>)
 
 **Acceptance evidence required:** Pin document revisions and use/redistribution obligations separately from project licensing; unclear image/fixture rights block distribution.
+
+**Pending PR proposals:** [\#40: Map Phase 0 protocol operations and accountable ownership](<https://github.com/Ise-Tom/Babel/pull/40>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W55: Pin actual public protocol editions and separate reference use from image/patent clearance. See the [implementation journal](#implementation-journal).
 
