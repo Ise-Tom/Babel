@@ -422,7 +422,7 @@
     },
     "P00-17": {
       "status": "in_progress",
-      "note": "Documented solo intake, private custody, triage/disclosure, owner absence and an explicit scheduling proposal. A read-only 19 November check reports private reporting enabled; receipt/notification/escalation are untested. The current live-drill and actual-backup gate is unchanged and unmet. Proposed pre-production scheduling awaits owner agreement; no private report was authorized or sent."
+      "note": "Ise-Tom approved the exact P00-17 timing amendment on 22 November 2026 for PR review; it takes effect only after merge. Phase 0 process-design acceptance is still unrequested. A live owner-receipt drill remains due before soliciting external preview users, and a real backup with verified access/escalation remains a P05-04 production gate. No report or contact was authorized, and no live evidence exists."
     }
   },
   "phase_acceptance": {},
@@ -2926,6 +2926,41 @@
         }
       ],
       "problems": []
+    },
+    {
+      "id": "W66",
+      "title": "Apply owner-approved P00-17 response timing amendment",
+      "status": "implemented",
+      "kind": "design",
+      "requirements": [
+        "P00-17",
+        "P05-04"
+      ],
+      "how": "Applied the exact approved Phase 0 and SECURITY.md timing text, explicitly bound live intake and real backup evidence to P05-04, and preserved report-content and urgent critical-issue guidance. Recorded the additional preview disclosure/version-policy and public-preview versus external-solicitation timing differences.",
+      "verification": "Ise-Tom answered Approve to the exact linked policy question in the Phase 0 worker chat on 22 November 2026. The decision record quotes the question and answer. Local documentation, design and dashboard checks pass; hosted CI is tracked in the PR.",
+      "limitations": "The policy is effective only after merge. Approval is not live-drill authorization, P00-17 acceptance, backup appointment, an active SLA or production readiness. Original policy applies pending merge.",
+      "source_revision": "2ed74921321e7831c2c5173d367b25d50b92479e",
+      "sources": [
+        {
+          "path": "docs/validation/p00-17-timing-review.md",
+          "label": "Owner policy decision and safeguard differences"
+        },
+        {
+          "path": "docs/phases/phase-00.md",
+          "label": "Amended P00-17 criterion"
+        },
+        {
+          "path": "docs/phases/phase-05.md",
+          "label": "Explicit P05-04 production gate"
+        },
+        {
+          "path": "SECURITY.md",
+          "label": "Security response timing policy"
+        }
+      ],
+      "problems": [
+        "I27"
+      ]
     }
   ],
   "problems": [
@@ -3521,16 +3556,22 @@
       "status": "open",
       "kind": "development-qualification",
       "phases": [
-        0
+        0,
+        5
       ],
       "requirements": [
-        "P00-17"
+        "P00-17",
+        "P05-04"
       ],
       "detail": "P00-07 has boundary/threat/ownership design. The reporter-side private form is accessible and an exact benign draft and offline rehearsal exist, but actual owner notification/receipt/acknowledgment, escalation and a genuine backup are unverified.",
       "resolution": "",
-      "next_action": "Owner reviews the exact timing proposal. Retain the original gate until an amendment is approved and merged. Run a live private drill and verify a real backup only with specific authorization; record restricted evidence and redacted outcome.",
-      "source_revision": "92d74748446e9298e6384abeb7261ab385b6a306",
+      "next_action": "Merge the owner-approved timing amendment before applying the new criterion. Request separate authorization for a live private drill before external preview solicitation, and verify a real backup before supported production. Keep private evidence restricted and publish redacted outcomes.",
+      "source_revision": "2ed74921321e7831c2c5173d367b25d50b92479e",
       "sources": [
+        {
+          "path": "docs/validation/p00-17-timing-review.md",
+          "label": "Approved timing scope and unresolved operational gates"
+        },
         {
           "path": "docs/validation/p00-17.md",
           "label": "P00-17 packet, limits and pending decisions"
