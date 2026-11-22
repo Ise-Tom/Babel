@@ -72,6 +72,9 @@ The unprovided image, external fixture and capture records have empty allowed-us
 lists. Exact assets and appropriate license/channel, hardware and VM conditions
 are required before qualification. The registry records the existing digest-pinned
 PostgreSQL CI pull separately from the lab's unselected reference VM images.
+The [lab preflight rights review](validation/p00-05-p00-12.md#p00-16-dispositions-for-those-assets)
+records publisher terms for the proposed uses and versions, the available Linux
+checksums and the outstanding exact Windows VM entitlements and Apple host rights.
 
 The 15 project-owned fixtures and redacted reports have a source path, digest and
 declared use under Babel's project terms. The source packager verifies these

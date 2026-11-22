@@ -1,25 +1,26 @@
 # Isolated Windows reference lab definition
 
-Status: **definition only; no host or licensed images supplied, no Windows tests
-executed**. The project owner requested this preparation on 17 November 2026.
-The current cloud worker has no KVM device or libvirt/QEMU tools; it is not a
-qualified Windows virtualization host. Nothing here downloads an image, accepts
-image terms, creates a VM or purchases capacity.
+Status is **definition and read-only preflight**. The inventoried Windows
+Hyper-V host has insufficient free RAM and disk for this topology. Its VM and
+switch inventory is inaccessible in the current session, and no licensed media
+was supplied. Both live cycles remain unrun. See the
+[redacted inventory, platform pins, terms and preflight commands](validation/p00-05-p00-12.md).
 
 [lab/windows-reference.toml](../lab/windows-reference.toml) is a machine-readable
 functional lab definition. The [validator](../scripts/check_lab_definition.py)
 checks safety flags, topology, resource bounds and image metadata. CI exercises
-those checks as configuration validation, not domain compatibility evidence.
+those checks and the [preflight](../scripts/preflight_reference_lab.py) with
+synthetic inputs. Domain compatibility requires runs on the real lab.
 
 ```sh
 python scripts/check_lab_definition.py
 python scripts/check_lab_definition.py --require-images
 ```
 
-The second command intentionally fails for the checked-in placeholders. Supplying
-identifiers, digests and explicit rights acknowledgements only validates metadata;
-it does not verify an image file, provision a host or qualify Windows behavior.
-Host/provider selection requires a separate reviewed provisioning change.
+The second command intentionally fails for the checked-in placeholders. Use
+the private manifest described in the [preflight evidence](validation/p00-05-p00-12.md)
+to check host capacity and local image bytes. Select an eligible host before
+implementing the provisioning path.
 
 ## Topology and resource plan
 
@@ -34,11 +35,11 @@ production, external DNS or shared dual-homed probe. Hypervisor management is a
 separate plane with access restricted to the operator. Time is supplied from an
 isolated lab source; timezone, offsets and deliberate skew are recorded.
 
-The example requests 16 vCPUs, 30 GiB guest memory and 344 GiB virtual disks.
-A 64-GiB Linux virtualization host with sufficient SSD capacity is a proposed
-comfortable functional-lab budget, not a measured requirement or an authorized
-purchase. Sequential scenarios can reduce concurrent resources after profiling.
-This is not the six-DC/three-site capacity lab and proves no production SLO.
+The definition requests 16 vCPUs, 30 GiB guest memory and 344 GiB virtual
+disks, before host overhead and working storage. The current route proposes
+an existing x86-64 Hyper-V host with 64 GiB RAM as a sizing target. The measured
+available capacity is checked against the guest budgets. The lab scope is
+functional discovery on the two isolated networks.
 
 Windows Server 2022/2025 and Windows 11 editions/builds are candidates, not an
 accepted support matrix. Select actual available/licensed reference and client
@@ -96,10 +97,10 @@ need exact SSSD/Kerberos/PAM/package versions and real login/password/SSO tests,
 not only LDAP queries. Add dedicated disposable client images when provisioning
 is implemented; never attach an operator's daily workstation to a synthetic domain.
 
-macOS requires eligible Apple hardware/virtualization and image-use rights, exact
-OS/build/architecture and native directory/Kerberos behavior. No Mac host or image
-is allocated, and no automatic download/purchase is authorized. Keep test clients
-on the appropriate isolated `.test` network, with controlled DNS/time and per-run
+macOS runs separately from this Windows/Linux topology. Each architecture needs
+eligible Apple hardware or virtualization, image-use rights, exact OS/build and
+native directory/Kerberos evidence. No Mac host or image is allocated. Keep test
+clients on the appropriate isolated `.test` network, with controlled DNS/time and per-run
 synthetic credentials. Record cleanup of local enrollment, caches and keychain
 state and restore the disposable client. Mobile/appliance integrations use separate
 protocol/module gates; Windows GPO cannot be assumed to apply to them.
