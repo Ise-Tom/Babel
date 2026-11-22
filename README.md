@@ -51,11 +51,51 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-22T15:18:19\+01:00.
+GitHub metadata checked: 2026-11-22T15:19:09\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#41 · Ask for one actionable approval in the worker chat](<https://github.com/Ise-Tom/Babel/pull/41>)
+
+**In review · Pending merge · CI: in\_progress** · Head ca26c86
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## Summary
+    
+    - Put the owner's preferred workflow in `AGENTS.md`. Ask one short question in the current worker chat when a decision is actionable. State the exact scope, pinned evidence and effect. Record the answer in the open PR without sending the owner to GitHub to repeat it.
+    - Keep routine PR review, requirement acceptance, policy changes and external authorization distinct. Keep blocked or future actions out of the approval request.
+    - Clarify that P00-17's timing proposal is available for review. Live drill authorization requires an agreed reporting account and participants, and acceptance requires the applicable exit evidence. Existing policy and recorded decisions remain in force.
+    
+    ## Verification
+    
+    Compared the handoffs and owner records in PRs #39 and #40. Repository scope, Markdown links and dashboard validation passed. Branch: `dev/repo-owner-decision-workflow`.
+
+**Changed files:**
+
+- AGENTS.md
+- CONTRIBUTING.md
+- dashboard/progress.json
+- docs/project-dashboard.md
+- docs/validation/p00-17.md
+
+#### Proposed W65 · Ask for one actionable owner decision in the worker chat
+
+**Requirements:** P00-08, P00-10, P00-17
+
+**How it was done:** Made a short question in the worker chat the default for decisions ready now. The worker records the exact decision in its open PR. Routine progress goes through normal review and blocked work identifies its prerequisites.
+
+**Recorded validation:** Compared the approval handoffs and recorded outcomes for PRs \#39 and \#40. The owner selected one short decision in the worker chat. Repository scope, documentation links and dashboard validation pass.
+
+**Limits and remaining work:** This changes the approval workflow. The original P00-17 policy, intake evidence, and all recorded requirement decisions retain their current scope and status.
+
+**PR-head evidence:** [AGENTS.md](<https://github.com/Ise-Tom/Babel/blob/ca26c864e95fe259e4da0dc91e7a29fe6e5c1a19/AGENTS.md>) · [docs/project-dashboard.md](<https://github.com/Ise-Tom/Babel/blob/ca26c864e95fe259e4da0dc91e7a29fe6e5c1a19/docs/project-dashboard.md>) · [docs/validation/p00-17.md](<https://github.com/Ise-Tom/Babel/blob/ca26c864e95fe259e4da0dc91e7a29fe6e5c1a19/docs/validation/p00-17.md>)
+
+
+</details>
 
 
 ## Phase 00
@@ -195,6 +235,8 @@ Current version-1 compatibility/evidence schema and traceability tooling accepte
 
 **Acceptance review:** Project owner \(explicit approval in this conversation\), 2026-11-18. The project owner explicitly answered “Accept this schema/tooling scope” in this conversation on 18 November 2026. Scope: current version-1 schema and traceability implementation in PR \#22, not client compatibility or phase acceptance. Implementation/tests pinned to b98dac7d33b20bef1ab6ccfb4a295f40d2330500: https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/scripts/check\_conformance.py ; https://github.com/Ise-Tom/Babel/blob/b98dac7d33b20bef1ab6ccfb4a295f40d2330500/tests/test\_conformance.py . 118 local repository tests passed; all 60 conformance scenarios are explicitly unrun.
 
+**Pending PR proposals:** [\#41: Ask for one actionable approval in the worker chat](<https://github.com/Ise-Tom/Babel/pull/41>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W10: Required native and repository CI gates; W11: Complete phase specifications and traceability; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W18: Open-PR-aware private progress reporting; W33: Enforce versioned conformance evidence integrity in CI; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence; W45: Make phase activity and recent work visible separately from acceptance; W60: Improve dashboard refresh triggers and manual Pages retries; W61: Group owner decisions with merged PRs and pinned review packets. See the [implementation journal](#implementation-journal).
 
 ### P00-09
@@ -224,6 +266,8 @@ Owner accepted the pinned Phase 0 scope on 22 November 2026. The full Phase 0 up
 **Acceptance review:** Project owner \(explicit approval in the Babel management chat\), 2026-11-22. The project owner explicitly approved P00-10 on 22 November 2026 as part of the Phase 0 batch decision, for the exact scope and limits in the pinned packet. Full original P00-10 Phase 0 governance design gate, including review/recovery examples and owner/expiry/production-impact exception policy; not runtime recovery. Packet: https://github.com/Ise-Tom/Babel/blob/380d564183b9217acbde16476658fe003cf72338/docs/validation/p00-10.md . Delivery: https://github.com/Ise-Tom/Babel/pull/28 . Passing CI: https://github.com/Ise-Tom/Babel/actions/runs/44351294880 .
 
 **Validation packet:** Full original P00-10 Phase 0 governance design gate, including review/recovery examples and owner/expiry/production-impact exception policy; not runtime recovery. [Merged PR \#28](<https://github.com/Ise-Tom/Babel/pull/28>) · [Review packet](<https://github.com/Ise-Tom/Babel/blob/380d564183b9217acbde16476658fe003cf72338/docs/validation/p00-10.md>)
+
+**Pending PR proposals:** [\#41: Ask for one actionable approval in the worker chat](<https://github.com/Ise-Tom/Babel/pull/41>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W13: Tested source and lab archive packaging; W14: Phase dashboard and portable engineering report; W15: Permanent private GitHub dashboard publication; W16: Compact interactive interface and verified static-hosting workflow; W18: Open-PR-aware private progress reporting; W19: Remove unpatched vulnerable tooling dependency path; W20: Scope-based phase sizes and explicit owner acceptance reviews; W21: Support public repository dashboard publication and prepare visibility transition; W22: Keep the tested compiler API instead of silently weakening security lint; W23: Verify Pages archives and minimize privileged deployment operations; W24: Verify correct Pages settings without administration writes; W29: Verify owner-applied repository protections and security settings; W30: Validate existing source-release protections before draft source prereleases; W31: Adapt development governance to the sole maintainer without bypassing CI; W33: Enforce versioned conformance evidence integrity in CI; W34: Specify stable state and worked replication/recovery invariants; W37: Make Phase 0 recovery, scope and acceptance governance concrete; W38: Separate actual phase execution from related preparation; W41: Track all global capabilities with explicit implementation scope and evidence; W45: Make phase activity and recent work visible separately from acceptance; W48: Complete recovery/scope governance with enforced design-contract checks; W60: Improve dashboard refresh triggers and manual Pages retries; W61: Group owner decisions with merged PRs and pinned review packets; W62: Require descriptive development branch names. See the [implementation journal](#implementation-journal).
 
@@ -324,6 +368,8 @@ Documented solo intake, private custody, triage/disclosure, owner absence and an
 **Associated features:** [SEC-01: Treat DCs, directory backups, replication secrets and ticket-signing keys as Tier 0; separate admin identities and delegated roles; no shared superuser UI account](<https://github.com/Ise-Tom/Babel/blob/7713a15d5f2295c59ea46c7b311cba43e582249a/docs/requirements.md>); [SEC-09: Append-only exportable audit events for auth, policy, delegation, privileged writes, trust and key changes; protect against modification and never log credentials/tickets](<https://github.com/Ise-Tom/Babel/blob/7713a15d5f2295c59ea46c7b311cba43e582249a/docs/requirements.md>)
 
 **Acceptance evidence required:** A synthetic private intake drill and real backup contact demonstrate receipt/escalation; no contact, SLA or exercise is invented.
+
+**Pending PR proposals:** [\#41: Ask for one actionable approval in the worker chat](<https://github.com/Ise-Tom/Babel/pull/41>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W56: Define solo vulnerability-response process and make timing proposal reviewable; W63: Prepare and rehearse the P00-17 private intake drill offline. See the [implementation journal](#implementation-journal).
 
