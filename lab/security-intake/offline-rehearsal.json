@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "kind": "offline_simulation_only",
+  "repository": "Ise-Tom/Babel",
+  "base_revision": "fba0c6039ddfb66941a471bee2e1ecb0bddc866f",
+  "date_utc": "2026-11-22",
+  "live_report_id": null,
+  "real_backup_contact": null,
+  "scenarios": [
+    {
+      "id": "all_mock_fields",
+      "expected": "offline_complete_not_gate_evidence",
+      "events": [
+        {"type": "draft_prepared", "actor": "simulated-reporter", "at_utc": "2026-11-22T09:00:00Z"},
+        {"type": "submitted", "actor": "simulated-reporter", "at_utc": "2026-11-22T09:01:00Z"},
+        {"type": "reporter_visible", "actor": "simulated-reporter", "at_utc": "2026-11-22T09:02:00Z"},
+        {"type": "notification_observed", "actor": "simulated-owner", "at_utc": "2026-11-22T09:03:00Z"},
+        {"type": "owner_opened", "actor": "simulated-owner", "at_utc": "2026-11-22T09:04:00Z"},
+        {"type": "owner_acknowledged", "actor": "simulated-owner", "at_utc": "2026-11-22T09:05:00Z"},
+        {"type": "backup_role_accepted", "actor": "simulated-backup", "at_utc": "2026-11-22T09:06:00Z"},
+        {"type": "backup_opened", "actor": "simulated-backup", "at_utc": "2026-11-22T09:07:00Z"},
+        {"type": "escalation_acknowledged", "actor": "simulated-backup", "at_utc": "2026-11-22T09:08:00Z"},
+        {"type": "closed", "actor": "simulated-owner", "at_utc": "2026-11-22T09:09:00Z"}
+      ]
+    },
+    {
+      "id": "notification_without_owner_receipt",
+      "expected": "incomplete:owner_opened,owner_acknowledged",
+      "events": [
+        {"type": "draft_prepared", "actor": "simulated-reporter", "at_utc": "2026-11-22T10:00:00Z"},
+        {"type": "submitted", "actor": "simulated-reporter", "at_utc": "2026-11-22T10:01:00Z"},
+        {"type": "reporter_visible", "actor": "simulated-reporter", "at_utc": "2026-11-22T10:02:00Z"},
+        {"type": "notification_observed", "actor": "simulated-owner", "at_utc": "2026-11-22T10:03:00Z"},
+        {"type": "backup_role_accepted", "actor": "simulated-backup", "at_utc": "2026-11-22T10:04:00Z"},
+        {"type": "backup_opened", "actor": "simulated-backup", "at_utc": "2026-11-22T10:05:00Z"},
+        {"type": "escalation_acknowledged", "actor": "simulated-backup", "at_utc": "2026-11-22T10:06:00Z"},
+        {"type": "closed", "actor": "simulated-owner", "at_utc": "2026-11-22T10:07:00Z"}
+      ]
+    },
+    {
+      "id": "owner_receipt_without_backup",
+      "expected": "incomplete:backup_role_accepted,backup_opened,escalation_acknowledged",
+      "events": [
+        {"type": "draft_prepared", "actor": "simulated-reporter", "at_utc": "2026-11-22T11:00:00Z"},
+        {"type": "submitted", "actor": "simulated-reporter", "at_utc": "2026-11-22T11:01:00Z"},
+        {"type": "reporter_visible", "actor": "simulated-reporter", "at_utc": "2026-11-22T11:02:00Z"},
+        {"type": "notification_observed", "actor": "simulated-owner", "at_utc": "2026-11-22T11:03:00Z"},
+        {"type": "owner_opened", "actor": "simulated-owner", "at_utc": "2026-11-22T11:04:00Z"},
+        {"type": "owner_acknowledged", "actor": "simulated-owner", "at_utc": "2026-11-22T11:05:00Z"},
+        {"type": "closed", "actor": "simulated-owner", "at_utc": "2026-11-22T11:06:00Z"}
+      ]
+    },
+    {
+      "id": "owner_opened_without_acknowledgment",
+      "expected": "incomplete:owner_acknowledged",
+      "events": [
+        {"type": "draft_prepared", "actor": "simulated-reporter", "at_utc": "2026-11-22T12:00:00Z"},
+        {"type": "submitted", "actor": "simulated-reporter", "at_utc": "2026-11-22T12:01:00Z"},
+        {"type": "reporter_visible", "actor": "simulated-reporter", "at_utc": "2026-11-22T12:02:00Z"},
+        {"type": "notification_observed", "actor": "simulated-owner", "at_utc": "2026-11-22T12:03:00Z"},
+        {"type": "owner_opened", "actor": "simulated-owner", "at_utc": "2026-11-22T12:04:00Z"},
+        {"type": "backup_role_accepted", "actor": "simulated-backup", "at_utc": "2026-11-22T12:05:00Z"},
+        {"type": "backup_opened", "actor": "simulated-backup", "at_utc": "2026-11-22T12:06:00Z"},
+        {"type": "escalation_acknowledged", "actor": "simulated-backup", "at_utc": "2026-11-22T12:07:00Z"},
+        {"type": "closed", "actor": "simulated-owner", "at_utc": "2026-11-22T12:08:00Z"}
+      ]
+    }
+  ]
+}

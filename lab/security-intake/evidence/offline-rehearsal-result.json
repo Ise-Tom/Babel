@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "kind": "offline_recordkeeping_check",
+  "outcomes": {
+    "all_mock_fields": "offline_complete_not_gate_evidence",
+    "notification_without_owner_receipt": "incomplete:owner_opened,owner_acknowledged",
+    "owner_receipt_without_backup": "incomplete:backup_role_accepted,backup_opened,escalation_acknowledged",
+    "owner_opened_without_acknowledgment": "incomplete:owner_acknowledged"
+  },
+  "p00_17_ready": false,
+  "unmet": [
+    "authorized live private drill with independently verified receipt and escalation",
+    "real available backup responder"
+  ]
+}
