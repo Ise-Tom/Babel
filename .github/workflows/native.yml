@@ -30,6 +30,10 @@ jobs:
           python-version: '3.12'
       - name: Install hash-locked independent LDAP test client
         run: python -m pip install --require-hashes -r requirements-ci.txt -r requirements-ci.in
+      - name: Install independent BIND DNS clients
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends bind9-dnsutils
       - name: Activate pinned native toolchain
         run: rustup toolchain install 1.100.0 --profile minimal --component rustfmt,clippy,llvm-tools-preview,rust-docs
       - name: Native formatting and static checks
@@ -40,12 +44,14 @@ jobs:
       - name: Unit, negative, property and transport tests
         run: |
           cargo test --workspace --all-targets --locked
-          cargo test -p babel-directory -p babel-ldap --all-targets --release --locked
-      - name: Release build and independent LDAP client
+          cargo test -p babel-directory -p babel-dns -p babel-ldap --all-targets --release --locked
+      - name: Release build and independent DNS and LDAP clients
         run: |
           cargo build --workspace --release --locked
           python native/babel-ldap/tests/smoke_ldap.py target/release/babel-ldap
           mkdir -p reports
+          python native/babel-dns/tests/probe_dns.py target/release/babel-dns \
+            --revision "$GITHUB_SHA" --output reports/p01-13-dns-discovery.json
           BABEL_TLS_REPORT=reports/tls-independent-interop.json \
             python native/babel-tls-lab/tests/interop_tls.py target/release/babel-tls-lab
       - name: Bind actual compiler, Linux host and hardened parser binary
@@ -79,6 +85,11 @@ jobs:
           BABEL_TLS_REPORT=reports/tls-coverage-interop.json \
             LLVM_PROFILE_FILE="$PWD/target/llvm-cov-target/tls-smoke-%p-%m.profraw" \
             python native/babel-tls-lab/tests/interop_tls.py target/llvm-cov-target/debug/babel-tls-lab
+          LLVM_PROFILE_FILE="$PWD/target/llvm-cov-target/dns-smoke-%p-%m.profraw" \
+            python native/babel-dns/tests/probe_dns.py target/llvm-cov-target/debug/babel-dns \
+              --revision "$GITHUB_SHA" --output reports/dns-instrumented-probe.json
+          cargo llvm-cov report --package babel-dns --ignore-filename-regex '/tests/|/main.rs$' \
+            --fail-under-lines 90 --lcov --output-path reports/dns-discovery-coverage.lcov
           cargo llvm-cov report --package babel-directory --ignore-filename-regex '/tests/' \
             --fail-under-lines 90 --lcov --output-path reports/directory-core-coverage.lcov
           cargo llvm-cov report --package babel-tls-lab --ignore-filename-regex '/tests/|/budget_tests.rs$|/main.rs$' \
@@ -91,9 +102,10 @@ jobs:
           cargo metadata --locked --filter-platform x86_64-unknown-linux-gnu --format-version 1 > "$RUNNER_TEMP/babel-cargo-metadata.json"
           babel_lab_sysroot=$(rustc --print sysroot)
           python3 scripts/collect_native_notices.py --metadata "$RUNNER_TEMP/babel-cargo-metadata.json" \
-            --rust-docs "$babel_lab_sysroot/share/doc/rust" --output "$RUNNER_TEMP/babel-protocol-labs/notices"
+            --rust-docs "$babel_lab_sysroot/share/doc/rust" --packages babel-ldap babel-tls-lab babel-dns \
+            --output "$RUNNER_TEMP/babel-protocol-labs/notices"
           babel_notice_manifest_sha=$(sha256sum "$RUNNER_TEMP/babel-protocol-labs/notices/manifest.json" | cut -d ' ' -f1)
-          cp target/release/babel-ldap target/release/babel-tls-lab "$RUNNER_TEMP/babel-protocol-labs/"
+          cp target/release/babel-ldap target/release/babel-tls-lab target/release/babel-dns "$RUNNER_TEMP/babel-protocol-labs/"
           tar -cf reports/babel-protocol-labs-linux-x86_64.tar -C "$RUNNER_TEMP/babel-protocol-labs" .
           (cd reports && sha256sum babel-protocol-labs-linux-x86_64.tar > native-SHA256SUMS && sha256sum -c native-SHA256SUMS)
           mkdir -p "$RUNNER_TEMP/babel-native-extracted"
@@ -101,6 +113,8 @@ jobs:
           python3 scripts/collect_native_notices.py --verify --output "$RUNNER_TEMP/babel-native-extracted/notices" \
             --expected-sha256 "$babel_notice_manifest_sha"
           python native/babel-ldap/tests/smoke_ldap.py "$RUNNER_TEMP/babel-native-extracted/babel-ldap"
+          python native/babel-dns/tests/probe_dns.py "$RUNNER_TEMP/babel-native-extracted/babel-dns" \
+            --revision "$GITHUB_SHA" --output reports/dns-packaged-probe.json
           BABEL_TLS_REPORT=reports/tls-packaged-interop.json \
             python native/babel-tls-lab/tests/interop_tls.py "$RUNNER_TEMP/babel-native-extracted/babel-tls-lab"
       - name: Preserve native evidence
@@ -243,6 +257,9 @@ jobs:
           cargo +nightly-2026-11-17 fuzz run tls_record -- \
             -runs="$babel_fuzz_runs" -max_total_time="$babel_fuzz_seconds" \
             -max_len=16384 -rss_limit_mb=512 -seed=1 2>&1 | tee reports/tls-fuzz.log
+          cargo +nightly-2026-11-17 fuzz run dns_datagram -- \
+            -runs="$babel_fuzz_runs" -max_total_time="$babel_fuzz_seconds" \
+            -max_len=513 -rss_limit_mb=512 -seed=1 2>&1 | tee reports/dns-fuzz.log
           git diff --exit-code -- Cargo.lock fuzz/Cargo.lock
       - name: Preserve fuzz logs and crash reproductions
         if: ${{ !cancelled() }}
@@ -252,6 +269,7 @@ jobs:
           path: |
             reports/native-fuzz.log
             reports/tls-fuzz.log
+            reports/dns-fuzz.log
             fuzz/artifacts/
           retention-days: 14
 

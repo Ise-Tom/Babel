@@ -1216,6 +1216,37 @@
       ]
     },
     {
+      "id": "dns-locator-fuzz-seed",
+      "kind": "project_synthetic",
+      "path": "fuzz/corpus/dns_datagram/locator",
+      "sha256": "03247f454029bda4967b8fad22137daaedb7c0235d2415b2ce1297f14f79bcad",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Babel-generated DNS SRV question for the synthetic .test zone; no vendor capture.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "p01-13-native-dns-probe",
+      "kind": "project_synthetic",
+      "path": "lab/p01-13-dns-discovery-smoke.json",
+      "sha256": "55a47163008b902570132615988a9ee6a1c2c456223a192394bbdd971ee9d44b",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution"
+      ],
+      "review_evidence": "Babel-generated loopback DNS query/reply summaries for its own synthetic domain. The report records BIND tool versions and omits the ephemeral listener port. No vendor images or external captures.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
       "id": "reference-lab-synthetic-plan",
       "kind": "project_synthetic",
       "path": "lab/reference-lab/evidence/synthetic-plan.json",
