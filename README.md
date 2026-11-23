@@ -51,11 +51,70 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T19:28:58\+01:00.
+GitHub metadata checked: 2026-11-23T21:17:57\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#48 · Serve synthetic DC locator records with native loopback DNS](<https://github.com/Ise-Tom/Babel/pull/48>)
+
+**In review · Pending merge · CI: in\_progress** · Head 7d7179f
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## Scope
+    
+    - Add a dependency-free Rust UDP service for `discovery.example.test.`. Domain/site LDAP DC locator SRV and target A/AAAA share an eligibility/lease filter. Unsupported type, class, EDNS and opcode receive explicit responses. UPDATE returns NOTIMP and preserves the address.
+    - Run independent BIND dig and nsupdate against the release binary. Retain [18 source- and binary-bound observations](https://github.com/Ise-Tom/Babel/blob/7d7179faa1f1158835a53a9696b5d9b32f18ec24/lab/p01-13-dns-discovery-smoke.json) and the [reproduction and exit evidence](https://github.com/Ise-Tom/Babel/blob/7d7179faa1f1158835a53a9696b5d9b32f18ec24/docs/validation/p01-13.md).
+    - Add required debug/release checks, independent probes of the release, instrumented and extracted binaries, a 90% library coverage gate, and sanitizer fuzz. The local instrumented run reached 98.12% coverage.
+    - Record P01-13 as in progress and the P00-01 dns-locator family as lab-only. All 60 product comparison scenarios retain their existing outcomes.
+    
+    ## Remaining evidence
+    
+    Qualify live directory-backed eligibility, site/subnet selection, stale and invalid registrations after loss/recovery, and timed failover on pinned clients against Babel and the Windows reference. LDAP Netlogon ping, Windows legacy fallback, domain join, secure DNS writes and client interoperability remain open. This PR is for normal review.
+
+**Changed files:**
+
+- .github/workflows/ci.yml
+- .github/workflows/native.yml
+- Cargo.lock
+- Cargo.toml
+- dashboard/progress.json
+- docs/ci-cd.md
+- docs/phase-01-progress.md
+- docs/validation/p01-13.md
+- fuzz/Cargo.lock
+- fuzz/Cargo.toml
+- fuzz/corpus/dns\_datagram/locator
+- fuzz/fuzz\_targets/dns\_datagram.rs
+- lab/compatibility.json
+- lab/conformance-evidence.json
+- lab/p01-13-dns-discovery-smoke.json
+- lab/specification-pins.json
+- native/babel-dns/Cargo.toml
+- native/babel-dns/src/lib.rs
+- native/babel-dns/src/main.rs
+- native/babel-dns/tests/probe\_dns.py
+- native/babel-dns/tests/queries.rs
+- pyproject.toml
+- scripts/check\_ci\_scope.py
+
+#### Proposed W72 · Run native domain and site DC locator DNS on loopback
+
+**Requirements:** P01-13, P00-01
+
+**How it was done:** Added a dependency-free native UDP service for the synthetic discovery.example.test DNS zone. Domain and site LDAP locator SRV records and target A/AAAA share the same eligibility and lease filter. Unsupported requests receive explicit replies; UPDATE holds no mutation path.
+
+**Recorded validation:** The independent BIND probe collects queries, replies, expected and actual results, and source/binary hashes. It exercises 18 exchanges including positive domain/site records, stale and invalid exclusion, and an UPDATE refused with no address change. Required CI runs the release, instrumented and extracted binaries, checks coverage and fuzzes response bounds.
+
+**Limits and remaining work:** This covers only the synthetic dns-locator/dns-query path and an unsupported UPDATE. Real directory eligibility, client site selection, failover, LDAP ping, legacy Windows fallback, domain join and the licensed interoperability comparisons are unrun. P01-13 is in progress.
+
+**PR-head evidence:** [docs/validation/p01-13.md](<https://github.com/Ise-Tom/Babel/blob/7d7179faa1f1158835a53a9696b5d9b32f18ec24/docs/validation/p01-13.md>) · [native/babel-dns/tests/probe\_dns.py](<https://github.com/Ise-Tom/Babel/blob/7d7179faa1f1158835a53a9696b5d9b32f18ec24/native/babel-dns/tests/probe_dns.py>) · [lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/7d7179faa1f1158835a53a9696b5d9b32f18ec24/lab/compatibility.json>) · [.github/workflows/native.yml](<https://github.com/Ise-Tom/Babel/blob/7d7179faa1f1158835a53a9696b5d9b32f18ec24/.github/workflows/native.yml>) · [lab/p01-13-dns-discovery-smoke.json](<https://github.com/Ise-Tom/Babel/blob/7d7179faa1f1158835a53a9696b5d9b32f18ec24/lab/p01-13-dns-discovery-smoke.json>)
+
+
+</details>
 
 
 ## Phase 00
@@ -88,6 +147,8 @@ The PR \#40 scoped design approval is recorded. The follow-up verifies published
 **Acceptance review:** Ise-Tom \(project owner, explicit PR \#40 review\), 2026-11-22. Scoped approval covers ownership, mapped exchanges and workflows, expected success and refusal, required evidence and tracking of unresolved mappings across the 30 existing families. Full P00-01 exit, exact platform qualification, licensed real-client evidence and production compatibility remain open. Owner review: https://github.com/Ise-Tom/Babel/pull/40\#pullrequestreview-6012632874 and pinned evidence at https://github.com/Ise-Tom/Babel/blob/93e1dc956263db27d07fe1192e74205c60294032/docs/validation/p00-01.md
 
 **Validation packet:** P00-01 scoped matrix design increment for the 30 existing families. Covers accountable ownership, 60 wire mappings, 12 workflows, expected success/refusal, evidence requirements and tracking of 12 unresolved mappings. Full gate, exact profiles, licensed real-client runs and production compatibility stay open. [Review packet](<https://github.com/Ise-Tom/Babel/blob/93e1dc956263db27d07fe1192e74205c60294032/docs/validation/p00-01.md>)
+
+**Pending PR proposals:** [\#48: Serve synthetic DC locator records with native loopback DNS](<https://github.com/Ise-Tom/Babel/pull/48>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients; W33: Enforce versioned conformance evidence integrity in CI; W39: Refine phase requirements by independent acceptance obligations; W55: Pin actual public protocol editions and separate reference use from image/patent clearance; W64: Map owned wire operations and unresolved client variants; W71: Verify additional protocol mappings and enumerate conformance blockers. See the [implementation journal](#implementation-journal).
 
@@ -512,6 +573,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-04: LDAPv3/LDAPS, AD schema and controls, paging, referrals, ACL filtering, and global catalog](<https://github.com/Ise-Tom/Babel/blob/9164dd744e9b09eb52ff099162ce190a906e8cfa/docs/requirements.md>); [AD-05: AD-integrated DNS, SRV discovery, secure dynamic updates, site/subnet placement and DC locator](<https://github.com/Ise-Tom/Babel/blob/9164dd744e9b09eb52ff099162ce190a906e8cfa/docs/requirements.md>)
 
 **Acceptance evidence required:** Clients discover only eligible DCs; stale/invalid records and unsupported updates fail explicitly.
+
+**Pending PR proposals:** [\#48: Serve synthetic DC locator records with native loopback DNS](<https://github.com/Ise-Tom/Babel/pull/48>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
