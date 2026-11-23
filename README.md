@@ -51,13 +51,13 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T21:21:42\+01:00.
+GitHub metadata checked: 2026-11-23T21:22:02\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#49 · Add scoped isolated Hyper-V lab runner and synthetic evidence](<https://github.com/Ise-Tom/Babel/pull/49>)
 
-**In review · Pending merge · CI: in\_progress** · Head f025a37
+**In review · Pending merge · CI: success** · Head f025a37
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
