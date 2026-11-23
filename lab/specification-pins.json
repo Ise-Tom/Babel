@@ -1214,6 +1214,38 @@
         "LICENSE",
         "CONTRIBUTING.md"
       ]
+    },
+    {
+      "id": "reference-lab-synthetic-plan",
+      "kind": "project_synthetic",
+      "path": "lab/reference-lab/evidence/synthetic-plan.json",
+      "sha256": "fe89e9b4e67262061abb799583072b44ced1764f0e19f308df14426e8d506b17",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Babel-generated redacted six-guest plan; no VM was created.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "reference-lab-local-preflight",
+      "kind": "project_synthetic",
+      "path": "lab/reference-lab/evidence/local-preflight-2026-11-23.json",
+      "sha256": "cec1bc1bf0a5c96f19cfe511fa1bf14abdc5fc3143eab7bbfffed0980e5881ea",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Redacted read-only host inventory and blocked media statuses; no private media or credentials.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
     }
   ],
   "use_review": {

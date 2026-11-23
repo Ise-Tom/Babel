@@ -51,6 +51,15 @@ jobs:
         run: python -m pip install --require-hashes -r requirements-ci.txt -r requirements-ci.in
       - name: Reject components without CI gates
         run: python scripts/check_ci_scope.py
+      - name: Parse privileged Hyper-V helper without executing it
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path scripts/reference_lab_hyperv.ps1),
+            [ref]$tokens, [ref]$errors) | Out-Null
+          if ($errors.Count -gt 0) { $errors | ForEach-Object { Write-Error $_ }; exit 1 }
       - name: Design traceability and documentation links
         run: |
           python scripts/check_design.py
