@@ -3168,6 +3168,7 @@
       "how": "Added a dependency-free native UDP service for the synthetic discovery.example.test DNS zone. Domain and site LDAP locator SRV records and target A/AAAA share the same eligibility and lease filter. Unsupported requests receive explicit replies; UPDATE holds no mutation path.",
       "verification": "The independent BIND probe collects queries, replies, expected and actual results, and source/binary hashes. It exercises 18 exchanges including positive domain/site records, stale and invalid exclusion, and an UPDATE refused with no address change. Required CI runs the release, instrumented and extracted binaries, checks coverage and fuzzes response bounds.",
       "limitations": "This covers only the synthetic dns-locator/dns-query path and an unsupported UPDATE. Real directory eligibility, client site selection, failover, LDAP ping, legacy Windows fallback, domain join and the licensed interoperability comparisons are unrun. P01-13 is in progress.",
+      "source_revision": "2caa31c1f28a2ff3195fa2df6cb3e12fb16b5c19",
       "sources": [
         {
           "path": "docs/validation/p01-13.md",
@@ -3184,6 +3185,10 @@
         {
           "path": ".github/workflows/native.yml",
           "label": "Required native gates"
+        },
+        {
+          "path": "lab/p01-13-dns-discovery-smoke.json",
+          "label": "Retained BIND queries, replies and results"
         }
       ],
       "problems": [

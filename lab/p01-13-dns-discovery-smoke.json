@@ -1,0 +1,335 @@
+{
+  "profile": "babel-synthetic-dc-discovery-v1",
+  "source_revision": "2caa31c1f28a2ff3195fa2df6cb3e12fb16b5c19",
+  "started_at_utc": "2026-11-23T20:16:18+00:00",
+  "binary_sha256": "a1dcd06d26cb2ceb5c008f7cd21b7c72fcf47b9bccca759122d896fbc71e15e7",
+  "probe_sha256": "8546d290b6647589095edcb8f42af7393cb4c1225533c05244775752ec0fc967",
+  "cargo_lock_sha256": "8170a5360835754074bf7fb809a03a4de0cda117604ca22d1f98c682f15a5341",
+  "source_sha256": {
+    "src/lib.rs": "1aab04b245edd651b0b973ea6b085155f6de4d14d327dbd9e4715876b22aa995",
+    "src/main.rs": "c43252b9db3ab01c5a1721fe48fc267c23f3b5b5780f7a19aff6b16dbef7ffa6"
+  },
+  "host": {
+    "os": "Ubuntu 26.04 LTS",
+    "kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "architecture": "x86_64"
+  },
+  "tools": {
+    "python": "3.14.4",
+    "dig": "DiG 9.20.24-1ubuntu0.2-Ubuntu",
+    "nsupdate": "nsupdate 9.20.24-1ubuntu0.2-Ubuntu"
+  },
+  "transport": "loopback UDP",
+  "non_loopback_listener": "refused",
+  "result": "passed",
+  "cases": [
+    {
+      "query": {
+        "name": "_LDAP._TCP.DC._MSDCS.DISCOVERY.EXAMPLE.TEST.",
+        "type": "SRV",
+        "options": []
+      },
+      "expected_rcode": "NOERROR",
+      "rcode": "NOERROR",
+      "expected_answers": [
+        "0 0 389 dc-east.discovery.example.test.",
+        "0 0 389 dc-west.discovery.example.test."
+      ],
+      "duration_ms": 21.15,
+      "authoritative": true,
+      "answers": [
+        "0 0 389 dc-east.discovery.example.test.",
+        "0 0 389 dc-west.discovery.example.test."
+      ],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 47495\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;_LDAP._TCP.DC._MSDCS.DISCOVERY.EXAMPLE.TEST. IN\tSRV\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 47495\n;; flags: qr aa; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;_LDAP._TCP.DC._MSDCS.DISCOVERY.EXAMPLE.TEST. IN\tSRV\n\n;; ANSWER SECTION:\n_LDAP._TCP.DC._MSDCS.DISCOVERY.EXAMPLE.TEST. 30\tIN SRV 0 0 389 dc-east.discovery.example.test.\n_LDAP._TCP.DC._MSDCS.DISCOVERY.EXAMPLE.TEST. 30\tIN SRV 0 0 389 dc-west.discovery.example.test.",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "_ldap._tcp.east._sites.dc._msdcs.discovery.example.test.",
+        "type": "SRV",
+        "options": []
+      },
+      "expected_rcode": "NOERROR",
+      "rcode": "NOERROR",
+      "expected_answers": [
+        "0 0 389 dc-east.discovery.example.test."
+      ],
+      "duration_ms": 8.304,
+      "authoritative": true,
+      "answers": [
+        "0 0 389 dc-east.discovery.example.test."
+      ],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 57359\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;_ldap._tcp.east._sites.dc._msdcs.discovery.example.test. IN SRV\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 57359\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;_ldap._tcp.east._sites.dc._msdcs.discovery.example.test. IN SRV\n\n;; ANSWER SECTION:\n_ldap._tcp.east._sites.dc._msdcs.discovery.example.test. 30 IN SRV 0 0 389 dc-east.discovery.example.test.",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "_ldap._tcp.west._sites.dc._msdcs.discovery.example.test.",
+        "type": "SRV",
+        "options": []
+      },
+      "expected_rcode": "NOERROR",
+      "rcode": "NOERROR",
+      "expected_answers": [
+        "0 0 389 dc-west.discovery.example.test."
+      ],
+      "duration_ms": 8.446,
+      "authoritative": true,
+      "answers": [
+        "0 0 389 dc-west.discovery.example.test."
+      ],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 55775\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;_ldap._tcp.west._sites.dc._msdcs.discovery.example.test. IN SRV\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 55775\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;_ldap._tcp.west._sites.dc._msdcs.discovery.example.test. IN SRV\n\n;; ANSWER SECTION:\n_ldap._tcp.west._sites.dc._msdcs.discovery.example.test. 30 IN SRV 0 0 389 dc-west.discovery.example.test.",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "dc-east.discovery.example.test.",
+        "type": "A",
+        "options": []
+      },
+      "expected_rcode": "NOERROR",
+      "rcode": "NOERROR",
+      "expected_answers": [
+        "192.0.2.10"
+      ],
+      "duration_ms": 9.565,
+      "authoritative": true,
+      "answers": [
+        "192.0.2.10"
+      ],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 59964\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-east.discovery.example.test.\tIN\tA\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 59964\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-east.discovery.example.test.\tIN\tA\n\n;; ANSWER SECTION:\ndc-east.discovery.example.test.\t30 IN\tA\t192.0.2.10",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "dc-east.discovery.example.test.",
+        "type": "AAAA",
+        "options": []
+      },
+      "expected_rcode": "NOERROR",
+      "rcode": "NOERROR",
+      "expected_answers": [
+        "2001:db8::10"
+      ],
+      "duration_ms": 8.611,
+      "authoritative": true,
+      "answers": [
+        "2001:db8::10"
+      ],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 39641\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-east.discovery.example.test.\tIN\tAAAA\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 39641\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-east.discovery.example.test.\tIN\tAAAA\n\n;; ANSWER SECTION:\ndc-east.discovery.example.test.\t30 IN\tAAAA\t2001:db8::10",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "dc-west.discovery.example.test.",
+        "type": "A",
+        "options": []
+      },
+      "expected_rcode": "NOERROR",
+      "rcode": "NOERROR",
+      "expected_answers": [
+        "192.0.2.20"
+      ],
+      "duration_ms": 8.612,
+      "authoritative": true,
+      "answers": [
+        "192.0.2.20"
+      ],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 8105\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-west.discovery.example.test.\tIN\tA\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 8105\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-west.discovery.example.test.\tIN\tA\n\n;; ANSWER SECTION:\ndc-west.discovery.example.test.\t30 IN\tA\t192.0.2.20",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "dc-west.discovery.example.test.",
+        "type": "AAAA",
+        "options": []
+      },
+      "expected_rcode": "NOERROR",
+      "rcode": "NOERROR",
+      "expected_answers": [
+        "2001:db8::20"
+      ],
+      "duration_ms": 10.586,
+      "authoritative": true,
+      "answers": [
+        "2001:db8::20"
+      ],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 35398\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-west.discovery.example.test.\tIN\tAAAA\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 35398\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-west.discovery.example.test.\tIN\tAAAA\n\n;; ANSWER SECTION:\ndc-west.discovery.example.test.\t30 IN\tAAAA\t2001:db8::20",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "dc-stale.discovery.example.test.",
+        "type": "A",
+        "options": []
+      },
+      "expected_rcode": "NXDOMAIN",
+      "rcode": "NXDOMAIN",
+      "expected_answers": [],
+      "duration_ms": 8.983,
+      "authoritative": true,
+      "answers": [],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 29240\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-stale.discovery.example.test. IN\tA\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 29240\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-stale.discovery.example.test. IN\tA\n\n;; AUTHORITY SECTION:\ndiscovery.example.test.\t0\tIN\tSOA\tdiscovery.example.test. hostmaster.discovery.example.test. 1 3600 600 86400 0",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "dc-ineligible.discovery.example.test.",
+        "type": "AAAA",
+        "options": []
+      },
+      "expected_rcode": "NXDOMAIN",
+      "rcode": "NXDOMAIN",
+      "expected_answers": [],
+      "duration_ms": 8.5,
+      "authoritative": true,
+      "answers": [],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 55792\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-ineligible.discovery.example.test. IN AAAA\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 55792\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-ineligible.discovery.example.test. IN AAAA\n\n;; AUTHORITY SECTION:\ndiscovery.example.test.\t0\tIN\tSOA\tdiscovery.example.test. hostmaster.discovery.example.test. 1 3600 600 86400 0",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "dc-invalid.discovery.example.test.",
+        "type": "A",
+        "options": []
+      },
+      "expected_rcode": "NXDOMAIN",
+      "rcode": "NXDOMAIN",
+      "expected_answers": [],
+      "duration_ms": 8.878,
+      "authoritative": true,
+      "answers": [],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 56034\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-invalid.discovery.example.test. IN\tA\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 56034\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-invalid.discovery.example.test. IN\tA\n\n;; AUTHORITY SECTION:\ndiscovery.example.test.\t0\tIN\tSOA\tdiscovery.example.test. hostmaster.discovery.example.test. 1 3600 600 86400 0",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "_ldap._tcp.unknown._sites.dc._msdcs.discovery.example.test.",
+        "type": "SRV",
+        "options": []
+      },
+      "expected_rcode": "NXDOMAIN",
+      "rcode": "NXDOMAIN",
+      "expected_answers": [],
+      "duration_ms": 9.277,
+      "authoritative": true,
+      "answers": [],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 59850\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;_ldap._tcp.unknown._sites.dc._msdcs.discovery.example.test. IN SRV\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 59850\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;_ldap._tcp.unknown._sites.dc._msdcs.discovery.example.test. IN SRV\n\n;; AUTHORITY SECTION:\ndiscovery.example.test.\t0\tIN\tSOA\tdiscovery.example.test. hostmaster.discovery.example.test. 1 3600 600 86400 0",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "_ldap._tcp.dc._msdcs.discovery.example.test.",
+        "type": "A",
+        "options": []
+      },
+      "expected_rcode": "NOERROR",
+      "rcode": "NOERROR",
+      "expected_answers": [],
+      "duration_ms": 10.112,
+      "authoritative": true,
+      "answers": [],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 49620\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;_ldap._tcp.dc._msdcs.discovery.example.test. IN\tA\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 49620\n;; flags: qr aa; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;_ldap._tcp.dc._msdcs.discovery.example.test. IN\tA\n\n;; AUTHORITY SECTION:\ndiscovery.example.test.\t0\tIN\tSOA\tdiscovery.example.test. hostmaster.discovery.example.test. 1 3600 600 86400 0",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "dc-east.discovery.example.test.",
+        "type": "TXT",
+        "options": []
+      },
+      "expected_rcode": "NOTIMP",
+      "rcode": "NOTIMP",
+      "expected_answers": [],
+      "duration_ms": 8.872,
+      "authoritative": false,
+      "answers": [],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 3003\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-east.discovery.example.test.\tIN\tTXT\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOTIMP, id: 3003\n;; flags: qr; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-east.discovery.example.test.\tIN\tTXT",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "dc-east.discovery.example.test.",
+        "type": "A",
+        "options": [
+          "-c",
+          "CH"
+        ]
+      },
+      "expected_rcode": "NOTIMP",
+      "rcode": "NOTIMP",
+      "expected_answers": [],
+      "duration_ms": 8.906,
+      "authoritative": false,
+      "answers": [],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 28453\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-east.discovery.example.test.\tCH\tA\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOTIMP, id: 28453\n;; flags: qr; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-east.discovery.example.test.\tCH\tA",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "dc-east.discovery.example.test.",
+        "type": "A",
+        "options": [
+          "+edns=0",
+          "+nocookie"
+        ]
+      },
+      "expected_rcode": "NOTIMP",
+      "rcode": "NOTIMP",
+      "expected_answers": [],
+      "duration_ms": 10.988,
+      "authoritative": false,
+      "answers": [],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 48738\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 1\n\n;; OPT PSEUDOSECTION:\n; EDNS: version: 0, flags:; udp: 1232\n;; QUESTION SECTION:\n;dc-east.discovery.example.test.\tIN\tA\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOTIMP, id: 48738\n;; flags: qr; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; WARNING: EDNS query returned status NOTIMP - retry with '+noedns'\n\n;; QUESTION SECTION:\n;dc-east.discovery.example.test.\tIN\tA",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "outside.example.test.",
+        "type": "A",
+        "options": []
+      },
+      "expected_rcode": "REFUSED",
+      "rcode": "REFUSED",
+      "expected_answers": [],
+      "duration_ms": 8.859,
+      "authoritative": false,
+      "answers": [],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 22665\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;outside.example.test.\t\tIN\tA\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: REFUSED, id: 22665\n;; flags: qr; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;outside.example.test.\t\tIN\tA",
+      "result": "passed"
+    },
+    {
+      "commands": [
+        "zone discovery.example.test.",
+        "update delete dc-east.discovery.example.test. A",
+        "update add dc-east.discovery.example.test. 60 A 192.0.2.99",
+        "send"
+      ],
+      "expected_rcode": "NOTIMP",
+      "rcode": "NOTIMP",
+      "duration_ms": 50.729,
+      "nsupdate_query_and_reply": "Outgoing update query:\n;; ->>HEADER<<- opcode: UPDATE, status: NOERROR, id:  21654\n;; flags:; ZONE: 1, PREREQ: 0, UPDATE: 2, ADDITIONAL: 0\n;; ZONE SECTION:\n;discovery.example.test.\t\tIN\tSOA\n\n;; UPDATE SECTION:\ndc-east.discovery.example.test.\t0 ANY\tA\t\ndc-east.discovery.example.test.\t60 IN\tA\t192.0.2.99\n\nSending update to 127.0.0.1#<port>\n\nReply from update query:\n;; ->>HEADER<<- opcode: UPDATE, status: NOTIMP, id:  21654\n;; flags: qr; ZONE: 0, PREREQ: 0, UPDATE: 0, ADDITIONAL: 0",
+      "result": "passed"
+    },
+    {
+      "query": {
+        "name": "dc-east.discovery.example.test.",
+        "type": "A",
+        "options": []
+      },
+      "expected_rcode": "NOERROR",
+      "rcode": "NOERROR",
+      "expected_answers": [
+        "192.0.2.10"
+      ],
+      "duration_ms": 9.248,
+      "authoritative": true,
+      "answers": [
+        "192.0.2.10"
+      ],
+      "dig_query_and_reply": ";; Sending:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 5408\n;; flags:; QUERY: 1, ANSWER: 0, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-east.discovery.example.test.\tIN\tA\n\n;; Got answer:\n;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 5408\n;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0\n\n;; QUESTION SECTION:\n;dc-east.discovery.example.test.\tIN\tA\n\n;; ANSWER SECTION:\ndc-east.discovery.example.test.\t30 IN\tA\t192.0.2.10",
+      "result": "passed"
+    }
+  ]
+}
