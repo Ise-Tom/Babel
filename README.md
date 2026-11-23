@@ -51,13 +51,13 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T01:02:21\+01:00.
+GitHub metadata checked: 2026-11-23T01:05:12\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#47 · Verify P00-01 protocol variants and report conformance blockers](<https://github.com/Ise-Tom/Babel/pull/47>)
 
-**In review · Pending merge · CI: in\_progress** · Head ad551e5
+**In review · Pending merge · CI: in\_progress** · Head 592f83c
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -79,6 +79,7 @@ GitHub metadata checked: 2026-11-23T01:02:21\+01:00.
 **Changed files:**
 
 - dashboard/progress.json
+- dashboard/tests/dashboard.spec.ts
 - docs/phase-00-progress.md
 - docs/reference-use-review.md
 - docs/validation/p00-01-conformance.md
@@ -102,7 +103,7 @@ GitHub metadata checked: 2026-11-23T01:02:21\+01:00.
 
 **Limits and remaining work:** Native production families, all nine exact profiles and all qualified comparison runs remain outstanding. The local LDAP smoke is limited to Babel on loopback. The prior scoped design approval remains recorded.
 
-**PR-head evidence:** [docs/validation/p00-01-conformance.md](<https://github.com/Ise-Tom/Babel/blob/ad551e55dc3e4657dc34ab1e9b6d14b600f890e5/docs/validation/p00-01-conformance.md>) · [docs/validation/p00-01-ldap-smoke.md](<https://github.com/Ise-Tom/Babel/blob/ad551e55dc3e4657dc34ab1e9b6d14b600f890e5/docs/validation/p00-01-ldap-smoke.md>) · [lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/ad551e55dc3e4657dc34ab1e9b6d14b600f890e5/lab/compatibility.json>) · [scripts/check\_conformance.py](<https://github.com/Ise-Tom/Babel/blob/ad551e55dc3e4657dc34ab1e9b6d14b600f890e5/scripts/check_conformance.py>)
+**PR-head evidence:** [docs/validation/p00-01-conformance.md](<https://github.com/Ise-Tom/Babel/blob/592f83c81126cd5e13bd55de11878160b75a2ce4/docs/validation/p00-01-conformance.md>) · [docs/validation/p00-01-ldap-smoke.md](<https://github.com/Ise-Tom/Babel/blob/592f83c81126cd5e13bd55de11878160b75a2ce4/docs/validation/p00-01-ldap-smoke.md>) · [lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/592f83c81126cd5e13bd55de11878160b75a2ce4/lab/compatibility.json>) · [scripts/check\_conformance.py](<https://github.com/Ise-Tom/Babel/blob/592f83c81126cd5e13bd55de11878160b75a2ce4/scripts/check_conformance.py>)
 
 
 </details>
