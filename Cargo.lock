@@ -66,6 +66,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "babel-dns"
+version = "0.1.0"
+
+[[package]]
 name = "babel-ldap"
 version = "0.1.0"
 dependencies = [
