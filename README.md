@@ -51,13 +51,13 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T21:23:12\+01:00.
+GitHub metadata checked: 2026-11-23T21:25:24\+01:00.
 
 **Current main CI: in\_progress.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#49 · Add scoped isolated Hyper-V lab runner and synthetic evidence](<https://github.com/Ise-Tom/Babel/pull/49>)
 
-**In review · Pending merge · CI: success** · Head f025a37
+**In review · Pending merge · CI: in\_progress** · Head af775a7
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -95,7 +95,7 @@ GitHub metadata checked: 2026-11-23T21:23:12\+01:00.
 - scripts/run\_reference\_lab.py
 - tests/test\_reference\_lab\_runner.py
 
-#### Proposed W72 · Plan and test scoped Hyper-V lab provisioning and teardown
+#### Proposed W73 · Plan and test scoped Hyper-V lab provisioning and teardown
 
 **Requirements:** P00-05, P00-12, P00-16
 
@@ -105,7 +105,7 @@ GitHub metadata checked: 2026-11-23T21:23:12\+01:00.
 
 **Limits and remaining work:** No live Hyper-V resource was created. Both cycles, guest builds/packages, DNS/time/routes/egress probes and discovery remain unrun. Current host is short on RAM/disk, scoped VM/switch inventory is unavailable, and approved media/rights are absent. No P00-05, P00-12 or P00-16 acceptance is claimed.
 
-**PR-head evidence:** [docs/validation/p00-05-runner.md](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/docs/validation/p00-05-runner.md>) · [lab/reference-lab/evidence/synthetic-plan.json](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/lab/reference-lab/evidence/synthetic-plan.json>) · [lab/reference-lab/evidence/local-preflight-2026-11-23.json](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/lab/reference-lab/evidence/local-preflight-2026-11-23.json>) · [scripts/run\_reference\_lab.py](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/scripts/run_reference_lab.py>) · [tests/test\_reference\_lab\_runner.py](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/tests/test_reference_lab_runner.py>)
+**PR-head evidence:** [docs/validation/p00-05-runner.md](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/docs/validation/p00-05-runner.md>) · [lab/reference-lab/evidence/synthetic-plan.json](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/lab/reference-lab/evidence/synthetic-plan.json>) · [lab/reference-lab/evidence/local-preflight-2026-11-23.json](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/lab/reference-lab/evidence/local-preflight-2026-11-23.json>) · [scripts/run\_reference\_lab.py](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/scripts/run_reference_lab.py>) · [tests/test\_reference\_lab\_runner.py](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/tests/test_reference_lab_runner.py>)
 
 #### Proposed problem update: I04 · Eligible reference lab host, authorized media and platform runs are missing
 
@@ -119,7 +119,7 @@ The synthetic-tested runner and plan exist, but the 23 November preflight still 
 
 **Provenance:** Explicitly outstanding; no Windows test is marked passed.
 
-[docs/validation/p00-05-runner.md](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/docs/validation/p00-05-runner.md>) · [docs/validation/p00-05-p00-12.md](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/docs/validation/p00-05-p00-12.md>) · [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/f025a3775f075e3595a058781dc82a3b43c3122d/docs/phase-00-progress.md>)
+[docs/validation/p00-05-runner.md](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/docs/validation/p00-05-runner.md>) · [docs/validation/p00-05-p00-12.md](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/docs/validation/p00-05-p00-12.md>) · [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/af775a7b0966d2feda165ad45f0819ac33d4ffb2/docs/phase-00-progress.md>)
 
 
 </details>
