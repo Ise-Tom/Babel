@@ -76,7 +76,7 @@ The [lab preflight rights review](validation/p00-05-p00-12.md#p00-16-disposition
 records publisher terms for the proposed uses and versions, the available Linux
 checksums and the outstanding exact Windows VM entitlements and Apple host rights.
 
-The 15 project-owned fixtures and redacted reports have a source path, digest and
+The registered project-owned fixtures and redacted reports have a source path, digest and
 declared use under Babel's project terms. The source packager verifies these
 against the tar members. Review separately identifies original authorship and the
 rights for any proposed external material.
@@ -96,7 +96,7 @@ python scripts/check_state_security.py --revision "$(git rev-parse HEAD)" \
   --document-cache /path/to/public-reference-cache
 ```
 
-The optional check compares all 21 raw documents, the 153 operation headings and
+The optional check compares all 21 raw documents, the 161 operation headings and
 the 58 existing state-case reference bindings. It uses `pdftotext` for the pinned
 PDFs and rejects changed bytes, unreadable editions and mismatched locators.
 Default CI validates committed metadata offline. Human review, runtime

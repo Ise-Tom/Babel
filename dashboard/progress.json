@@ -157,8 +157,8 @@
   },
   "requirements": {
     "P00-01": {
-      "status": "in_progress",
-      "note": "Ise-Tom approved the scoped matrix design on 22 November 2026. The full P00-01 gate remains in progress for unresolved routes, exact platform profiles and licensed real-client results. All 60 product conformance observations remain unrun.",
+      "status": "blocked",
+      "note": "The PR #40 scoped design approval is recorded. The follow-up verifies published protocol mappings and a local Babel LDAP smoke. The full gate needs native AD operations, resolution of 12 route/scope decisions, nine exact qualified platform profiles and licensed comparisons. All 60 product scenarios remain unrun.",
       "acceptance": {
         "reviewer": "Ise-Tom (project owner, explicit PR #40 review)",
         "date": "2026-11-22",
@@ -3117,6 +3117,39 @@
       ],
       "problems": [
         "I27"
+      ]
+    },
+    {
+      "id": "W71",
+      "title": "Verify additional protocol mappings and enumerate conformance blockers",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-01"
+      ],
+      "how": "Expanded the matrix using the pinned LDAP, DNS, Group Policy, DFSR and Netlogon references. Kept each of PR #40's 12 unresolved route choices visible. Extended the existing readiness report to enumerate blocking families, profiles, rights, scenarios and approvals.",
+      "verification": "Verified the exact publisher editions and headings. A locked local release LDAP smoke passed anonymous RootDSE and refusal assertions. The isolated lab preflight remains blocked and the checker reports 60 unrun product cases.",
+      "limitations": "Native production families, all nine exact profiles and all qualified comparison runs remain outstanding. The local LDAP smoke is limited to Babel on loopback. The prior scoped design approval remains recorded.",
+      "sources": [
+        {
+          "path": "docs/validation/p00-01-conformance.md",
+          "label": "Readiness and the 12 outstanding route decisions"
+        },
+        {
+          "path": "docs/validation/p00-01-ldap-smoke.md",
+          "label": "Source and binary bound LDAP smoke receipt"
+        },
+        {
+          "path": "lab/compatibility.json",
+          "label": "Operation matrix and pinned variants"
+        },
+        {
+          "path": "scripts/check_conformance.py",
+          "label": "Readiness checker"
+        }
+      ],
+      "problems": [
+        "I04"
       ]
     }
   ],

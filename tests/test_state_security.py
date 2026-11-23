@@ -31,6 +31,7 @@ class StateSecurityContract(unittest.TestCase):
             "docs/patch-management-roadmap.md",
             "docs/endpoint-operations-roadmap.md",
             "docs/adr/0005-directory-and-replication-invariants.md",
+            "docs/validation/p00-01-ldap-smoke.md",
         ):
             dest = self.root / name
             dest.parent.mkdir(parents=True, exist_ok=True)
@@ -314,6 +315,18 @@ class StateSecurityContract(unittest.TestCase):
     def test_cache_checks_numbered_and_named_operation_headings(self):
         self.assertTrue(
             contract.matches_heading("2 - Update Message Format", "2", "Update Message Format")
+        )
+        self.assertTrue(
+            contract.matches_heading(
+                "3.4 LDAP_REQUEST and\n    LDAP_RESPONSE\n", "3.4", "LDAP_REQUEST and LDAP_RESPONSE"
+            )
+        )
+        self.assertFalse(
+            contract.matches_heading(
+                "3.4 LDAP_REQUEST and\n    LDAP_RESPONSE added\n",
+                "3.4",
+                "LDAP_REQUEST and LDAP_RESPONSE",
+            )
         )
         self.assertTrue(contract.matches_heading("Usage rules", "usage", "Usage rules"))
         self.assertFalse(contract.matches_heading("Different heading", "usage", "Usage rules"))

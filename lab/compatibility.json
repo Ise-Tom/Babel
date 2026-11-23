@@ -494,15 +494,17 @@
         {
           "id": "join-variants",
           "kind": "unresolved",
-          "exchange": "Workstation join management RPC and pre-staged join selection",
+          "exchange": "Windows fresh computer-account creation versus delegated reuse of an existing account, followed by protected channel establishment",
           "references": [
+            "MS-ADTS#3.1.1.5.2",
+            "MS-SAMR#3.1.5.4.4",
             "MS-NRPC#3.5.4.4.2",
             "BABEL-CLIENT"
           ],
-          "expected_success": "A declared build selects a supported path and completes enrollment.",
-          "expected_refusal": "Unknown or rejected routes grant no machine channel.",
-          "required_evidence": "Fresh and pre-staged joins with selected interfaces and reply codes.",
-          "blocker": "Exact Windows builds and licensed traces are needed to identify the workstation-side calls."
+          "expected_success": "A licensed build creates a new account or reuses the intended pre-staged account with the required rights, then establishes a protected machine channel and completes online logon.",
+          "expected_refusal": "Denied account creation or reuse leaves no usable machine channel or unintended account mutation.",
+          "required_evidence": "Fresh and pre-staged join pairs with effective reuse policy, account before/after identity, chosen interface, channel result and online logon.",
+          "blocker": "On each declared Windows edition/build observe the actual join route and current account-reuse policy, then compare Babel's directory, machine channel and online logon."
         }
       ]
     },
@@ -1058,17 +1060,56 @@
           "required_evidence": "Advertised set, requested OID/criticality, result and absence of side effects."
         },
         {
+          "id": "dirsync",
+          "kind": "wire",
+          "exchange": "LDAP Search DirSync request and returned continuation cookie",
+          "references": [
+            "MS-ADTS#3.1.1.3.4.1.3",
+            "MS-ADTS#3.1.1.4.3"
+          ],
+          "expected_success": "An authorized search of the NC root returns eligible changed objects and a cookie for continuation.",
+          "expected_refusal": "Reject an unsupported scope or unauthorized change enumeration without returning protected attributes.",
+          "required_evidence": "NC base, control flags, initial and resumed cookies represented without bytes, effective permissions and result, correlated with fixture mutations."
+        },
+        {
+          "id": "sort-vlv",
+          "kind": "wire",
+          "exchange": "LDAP Search single-attribute server-side sort with optional Virtual List View window",
+          "references": [
+            "MS-ADTS#3.1.1.3.4.1.13",
+            "MS-ADTS#3.1.1.3.4.1.17",
+            "RFC4511#4.1.11"
+          ],
+          "expected_success": "A supported sort returns ordered results and a supported VLV request returns the declared window around the selected target.",
+          "expected_refusal": "An invalid sort or VLV request cannot report a valid sorted window. Apply control criticality on unsupported requests.",
+          "required_evidence": "Requested sort key, window and criticality, compared result codes and control responses, and entry order on the same synthetic dataset."
+        },
+        {
+          "id": "attribute-ranges",
+          "kind": "wire",
+          "exchange": "LDAP Search attribute description range option for a multivalued attribute",
+          "references": [
+            "MS-ADTS#3.1.1.3.1.3.3",
+            "MS-ADTS#3.1.1.4.3",
+            "RFC4511#4.5"
+          ],
+          "expected_success": "Sequential ranges on an unchanged attribute and connection return the requested slices and terminal range marker.",
+          "expected_refusal": "A range request preserves attribute access checks. An absent result cannot be counted as a completed authorized read.",
+          "required_evidence": "Requested and returned range descriptions with terminal marker, number of values, connection identity and an unauthorized-read comparison."
+        },
+        {
           "id": "control-variants",
           "kind": "unresolved",
-          "exchange": "Additional RSAT controls including DirSync, VLV, sorting and range-retrieval combinations",
+          "exchange": "RSAT combinations and criticality for paging, DirSync, sort/VLV and ranged attributes",
           "references": [
             "MS-ADTS#3.1.1.3.4.1",
+            "MS-ADTS#3.1.1.3.1.3.3",
             "BABEL-CLIENT"
           ],
           "expected_success": "Publish a combination after its semantics and authorization are qualified.",
           "expected_refusal": "Unknown critical controls fail and unqualified controls remain outside support.",
           "required_evidence": "Exact tool/build traces, continuation and refusal behavior.",
-          "blocker": "Tool- and build-specific combinations are undecided and need real client traces."
+          "blocker": "Individually defined controls and attribute options have mappings. The exact option combinations, flags and criticality selected by each installed RSAT build need an observed read and denial."
         }
       ]
     },
@@ -1173,9 +1214,21 @@
           "required_evidence": "Probe flags, resulting DC selection, actual reachability and timed loss."
         },
         {
+          "id": "mailslot-ping",
+          "kind": "wire",
+          "exchange": "Legacy NetBIOS-based DC discovery and mailslot ping",
+          "references": [
+            "MS-ADTS#6.3.5",
+            "MS-ADTS#6.3.6.2"
+          ],
+          "expected_success": "If enabled and within a declared legacy profile, the client uses a valid reply to an in-scope mailslot ping.",
+          "expected_refusal": "When legacy discovery is disallowed, DNS loss grants no DC identity or network escape.",
+          "required_evidence": "Effective NetBIOS policy and client build, DNS loss and recovery, observed mailslot presence or absence and selected DC."
+        },
+        {
           "id": "legacy-discovery",
           "kind": "unresolved",
-          "exchange": "NetBIOS/mailslot or build-dependent fallback",
+          "exchange": "Whether a declared build and policy need legacy discovery after DNS loss",
           "references": [
             "MS-ADTS#6.3.5",
             "MS-ADTS#6.3.6.2"
@@ -1183,7 +1236,7 @@
           "expected_success": "Use the selected DNS path on the supported baseline.",
           "expected_refusal": "Unqualified legacy fallback earns no support and cannot route outside the isolated topology.",
           "required_evidence": "Exact builds/settings and observed behavior under DNS loss.",
-          "blocker": "Pinned client builds and policy are needed to identify any required legacy variants."
+          "blocker": "The wire route is mapped. Capture effective NetBIOS/locator policy and observed failover or bounded failure on the four pinned Windows profiles to decide whether any legacy route belongs in scope."
         }
       ]
     },
@@ -1242,17 +1295,31 @@
           "required_evidence": "RCODE and TSIG outcome, before/after RRsets and duplicate/retry observation."
         },
         {
-          "id": "management-rpc",
-          "kind": "unresolved",
-          "exchange": "Administrative DNS R_DnssrvUpdateRecord (4) and versioned variants",
+          "id": "administrative-record-rpc",
+          "kind": "wire",
+          "exchange": "DNS management RPC R_DnssrvUpdateRecord (4), UpdateRecord2 (9) and UpdateRecord3 (10)",
           "references": [
             "MS-DNSP#3.1.4.5",
-            "MS-DNSP#3.1.4.10"
+            "MS-DNSP#3.1.4.10",
+            "MS-DNSP#3.1.4.11"
+          ],
+          "expected_success": "An authorized management call returns success and applies the requested addition/deletion in the selected zone or supported scope.",
+          "expected_refusal": "Unauthorized or unsupported management requests return an error with no record mutation.",
+          "required_evidence": "Tool/build, management opnum and effective rights, requested zone/scope, returned status and record before/after. Keep signed DNS UPDATE evidence separate."
+        },
+        {
+          "id": "management-rpc",
+          "kind": "unresolved",
+          "exchange": "Selection of the supported DNS administration tool, RPC versions and zone scopes",
+          "references": [
+            "MS-DNSP#3.1.4.5",
+            "MS-DNSP#3.1.4.10",
+            "MS-DNSP#3.1.4.11"
           ],
           "expected_success": "Evaluate the selected administrative method independently of wire UPDATE.",
           "expected_refusal": "No administrative method bypasses record ACLs or qualifies DNS UPDATE.",
           "required_evidence": "Exact DNS management client, RPC authorization and outcomes.",
-          "blocker": "Select the DNS administration method set and determine which builds require it."
+          "blocker": "The publisher defines opnums 4, 9 and 10. Decide which management journeys Babel supports and capture the actual route and access refusal on the approved tools. Signed machine updates use the separate DNS UPDATE rows."
         }
       ]
     },
@@ -1313,17 +1380,30 @@
           "required_evidence": "LDAP/SMB results, before/after link and version state, actual client application."
         },
         {
+          "id": "extension-invocation",
+          "kind": "workflow",
+          "exchange": "Select extension-specific GPO lists by user/computer CSE GUID and invoke applicable extensions",
+          "references": [
+            "MS-GPOL#3.2.5.1.5",
+            "MS-GPOL#3.2.5.1.10",
+            "BABEL-CLIENT"
+          ],
+          "expected_success": "The client sees the applicable extension GUID for the correct policy mode and applies the relevant GPOs. Registry policy runs first.",
+          "expected_refusal": "A missing extension is excluded and a failed extension never counts as successful application for that extension.",
+          "required_evidence": "Policy mode and extension GUID, extension result, unaffected extension outcomes and real Windows resultant settings."
+        },
+        {
           "id": "extensions",
           "kind": "unresolved",
           "exchange": "Per-client Group Policy extension set for scripts and security policy",
           "references": [
-            "MS-GPOL#3.2.5.1.5",
+            "MS-GPOL#3.2.5.1.10",
             "BABEL-CLIENT"
           ],
           "expected_success": "Apply each selected extension on exact Windows clients with resultant settings.",
           "expected_refusal": "Unqualified extensions and stale policy do not earn application evidence.",
           "required_evidence": "Extension/version and client-side settings and events.",
-          "blocker": "Select extension scope and pin individual protocol/file-format sections against real builds."
+          "blocker": "Core extension selection/invocation is pinned. Select the actual scripts/security extension versions and file formats, then compare their outputs and failure behaviors on licensed clients."
         }
       ]
     },
@@ -1383,19 +1463,34 @@
           "required_evidence": "SMB status, file/version hashes, before/after interruption evidence."
         },
         {
-          "id": "dfsr",
-          "kind": "unresolved",
-          "exchange": "DFSR candidate EstablishConnection (1), EstablishSession (2), version vector (4) and records (6)",
+          "id": "dfsr-reference-exchange",
+          "kind": "wire",
+          "exchange": "Windows DFSR peer connection, session, version vector and record requests",
           "references": [
             "MS-FRS2#3.2.4.1.2",
             "MS-FRS2#3.2.4.1.3",
             "MS-FRS2#3.2.4.1.5",
             "MS-FRS2#3.2.4.1.7"
           ],
+          "expected_success": "A qualified Windows reference replication pair exchanges versions and records on an authorized session.",
+          "expected_refusal": "A refused or incomplete peer session may not make partial SYSVOL content appear converged.",
+          "required_evidence": "Reference DC builds, authorized peer/session outcomes, interrupted transfer and both peers' redacted file-version inventory."
+        },
+        {
+          "id": "dfsr",
+          "kind": "unresolved",
+          "exchange": "First-production Babel SYSVOL replication mechanism and Windows DFSR interoperability scope",
+          "references": [
+            "MS-FRS2#3.2.4.1.2",
+            "MS-FRS2#3.2.4.1.3",
+            "MS-FRS2#3.2.4.1.5",
+            "MS-FRS2#3.2.4.1.7",
+            "BABEL-LEVELS"
+          ],
           "expected_success": "Selected replication mechanism converges coherent policy files across DCs.",
           "expected_refusal": "Deny unauthorized peers; incomplete file sets never count as converged.",
           "required_evidence": "Two-site file convergence, peer authorization and interrupted propagation.",
-          "blocker": "Select the SYSVOL replication mechanism and decide if FRS2 interoperability is required."
+          "blocker": "The reference wire exchange is identifiable and FRS fallback is out of the declared 2016 profile. The Babel replication mechanism and any Windows coexistence commitment need a scope decision and multi-DC convergence/fault evidence."
         }
       ]
     },
@@ -1571,10 +1666,27 @@
           "required_evidence": "Selected call/level, RPC protection and sanitized validation outcome."
         },
         {
+          "id": "netlogon-interface",
+          "kind": "wire",
+          "exchange": "MS-NRPC wire interface v1.0 UUID 12345678-1234-ABCD-EF00-01234567CFFB, including legacy Authenticate (5), Authenticate2 (15), and Authenticate3 (26)",
+          "references": [
+            "MS-NRPC#2.1",
+            "MS-NRPC#6",
+            "MS-NRPC#3.5.4.4.2",
+            "MS-NRPC#3.5.4.4.4",
+            "MS-NRPC#3.5.4.4.5"
+          ],
+          "expected_success": "An in-profile call over the selected transport establishes a machine channel with the declared protection.",
+          "expected_refusal": "Unexpected opnums and insufficient protection fail without creating or downgrading a channel.",
+          "required_evidence": "Interface version, selected transport and authentication level, declared and observed opnum and exact RPC/status result."
+        },
+        {
           "id": "rpc-variants",
           "kind": "unresolved",
           "exchange": "Legacy opnums, interface versions, authentication levels and exact RPC faults",
           "references": [
+            "MS-NRPC#2.1",
+            "MS-NRPC#6",
             "MS-NRPC#3.5.4.4",
             "MS-NRPC#3.5.4.5",
             "BABEL-CLIENT"
@@ -1582,7 +1694,7 @@
           "expected_success": "Offer only declared calls and interface versions.",
           "expected_refusal": "Unknown opnum or unsupported authentication receives a bounded refusal or RPC fault.",
           "required_evidence": "Pinned UUID/opnum/authentication and result/fault pairing.",
-          "blocker": "Pin the RPC runtime mapping and observe exact patched-client variants."
+          "blocker": "UUID, interface version and named authentication opnums are pinned. Observe the selected transport, protection, legacy method use and native fault behavior on each exact patched Windows profile."
         }
       ]
     },
@@ -1642,14 +1754,16 @@
           "kind": "unresolved",
           "exchange": "RSAT route and complete LSA/SAMR/LDAP call and information-level selection",
           "references": [
-            "MS-LSAD#3.1.4.4",
-            "MS-SAMR#3.1.5",
+            "MS-LSAD#3.1.4.4.1",
+            "MS-LSAD#3.1.4.4.3",
+            "MS-LSAD#3.1.4.4.5",
+            "MS-SAMR#3.1.5.11.2",
             "BABEL-CLIENT"
           ],
           "expected_success": "Each approved journey uses a mapped delegated path.",
           "expected_refusal": "Unknown routes stay unsupported and cannot grant authority.",
           "required_evidence": "Exact RSAT package, request shapes, rights and observed statuses.",
-          "blocker": "Licensed pinned RSAT clients are needed to enumerate and compare the actual administrative calls."
+          "blocker": "The named LSA policy and SAMR lookup methods are candidates. Observe actual call and information-level selection for each delegated console or PowerShell journey on an exact RSAT build, including any LDAP leg and the resulting denial."
         }
       ]
     },
@@ -1769,13 +1883,16 @@
           "kind": "unresolved",
           "exchange": "Cross-forest migration/coexistence tool and cutover path",
           "references": [
+            "MS-ADTS#3.1.1.5.4.2",
+            "MS-DRSR#4.1.15",
             "MS-DRSR#4.1.2",
+            "MS-DRSR#4.1.2.3",
             "BABEL-RECOVERY"
           ],
           "expected_success": "Cut over the selected synthetic identity mapping with tested rollback.",
           "expected_refusal": "Incomplete cutover leaves no duplicate live identity or exported credentials.",
           "required_evidence": "Tool/build, actual calls, identity mapping and staged recovery.",
-          "blocker": "Real forest-pair profiles and the migration tool and credential policy are undecided."
+          "blocker": "The same-forest domain move and inter-forest SID-history copy have distinct semantics. Choose the cross-forest tool, credential policy and cutover workflow, then exercise rollback and SID/credential handling on two qualified forests."
         }
       ]
     },
@@ -1907,12 +2024,14 @@
           "exchange": "Emergency FSMO seizure and former-owner quarantine",
           "references": [
             "MS-ADTS#6.1.5",
+            "MS-ADTS#6.1.5.3",
+            "MS-ADTS#3.1.1.5.3.1.2",
             "BABEL-RECOVERY"
           ],
           "expected_success": "A qualified emergency workflow establishes exactly one new authority.",
           "expected_refusal": "Exclude former authority and previously allocated RID ranges.",
           "required_evidence": "Licensed tool/role traces and isolated fault/rejoin evidence.",
-          "blocker": "Select the supported seizure interface and qualify former-owner exclusion in a disposable multi-DC lab."
+          "blocker": "A role-owner attribute change has role-specific access rights. Select the forced transfer interface, then prove former-owner quarantine and RID non-reuse after a fault and rejoin on both targets."
         }
       ]
     },
@@ -2031,12 +2150,14 @@
           "exchange": "Linux realm enrollment and macOS directory-binding tool path",
           "references": [
             "BABEL-CLIENT",
-            "MS-ADTS#3.1.1.5.2"
+            "MS-ADTS#3.1.1.5.2",
+            "RFC4120#3.1",
+            "RFC4120#3.2"
           ],
           "expected_success": "Prove the selected enrollment route on the qualified platform.",
           "expected_refusal": "Unqualified routes and Windows-only GPO stay outside the profile.",
           "required_evidence": "Per-build DNS, account provisioning, credential establishment and cleanup.",
-          "blocker": "Pin actual client routes, packages, architecture and license/hardware rights."
+          "blocker": "Select and capture the installed Linux enrollment tool plus SSSD/MIT Kerberos/PAM versions for Ubuntu and Debian, and the native binding route on eligible Apple Silicon and Intel builds. Exercise enrollment, online logon and cleanup against both targets."
         }
       ]
     },
@@ -2190,7 +2311,7 @@
           "expected_success": "Expose only contract-versioned authorized routes after design and qualification.",
           "expected_refusal": "Unknown or denied routes cannot mutate storage.",
           "required_evidence": "Versioned API contract, identity, request/status, audit and UI correlation.",
-          "blocker": "Native administration route and command schemas are pending their implementation phase."
+          "blocker": "Implement and publish the versioned CLI/API schema, authorization and audit boundaries, then run success, access denial and partial-failure journeys through the real Babel interface."
         }
       ]
     }

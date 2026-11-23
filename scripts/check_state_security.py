@@ -403,8 +403,9 @@ def matches_heading(source: str, section: str, heading: str) -> bool:
     if not section[0].isdigit():
         # RFC 2782 uses unnumbered headings.
         return re.search(r"^" + re.escape(heading) + r"$", source, re.M) is not None
-    match = re.search(r"^\f?" + re.escape(section) + r"(?:\.| -)?[ \t]+([^\n]+)", source, re.M)
-    return match is not None and " ".join(match.group(1).split()) == heading
+    words = r"(?:[ \t]+|\n[ \t]+)".join(re.escape(word) for word in heading.split())
+    pattern = r"^\f?" + re.escape(section) + r"(?:\.| -)?[ \t]+" + words + r"[ \t]*$"
+    return re.search(pattern, source, re.M) is not None
 
 
 def verify_cache(cache: Path, state: dict[str, Any], registry: dict[str, Any]) -> int:
