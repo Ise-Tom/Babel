@@ -338,6 +338,10 @@
       "status": "in_progress",
       "note": "Loopback bounded RootDSE discovery/filter reads are implemented and tested; directory reads, controls and real-client qualification remain open. DNS discovery is separately tracked in P01-13."
     },
+    "P01-13": {
+      "status": "in_progress",
+      "note": "The loopback synthetic DNS service answers domain and site LDAP locator SRV and eligible A/AAAA. BIND dig and nsupdate observe stale/ineligible/invalid exclusion, explicit UPDATE refusal and preserved addresses. Live site/health data, locator failover, LDAP ping, legacy fallback and licensed client comparisons remain open."
+    },
     "P01-05": {
       "status": "blocked",
       "note": "Credential rejection is implemented; real Kerberos/password/key behavior awaits design and conformance prerequisites."
@@ -3146,6 +3150,40 @@
         {
           "path": "scripts/check_conformance.py",
           "label": "Readiness checker"
+        }
+      ],
+      "problems": [
+        "I04"
+      ]
+    },
+    {
+      "id": "W72",
+      "title": "Run native domain and site DC locator DNS on loopback",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-13",
+        "P00-01"
+      ],
+      "how": "Added a dependency-free native UDP service for the synthetic discovery.example.test DNS zone. Domain and site LDAP locator SRV records and target A/AAAA share the same eligibility and lease filter. Unsupported requests receive explicit replies; UPDATE holds no mutation path.",
+      "verification": "The independent BIND probe collects queries, replies, expected and actual results, and source/binary hashes. It exercises 18 exchanges including positive domain/site records, stale and invalid exclusion, and an UPDATE refused with no address change. Required CI runs the release, instrumented and extracted binaries, checks coverage and fuzzes response bounds.",
+      "limitations": "This covers only the synthetic dns-locator/dns-query path and an unsupported UPDATE. Real directory eligibility, client site selection, failover, LDAP ping, legacy Windows fallback, domain join and the licensed interoperability comparisons are unrun. P01-13 is in progress.",
+      "sources": [
+        {
+          "path": "docs/validation/p01-13.md",
+          "label": "P01-13 bounded discovery profile and scope"
+        },
+        {
+          "path": "native/babel-dns/tests/probe_dns.py",
+          "label": "Independent DNS process probe"
+        },
+        {
+          "path": "lab/compatibility.json",
+          "label": "P00-01 dns-locator routes"
+        },
+        {
+          "path": ".github/workflows/native.yml",
+          "label": "Required native gates"
         }
       ],
       "problems": [

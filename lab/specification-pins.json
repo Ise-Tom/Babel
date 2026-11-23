@@ -1214,6 +1214,22 @@
         "LICENSE",
         "CONTRIBUTING.md"
       ]
+    },
+    {
+      "id": "dns-locator-fuzz-seed",
+      "kind": "project_synthetic",
+      "path": "fuzz/corpus/dns_datagram/locator",
+      "sha256": "03247f454029bda4967b8fad22137daaedb7c0235d2415b2ce1297f14f79bcad",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Babel-generated DNS SRV question for the synthetic .test zone; no vendor capture.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
     }
   ],
   "use_review": {

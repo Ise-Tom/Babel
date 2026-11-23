@@ -66,6 +66,7 @@ def allowed_path(name: str) -> bool:
             path.parts[:2]
             in {
                 ("native", "babel-directory"),
+                ("native", "babel-dns"),
                 ("native", "babel-ldap"),
                 ("native", "babel-tls-lab"),
                 ("native", "babel-store-driver-lab"),
@@ -74,6 +75,7 @@ def allowed_path(name: str) -> bool:
                 name
                 in {
                     "native/babel-directory/Cargo.toml",
+                    "native/babel-dns/Cargo.toml",
                     "native/babel-ldap/Cargo.toml",
                     "native/babel-tls-lab/Cargo.toml",
                     "native/babel-store-driver-lab/Cargo.toml",
@@ -86,6 +88,7 @@ def allowed_path(name: str) -> bool:
                 )
                 or name
                 in {
+                    "native/babel-dns/tests/probe_dns.py",
                     "native/babel-ldap/tests/smoke_ldap.py",
                     "native/babel-tls-lab/tests/interop_tls.py",
                 }
@@ -95,11 +98,13 @@ def allowed_path(name: str) -> bool:
         in {
             "fuzz/Cargo.toml",
             "fuzz/Cargo.lock",
+            "fuzz/fuzz_targets/dns_datagram.rs",
             "fuzz/fuzz_targets/ldap_frame.rs",
             "fuzz/fuzz_targets/tls_record.rs",
         }
         or name
         in {
+            "fuzz/corpus/dns_datagram/locator",
             "fuzz/corpus/ldap_frame/anonymous-bind",
             "fuzz/corpus/ldap_frame/unbind",
             "fuzz/corpus/ldap_frame/oversized",
@@ -116,6 +121,7 @@ def allowed_path(name: str) -> bool:
             "lab/compatibility.json",
             "lab/conformance-evidence.json",
             "lab/p00-09-workload-smoke.json",
+            "lab/p01-13-dns-discovery-smoke.json",
             "lab/phase0-contract.json",
             "lab/state-security-contract.json",
             "lab/specification-pins.json",

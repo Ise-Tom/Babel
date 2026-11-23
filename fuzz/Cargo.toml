@@ -9,6 +9,7 @@ license = "Apache-2.0"
 cargo-fuzz = true
 
 [dependencies]
+babel-dns = { path = "../native/babel-dns", version = "=0.1.0" }
 libfuzzer-sys = "=0.4.13"
 babel-tls-lab = { path = "../native/babel-tls-lab", version = "=0.1.0" }
 rustls = { version = "=0.23.46", default-features = false, features = ["std", "ring", "tls12"] }
@@ -25,6 +26,13 @@ bench = false
 [[bin]]
 name = "tls_record"
 path = "fuzz_targets/tls_record.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "dns_datagram"
+path = "fuzz_targets/dns_datagram.rs"
 test = false
 doc = false
 bench = false

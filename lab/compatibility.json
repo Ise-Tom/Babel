@@ -1175,7 +1175,7 @@
         "server-2025"
       ],
       "owner": "Ise-Tom",
-      "implementation": "planned",
+      "implementation": "lab_only",
       "scenarios": {
         "positive": "Locate an eligible DC and fail over after DNS/DC loss",
         "negative": "Exclude stale records and disallowed site placement; bound locator timeout"
