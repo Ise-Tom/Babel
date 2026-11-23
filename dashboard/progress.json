@@ -229,7 +229,7 @@
     },
     "P00-05": {
       "status": "blocked",
-      "note": "The read-only six-guest Hyper-V preflight ran. The available Windows host falls short on allocatable RAM and disk and the session cannot inventory VMs or switches. Approved staged media are missing. Two fresh discovery and teardown cycles remain unrun. macOS tracks separately."
+      "note": "The read-only six-guest Hyper-V preflight and synthetic-tested provision/teardown runner exist. The available Windows host lacks allocatable RAM/disk and this session cannot inventory VMs or switches; approved staged media are absent. Guest installation and DNS/time/discovery probes remain operator work. Two fresh live cycles are unrun."
     },
     "P00-06": {
       "status": "accepted",
@@ -436,11 +436,11 @@
     },
     "P00-12": {
       "status": "blocked",
-      "note": "The host build, candidate Windows patch baselines and official Ubuntu/Debian installer SHA-256s are recorded. Real selected Windows/Linux guest image digests, patched builds and installed packages are still missing. Apple Silicon and Intel separately require eligible Mac hosts and exact image/build/package evidence."
+      "note": "The host build, candidate Windows patch baselines and official Ubuntu/Debian installer SHA-256s are recorded. Real selected Windows/Linux guest image digests, patched builds and installed packages are still missing. Apple Silicon and Intel separately require eligible Mac hosts and exact image/build/package evidence. The 23 November runner preflight adds only a host platform observation; it supplies no guest build or package evidence."
     },
     "P00-16": {
       "status": "blocked",
-      "note": "Reviewed the uses of all 21 pinned editions, mapped observed publisher programs, and checked the actual source archive and 15 project-owned fixtures. Proposed lab assets now have use-specific terms and Linux publisher digest pins. Exact Windows entitlements, eligible Apple hardware and license scope, staged Linux components and host terms, implementation patent/program scope and external fixture/capture rights remain open. The prerelease guard excludes vendor assets."
+      "note": "Reviewed the uses of all 21 pinned editions, mapped observed publisher programs, and checked the actual source archive and 15 project-owned fixtures. Proposed lab assets now have use-specific terms and Linux publisher digest pins. Exact Windows entitlements, eligible Apple hardware and license scope, staged Linux components and host terms, implementation patent/program scope and external fixture/capture rights remain open. The prerelease guard excludes vendor assets. The runner adds only project-owned synthetic plan/test text; no new image entitlement or vendor asset was observed."
     },
     "P00-17": {
       "status": "accepted",
@@ -3194,6 +3194,46 @@
       "problems": [
         "I04"
       ]
+    },
+    {
+      "id": "W73",
+      "title": "Plan and test scoped Hyper-V lab provisioning and teardown",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-05",
+        "P00-12",
+        "P00-16"
+      ],
+      "how": "Added a six-guest/two-private-switch plan, preflight and repeated ISO digest gate, journaled Hyper-V creation, host-side discovery and ownership-checked reverse teardown with interruption recovery. Kept guest installation and in-guest probes explicitly unrun.",
+      "verification": "Eight synthetic runner tests cover plan, refusal before mutation, changed/outside media, successful cleanup, failure after creation, interrupted retry tampered journal and a foreign file. PowerShell parser, Python lint/type and local documentation/dashboard checks passed. Read-only host preflight on 23 November remained blocked.",
+      "limitations": "No live Hyper-V resource was created. Both cycles, guest builds/packages, DNS/time/routes/egress probes and discovery remain unrun. Current host is short on RAM/disk, scoped VM/switch inventory is unavailable, and approved media/rights are absent. No P00-05, P00-12 or P00-16 acceptance is claimed.",
+      "source_revision": "9164dd744e9b09eb52ff099162ce190a906e8cfa",
+      "sources": [
+        {
+          "path": "docs/validation/p00-05-runner.md",
+          "label": "Runner review and remaining prerequisites"
+        },
+        {
+          "path": "lab/reference-lab/evidence/synthetic-plan.json",
+          "label": "Inspectable synthetic resource plan"
+        },
+        {
+          "path": "lab/reference-lab/evidence/local-preflight-2026-11-23.json",
+          "label": "Read-only host preflight"
+        },
+        {
+          "path": "scripts/run_reference_lab.py",
+          "label": "Journaled lifecycle runner"
+        },
+        {
+          "path": "tests/test_reference_lab_runner.py",
+          "label": "Synthetic lifecycle checks"
+        }
+      ],
+      "problems": [
+        "I04"
+      ]
     }
   ],
   "problems": [
@@ -3275,10 +3315,14 @@
         "P02-10",
         "P00-12"
       ],
-      "detail": "The six-guest Hyper-V preflight found insufficient RAM/disk and unavailable VM/switch inventory on the observed host. The Windows/Linux lab needs approved local images with exact build and package manifests. macOS Apple Silicon/Intel still need eligible hosts and media in a separate lane.",
+      "detail": "The synthetic-tested runner and plan exist, but the 23 November preflight still found insufficient RAM/disk, unavailable VM/switch inventory and no approved media. Guest installation/configuration and all live discovery probes are unrun. The Windows/Linux lab needs exact authorized images and platform pins; macOS remains a separate lane.",
       "resolution": "",
-      "next_action": "The owner approved the existing-host and existing-license preflight route in the linked evidence. Supply an eligible Hyper-V host, scoped access and authorized staged media. Perform two fresh provisioning, discovery and teardown cycles. Qualify actual platform packages and client behavior separately, with independent Apple Silicon and Intel prerequisites.",
+      "next_action": "Supply an eligible x86-64 Hyper-V host, scoped VM/switch operator access and a private rights-reviewed manifest with six local ISO digests and offline package pins. Finish guest setup and independently record two fresh provision/discovery/teardown cycles. Qualify actual platform packages and client behavior separately.",
       "sources": [
+        {
+          "path": "docs/validation/p00-05-runner.md",
+          "label": "Runner plan, synthetic tests and blocked live gate"
+        },
         {
           "path": "docs/validation/p00-05-p00-12.md",
           "label": "Host, media and rights preflight"

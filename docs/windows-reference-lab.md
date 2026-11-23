@@ -1,6 +1,6 @@
 # Isolated Windows reference lab definition
 
-Status is **definition and read-only preflight**. The inventoried Windows
+Status is **definition, read-only preflight and synthetic-tested resource runner**. The inventoried Windows
 Hyper-V host has insufficient free RAM and disk for this topology. Its VM and
 switch inventory is inaccessible in the current session, and no licensed media
 was supplied. Both live cycles remain unrun. See the
@@ -9,8 +9,11 @@ was supplied. Both live cycles remain unrun. See the
 [lab/windows-reference.toml](../lab/windows-reference.toml) is a machine-readable
 functional lab definition. The [validator](../scripts/check_lab_definition.py)
 checks safety flags, topology, resource bounds and image metadata. CI exercises
-those checks and the [preflight](../scripts/preflight_reference_lab.py) with
-synthetic inputs. Domain compatibility requires runs on the real lab.
+those checks, the [preflight](../scripts/preflight_reference_lab.py) and the
+[provision/teardown runner](../scripts/run_reference_lab.py) with synthetic inputs.
+The [runner packet](validation/p00-05-runner.md) gives the exact plan, local result,
+cleanup contract and guest-installation limits. Domain compatibility requires
+runs on the real lab.
 
 ```sh
 python scripts/check_lab_definition.py
@@ -67,7 +70,7 @@ fixtures merely because this repository is public.
    after failure. Do not delete arbitrary resources by prefix alone. Retain only
    redacted evidence and prove that no test credentials or network access remain.
 
-The future provisioning runner must be main-only, independently reviewed and on
+The privileged provisioning runner must be main-only, independently reviewed and on
 isolated trusted infrastructure. Public/fork PRs must never obtain a lab runner,
 Windows credentials, signing keys or privileged hypervisor control.
 
