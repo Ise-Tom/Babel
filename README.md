@@ -51,11 +51,61 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T00:54:50\+01:00.
+GitHub metadata checked: 2026-11-23T01:01:55\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#47 · Verify P00-01 protocol variants and report conformance blockers](<https://github.com/Ise-Tom/Babel/pull/47>)
+
+**In review · Pending merge · CI: in\_progress** · Head ad551e5
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## Evidence in this PR
+    
+    - Add seven source-verified wire mappings and one Group Policy workflow within the 30 existing families. The [follow-up packet](https://github.com/Ise-Tom/Babel/blob/ad551e55dc3e4657dc34ab1e9b6d14b600f890e5/docs/validation/p00-01-conformance.md) traces all 12 PR #40 route decisions to the pinned sections, missing native behavior, and exact client comparisons.
+    - Retain an [independent local Babel LDAP smoke](https://github.com/Ise-Tom/Babel/blob/ad551e55dc3e4657dc34ab1e9b6d14b600f890e5/docs/validation/p00-01-ldap-smoke.md) with the source revision, binary and input hashes, tool versions, and redacted result. Anonymous RootDSE and refusal assertions passed on loopback in WSL.
+    - Extend the required readiness report with the blocker for each remaining family, profile, specification and scenario. Preserve all 60 product scenario records and the scoped PR #40 approval.
+    
+    ## Readiness
+    
+    The structural matrix check and exact publisher edition/heading verification passed. Strict readiness exits 1. All 30 production families are planned or lab-only, 9 profiles are unqualified, 21 specification entries remain pending full rights review, 12 route decisions remain open, and 60 product scenarios are unrun. Full contract and comparison reviews are pending.
+    
+    The Windows preflight still lacks an eligible Hyper-V host, usable inventory access and approved staged media. The local LDAP smoke supplies Babel-only lab evidence. The licensed client/reference comparisons and full P00-01 acceptance are blocked.
+
+**Changed files:**
+
+- dashboard/progress.json
+- docs/phase-00-progress.md
+- docs/reference-use-review.md
+- docs/validation/p00-01-conformance.md
+- docs/validation/p00-01-ldap-smoke.md
+- docs/validation/p00-01.md
+- lab/compatibility.json
+- lab/conformance-evidence.json
+- lab/specification-pins.json
+- scripts/check\_conformance.py
+- scripts/check\_state\_security.py
+- tests/test\_conformance.py
+- tests/test\_state\_security.py
+
+#### Proposed W71 · Verify additional protocol mappings and enumerate conformance blockers
+
+**Requirements:** P00-01
+
+**How it was done:** Expanded the matrix using the pinned LDAP, DNS, Group Policy, DFSR and Netlogon references. Kept each of PR \#40&\#x27;s 12 unresolved route choices visible. Extended the existing readiness report to enumerate blocking families, profiles, rights, scenarios and approvals.
+
+**Recorded validation:** Verified the exact publisher editions and headings. A locked local release LDAP smoke passed anonymous RootDSE and refusal assertions. The isolated lab preflight remains blocked and the checker reports 60 unrun product cases.
+
+**Limits and remaining work:** Native production families, all nine exact profiles and all qualified comparison runs remain outstanding. The local LDAP smoke is limited to Babel on loopback. The prior scoped design approval remains recorded.
+
+**PR-head evidence:** [docs/validation/p00-01-conformance.md](<https://github.com/Ise-Tom/Babel/blob/ad551e55dc3e4657dc34ab1e9b6d14b600f890e5/docs/validation/p00-01-conformance.md>) · [docs/validation/p00-01-ldap-smoke.md](<https://github.com/Ise-Tom/Babel/blob/ad551e55dc3e4657dc34ab1e9b6d14b600f890e5/docs/validation/p00-01-ldap-smoke.md>) · [lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/ad551e55dc3e4657dc34ab1e9b6d14b600f890e5/lab/compatibility.json>) · [scripts/check\_conformance.py](<https://github.com/Ise-Tom/Babel/blob/ad551e55dc3e4657dc34ab1e9b6d14b600f890e5/scripts/check_conformance.py>)
+
+
+</details>
 
 
 ## Phase 00
@@ -88,6 +138,8 @@ Ise-Tom approved the scoped matrix design on 22 November 2026. The full P00-01 g
 **Acceptance review:** Ise-Tom \(project owner, explicit PR \#40 review\), 2026-11-22. Scoped approval covers ownership, mapped exchanges and workflows, expected success and refusal, required evidence and tracking of unresolved mappings across the 30 existing families. Full P00-01 exit, exact platform qualification, licensed real-client evidence and production compatibility remain open. Owner review: https://github.com/Ise-Tom/Babel/pull/40\#pullrequestreview-6012632874 and pinned evidence at https://github.com/Ise-Tom/Babel/blob/93e1dc956263db27d07fe1192e74205c60294032/docs/validation/p00-01.md
 
 **Validation packet:** P00-01 scoped matrix design increment for the 30 existing families. Covers accountable ownership, 60 wire mappings, 12 workflows, expected success/refusal, evidence requirements and tracking of 12 unresolved mappings. Full gate, exact profiles, licensed real-client runs and production compatibility stay open. [Review packet](<https://github.com/Ise-Tom/Babel/blob/93e1dc956263db27d07fe1192e74205c60294032/docs/validation/p00-01.md>)
+
+**Pending PR proposals:** [\#47: Verify P00-01 protocol variants and report conformance blockers](<https://github.com/Ise-Tom/Babel/pull/47>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients; W33: Enforce versioned conformance evidence integrity in CI; W39: Refine phase requirements by independent acceptance obligations; W55: Pin actual public protocol editions and separate reference use from image/patent clearance; W64: Map owned wire operations and unresolved client variants. See the [implementation journal](#implementation-journal).
 
