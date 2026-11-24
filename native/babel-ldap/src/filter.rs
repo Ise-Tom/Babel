@@ -1,4 +1,4 @@
-//! Allocation-free evaluation against the four fixed public laboratory attributes.
+//! Bounded, allocation-free LDAP filter traversal and synthetic RootDSE matching.
 use crate::ber::Cursor;
 use crate::protocol::valid_attribute;
 use crate::{DecodeError, MAX_ATTRIBUTE_BYTES};
@@ -61,8 +61,39 @@ fn present(name: &[u8]) -> FilterResult {
 }
 
 pub(crate) fn evaluate(tag: u8, value: &[u8]) -> Result<FilterResult, DecodeError> {
+    evaluate_with(tag, value, &mut root_leaf)
+}
+
+fn root_leaf(name: &[u8], assertion: Option<&[u8]>) -> FilterResult {
+    use FilterResult::*;
+    let Some(assertion) = assertion else {
+        return present(name);
+    };
+    if !object_class(name) {
+        return if present(name) == Undefined {
+            Undefined
+        } else {
+            Unsupported
+        };
+    }
+    if assertion.contains(&b';') || matches!(assertion, b"*" | b"+") || !valid_attribute(assertion)
+    {
+        return Undefined;
+    }
+    if assertion.eq_ignore_ascii_case(b"top") || assertion == b"2.5.6.0" {
+        Matches
+    } else {
+        NoMatch
+    }
+}
+
+pub(crate) fn evaluate_with(
+    tag: u8,
+    value: &[u8],
+    leaf: &mut impl FnMut(&[u8], Option<&[u8]>) -> FilterResult,
+) -> Result<FilterResult, DecodeError> {
     let mut remaining = MAX_FILTER_NODES;
-    evaluate_node(tag, value, 1, &mut remaining)
+    evaluate_node(tag, value, 1, &mut remaining, leaf)
 }
 
 fn evaluate_node(
@@ -70,6 +101,7 @@ fn evaluate_node(
     value: &[u8],
     depth: usize,
     remaining: &mut usize,
+    leaf: &mut impl FnMut(&[u8], Option<&[u8]>) -> FilterResult,
 ) -> Result<FilterResult, DecodeError> {
     use FilterResult::*;
     if depth > MAX_FILTER_DEPTH || *remaining == 0 {
@@ -80,7 +112,7 @@ fn evaluate_node(
     match tag {
         0x87 => {
             attribute(value)?;
-            Ok(present(value))
+            Ok(leaf(value, None))
         }
         0xa3 => {
             let name = cursor.expect(0x04)?;
@@ -90,26 +122,7 @@ fn evaluate_node(
                 return Err(DecodeError::FilterLimit);
             }
             cursor.finish()?;
-            if !object_class(name) {
-                return Ok(if present(name) == Undefined {
-                    Undefined
-                } else {
-                    Unsupported
-                });
-            }
-            if assertion.contains(&b';')
-                || matches!(assertion, b"*" | b"+")
-                || !valid_attribute(assertion)
-            {
-                return Ok(Undefined);
-            }
-            Ok(
-                if assertion.eq_ignore_ascii_case(b"top") || assertion == b"2.5.6.0" {
-                    Matches
-                } else {
-                    NoMatch
-                },
-            )
+            Ok(leaf(name, Some(assertion)))
         }
         0xa0 | 0xa1 => {
             if cursor.is_empty() {
@@ -120,14 +133,16 @@ fn evaluate_node(
             while !cursor.is_empty() {
                 let (child_tag, child) = cursor.tlv()?;
                 // Always inspect every branch: true/false cannot hide unsupported or invalid input.
-                result =
-                    result.combine(evaluate_node(child_tag, child, depth + 1, remaining)?, and);
+                result = result.combine(
+                    evaluate_node(child_tag, child, depth + 1, remaining, leaf)?,
+                    and,
+                );
             }
             Ok(result)
         }
         0xa2 => {
             let (child_tag, child) = cursor.tlv()?;
-            let result = evaluate_node(child_tag, child, depth + 1, remaining)?;
+            let result = evaluate_node(child_tag, child, depth + 1, remaining, leaf)?;
             cursor.finish()?;
             Ok(match result {
                 Matches => NoMatch,
