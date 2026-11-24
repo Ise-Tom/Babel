@@ -1277,6 +1277,38 @@
         "LICENSE",
         "CONTRIBUTING.md"
       ]
+    },
+    {
+      "id": "reference-guest-local-preflight",
+      "kind": "project_synthetic",
+      "path": "lab/reference-lab/evidence/local-preflight-2026-11-24.json",
+      "sha256": "1ec42e9757d9d511f77b899f76d3b5848ecf85c66aef65b3ceb042a99112777e",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Redacted read-only host inventory and six missing media statuses; no guest or media was accessed.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
+    },
+    {
+      "id": "reference-guest-negative-control",
+      "kind": "project_synthetic",
+      "path": "lab/reference-lab/evidence/guest-collector-synthetic.json",
+      "sha256": "cf8d48ac821704ad5ca4876bfadd701c676e73d3b26e07b5ac7fe55a76dad68d",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Babel-generated missing-report refusal with synthetic run ID and no live resources.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
     }
   ],
   "use_review": {

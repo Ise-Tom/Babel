@@ -229,7 +229,7 @@
     },
     "P00-05": {
       "status": "blocked",
-      "note": "The read-only six-guest Hyper-V preflight and synthetic-tested provision/teardown runner exist. The available Windows host lacks allocatable RAM/disk and this session cannot inventory VMs or switches; approved staged media are absent. Guest installation and DNS/time/discovery probes remain operator work. Two fresh live cycles are unrun."
+      "note": "The six-guest runner and post-install guest setup/evidence collector have synthetic tests. Read-only 24 November preflight remains blocked on host inventory, guest RAM/disk and six approved media entries. Exact guest builds, DNS/time/discovery and denied-egress observations and two fresh complete provision/discovery/teardown cycles are unrun; guest OS/service installation remains operator work."
     },
     "P00-06": {
       "status": "accepted",
@@ -436,11 +436,11 @@
     },
     "P00-12": {
       "status": "blocked",
-      "note": "The host build, candidate Windows patch baselines and official Ubuntu/Debian installer SHA-256s are recorded. Real selected Windows/Linux guest image digests, patched builds and installed packages are still missing. Apple Silicon and Intel separately require eligible Mac hosts and exact image/build/package evidence. The 23 November runner preflight adds only a host platform observation; it supplies no guest build or package evidence."
+      "note": "The host build, candidate Windows patch baselines and official Ubuntu/Debian installer SHA-256s are recorded. Real selected Windows/Linux guest image digests, patched builds and installed packages are still missing. Apple Silicon and Intel separately require eligible Mac hosts and exact image/build/package evidence. The 23 November runner preflight adds only a host platform observation; it supplies no guest build or package evidence. A 24 November host-only preflight was repeated; no booted guest build, kernel or package pin was observed."
     },
     "P00-16": {
       "status": "blocked",
-      "note": "Reviewed the uses of all 21 pinned editions, mapped observed publisher programs, and checked the actual source archive and 15 project-owned fixtures. Proposed lab assets now have use-specific terms and Linux publisher digest pins. Exact Windows entitlements, eligible Apple hardware and license scope, staged Linux components and host terms, implementation patent/program scope and external fixture/capture rights remain open. The prerelease guard excludes vendor assets. The runner adds only project-owned synthetic plan/test text; no new image entitlement or vendor asset was observed."
+      "note": "Reviewed the uses of all 21 pinned editions, mapped observed publisher programs, and checked the actual source archive and 15 project-owned fixtures. Proposed lab assets now have use-specific terms and Linux publisher digest pins. Exact Windows entitlements, eligible Apple hardware and license scope, staged Linux components and host terms, implementation patent/program scope and external fixture/capture rights remain open. The prerelease guard excludes vendor assets. The runner adds only project-owned synthetic plan/test text; no new image entitlement or vendor asset was observed. Guest bundle preparation requires private per-update rights, terms and digest proof before copying; no publisher update bytes or new entitlement were supplied in this review."
     },
     "P00-17": {
       "status": "accepted",
@@ -3234,6 +3234,46 @@
       "problems": [
         "I04"
       ]
+    },
+    {
+      "id": "W74",
+      "title": "Bind isolated guest setup and discovery reports to the Hyper-V run",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P00-05",
+        "P00-12",
+        "P00-16"
+      ],
+      "how": "Recorded media pins and host discovery in the runner journal. Added private six-guest bundles with rights/digest-checked offline updates, PowerShell/Linux post-install configuration and probes, checkpointed reports, and a collector requiring every guest result plus teardown.",
+      "verification": "Synthetic tests cover complete report structure, absent/failed/interrupted steps, mismatched run/build/DNS/time/probe values, unapproved/changed updates and incomplete teardown. Local PowerShell parsing, Python lint/type, documentation and dashboard checks pass. The 24 November read-only preflight and missing-report negative control retain exact blocked results.",
+      "limitations": "No approved host, scoped VM/switch inventory access, six licensed ISOs or staged update rights were supplied. No real guest setup, platform observation or live cycle was executed. Guest OS/AD DS/Babel services and independent evidence review remain operator/qualification work.",
+      "source_revision": "040a77d92a1137ce6099ea7484bbc1ececc4e2b0",
+      "sources": [
+        {
+          "path": "docs/validation/p00-05-guest-probes.md",
+          "label": "Guest setup and collector contract"
+        },
+        {
+          "path": "lab/reference-lab/evidence/local-preflight-2026-11-24.json",
+          "label": "Fresh read-only host preflight"
+        },
+        {
+          "path": "lab/reference-lab/evidence/guest-collector-synthetic.json",
+          "label": "Missing-report negative control"
+        },
+        {
+          "path": "scripts/reference_guest_evidence.py",
+          "label": "Run-bound bundle and collector"
+        },
+        {
+          "path": "tests/test_reference_guest_evidence.py",
+          "label": "Synthetic completion/refusal tests"
+        }
+      ],
+      "problems": [
+        "I04"
+      ]
     }
   ],
   "problems": [
@@ -3315,10 +3355,14 @@
         "P02-10",
         "P00-12"
       ],
-      "detail": "The synthetic-tested runner and plan exist, but the 23 November preflight still found insufficient RAM/disk, unavailable VM/switch inventory and no approved media. Guest installation/configuration and all live discovery probes are unrun. The Windows/Linux lab needs exact authorized images and platform pins; macOS remains a separate lane.",
+      "detail": "The six-guest runner and guest setup/collector exist with synthetic checks. The 24 November preflight still finds unavailable VM/switch inventory, insufficient free guest RAM/disk and six absent approved ISOs. Real Windows/Linux guest builds/packages, isolated DNS/time and denied-egress/discovery outcomes, and both live cycles remain unrun.",
       "resolution": "",
-      "next_action": "Supply an eligible x86-64 Hyper-V host, scoped VM/switch operator access and a private rights-reviewed manifest with six local ISO digests and offline package pins. Finish guest setup and independently record two fresh provision/discovery/teardown cycles. Qualify actual platform packages and client behavior separately.",
+      "next_action": "Supply an eligible x86-64 Hyper-V host with scoped VM/switch access and capacity, approved six-guest ISOs and rights-reviewed staged updates. Install guest OS and DC/Babel services, then independently run and review two fresh provision, guest setup/discovery and teardown cycles.",
       "sources": [
+        {
+          "path": "docs/validation/p00-05-guest-probes.md",
+          "label": "Guest setup and run-bound cycle evidence"
+        },
         {
           "path": "docs/validation/p00-05-runner.md",
           "label": "Runner plan, synthetic tests and blocked live gate"
