@@ -51,9 +51,9 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-24T23:05:39\+01:00.
+GitHub metadata checked: 2026-11-24T23:06:14\+01:00.
 
-**Current main CI: in\_progress.** A failed build is shown here; it does not qualify a public deployment or product release.
+**Current main CI: queued.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#53 · Add run-bound guest setup and P00-05 evidence collector](<https://github.com/Ise-Tom/Babel/pull/53>)
 
@@ -232,7 +232,7 @@ No structured work increment delta was imported; inspect the description/files.
 
 ### [\#50 · Bump ruff from 0.17.5 to 0.17.6](<https://github.com/Ise-Tom/Babel/pull/50>)
 
-**In review · Pending merge · CI: queued** · Head 44f994e
+**In review · Pending merge · CI: in\_progress** · Head 44f994e
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
