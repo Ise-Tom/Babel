@@ -51,13 +51,13 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-24T23:10:03\+01:00.
+GitHub metadata checked: 2026-11-24T23:11:00\+01:00.
 
 **Current main CI: in\_progress.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#51 · Bump coverage from 7.17.3 to 7.17.4](<https://github.com/Ise-Tom/Babel/pull/51>)
 
-**In review · Pending merge · CI: success** · Head a460a60
+**In review · Pending merge · CI: in\_progress** · Head 64e9830
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -159,26 +159,12 @@ GitHub metadata checked: 2026-11-24T23:10:03\+01:00.
 
 No structured work increment delta was imported; inspect the description/files.
 
-#### Proposed problem update: I04 · Eligible reference lab host, authorized media and platform runs are missing
-
-**Proposed status:** open
-
-The synthetic-tested runner and plan exist, but the 23 November preflight still found insufficient RAM/disk, unavailable VM/switch inventory and no approved media. Guest installation/configuration and all live discovery probes are unrun. The Windows/Linux lab needs exact authorized images and platform pins; macOS remains a separate lane.
-
-**Resolution:** Still open
-
-**Next action:** Supply an eligible x86-64 Hyper-V host, scoped VM/switch operator access and a private rights-reviewed manifest with six local ISO digests and offline package pins. Finish guest setup and independently record two fresh provision/discovery/teardown cycles. Qualify actual platform packages and client behavior separately.
-
-**Provenance:** Explicitly outstanding; no Windows test is marked passed.
-
-[docs/validation/p00-05-runner.md](<https://github.com/Ise-Tom/Babel/blob/a460a60af2040f2b9386aecf8a44eda86d32dea7/docs/validation/p00-05-runner.md>) · [docs/validation/p00-05-p00-12.md](<https://github.com/Ise-Tom/Babel/blob/a460a60af2040f2b9386aecf8a44eda86d32dea7/docs/validation/p00-05-p00-12.md>) · [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/a460a60af2040f2b9386aecf8a44eda86d32dea7/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/a460a60af2040f2b9386aecf8a44eda86d32dea7/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/a460a60af2040f2b9386aecf8a44eda86d32dea7/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/a460a60af2040f2b9386aecf8a44eda86d32dea7/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/a460a60af2040f2b9386aecf8a44eda86d32dea7/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/a460a60af2040f2b9386aecf8a44eda86d32dea7/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/a460a60af2040f2b9386aecf8a44eda86d32dea7/docs/phase-00-progress.md>)
-
 
 </details>
 
 ### [\#50 · Bump ruff from 0.17.5 to 0.17.6](<https://github.com/Ise-Tom/Babel/pull/50>)
 
-**In review · Pending merge · CI: success** · Head 44f994e
+**In review · Pending merge · CI: queued** · Head 47c6147
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -322,20 +308,6 @@ The synthetic-tested runner and plan exist, but the 23 November preflight still 
 
 No structured work increment delta was imported; inspect the description/files.
 
-#### Proposed problem update: I04 · Eligible reference lab host, authorized media and platform runs are missing
-
-**Proposed status:** open
-
-The synthetic-tested runner and plan exist, but the 23 November preflight still found insufficient RAM/disk, unavailable VM/switch inventory and no approved media. Guest installation/configuration and all live discovery probes are unrun. The Windows/Linux lab needs exact authorized images and platform pins; macOS remains a separate lane.
-
-**Resolution:** Still open
-
-**Next action:** Supply an eligible x86-64 Hyper-V host, scoped VM/switch operator access and a private rights-reviewed manifest with six local ISO digests and offline package pins. Finish guest setup and independently record two fresh provision/discovery/teardown cycles. Qualify actual platform packages and client behavior separately.
-
-**Provenance:** Explicitly outstanding; no Windows test is marked passed.
-
-[docs/validation/p00-05-runner.md](<https://github.com/Ise-Tom/Babel/blob/44f994e6a8004dc8e6ae22c80601213d8fa6a11a/docs/validation/p00-05-runner.md>) · [docs/validation/p00-05-p00-12.md](<https://github.com/Ise-Tom/Babel/blob/44f994e6a8004dc8e6ae22c80601213d8fa6a11a/docs/validation/p00-05-p00-12.md>) · [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/44f994e6a8004dc8e6ae22c80601213d8fa6a11a/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/44f994e6a8004dc8e6ae22c80601213d8fa6a11a/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/44f994e6a8004dc8e6ae22c80601213d8fa6a11a/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/44f994e6a8004dc8e6ae22c80601213d8fa6a11a/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/44f994e6a8004dc8e6ae22c80601213d8fa6a11a/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/44f994e6a8004dc8e6ae22c80601213d8fa6a11a/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/44f994e6a8004dc8e6ae22c80601213d8fa6a11a/docs/phase-00-progress.md>)
-
 
 </details>
 
@@ -430,8 +402,6 @@ The six-guest runner and post-install guest setup/evidence collector have synthe
 **Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/b623ea4ff6e7bc5fda3588dcd83fa60bd3a97604/docs/requirements.md>); [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/b623ea4ff6e7bc5fda3588dcd83fa60bd3a97604/docs/requirements.md>)
 
 **Acceptance evidence required:** Two fresh deployments run discovery probes, isolate egress, clean up resources and publish exact image/build identifiers.
-
-**Pending PR proposals:** [\#51: Bump coverage from 7.17.3 to 7.17.4](<https://github.com/Ise-Tom/Babel/pull/51>); [\#50: Bump ruff from 0.17.5 to 0.17.6](<https://github.com/Ise-Tom/Babel/pull/50>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W26: Prepare an isolated Windows reference lab definition without provisioning; W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients; W69: Inventory reference lab capacity, candidate media and use rights; W73: Plan and test scoped Hyper-V lab provisioning and teardown; W75: Bind isolated guest setup and discovery reports to the Hyper-V run. See the [implementation journal](#implementation-journal).
 
@@ -536,8 +506,6 @@ The host build, candidate Windows patch baselines and official Ubuntu/Debian ins
 **Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/b623ea4ff6e7bc5fda3588dcd83fa60bd3a97604/docs/requirements.md>); [AD-03: Kerberos AS/TGS, service principals, PAC validation, time synchronization, cross-service SSO, constrained delegation, and trust authentication](<https://github.com/Ise-Tom/Babel/blob/b623ea4ff6e7bc5fda3588dcd83fa60bd3a97604/docs/requirements.md>); [AD-04: LDAPv3/LDAPS, AD schema and controls, paging, referrals, ACL filtering, and global catalog](<https://github.com/Ise-Tom/Babel/blob/b623ea4ff6e7bc5fda3588dcd83fa60bd3a97604/docs/requirements.md>); [PLAT-01: All Babel server roles install and operate on the declared Linux baseline without a Windows Server dependency](<https://github.com/Ise-Tom/Babel/blob/b623ea4ff6e7bc5fda3588dcd83fa60bd3a97604/docs/requirements.md>)
 
 **Acceptance evidence required:** Edition, architecture, OS/build, package and image identifiers are explicit; missing profiles cannot qualify compatibility.
-
-**Pending PR proposals:** [\#51: Bump coverage from 7.17.3 to 7.17.4](<https://github.com/Ise-Tom/Babel/pull/51>); [\#50: Bump ruff from 0.17.5 to 0.17.6](<https://github.com/Ise-Tom/Babel/pull/50>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W69: Inventory reference lab capacity, candidate media and use rights; W73: Plan and test scoped Hyper-V lab provisioning and teardown; W75: Bind isolated guest setup and discovery reports to the Hyper-V run. See the [implementation journal](#implementation-journal).
 
@@ -712,8 +680,6 @@ Windows lab, DNS/authentication and membership implementation are missing.
 **Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/b623ea4ff6e7bc5fda3588dcd83fa60bd3a97604/docs/requirements.md>); [AD-08: Required Netlogon, SAMR, LSA, SMB and DCE/RPC behavior for domain membership and administration](<https://github.com/Ise-Tom/Babel/blob/b623ea4ff6e7bc5fda3588dcd83fa60bd3a97604/docs/requirements.md>)
 
 **Acceptance evidence required:** A supported Windows client joins, logs in and rotates its machine password; unsigned/unauthorized membership requests fail.
-
-**Pending PR proposals:** [\#51: Bump coverage from 7.17.3 to 7.17.4](<https://github.com/Ise-Tom/Babel/pull/51>); [\#50: Bump ruff from 0.17.5 to 0.17.6](<https://github.com/Ise-Tom/Babel/pull/50>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W26: Prepare an isolated Windows reference lab definition without provisioning. See the [implementation journal](#implementation-journal).
 
@@ -970,8 +936,6 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/b623ea4ff6e7bc5fda3588dcd83fa60bd3a97604/docs/requirements.md>); [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/b623ea4ff6e7bc5fda3588dcd83fa60bd3a97604/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/b623ea4ff6e7bc5fda3588dcd83fa60bd3a97604/docs/requirements.md>)
 
 **Acceptance evidence required:** Every AD contract row has real-client evidence with exact builds/spec revisions and no unexplained failure, skip or unrun acceptance case.
-
-**Pending PR proposals:** [\#51: Bump coverage from 7.17.3 to 7.17.4](<https://github.com/Ise-Tom/Babel/pull/51>); [\#50: Bump ruff from 0.17.5 to 0.17.6](<https://github.com/Ise-Tom/Babel/pull/50>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
