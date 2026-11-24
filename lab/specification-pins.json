@@ -1293,6 +1293,21 @@
         "LICENSE",
         "CONTRIBUTING.md"
       ]
+    },
+    {
+      "id": "p01-04-native-ldap-directory-probe",
+      "kind": "project_synthetic",
+      "path": "lab/p01-04-ldap-directory-smoke.json",
+      "sha256": "11851e4d56d957cb37b030a81bb91f5ddd94f209dfcd725199e7539b7d83ada2",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution"
+      ],
+      "review_evidence": "Original Babel observations from its synthetic LDAP fixture and independent ldap3 client. The report excludes cookie values, credentials and external captures.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
     }
   ],
   "use_review": {

@@ -3247,6 +3247,7 @@
       "how": "Composed the dependency-free LDAP wire/transport library with the accepted directory API in a separate loopback binary. Added declared projection, base/one/subtree selection, matching, connection-local paging and controlled refusals.",
       "verification": "An independent ldap3 probe passed 40 decoded client checks on the compiled release binary, including RootDSE, returned fixture attributes and paging/filter/base/referral negatives. Required CI also probes the instrumented and archive-extracted binaries.",
       "limitations": "The synthetic ldap-directory Search, paging and critical-control routes run. General authorization, schema, Compare, referrals, network writes and pinned client/reference evidence remain open. P01-04 stays in progress.",
+      "source_revision": "1d3542abd208f0d8c502d3ca2089b38a2da82eca",
       "sources": [
         {
           "path": "docs/validation/p01-04.md",
@@ -3259,6 +3260,10 @@
         {
           "path": "lab/compatibility.json",
           "label": "P00-01 LDAP routes"
+        },
+        {
+          "path": "lab/p01-04-ldap-directory-smoke.json",
+          "label": "Retained LDAP inputs, decoded replies and outcomes"
         }
       ],
       "problems": [
