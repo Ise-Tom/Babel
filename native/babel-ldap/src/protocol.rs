@@ -1,5 +1,6 @@
 use crate::ber::{Cursor, octets, tlv, uint};
-use crate::filter::{FilterResult, evaluate};
+pub use crate::controls::{COOKIE_BYTES, PageRequest, SearchControls};
+use crate::filter::{FilterResult, evaluate, evaluate_with};
 use crate::{MAX_ATTRIBUTE_BYTES, MAX_ATTRIBUTES, MAX_FRAME_BYTES};
 
 /// Static error categories never contain request bytes or credentials.
@@ -30,6 +31,7 @@ pub enum Operation {
         filter: FilterResult,
         types_only: bool,
         attributes: Vec<Vec<u8>>,
+        directory: Option<DirectorySearch>,
     },
     Unbind,
 }
@@ -38,6 +40,37 @@ pub enum Operation {
 pub struct Request {
     pub message_id: u32,
     pub operation: Operation,
+    pub controls: SearchControls,
+}
+
+/// The alternative listener retains bounded search input for matching and cursor binding.
+#[derive(Clone, PartialEq, Eq)]
+pub struct DirectorySearch {
+    base: Vec<u8>,
+    filter: Vec<u8>,
+    filter_tag: u8,
+    pub deref: u32,
+    pub size_limit: u32,
+    time_limit: u32,
+}
+
+impl std::fmt::Debug for DirectorySearch {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("DirectorySearch")
+    }
+}
+
+impl DirectorySearch {
+    pub fn base(&self) -> Result<&str, std::str::Utf8Error> {
+        std::str::from_utf8(&self.base)
+    }
+
+    pub fn evaluate(
+        &self,
+        mut leaf: impl FnMut(&[u8], Option<&[u8]>) -> FilterResult,
+    ) -> Result<FilterResult, DecodeError> {
+        evaluate_with(self.filter_tag, &self.filter, &mut leaf)
+    }
 }
 
 pub(crate) fn valid_attribute(name: &[u8]) -> bool {
@@ -65,6 +98,15 @@ pub(crate) fn valid_attribute(name: &[u8]) -> bool {
 
 /// Decode one complete, bounded LDAPMessage without recursion or credential copies.
 pub fn decode(frame: &[u8]) -> Result<Request, DecodeError> {
+    decode_with(frame, false)
+}
+
+/// Decode in the synthetic directory listener, including bounded search controls.
+pub fn decode_directory(frame: &[u8]) -> Result<Request, DecodeError> {
+    decode_with(frame, true)
+}
+
+fn decode_with(frame: &[u8], directory_reads: bool) -> Result<Request, DecodeError> {
     if frame.len() > MAX_FRAME_BYTES {
         return Err(DecodeError::TooLarge);
     }
@@ -104,11 +146,17 @@ pub fn decode(frame: &[u8]) -> Result<Request, DecodeError> {
             if scope > 2 || deref > 3 {
                 return Err(DecodeError::InvalidValue);
             }
-            operation.uint(0x02)?; // sizeLimit: the subset returns at most one entry.
-            operation.uint(0x02)?; // timeLimit: bounded server-side independently.
+            let size_limit = operation.uint(0x02)?;
+            let time_limit = operation.uint(0x02)?;
             let types_only = operation.boolean()?;
-            let (filter_tag, filter) = operation.tlv()?;
-            let filter = evaluate(filter_tag, filter)?;
+            let (filter_tag, filter_bytes) = operation.tlv()?;
+            let filter = if directory_reads && !base.is_empty() {
+                evaluate_with(filter_tag, filter_bytes, &mut |_, _| {
+                    FilterResult::Undefined
+                })?
+            } else {
+                evaluate(filter_tag, filter_bytes)?
+            };
             let mut names = Cursor::new(operation.expect(0x30)?);
             let mut attributes = Vec::new();
             while !names.is_empty() {
@@ -128,6 +176,14 @@ pub fn decode(frame: &[u8]) -> Result<Request, DecodeError> {
                 filter,
                 types_only,
                 attributes,
+                directory: (directory_reads && !base.is_empty()).then(|| DirectorySearch {
+                    base: base.to_vec(),
+                    filter_tag,
+                    filter: filter_bytes.to_vec(),
+                    deref,
+                    size_limit,
+                    time_limit,
+                }),
             }
         }
         0x42 => {
@@ -136,17 +192,23 @@ pub fn decode(frame: &[u8]) -> Result<Request, DecodeError> {
         }
         _ => return Err(DecodeError::UnsupportedOperation),
     };
-    if !message.is_empty() {
-        let (tag, _) = message.tlv()?;
-        return Err(if tag == 0xa0 {
-            DecodeError::UnsupportedControls
-        } else {
-            DecodeError::TrailingData
-        });
-    }
+    let controls = if message.is_empty() {
+        SearchControls::None
+    } else {
+        let (tag, encoded) = message.tlv()?;
+        if tag != 0xa0 {
+            return Err(DecodeError::TrailingData);
+        }
+        if !directory_reads || !matches!(operation, Operation::Search { .. }) {
+            return Err(DecodeError::UnsupportedControls);
+        }
+        message.finish()?;
+        crate::controls::decode(encoded)?
+    };
     Ok(Request {
         message_id,
         operation,
+        controls,
     })
 }
 
@@ -163,39 +225,74 @@ fn result(id: u32, tag: u8, code: u32, diagnostic: &[u8]) -> Vec<u8> {
     message(id, tag, &body)
 }
 
-fn entry(id: u32, requested: &[Vec<u8>], types_only: bool) -> Vec<u8> {
+/// Encode a synthetic search result. The caller supplies only approved public fields.
+pub fn search_entry<'a>(
+    id: u32,
+    dn: &str,
+    fields: impl IntoIterator<Item = (&'a str, &'a str, bool)>,
+    requested: &[Vec<u8>],
+    types_only: bool,
+) -> Vec<u8> {
     let user_all = requested.is_empty() || requested.iter().any(|a| a == b"*");
     let operational_all = requested.iter().any(|a| a == b"+");
     let mut attributes = Vec::new();
-    for (name, value, operational) in [
-        (b"objectClass".as_slice(), b"top".as_slice(), false),
-        (b"supportedLDAPVersion".as_slice(), b"3".as_slice(), true),
-        (b"vendorName".as_slice(), b"Babel".as_slice(), true),
-        (
-            b"vendorVersion".as_slice(),
-            concat!(env!("CARGO_PKG_VERSION"), "-lab").as_bytes(),
-            true,
-        ),
-    ] {
+    for (name, value, operational) in fields {
         if (operational && operational_all)
             || (!operational && user_all)
-            || requested.iter().any(|a| a.eq_ignore_ascii_case(name))
+            || requested
+                .iter()
+                .any(|a| a.eq_ignore_ascii_case(name.as_bytes()))
         {
-            let mut attribute = octets(name);
-            attribute.extend(tlv(
-                0x31,
-                &if types_only {
-                    Vec::new()
-                } else {
-                    octets(value)
-                },
-            ));
+            let mut attribute = octets(name.as_bytes());
+            let values = if types_only {
+                Vec::new()
+            } else {
+                octets(value.as_bytes())
+            };
+            attribute.extend(tlv(0x31, &values));
             attributes.extend(tlv(0x30, &attribute));
         }
     }
-    let mut body = octets(b"");
+    let mut body = octets(dn.as_bytes());
     body.extend(tlv(0x30, &attributes));
     message(id, 0x64, &body)
+}
+
+pub fn search_done(
+    id: u32,
+    code: u32,
+    matched_dn: &str,
+    diagnostic: &[u8],
+    page_cookie: Option<&[u8]>,
+) -> Vec<u8> {
+    let mut payload = uint(0x0a, code);
+    payload.extend(octets(matched_dn.as_bytes()));
+    payload.extend(octets(diagnostic));
+    let mut body = uint(0x02, id);
+    body.extend(tlv(0x65, &payload));
+    if let Some(cookie) = page_cookie {
+        body.extend(crate::controls::response(cookie));
+    }
+    tlv(0x30, &body)
+}
+
+fn root_entry(id: u32, attributes: &[Vec<u8>], types_only: bool) -> Vec<u8> {
+    search_entry(
+        id,
+        "",
+        [
+            ("objectClass", "top", false),
+            ("supportedLDAPVersion", "3", true),
+            ("vendorName", "Babel", true),
+            (
+                "vendorVersion",
+                concat!(env!("CARGO_PKG_VERSION"), "-lab"),
+                true,
+            ),
+        ],
+        attributes,
+        types_only,
+    )
 }
 
 /// Return only static public lab data. No credential, account or AD-capability claims.
@@ -220,7 +317,20 @@ pub fn respond(request: &Request) -> Option<Vec<u8>> {
             filter,
             types_only,
             attributes,
-        } => Some(if !root {
+            ..
+        } => Some(if request.controls == SearchControls::Invalid {
+            result(request.message_id, 0x65, 2, b"Invalid search controls")
+        } else if matches!(
+            request.controls,
+            SearchControls::Unavailable | SearchControls::Page(PageRequest { critical: true, .. })
+        ) {
+            result(
+                request.message_id,
+                0x65,
+                12,
+                b"Requested critical control is unavailable",
+            )
+        } else if !root {
             result(
                 request.message_id,
                 0x65,
@@ -237,7 +347,7 @@ pub fn respond(request: &Request) -> Option<Vec<u8>> {
         } else if *filter != FilterResult::Matches {
             result(request.message_id, 0x65, 0, b"")
         } else {
-            let mut output = entry(request.message_id, attributes, *types_only);
+            let mut output = root_entry(request.message_id, attributes, *types_only);
             output.extend(result(request.message_id, 0x65, 0, b""));
             output
         }),

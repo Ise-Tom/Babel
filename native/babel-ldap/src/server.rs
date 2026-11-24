@@ -1,5 +1,5 @@
 //! Single-connection-at-a-time laboratory transport with total session budgets.
-use crate::{MAX_FRAME_BYTES, decode, respond};
+use crate::{DecodeError, MAX_FRAME_BYTES, Request, decode, respond};
 use std::io::{self, Read, Write};
 use std::net::{SocketAddr, TcpListener, TcpStream};
 use std::time::{Duration, Instant};
@@ -86,6 +86,15 @@ impl Write for DeadlineStream {
 }
 
 pub fn serve_connection(stream: TcpStream, budget: Duration) -> io::Result<()> {
+    serve_connection_with(stream, budget, decode, respond)
+}
+
+fn serve_connection_with(
+    stream: TcpStream,
+    budget: Duration,
+    decode: fn(&[u8]) -> Result<Request, DecodeError>,
+    mut handle: impl FnMut(&Request) -> Option<Vec<u8>>,
+) -> io::Result<()> {
     let mut stream = DeadlineStream {
         stream,
         deadline: Instant::now() + budget,
@@ -100,7 +109,7 @@ pub fn serve_connection(stream: TcpStream, budget: Duration) -> io::Result<()> {
                 "invalid or unsupported LDAP frame",
             )
         })?;
-        let Some(reply) = respond(&request) else {
+        let Some(reply) = handle(&request) else {
             return Ok(());
         };
         stream.write_all(&reply)?;
@@ -109,6 +118,16 @@ pub fn serve_connection(stream: TcpStream, budget: Duration) -> io::Result<()> {
 }
 
 pub fn serve(address: SocketAddr, max_connections: Option<usize>) -> io::Result<()> {
+    serve_with(address, max_connections, decode, || respond)
+}
+
+/// Run a loopback listener with a fresh handler for every accepted connection.
+pub fn serve_with<H: FnMut(&Request) -> Option<Vec<u8>>>(
+    address: SocketAddr,
+    max_connections: Option<usize>,
+    decode: fn(&[u8]) -> Result<Request, DecodeError>,
+    new_session: impl Fn() -> H,
+) -> io::Result<()> {
     if !address.ip().is_loopback() {
         return Err(io::Error::new(
             io::ErrorKind::PermissionDenied,
@@ -122,7 +141,7 @@ pub fn serve(address: SocketAddr, max_connections: Option<usize>) -> io::Result<
     while max_connections.is_none_or(|max| accepted < max) {
         let (stream, _) = listener.accept()?;
         accepted += 1;
-        if serve_connection(stream, SESSION_BUDGET).is_err() {
+        if serve_connection_with(stream, SESSION_BUDGET, decode, new_session()).is_err() {
             // Static diagnostic: never log a frame, DN, credential or peer payload.
             eprintln!("Lab connection closed: invalid, unsupported or expired session");
         }

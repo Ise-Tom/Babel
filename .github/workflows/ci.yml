@@ -92,8 +92,8 @@ jobs:
           retention-days: 14
       - name: Formatting, lint and strict types
         run: |
-          ruff format --check scripts tests experiments/postgres_store native/babel-dns/tests/probe_dns.py native/babel-ldap/tests/smoke_ldap.py native/babel-tls-lab/tests/interop_tls.py
-          ruff check scripts tests experiments/postgres_store native/babel-dns/tests/probe_dns.py native/babel-ldap/tests/smoke_ldap.py native/babel-tls-lab/tests/interop_tls.py
+          ruff format --check scripts tests experiments/postgres_store native/babel-dns/tests/probe_dns.py native/babel-ldap/tests/smoke_ldap.py native/babel-ldap-directory/tests/probe_reads.py native/babel-tls-lab/tests/interop_tls.py
+          ruff check scripts tests experiments/postgres_store native/babel-dns/tests/probe_dns.py native/babel-ldap/tests/smoke_ldap.py native/babel-ldap-directory/tests/probe_reads.py native/babel-tls-lab/tests/interop_tls.py
           mypy
       - name: Generate and independently audit the full synthetic workload fixture
         run: |
@@ -158,7 +158,7 @@ jobs:
       - name: Python static security analysis
         run: |
           mkdir -p reports
-          bandit -c pyproject.toml -r scripts experiments/postgres_store/experiment.py native/babel-dns/tests/probe_dns.py native/babel-tls-lab/tests/interop_tls.py -f json -o reports/bandit.json
+          bandit -c pyproject.toml -r scripts experiments/postgres_store/experiment.py native/babel-dns/tests/probe_dns.py native/babel-ldap-directory/tests/probe_reads.py native/babel-tls-lab/tests/interop_tls.py -f json -o reports/bandit.json
       - name: Workflow security analysis
         if: ${{ !cancelled() }}
         run: zizmor --offline --strict-collection --format json .github/workflows > reports/zizmor.json

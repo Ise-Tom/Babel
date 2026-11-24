@@ -1,0 +1,12 @@
+[package]
+name = "babel-ldap-directory"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.100"
+publish = false
+license.workspace = true
+
+[dependencies]
+babel-directory = { path = "../babel-directory", version = "=0.1.0" }
+babel-ldap = { path = "../babel-ldap", version = "=0.1.0" }
+getrandom = "=0.4.3"

@@ -44,12 +44,14 @@ jobs:
       - name: Unit, negative, property and transport tests
         run: |
           cargo test --workspace --all-targets --locked
-          cargo test -p babel-directory -p babel-dns -p babel-ldap --all-targets --release --locked
+          cargo test -p babel-directory -p babel-dns -p babel-ldap -p babel-ldap-directory --all-targets --release --locked
       - name: Release build and independent DNS and LDAP clients
         run: |
           cargo build --workspace --release --locked
           python native/babel-ldap/tests/smoke_ldap.py target/release/babel-ldap
           mkdir -p reports
+          python native/babel-ldap-directory/tests/probe_reads.py target/release/babel-ldap-directory \
+            --revision "$GITHUB_SHA" --output reports/p01-04-ldap-directory.json
           python native/babel-dns/tests/probe_dns.py target/release/babel-dns \
             --revision "$GITHUB_SHA" --output reports/p01-13-dns-discovery.json
           BABEL_TLS_REPORT=reports/tls-independent-interop.json \
@@ -88,6 +90,11 @@ jobs:
           LLVM_PROFILE_FILE="$PWD/target/llvm-cov-target/dns-smoke-%p-%m.profraw" \
             python native/babel-dns/tests/probe_dns.py target/llvm-cov-target/debug/babel-dns \
               --revision "$GITHUB_SHA" --output reports/dns-instrumented-probe.json
+          LLVM_PROFILE_FILE="$PWD/target/llvm-cov-target/ldap-directory-%p-%m.profraw" \
+            python native/babel-ldap-directory/tests/probe_reads.py target/llvm-cov-target/debug/babel-ldap-directory \
+              --revision "$GITHUB_SHA" --output reports/ldap-directory-instrumented.json
+          cargo llvm-cov report --package babel-ldap-directory --ignore-filename-regex '/tests/|/main.rs$' \
+            --fail-under-lines 90 --lcov --output-path reports/ldap-directory-coverage.lcov
           cargo llvm-cov report --package babel-dns --ignore-filename-regex '/tests/|/main.rs$' \
             --fail-under-lines 90 --lcov --output-path reports/dns-discovery-coverage.lcov
           cargo llvm-cov report --package babel-directory --ignore-filename-regex '/tests/' \
@@ -102,10 +109,11 @@ jobs:
           cargo metadata --locked --filter-platform x86_64-unknown-linux-gnu --format-version 1 > "$RUNNER_TEMP/babel-cargo-metadata.json"
           babel_lab_sysroot=$(rustc --print sysroot)
           python3 scripts/collect_native_notices.py --metadata "$RUNNER_TEMP/babel-cargo-metadata.json" \
-            --rust-docs "$babel_lab_sysroot/share/doc/rust" --packages babel-ldap babel-tls-lab babel-dns \
+            --rust-docs "$babel_lab_sysroot/share/doc/rust" --packages babel-ldap babel-tls-lab babel-dns babel-ldap-directory \
             --output "$RUNNER_TEMP/babel-protocol-labs/notices"
           babel_notice_manifest_sha=$(sha256sum "$RUNNER_TEMP/babel-protocol-labs/notices/manifest.json" | cut -d ' ' -f1)
-          cp target/release/babel-ldap target/release/babel-tls-lab target/release/babel-dns "$RUNNER_TEMP/babel-protocol-labs/"
+          cp target/release/babel-ldap target/release/babel-tls-lab target/release/babel-dns \
+            target/release/babel-ldap-directory "$RUNNER_TEMP/babel-protocol-labs/"
           tar -cf reports/babel-protocol-labs-linux-x86_64.tar -C "$RUNNER_TEMP/babel-protocol-labs" .
           (cd reports && sha256sum babel-protocol-labs-linux-x86_64.tar > native-SHA256SUMS && sha256sum -c native-SHA256SUMS)
           mkdir -p "$RUNNER_TEMP/babel-native-extracted"
@@ -113,6 +121,8 @@ jobs:
           python3 scripts/collect_native_notices.py --verify --output "$RUNNER_TEMP/babel-native-extracted/notices" \
             --expected-sha256 "$babel_notice_manifest_sha"
           python native/babel-ldap/tests/smoke_ldap.py "$RUNNER_TEMP/babel-native-extracted/babel-ldap"
+          python native/babel-ldap-directory/tests/probe_reads.py "$RUNNER_TEMP/babel-native-extracted/babel-ldap-directory" \
+            --revision "$GITHUB_SHA" --output reports/ldap-directory-packaged-probe.json
           python native/babel-dns/tests/probe_dns.py "$RUNNER_TEMP/babel-native-extracted/babel-dns" \
             --revision "$GITHUB_SHA" --output reports/dns-packaged-probe.json
           BABEL_TLS_REPORT=reports/tls-packaged-interop.json \

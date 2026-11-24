@@ -1277,6 +1277,22 @@
         "LICENSE",
         "CONTRIBUTING.md"
       ]
+    },
+    {
+      "id": "ldap-directory-page-fuzz-seed",
+      "kind": "project_synthetic",
+      "path": "fuzz/corpus/ldap_frame/directory-page",
+      "sha256": "3b1da2edeb284e60d854b3efba922ee6cb36c6b653e8df990a77645fa6d5943b",
+      "rights": "owner_selected_project_license",
+      "allowed_uses": [
+        "source_distribution",
+        "unit_testing"
+      ],
+      "review_evidence": "Project-generated BER search/control input for the synthetic LDAP profile; no vendor or client capture.",
+      "publisher_terms": [
+        "LICENSE",
+        "CONTRIBUTING.md"
+      ]
     }
   ],
   "use_review": {

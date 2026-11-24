@@ -1,7 +1,8 @@
-//! Bounded, read-only LDAP RootDSE laboratory subset. Not a domain controller.
+//! Bounded LDAP framing, RootDSE, and wire support for the synthetic read adapter.
 #![forbid(unsafe_code)]
 
 mod ber;
+mod controls;
 mod filter;
 pub mod protocol;
 pub mod server;

@@ -336,7 +336,7 @@
     },
     "P01-04": {
       "status": "in_progress",
-      "note": "Loopback bounded RootDSE discovery/filter reads are implemented and tested; directory reads, controls and real-client qualification remain open. DNS discovery is separately tracked in P01-13."
+      "note": "The loopback LDAP directory adapter reads the accepted synthetic fixture through the core API. ldap3 verifies RootDSE, base/one/subtree, allowlisted attributes, matching, paging and referral/invalid-request refusals. General authorization, schema, controls, referral continuation and pinned client comparison remain open."
     },
     "P01-13": {
       "status": "in_progress",
@@ -3229,6 +3229,36 @@
         {
           "path": "tests/test_reference_lab_runner.py",
           "label": "Synthetic lifecycle checks"
+        }
+      ],
+      "problems": [
+        "I04"
+      ]
+    },
+    {
+      "id": "W74",
+      "title": "Read synthetic directory fixtures through native LDAP",
+      "status": "implemented",
+      "kind": "implementation",
+      "requirements": [
+        "P01-04",
+        "P00-01"
+      ],
+      "how": "Composed the dependency-free LDAP wire/transport library with the accepted directory API in a separate loopback binary. Added declared projection, base/one/subtree selection, matching, connection-local paging and controlled refusals.",
+      "verification": "An independent ldap3 probe passed 40 decoded client checks on the compiled release binary, including RootDSE, returned fixture attributes and paging/filter/base/referral negatives. Required CI also probes the instrumented and archive-extracted binaries.",
+      "limitations": "The synthetic ldap-directory Search, paging and critical-control routes run. General authorization, schema, Compare, referrals, network writes and pinned client/reference evidence remain open. P01-04 stays in progress.",
+      "sources": [
+        {
+          "path": "docs/validation/p01-04.md",
+          "label": "Declared LDAP directory read profile and reproduction"
+        },
+        {
+          "path": "native/babel-ldap-directory/tests/probe_reads.py",
+          "label": "Independent LDAP client probe"
+        },
+        {
+          "path": "lab/compatibility.json",
+          "label": "P00-01 LDAP routes"
         }
       ],
       "problems": [
