@@ -51,11 +51,315 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-23T21:51:11\+01:00.
+GitHub metadata checked: 2026-11-24T16:46:36\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
-No open pull requests against main were observed.
+### [\#51 · Bump coverage from 7.17.3 to 7.17.4](<https://github.com/Ise-Tom/Babel/pull/51>)
+
+**In review · Pending merge · CI: queued** · Head fdce01a
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    Bumps [coverage](https://github.com/coveragepy/coveragepy) from 7.17.3 to 7.17.4.
+    <details>
+    <summary>Release notes</summary>
+    <p><em>Sourced from <a href="https://github.com/coveragepy/coveragepy/releases">coverage's releases</a>.</em></p>
+    <blockquote>
+    <h2>7.17.4</h2>
+    <h2>Version 7.17.4 — 2026-11-20</h2>
+    <ul>
+    <li>Fix: since 7.13.1, a parallel data file could be named with the hash of different data than it held, for example when nbval records a notebook’s coverage into pytest-cov’s data file. Combining could then skip it as a duplicate and lose its data. Now the hash comes from the data in the file when it is saved. Fixes <a href="https://redirect.github.com/coveragepy/coveragepy/issues/2370">issue 2370</a> with <a href="https://redirect.github.com/coveragepy/coveragepy/pull/2387">pull 2387</a>.</li>
+    <li>Fix: lines or arcs recorded by other threads while data was being flushed (for example during <code>Coverage.get_data()</code>, <code>Coverage.save()</code>, or dynamic context switches) could be lost. This is now fixed, closing <a href="https://redirect.github.com/coveragepy/coveragepy/issues/2384">issue 2384</a>.</li>
+    <li>Fix: on Python 3.14 with the pure-Python tracer (<code>COVERAGE_CORE=pytrace</code>) and branch measurement, a function that returned right after an <code>except*</code> handler recorded an arc with no line number. Reporting on the data then failed with a <code>TypeError</code>. Now that arc is not recorded. <a href="https://redirect.github.com/coveragepy/coveragepy/pull/2403">pull 2403</a>.</li>
+    <li>Fix: in the JSON report with <code>show_contexts</code>, each function and class had the contexts for every line in the file. Now they only have the contexts for their own lines. Closes <a href="https://redirect.github.com/coveragepy/coveragepy/issues/2374">issue 2374</a>.</li>
+    <li>The first entry in a <code>[paths]</code> list is the result path, and must be an actual file path. If it contained wildcards, the rule could never be used and was silently ignored. It is now reported as a configuration error. Closes <a href="https://redirect.github.com/coveragepy/coveragepy/issues/1531">issue 1531</a>.</li>
+    <li>Fix: a configuration file (<code>.coveragerc</code>, <code>setup.cfg</code>, <code>tox.ini</code> or <code>pyproject.toml</code>) saved with a UTF-8 byte order mark couldn’t be read. Now a leading BOM is ignored. <a href="https://redirect.github.com/coveragepy/coveragepy/pull/2388">pull 2388</a>.</li>
+    </ul>
+    <p>:arrow_right:  PyPI page: <a href="https://pypi.org/project/coverage/7.17.4">coverage 7.17.4</a>.
+    :arrow_right:  To install: <code>python3 -m pip install coverage==7.17.4</code></p>
+    </blockquote>
+    </details>
+    <details>
+    <summary>Changelog</summary>
+    <p><em>Sourced from <a href="https://github.com/coveragepy/coveragepy/blob/main/CHANGES.rst">coverage's changelog</a>.</em></p>
+    <blockquote>
+    <h2>Version 7.17.4 — 2026-11-20</h2>
+    <ul>
+    <li>
+    <p>Fix: since 7.13.1, a parallel data file could be named with the hash of
+    different data than it held, for example when nbval records a notebook's
+    coverage into pytest-cov's data file. Combining could then skip it as a
+    duplicate and lose its data. Now the hash comes from the data in the file
+    when it is saved. Fixes <code>issue 2370</code>_ with <code>pull 2387</code>_.</p>
+    </li>
+    <li>
+    <p>Fix: lines or arcs recorded by other threads while data was being flushed
+    (for example during <code>Coverage.get_data()</code>, <code>Coverage.save()</code>, or dynamic
+    context switches) could be lost. This is now fixed, closing <code>issue 2384</code>_.</p>
+    </li>
+    <li>
+    <p>Fix: on Python 3.14 with the pure-Python tracer (<code>COVERAGE_CORE=pytrace</code>)
+    and branch measurement, a function that returned right after an <code>except*</code>
+    handler recorded an arc with no line number. Reporting on the data then
+    failed with a <code>TypeError</code>. Now that arc is not recorded. <code>pull 2403</code>_.</p>
+    </li>
+    <li>
+    <p>Fix: in the JSON report with <code>show_contexts</code>, each function and class had
+    the contexts for every line in the file. Now they only have the contexts for
+    their own lines. Closes <code>issue 2374</code>_.</p>
+    </li>
+    <li>
+    <p>The first entry in a <code>[paths]</code> list is the result path, and must be an
+    actual file path.  If it contained wildcards, the rule could never be used
+    and was silently ignored.  It is now reported as a configuration error.
+    Closes <code>issue 1531</code>_.</p>
+    </li>
+    <li>
+    <p>Fix: a configuration file (<code>.coveragerc</code>, <code>setup.cfg</code>, <code>tox.ini</code> or
+    <code>pyproject.toml</code>) saved with a UTF-8 byte order mark couldn't be read.
+    Now a leading BOM is ignored. <code>pull 2388</code>_.</p>
+    </li>
+    </ul>
+    <p>.. _issue 1531: <a href="https://redirect.github.com/coveragepy/coveragepy/issues/1531">coveragepy/coveragepy#1531</a>
+    .. _issue 2370: <a href="https://redirect.github.com/coveragepy/coveragepy/issues/2370">coveragepy/coveragepy#2370</a>
+    .. _issue 2374: <a href="https://redirect.github.com/coveragepy/coveragepy/issues/2374">coveragepy/coveragepy#2374</a>
+    .. _issue 2384: <a href="https://redirect.github.com/coveragepy/coveragepy/issues/2384">coveragepy/coveragepy#2384</a>
+    .. _pull 2387: <a href="https://redirect.github.com/coveragepy/coveragepy/pull/2387">coveragepy/coveragepy#2387</a>
+    .. _pull 2388: <a href="https://redirect.github.com/coveragepy/coveragepy/pull/2388">coveragepy/coveragepy#2388</a>
+    .. _pull 2403: <a href="https://redirect.github.com/coveragepy/coveragepy/pull/2403">coveragepy/coveragepy#2403</a></p>
+    <p>.. _changelog-7.17.3:</p>
+    </blockquote>
+    </details>
+    <details>
+    <summary>Commits</summary>
+    <ul>
+    <li><a href="https://github.com/coveragepy/coveragepy/commit/fd8e601e25c1e8dde3440fb019ec08283af1bf78"><code>fd8e601</code></a> docs: sample HTML for 7.17.4</li>
+    <li><a href="https://github.com/coveragepy/coveragepy/commit/1d3dd4bd70ed704723e20edba62fad004b44fafb"><code>1d3dd4b</code></a> docs: prep for 7.17.4</li>
+    <li><a href="https://github.com/coveragepy/coveragepy/commit/ef5624eff2b70e6b388afd3e529c63f22483de44"><code>ef5624e</code></a> refactor: this function is no longer needed</li>
+    <li><a href="https://github.com/coveragepy/coveragepy/commit/faafe4e80f5a03a5da191c17bda321c7c63dfa37"><code>faafe4e</code></a> fix: preserve data recorded by other threads during flush_data <a href="https://redirect.github.com/coveragepy/coveragepy/issues/2384">#2384</a> (<a href="https://redirect.github.com/coveragepy/coveragepy/issues/2397">#2397</a>)</li>
+    <li><a href="https://github.com/coveragepy/coveragepy/commit/475ffad7c2c74e6fb9b8ccbfc63b779e1e348125"><code>475ffad</code></a> fix: reject wildcard result paths in [paths] configuration (<a href="https://redirect.github.com/coveragepy/coveragepy/issues/2367">#2367</a>)</li>
+    <li><a href="https://github.com/coveragepy/coveragepy/commit/ec9e8a0d40924d0fc0e10a16433b5f635e1ba708"><code>ec9e8a0</code></a> build: upgrading ppc64le runner (<a href="https://redirect.github.com/coveragepy/coveragepy/issues/2407">#2407</a>)</li>
+    <li><a href="https://github.com/coveragepy/coveragepy/commit/dc27b7297abc822e6a27eb76755da7c70015bad3"><code>dc27b72</code></a> build: run the kit workflow on pull requests if needed</li>
+    <li><a href="https://github.com/coveragepy/coveragepy/commit/bb70a55e3148fb4e29b5517cd9fffd26cb43a53a"><code>bb70a55</code></a> Merge branch 'nedbat/pytracer-tweaks'</li>
+    <li><a href="https://github.com/coveragepy/coveragepy/commit/ded1001f9c04d2ef205d14aac6e30741e7a6b9ee"><code>ded1001</code></a> test: pytracer.py never gets coverage-measured.</li>
+    <li><a href="https://github.com/coveragepy/coveragepy/commit/44c491f1a55a3b6d978e0e3141ad97f6691701aa"><code>44c491f</code></a> fix: don't record a None line on return after except* with pytrace (<a href="https://redirect.github.com/coveragepy/coveragepy/issues/2403">#2403</a>)</li>
+    <li>Additional commits viewable in <a href="https://github.com/coveragepy/coveragepy/compare/7.17.3...7.17.4">compare view</a></li>
+    </ul>
+    </details>
+    <br />
+    
+    
+    [![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=coverage&package-manager=pip&previous-version=7.17.3&new-version=7.17.4)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)
+    
+    Dependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.
+    
+    [//]: # (dependabot-automerge-start)
+    [//]: # (dependabot-automerge-end)
+    
+    ---
+    
+    <details>
+    <summary>Dependabot commands and options</summary>
+    <br />
+    
+    You can trigger Dependabot actions by commenting on this PR:
+    - `@dependabot rebase` will rebase this PR
+    - `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it
+    - `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency
+    - `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)
+    - `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)
+    - `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)
+    
+    
+    </details>
+
+**Changed files:**
+
+- requirements-ci.in
+- requirements-ci.txt
+
+No structured work increment delta was imported; inspect the description/files.
+
+
+</details>
+
+### [\#50 · Bump ruff from 0.17.5 to 0.17.6](<https://github.com/Ise-Tom/Babel/pull/50>)
+
+**In review · Pending merge · CI: in\_progress** · Head 348f6bb
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    Bumps [ruff](https://github.com/astral-sh/ruff) from 0.17.5 to 0.17.6.
+    <details>
+    <summary>Release notes</summary>
+    <p><em>Sourced from <a href="https://github.com/astral-sh/ruff/releases">ruff's releases</a>.</em></p>
+    <blockquote>
+    <h2>0.17.6</h2>
+    <h2>Release Notes</h2>
+    <p>Released on 2026-11-19.</p>
+    <h3>Preview features</h3>
+    <ul>
+    <li>[<code>flake8-type-checking</code>] Add a fix for <code>runtime-string-union</code> (<code>TC010</code>) (<a href="https://redirect.github.com/astral-sh/ruff/pull/15635">#15635</a>)</li>
+    </ul>
+    <h3>Bug fixes</h3>
+    <ul>
+    <li>Fix handling of parenthesized duplicate items (<code>B033</code>, <code>RUF068</code>) (<a href="https://redirect.github.com/astral-sh/ruff/pull/30493">#30493</a>)</li>
+    <li>[<code>pyflakes</code>] Fix false negative when a name is assigned more than once (<code>F823</code>) (<a href="https://redirect.github.com/astral-sh/ruff/pull/30524">#30524</a>)</li>
+    <li>[<code>pylint</code>] Avoid false positive when collection is modified in loop (<code>PLR1733</code>, <code>PLR1736</code>) (<a href="https://redirect.github.com/astral-sh/ruff/pull/30466">#30466</a>)</li>
+    <li>[<code>ruff</code>] Avoid syntax error in <code>useless-finally</code> fix for inline <code>try</code> bodies (<code>RUF072</code>) (<a href="https://redirect.github.com/astral-sh/ruff/pull/30349">#30349</a>)</li>
+    <li>Treat relative imports from <code>.__future__</code> as ordinary imports (<a href="https://redirect.github.com/astral-sh/ruff/pull/30260">#30260</a>)</li>
+    </ul>
+    <h3>Rule changes</h3>
+    <ul>
+    <li>[<code>flake8-simplify</code>] Avoid redundant <code>bool</code> wrappers in <code>SIM208</code> fixes (<a href="https://redirect.github.com/astral-sh/ruff/pull/30457">#30457</a>)</li>
+    <li>[<code>pyflakes</code>] Ignore <code>__traceback_hide__</code> in <code>unused-variable</code> (<code>F841</code>) (<a href="https://redirect.github.com/astral-sh/ruff/pull/29600">#29600</a>)</li>
+    </ul>
+    <h3>Performance</h3>
+    <ul>
+    <li>Decode in-memory notebooks directly from their source string (<a href="https://redirect.github.com/astral-sh/ruff/pull/30385">#30385</a>)</li>
+    <li>Short-circuit exact qualified-name checks (<a href="https://redirect.github.com/astral-sh/ruff/pull/30058">#30058</a>)</li>
+    <li>Stream JSON diagnostics to the output writer (<a href="https://redirect.github.com/astral-sh/ruff/pull/30384">#30384</a>)</li>
+    </ul>
+    <h3>Documentation</h3>
+    <ul>
+    <li>Fix the multiline string example in Known Deviations from Black (<a href="https://redirect.github.com/astral-sh/ruff/pull/30447">#30447</a>)</li>
+    <li>Include the category in individual rule documentation pages (<a href="https://redirect.github.com/astral-sh/ruff/pull/30503">#30503</a>)</li>
+    </ul>
+    <h3>Other changes</h3>
+    <ul>
+    <li>Update Rust toolchain to 1.100 and MSRV to 1.98 (<a href="https://redirect.github.com/astral-sh/ruff/pull/30416">#30416</a>)</li>
+    </ul>
+    <h3>Contributors</h3>
+    <ul>
+    <li><a href="https://github.com/pseudo-usama"><code>@​pseudo-usama</code></a></li>
+    <li><a href="https://github.com/G26karthik"><code>@​G26karthik</code></a></li>
+    <li><a href="https://github.com/MichaReiser"><code>@​MichaReiser</code></a></li>
+    <li><a href="https://github.com/apathydevil"><code>@​apathydevil</code></a></li>
+    <li><a href="https://github.com/Shivansh-S17"><code>@​Shivansh-S17</code></a></li>
+    <li><a href="https://github.com/charliermarsh"><code>@​charliermarsh</code></a></li>
+    <li><a href="https://github.com/ntBre"><code>@​ntBre</code></a></li>
+    <li><a href="https://github.com/anujdas"><code>@​anujdas</code></a></li>
+    <li><a href="https://github.com/chammika"><code>@​chammika</code></a></li>
+    <li><a href="https://github.com/imryanthedev"><code>@​imryanthedev</code></a></li>
+    <li><a href="https://github.com/Daverball"><code>@​Daverball</code></a></li>
+    </ul>
+    <!-- raw HTML omitted -->
+    </blockquote>
+    <p>... (truncated)</p>
+    </details>
+    <details>
+    <summary>Changelog</summary>
+    <p><em>Sourced from <a href="https://github.com/astral-sh/ruff/blob/main/CHANGELOG.md">ruff's changelog</a>.</em></p>
+    <blockquote>
+    <h2>0.17.6</h2>
+    <p>Released on 2026-11-19.</p>
+    <h3>Preview features</h3>
+    <ul>
+    <li>[<code>flake8-type-checking</code>] Add a fix for <code>runtime-string-union</code> (<code>TC010</code>) (<a href="https://redirect.github.com/astral-sh/ruff/pull/15635">#15635</a>)</li>
+    </ul>
+    <h3>Bug fixes</h3>
+    <ul>
+    <li>Fix handling of parenthesized duplicate items (<code>B033</code>, <code>RUF068</code>) (<a href="https://redirect.github.com/astral-sh/ruff/pull/30493">#30493</a>)</li>
+    <li>[<code>pyflakes</code>] Fix false negative when a name is assigned more than once (<code>F823</code>) (<a href="https://redirect.github.com/astral-sh/ruff/pull/30524">#30524</a>)</li>
+    <li>[<code>pylint</code>] Avoid false positive when collection is modified in loop (<code>PLR1733</code>, <code>PLR1736</code>) (<a href="https://redirect.github.com/astral-sh/ruff/pull/30466">#30466</a>)</li>
+    <li>[<code>ruff</code>] Avoid syntax error in <code>useless-finally</code> fix for inline <code>try</code> bodies (<code>RUF072</code>) (<a href="https://redirect.github.com/astral-sh/ruff/pull/30349">#30349</a>)</li>
+    <li>Treat relative imports from <code>.__future__</code> as ordinary imports (<a href="https://redirect.github.com/astral-sh/ruff/pull/30260">#30260</a>)</li>
+    </ul>
+    <h3>Rule changes</h3>
+    <ul>
+    <li>[<code>flake8-simplify</code>] Avoid redundant <code>bool</code> wrappers in <code>SIM208</code> fixes (<a href="https://redirect.github.com/astral-sh/ruff/pull/30457">#30457</a>)</li>
+    <li>[<code>pyflakes</code>] Ignore <code>__traceback_hide__</code> in <code>unused-variable</code> (<code>F841</code>) (<a href="https://redirect.github.com/astral-sh/ruff/pull/29600">#29600</a>)</li>
+    </ul>
+    <h3>Performance</h3>
+    <ul>
+    <li>Decode in-memory notebooks directly from their source string (<a href="https://redirect.github.com/astral-sh/ruff/pull/30385">#30385</a>)</li>
+    <li>Short-circuit exact qualified-name checks (<a href="https://redirect.github.com/astral-sh/ruff/pull/30058">#30058</a>)</li>
+    <li>Stream JSON diagnostics to the output writer (<a href="https://redirect.github.com/astral-sh/ruff/pull/30384">#30384</a>)</li>
+    </ul>
+    <h3>Documentation</h3>
+    <ul>
+    <li>Fix the multiline string example in Known Deviations from Black (<a href="https://redirect.github.com/astral-sh/ruff/pull/30447">#30447</a>)</li>
+    <li>Include the category in individual rule documentation pages (<a href="https://redirect.github.com/astral-sh/ruff/pull/30503">#30503</a>)</li>
+    </ul>
+    <h3>Other changes</h3>
+    <ul>
+    <li>Update Rust toolchain to 1.100 and MSRV to 1.98 (<a href="https://redirect.github.com/astral-sh/ruff/pull/30416">#30416</a>)</li>
+    </ul>
+    <h3>Contributors</h3>
+    <ul>
+    <li><a href="https://github.com/pseudo-usama"><code>@​pseudo-usama</code></a></li>
+    <li><a href="https://github.com/G26karthik"><code>@​G26karthik</code></a></li>
+    <li><a href="https://github.com/MichaReiser"><code>@​MichaReiser</code></a></li>
+    <li><a href="https://github.com/apathydevil"><code>@​apathydevil</code></a></li>
+    <li><a href="https://github.com/Shivansh-S17"><code>@​Shivansh-S17</code></a></li>
+    <li><a href="https://github.com/charliermarsh"><code>@​charliermarsh</code></a></li>
+    <li><a href="https://github.com/ntBre"><code>@​ntBre</code></a></li>
+    <li><a href="https://github.com/anujdas"><code>@​anujdas</code></a></li>
+    <li><a href="https://github.com/chammika"><code>@​chammika</code></a></li>
+    <li><a href="https://github.com/imryanthedev"><code>@​imryanthedev</code></a></li>
+    <li><a href="https://github.com/Daverball"><code>@​Daverball</code></a></li>
+    </ul>
+    </blockquote>
+    </details>
+    <details>
+    <summary>Commits</summary>
+    <ul>
+    <li><a href="https://github.com/astral-sh/ruff/commit/a7ba68b4919e56b6af949a42b2da38fe4eec67a9"><code>a7ba68b</code></a> Bump version to 0.17.6 (<a href="https://redirect.github.com/astral-sh/ruff/issues/30578">#30578</a>)</li>
+    <li><a href="https://github.com/astral-sh/ruff/commit/3067e15977ebc32b17a0851f625af4f1dad7c57d"><code>3067e15</code></a> [ty] Fix lambda parameter inference with an unsolved ParamSpec (<a href="https://redirect.github.com/astral-sh/ruff/issues/30547">#30547</a>)</li>
+    <li><a href="https://github.com/astral-sh/ruff/commit/7aae7a53128d5600a6720d11a2d6ce6bd623cfe1"><code>7aae7a5</code></a> Treat relative imports from <code>.__future__</code> as ordinary imports (<a href="https://redirect.github.com/astral-sh/ruff/issues/30260">#30260</a>)</li>
+    <li><a href="https://github.com/astral-sh/ruff/commit/dcc9519d427af91365e3f7094cb90bb87ba9c030"><code>dcc9519</code></a> Separate Ruff configuration loading from settings resolution (<a href="https://redirect.github.com/astral-sh/ruff/issues/30574">#30574</a>)</li>
+    <li><a href="https://github.com/astral-sh/ruff/commit/c6c706a87760fd317b607733be12ff0bc9dc2039"><code>c6c706a</code></a> Avoid repeated scans of unclosed script metadata blocks (<a href="https://redirect.github.com/astral-sh/ruff/issues/30571">#30571</a>)</li>
+    <li><a href="https://github.com/astral-sh/ruff/commit/17ff3e8372a3f8104c4895919573eb45d24fbc5f"><code>17ff3e8</code></a> Clarify Ruff's root settings and resolver entries (<a href="https://redirect.github.com/astral-sh/ruff/issues/30573">#30573</a>)</li>
+    <li><a href="https://github.com/astral-sh/ruff/commit/1b93171700a3786aca378e4eb42bf5950eb03df2"><code>1b93171</code></a> [ty] Add NumPy to ecosystem runs (<a href="https://redirect.github.com/astral-sh/ruff/issues/30572">#30572</a>)</li>
+    <li><a href="https://github.com/astral-sh/ruff/commit/c117517efdabbf8ff1038ec9112a323a57142b82"><code>c117517</code></a> Resolve configuration roots directly from their origin (<a href="https://redirect.github.com/astral-sh/ruff/issues/30569">#30569</a>)</li>
+    <li><a href="https://github.com/astral-sh/ruff/commit/700c1e84243c5f270951f47c6e8cfb41baeeca2f"><code>700c1e8</code></a> [ty] Move <code>NamedTupleLike</code> to <code>ty_extensions._internal</code> (<a href="https://redirect.github.com/astral-sh/ruff/issues/30567">#30567</a>)</li>
+    <li><a href="https://github.com/astral-sh/ruff/commit/981d44c9cb10a8842ef87de1059c0ba44be8dbff"><code>981d44c</code></a> [ty] Rename <code>uv-metadata</code> diagnostic to <code>project-manager</code> and improve its wor...</li>
+    <li>Additional commits viewable in <a href="https://github.com/astral-sh/ruff/compare/0.17.5...0.17.6">compare view</a></li>
+    </ul>
+    </details>
+    <br />
+    
+    
+    [![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=ruff&package-manager=pip&previous-version=0.17.5&new-version=0.17.6)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)
+    
+    Dependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.
+    
+    [//]: # (dependabot-automerge-start)
+    [//]: # (dependabot-automerge-end)
+    
+    ---
+    
+    <details>
+    <summary>Dependabot commands and options</summary>
+    <br />
+    
+    You can trigger Dependabot actions by commenting on this PR:
+    - `@dependabot rebase` will rebase this PR
+    - `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it
+    - `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency
+    - `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)
+    - `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)
+    - `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)
+    
+    
+    </details>
+
+**Changed files:**
+
+- requirements-ci.in
+- requirements-ci.txt
+
+No structured work increment delta was imported; inspect the description/files.
+
+
+</details>
 
 
 ## Phase 00
