@@ -51,9 +51,77 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-24T22:53:44\+01:00.
+GitHub metadata checked: 2026-11-24T22:54:38\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
+
+### [\#53 · Add run-bound guest setup and P00-05 evidence collector](<https://github.com/Ise-Tom/Babel/pull/53>)
+
+**In review · Pending merge · CI: in\_progress** · Head 3336b82
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## P00-05 guest setup and cycle evidence
+    Continues the approved existing-host/licensed-media route from PR #46 and the scoped Hyper-V runner from PR #49. The [criterion packet](docs/validation/p00-05-guest-probes.md) links the [fresh blocked preflight](lab/reference-lab/evidence/local-preflight-2026-11-24.json), [synthetic missing-report refusal](lab/reference-lab/evidence/guest-collector-synthetic.json), executable scripts and tests.
+    
+    The runner journal now pins base-media metadata and persists host-side discovery. A private bundle preparer verifies rights and digests of staged updates, copies the exact Windows/Linux guest script and configuration for all six roles, and binds each to the run/plan, VM, expected build/packages and script hash. Guest scripts checkpoint nine offline setup and probe steps. The collector compares all six guest reports with the journal, exact update/script hashes, effective DNS, build/packages, clock offset, denied egress, A/SRV/LDAP outcomes, host discovery and teardown. Missing, failed or interrupted steps cannot produce a complete cycle record. Even a structurally complete record remains operator-supplied review evidence, not P00-05 acceptance.
+    
+    ## Test and live status
+    The targeted runner/preflight/guest tests pass locally; Windows guest script parses; Python lint/type, docs, dashboard and CI scope checks pass. CI is pending. The 24 November read-only preflight is blocked by inaccessible VM/switch inventory, 17,123 MiB available memory versus 30,720 MiB required, 264 GiB free disk versus 344 GiB required, and six absent approved ISO entries. **Both live cycles remain unrun.** No VM or guest was configured.
+    
+    ## Next prerequisite
+    Supply an eligible x86-64 Hyper-V host with scoped VM/switch access, capacity, the six licensed ISOs and a private manifest of rights-reviewed offline updates and exact running build/package pins. OS installation and reference AD DS/DNS plus Babel DNS/LDAP service setup precede discovery probes. P00-12 and P00-16 remain blocked on real platform observations and exact asset rights. No new owner decision or external action is requested. Merge remains with Ise-Tom.
+
+**Changed files:**
+
+- .github/workflows/ci.yml
+- dashboard/progress.json
+- docs/phase-00-progress.md
+- docs/validation/p00-05-guest-probes.md
+- docs/validation/p00-05-p00-12.md
+- docs/windows-reference-lab.md
+- lab/reference-lab/evidence/guest-collector-synthetic.json
+- lab/reference-lab/evidence/local-preflight-2026-11-24.json
+- lab/specification-pins.json
+- scripts/check\_ci\_scope.py
+- scripts/reference\_guest\_evidence.py
+- scripts/reference\_guest\_linux.py
+- scripts/reference\_guest\_windows.ps1
+- scripts/run\_reference\_lab.py
+- tests/test\_reference\_guest\_evidence.py
+- tests/test\_reference\_lab\_runner.py
+
+#### Proposed W74 · Bind isolated guest setup and discovery reports to the Hyper-V run
+
+**Requirements:** P00-05, P00-12, P00-16
+
+**How it was done:** Recorded media pins and host discovery in the runner journal. Added private six-guest bundles with rights/digest-checked offline updates, PowerShell/Linux post-install configuration and probes, checkpointed reports, and a collector requiring every guest result plus teardown.
+
+**Recorded validation:** Synthetic tests cover complete report structure, absent/failed/interrupted steps, mismatched run/build/DNS/time/probe values, unapproved/changed updates and incomplete teardown. Local PowerShell parsing, Python lint/type, documentation and dashboard checks pass. The 24 November read-only preflight and missing-report negative control retain exact blocked results.
+
+**Limits and remaining work:** No approved host, scoped VM/switch inventory access, six licensed ISOs or staged update rights were supplied. No real guest setup, platform observation or live cycle was executed. Guest OS/AD DS/Babel services and independent evidence review remain operator/qualification work.
+
+**PR-head evidence:** [docs/validation/p00-05-guest-probes.md](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/docs/validation/p00-05-guest-probes.md>) · [lab/reference-lab/evidence/local-preflight-2026-11-24.json](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/lab/reference-lab/evidence/local-preflight-2026-11-24.json>) · [lab/reference-lab/evidence/guest-collector-synthetic.json](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/lab/reference-lab/evidence/guest-collector-synthetic.json>) · [scripts/reference\_guest\_evidence.py](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/scripts/reference_guest_evidence.py>) · [tests/test\_reference\_guest\_evidence.py](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/tests/test_reference_guest_evidence.py>)
+
+#### Proposed problem update: I04 · Eligible reference lab host, authorized media and platform runs are missing
+
+**Proposed status:** open
+
+The six-guest runner and guest setup/collector exist with synthetic checks. The 24 November preflight still finds unavailable VM/switch inventory, insufficient free guest RAM/disk and six absent approved ISOs. Real Windows/Linux guest builds/packages, isolated DNS/time and denied-egress/discovery outcomes, and both live cycles remain unrun.
+
+**Resolution:** Still open
+
+**Next action:** Supply an eligible x86-64 Hyper-V host with scoped VM/switch access and capacity, approved six-guest ISOs and rights-reviewed staged updates. Install guest OS and DC/Babel services, then independently run and review two fresh provision, guest setup/discovery and teardown cycles.
+
+**Provenance:** Explicitly outstanding; no Windows test is marked passed.
+
+[docs/validation/p00-05-guest-probes.md](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/docs/validation/p00-05-guest-probes.md>) · [docs/validation/p00-05-runner.md](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/docs/validation/p00-05-runner.md>) · [docs/validation/p00-05-p00-12.md](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/docs/validation/p00-05-p00-12.md>) · [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/docs/phase-00-progress.md>)
+
+
+</details>
 
 ### [\#52 · Read synthetic directory entries through native LDAP](<https://github.com/Ise-Tom/Babel/pull/52>)
 
@@ -522,6 +590,8 @@ The read-only six-guest Hyper-V preflight and synthetic-tested provision/teardow
 
 **Acceptance evidence required:** Two fresh deployments run discovery probes, isolate egress, clean up resources and publish exact image/build identifiers.
 
+**Pending PR proposals:** [\#53: Add run-bound guest setup and P00-05 evidence collector](<https://github.com/Ise-Tom/Babel/pull/53>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W26: Prepare an isolated Windows reference lab definition without provisioning; W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients; W69: Inventory reference lab capacity, candidate media and use rights; W73: Plan and test scoped Hyper-V lab provisioning and teardown. See the [implementation journal](#implementation-journal).
 
 ### P00-06
@@ -626,6 +696,8 @@ The host build, candidate Windows patch baselines and official Ubuntu/Debian ins
 
 **Acceptance evidence required:** Edition, architecture, OS/build, package and image identifiers are explicit; missing profiles cannot qualify compatibility.
 
+**Pending PR proposals:** [\#53: Add run-bound guest setup and P00-05 evidence collector](<https://github.com/Ise-Tom/Babel/pull/53>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W69: Inventory reference lab capacity, candidate media and use rights; W73: Plan and test scoped Hyper-V lab provisioning and teardown. See the [implementation journal](#implementation-journal).
 
 ### P00-13
@@ -685,6 +757,8 @@ Reviewed the uses of all 21 pinned editions, mapped observed publisher programs,
 **Associated features:** [SEC-10: Least-privilege services, restricted network exposure, signed updates, dependency inventory, SBOM, provenance, vulnerability response and verified restore](<https://github.com/Ise-Tom/Babel/blob/040a77d92a1137ce6099ea7484bbc1ececc4e2b0/docs/requirements.md>)
 
 **Acceptance evidence required:** Pin document revisions and use/redistribution obligations separately from project licensing; unclear image/fixture rights block distribution.
+
+**Pending PR proposals:** [\#53: Add run-bound guest setup and P00-05 evidence collector](<https://github.com/Ise-Tom/Babel/pull/53>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W55: Pin actual public protocol editions and separate reference use from image/patent clearance; W67: Inventory reference rights and verify the source archive; W69: Inventory reference lab capacity, candidate media and use rights; W73: Plan and test scoped Hyper-V lab provisioning and teardown. See the [implementation journal](#implementation-journal).
 
@@ -801,6 +875,8 @@ Windows lab, DNS/authentication and membership implementation are missing.
 **Associated features:** [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/040a77d92a1137ce6099ea7484bbc1ececc4e2b0/docs/requirements.md>); [AD-08: Required Netlogon, SAMR, LSA, SMB and DCE/RPC behavior for domain membership and administration](<https://github.com/Ise-Tom/Babel/blob/040a77d92a1137ce6099ea7484bbc1ececc4e2b0/docs/requirements.md>)
 
 **Acceptance evidence required:** A supported Windows client joins, logs in and rotates its machine password; unsigned/unauthorized membership requests fail.
+
+**Pending PR proposals:** [\#53: Add run-bound guest setup and P00-05 evidence collector](<https://github.com/Ise-Tom/Babel/pull/53>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W26: Prepare an isolated Windows reference lab definition without provisioning. See the [implementation journal](#implementation-journal).
 
@@ -1057,6 +1133,8 @@ No implementation or acceptance evidence recorded.
 **Associated features:** [AD-01: AD-compatible domain and forest creation, schema, objects, SIDs/GUIDs, users, computers, nested groups, ACLs, password policy, delegation, and recycle/restore](<https://github.com/Ise-Tom/Babel/blob/040a77d92a1137ce6099ea7484bbc1ececc4e2b0/docs/requirements.md>); [AD-02: Supported Windows domain join, login, password change/reset, machine password rotation, secure channel, lockout, offline cached login, and reconnect; declared Linux/macOS identity lookup, enrollment where supported, login/password and Kerberos SSO](<https://github.com/Ise-Tom/Babel/blob/040a77d92a1137ce6099ea7484bbc1ececc4e2b0/docs/requirements.md>); [AD-07: Multi-controller, multi-site replication, conflict resolution, deletion/tombstones, topology and recovery](<https://github.com/Ise-Tom/Babel/blob/040a77d92a1137ce6099ea7484bbc1ececc4e2b0/docs/requirements.md>)
 
 **Acceptance evidence required:** Every AD contract row has real-client evidence with exact builds/spec revisions and no unexplained failure, skip or unrun acceptance case.
+
+**Pending PR proposals:** [\#53: Add run-bound guest setup and P00-05 evidence collector](<https://github.com/Ise-Tom/Babel/pull/53>). See [open PR progress](#open-pull-requests).
 
 No implemented increment is recorded for this requirement.
 
