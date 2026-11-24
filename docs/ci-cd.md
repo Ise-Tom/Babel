@@ -232,7 +232,7 @@ not a claim those dependencies are all linked into the lab binaries or that all
 product licensing decisions have been approved. Rustls/provider terms and remaining
 production obligations are recorded in [ADR 0006](adr/0006-tls-qualification-lab.md).
 
-`babel-protocol-labs-linux-x86_64.tar` contains the LDAP, DNS and TLS lab binaries with project, selected runtime-crate
+`babel-protocol-labs-linux-x86_64.tar` contains the RootDSE, LDAP directory-read, DNS and TLS lab binaries with project, selected runtime-crate
 and Rust-library notices. A manifest preserves SHA-256 and byte counts. The
 archive check verifies extracted notice bytes and reruns the independent probes.
 The tar/checksum and TLS version/outcome/coverage evidence are 14-day CI artifacts

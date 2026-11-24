@@ -1,0 +1,1220 @@
+{
+  "profile": "babel-synthetic-ldap-read-v1",
+  "source_revision": "1d3542abd208f0d8c502d3ca2089b38a2da82eca",
+  "started_at_utc": "2026-11-24T21:52:22+00:00",
+  "binary_sha256": "2829caddbe4e2aeeb698772cef80c03f86001ba10b48a46cc30db6d387916f78",
+  "probe_sha256": "3f6ac49334a5c6660db8ae8d482a974e2b52a4d5ee5cf10b5b51a314ec8dd014",
+  "cargo_lock_sha256": "986a46b6036743912d6725c7e6574265621a98a9c0729de023e10c4574bd9273",
+  "host": {
+    "os": "Ubuntu 26.04 LTS",
+    "kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "architecture": "x86_64"
+  },
+  "client": {
+    "ldap3": "2.9.1",
+    "pyasn1": "0.6.5",
+    "python": "3.14.4"
+  },
+  "result": "passed",
+  "cases": [
+    {
+      "scenario": "rootdse",
+      "request": {
+        "base": "",
+        "scope": "BASE",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "supportedLDAPVersion",
+          "vendorName",
+          "namingContexts",
+          "supportedCapabilities"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "",
+          "attributes": {
+            "supportedLDAPVersion": [
+              "3"
+            ],
+            "vendorName": [
+              "Babel"
+            ]
+          }
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.682,
+      "result": "passed"
+    },
+    {
+      "scenario": "base-projection",
+      "request": {
+        "base": "cn=alice,dc=babel,dc=test",
+        "scope": "BASE",
+        "filter": "(&(objectClass=USER)(cn=ALICE)(uidNumber=1001))",
+        "attributes": [
+          "CN",
+          "displayName",
+          "uidNumber",
+          "objectGUID",
+          "objectSid"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Alice,DC=babel,DC=test",
+          "attributes": {
+            "cn": [
+              "Alice"
+            ],
+            "displayName": [
+              "Alice Example"
+            ],
+            "uidNumber": [
+              "1001"
+            ]
+          }
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.598,
+      "result": "passed"
+    },
+    {
+      "scenario": "apex-base",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "BASE",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "*"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "DC=babel,DC=test",
+          "attributes": {
+            "objectClass": [
+              "domain"
+            ],
+            "dc": [
+              "babel"
+            ]
+          }
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.327,
+      "result": "passed"
+    },
+    {
+      "scenario": "onelevel",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Alice,DC=babel,DC=test",
+          "attributes": {}
+        },
+        {
+          "dn": "CN=Bob,DC=babel,DC=test",
+          "attributes": {}
+        },
+        {
+          "dn": "CN=Readers,DC=babel,DC=test",
+          "attributes": {}
+        },
+        {
+          "dn": "CN=Workstation,DC=babel,DC=test",
+          "attributes": {}
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.315,
+      "result": "passed"
+    },
+    {
+      "scenario": "subtree",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "SUBTREE",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "DC=babel,DC=test",
+          "attributes": {}
+        },
+        {
+          "dn": "CN=Alice,DC=babel,DC=test",
+          "attributes": {}
+        },
+        {
+          "dn": "CN=Bob,DC=babel,DC=test",
+          "attributes": {}
+        },
+        {
+          "dn": "CN=Readers,DC=babel,DC=test",
+          "attributes": {}
+        },
+        {
+          "dn": "CN=Workstation,DC=babel,DC=test",
+          "attributes": {}
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.313,
+      "result": "passed"
+    },
+    {
+      "scenario": "leaf-onelevel",
+      "request": {
+        "base": "CN=Alice,DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.338,
+      "result": "passed"
+    },
+    {
+      "scenario": "leaf-subtree",
+      "request": {
+        "base": "CN=Workstation,DC=babel,DC=test",
+        "scope": "SUBTREE",
+        "filter": "(dnsHostName=WORKSTATION.babel.test)",
+        "attributes": [
+          "dnsHostName"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Workstation,DC=babel,DC=test",
+          "attributes": {
+            "dnsHostName": [
+              "workstation.babel.test"
+            ]
+          }
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.36,
+      "result": "passed"
+    },
+    {
+      "scenario": "types-only",
+      "request": {
+        "base": "CN=Alice,DC=babel,DC=test",
+        "scope": "BASE",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "cn",
+          "displayName",
+          "objectSid"
+        ],
+        "deref": "NEVER",
+        "types_only": true,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Alice,DC=babel,DC=test",
+          "attributes": {
+            "cn": [],
+            "displayName": []
+          }
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.289,
+      "result": "passed"
+    },
+    {
+      "scenario": "boolean-filter",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(|(description=Public fixture)(&(objectClass=group)(description=*)))",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Alice,DC=babel,DC=test",
+          "attributes": {}
+        },
+        {
+          "dn": "CN=Readers,DC=babel,DC=test",
+          "attributes": {}
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.43,
+      "result": "passed"
+    },
+    {
+      "scenario": "description-exact",
+      "request": {
+        "base": "CN=Alice,DC=babel,DC=test",
+        "scope": "BASE",
+        "filter": "(description=public fixture)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.341,
+      "result": "passed"
+    },
+    {
+      "scenario": "invalid-integer-assertion",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(!(uidNumber=01001))",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.299,
+      "result": "passed"
+    },
+    {
+      "scenario": "unreadable-filter-attribute",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "SUBTREE",
+        "filter": "(!(objectGUID=*))",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.311,
+      "result": "passed"
+    },
+    {
+      "scenario": "unsupported-filter",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "SUBTREE",
+        "filter": "(|(objectClass=*)(cn=Al*))",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 53,
+      "result_code": 53,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.374,
+      "result": "passed"
+    },
+    {
+      "scenario": "unsupported-target",
+      "request": {
+        "base": "DC=external,DC=test",
+        "scope": "BASE",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 32,
+      "result_code": 32,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.332,
+      "result": "passed"
+    },
+    {
+      "scenario": "missing-leaf",
+      "request": {
+        "base": "CN=Missing,DC=babel,DC=test",
+        "scope": "BASE",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 32,
+      "result_code": 32,
+      "matched_dn": "DC=babel,DC=test",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.284,
+      "result": "passed"
+    },
+    {
+      "scenario": "invalid-base",
+      "request": {
+        "base": "CN=Invalid!,DC=babel,DC=test",
+        "scope": "BASE",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 34,
+      "result_code": 34,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.31,
+      "result": "passed"
+    },
+    {
+      "scenario": "alias-deref-refused",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "BASE",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "ALWAYS",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 53,
+      "result_code": 53,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.288,
+      "result": "passed"
+    },
+    {
+      "scenario": "referral-control-critical",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "SUBTREE",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": [
+          {
+            "oid": "2.16.840.1.113730.3.4.2",
+            "critical": true,
+            "value_bytes": 0
+          }
+        ]
+      },
+      "expected_code": 12,
+      "result_code": 12,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.328,
+      "result": "passed"
+    },
+    {
+      "scenario": "referral-control-noncritical",
+      "request": {
+        "base": "DC=external,DC=test",
+        "scope": "BASE",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": [
+          {
+            "oid": "2.16.840.1.113730.3.4.2",
+            "critical": false,
+            "value_bytes": 0
+          }
+        ]
+      },
+      "expected_code": 32,
+      "result_code": 32,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.305,
+      "result": "passed"
+    },
+    {
+      "scenario": "size-limit",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 1,
+        "paging": null,
+        "controls": []
+      },
+      "expected_code": 4,
+      "result_code": 4,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Alice,DC=babel,DC=test",
+          "attributes": {}
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.295,
+      "result": "passed"
+    },
+    {
+      "scenario": "page-one",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 2,
+          "cookie_bytes": 0
+        },
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Alice,DC=babel,DC=test",
+          "attributes": {}
+        },
+        {
+          "dn": "CN=Bob,DC=babel,DC=test",
+          "attributes": {}
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": 16,
+      "duration_ms": 0.447,
+      "result": "passed"
+    },
+    {
+      "scenario": "changed-query-cookie",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=user)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 2,
+          "cookie_bytes": 16
+        },
+        "controls": []
+      },
+      "expected_code": 53,
+      "result_code": 53,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.43,
+      "result": "passed"
+    },
+    {
+      "scenario": "page-two",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 1,
+          "cookie_bytes": 16
+        },
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Readers,DC=babel,DC=test",
+          "attributes": {}
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": 16,
+      "duration_ms": 0.386,
+      "result": "passed"
+    },
+    {
+      "scenario": "replayed-cookie",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 2,
+          "cookie_bytes": 16
+        },
+        "controls": []
+      },
+      "expected_code": 53,
+      "result_code": 53,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.391,
+      "result": "passed"
+    },
+    {
+      "scenario": "last-page",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 2,
+          "cookie_bytes": 16
+        },
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Workstation,DC=babel,DC=test",
+          "attributes": {}
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": 0,
+      "duration_ms": 0.394,
+      "result": "passed"
+    },
+    {
+      "scenario": "completed-cookie",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 2,
+          "cookie_bytes": 16
+        },
+        "controls": []
+      },
+      "expected_code": 53,
+      "result_code": 53,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.366,
+      "result": "passed"
+    },
+    {
+      "scenario": "limited-first-page",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 3,
+        "paging": {
+          "size": 2,
+          "cookie_bytes": 0
+        },
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Alice,DC=babel,DC=test",
+          "attributes": {}
+        },
+        {
+          "dn": "CN=Bob,DC=babel,DC=test",
+          "attributes": {}
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": 16,
+      "duration_ms": 0.347,
+      "result": "passed"
+    },
+    {
+      "scenario": "limited-terminal-page",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 3,
+        "paging": {
+          "size": 2,
+          "cookie_bytes": 16
+        },
+        "controls": []
+      },
+      "expected_code": 4,
+      "result_code": 4,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Readers,DC=babel,DC=test",
+          "attributes": {}
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": 0,
+      "duration_ms": 0.336,
+      "result": "passed"
+    },
+    {
+      "scenario": "oversized-page",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 5,
+          "cookie_bytes": 0
+        },
+        "controls": []
+      },
+      "expected_code": 11,
+      "result_code": 11,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.437,
+      "result": "passed"
+    },
+    {
+      "scenario": "empty-cookie-cancel",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 0,
+          "cookie_bytes": 0
+        },
+        "controls": []
+      },
+      "expected_code": 2,
+      "result_code": 2,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.304,
+      "result": "passed"
+    },
+    {
+      "scenario": "malformed-page-control",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": [
+          {
+            "oid": "1.2.840.113556.1.4.319",
+            "critical": true,
+            "value_bytes": 2
+          }
+        ]
+      },
+      "expected_code": 2,
+      "result_code": 2,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.316,
+      "result": "passed"
+    },
+    {
+      "scenario": "missing-page-value",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": null,
+        "controls": [
+          {
+            "oid": "1.2.840.113556.1.4.319",
+            "critical": true,
+            "value_bytes": 0
+          }
+        ]
+      },
+      "expected_code": 2,
+      "result_code": 2,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.328,
+      "result": "passed"
+    },
+    {
+      "scenario": "start-cancelled-page",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 1,
+          "cookie_bytes": 0
+        },
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Alice,DC=babel,DC=test",
+          "attributes": {}
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": 16,
+      "duration_ms": 0.398,
+      "result": "passed"
+    },
+    {
+      "scenario": "cancel-page",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 0,
+          "cookie_bytes": 16
+        },
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": 0,
+      "duration_ms": 0.377,
+      "result": "passed"
+    },
+    {
+      "scenario": "cancelled-cookie",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 1,
+          "cookie_bytes": 16
+        },
+        "controls": []
+      },
+      "expected_code": 53,
+      "result_code": 53,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.361,
+      "result": "passed"
+    },
+    {
+      "scenario": "start-connection-local-page",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 1,
+          "cookie_bytes": 0
+        },
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Alice,DC=babel,DC=test",
+          "attributes": {}
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": 16,
+      "duration_ms": 0.341,
+      "result": "passed"
+    },
+    {
+      "scenario": "new-connection-page",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 1,
+          "cookie_bytes": 0
+        },
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Alice,DC=babel,DC=test",
+          "attributes": {}
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": 16,
+      "duration_ms": 0.461,
+      "result": "passed"
+    },
+    {
+      "scenario": "cross-connection-cookie",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 1,
+          "cookie_bytes": 16
+        },
+        "controls": []
+      },
+      "expected_code": 53,
+      "result_code": 53,
+      "matched_dn": "",
+      "entries": [],
+      "referrals": [],
+      "page_cookie_bytes": null,
+      "duration_ms": 0.345,
+      "result": "passed"
+    },
+    {
+      "scenario": "new-connection-own-cookie",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "filter": "(objectClass=*)",
+        "attributes": [
+          "1.1"
+        ],
+        "deref": "NEVER",
+        "types_only": false,
+        "size_limit": 0,
+        "paging": {
+          "size": 3,
+          "cookie_bytes": 16
+        },
+        "controls": []
+      },
+      "expected_code": 0,
+      "result_code": 0,
+      "matched_dn": "",
+      "entries": [
+        {
+          "dn": "CN=Bob,DC=babel,DC=test",
+          "attributes": {}
+        },
+        {
+          "dn": "CN=Readers,DC=babel,DC=test",
+          "attributes": {}
+        },
+        {
+          "dn": "CN=Workstation,DC=babel,DC=test",
+          "attributes": {}
+        }
+      ],
+      "referrals": [],
+      "page_cookie_bytes": 0,
+      "duration_ms": 0.396,
+      "result": "passed"
+    },
+    {
+      "scenario": "malformed-filter-tag",
+      "request": {
+        "base": "DC=babel,DC=test",
+        "scope": "LEVEL",
+        "wire_hex": "30390201016334041044433d626162656c2c44433d746573740a01010a0100020100020100010100880b6f626a656374436c61737330040402636e"
+      },
+      "response": "closed without a search entry or result",
+      "result": "passed"
+    }
+  ]
+}

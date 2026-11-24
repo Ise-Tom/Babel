@@ -182,6 +182,13 @@ impl Directory {
             .and_then(|guid| self.lookup_guid(*guid)))
     }
 
+    /// Enumerate immutable leaves in deterministic case-folded CN order.
+    pub fn entries_by_name(&self) -> impl Iterator<Item = &Entry> {
+        self.names
+            .values()
+            .filter_map(|guid| self.lookup_guid(*guid))
+    }
+
     pub fn lookup_guid(&self, guid: Guid) -> Option<&Entry> {
         self.entries.get(&guid)
     }

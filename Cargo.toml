@@ -3,6 +3,7 @@ members = [
     "native/babel-directory",
     "native/babel-dns",
     "native/babel-ldap",
+    "native/babel-ldap-directory",
     "native/babel-tls-lab",
     "native/babel-store-driver-lab",
 ]

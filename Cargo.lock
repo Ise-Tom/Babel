@@ -77,6 +77,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "babel-ldap-directory"
+version = "0.1.0"
+dependencies = [
+ "babel-directory",
+ "babel-ldap",
+ "getrandom 0.4.3",
+]
+
+[[package]]
 name = "babel-store-driver-lab"
 version = "0.1.0"
 dependencies = [

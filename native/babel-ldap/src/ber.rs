@@ -89,6 +89,10 @@ impl<'a> Cursor<'a> {
         }
     }
 
+    pub(crate) fn next_tag(&self) -> Option<u8> {
+        self.bytes.get(self.offset).copied()
+    }
+
     pub(crate) fn is_empty(&self) -> bool {
         self.offset == self.bytes.len()
     }

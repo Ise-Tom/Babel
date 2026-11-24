@@ -995,7 +995,7 @@
         "win11-pro"
       ],
       "owner": "Ise-Tom",
-      "implementation": "planned",
+      "implementation": "lab_only",
       "scenarios": {
         "positive": "Read authorized objects with declared controls and stable page behavior",
         "negative": "Deny unsigned insecure credential paths and unauthorized attributes or controls"

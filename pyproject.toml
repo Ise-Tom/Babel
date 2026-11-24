@@ -12,7 +12,7 @@ select = ["E", "F", "I", "UP", "B"]
 [tool.mypy]
 python_version = "3.12"
 strict = true
-files = ["scripts", "native/babel-dns/tests/probe_dns.py", "native/babel-ldap/tests/smoke_ldap.py", "native/babel-tls-lab/tests/interop_tls.py", "experiments/postgres_store/experiment.py"]
+files = ["scripts", "native/babel-dns/tests/probe_dns.py", "native/babel-ldap/tests/smoke_ldap.py", "native/babel-ldap-directory/tests/probe_reads.py", "native/babel-tls-lab/tests/interop_tls.py", "experiments/postgres_store/experiment.py"]
 
 [tool.coverage.run]
 branch = true

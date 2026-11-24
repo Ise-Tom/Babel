@@ -68,6 +68,7 @@ def allowed_path(name: str) -> bool:
                 ("native", "babel-directory"),
                 ("native", "babel-dns"),
                 ("native", "babel-ldap"),
+                ("native", "babel-ldap-directory"),
                 ("native", "babel-tls-lab"),
                 ("native", "babel-store-driver-lab"),
             }
@@ -77,6 +78,7 @@ def allowed_path(name: str) -> bool:
                     "native/babel-directory/Cargo.toml",
                     "native/babel-dns/Cargo.toml",
                     "native/babel-ldap/Cargo.toml",
+                    "native/babel-ldap-directory/Cargo.toml",
                     "native/babel-tls-lab/Cargo.toml",
                     "native/babel-store-driver-lab/Cargo.toml",
                     "native/babel-store-driver-lab/tests/fixture.sql",
@@ -90,6 +92,7 @@ def allowed_path(name: str) -> bool:
                 in {
                     "native/babel-dns/tests/probe_dns.py",
                     "native/babel-ldap/tests/smoke_ldap.py",
+                    "native/babel-ldap-directory/tests/probe_reads.py",
                     "native/babel-tls-lab/tests/interop_tls.py",
                 }
             )
@@ -110,6 +113,7 @@ def allowed_path(name: str) -> bool:
             "fuzz/corpus/ldap_frame/oversized",
             "fuzz/corpus/ldap_frame/rootdse",
             "fuzz/corpus/ldap_frame/rootdse-filter",
+            "fuzz/corpus/ldap_frame/directory-page",
             "fuzz/corpus/tls_record/empty-record",
             "fuzz/corpus/tls_record/plaintext",
         }
@@ -122,6 +126,7 @@ def allowed_path(name: str) -> bool:
             "lab/conformance-evidence.json",
             "lab/p00-09-workload-smoke.json",
             "lab/p01-13-dns-discovery-smoke.json",
+            "lab/p01-04-ldap-directory-smoke.json",
             "lab/phase0-contract.json",
             "lab/state-security-contract.json",
             "lab/specification-pins.json",
