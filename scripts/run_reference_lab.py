@@ -249,6 +249,16 @@ def provision(
         "schema_version": 1,
         "plan": lab_plan,
         "preflight": result,
+        "media_pins": {
+            guest: {
+                "id": entry["id"],
+                "edition": entry["edition"],
+                "build": entry["build"],
+                "sha256": entry["sha256"],
+                "packages": entry["packages"],
+            }
+            for guest, entry in media.items()
+        },
         "resources": [{"item": item, "state": "pending"} for item in listed],
         "phase": "provisioning",
         "guest_discovery": "unrun",
@@ -338,8 +348,10 @@ def discover(journal: Path, backend: Backend) -> dict[str, Any]:
                 if observed["switches"] != [item["switch"]]:
                     raise ValueError("VM has unexpected switch attachment")
             observations[item["name"]] = observed
-    # Hyper-V cannot prove in-guest DNS, time, routes, package state or AD
-    # discovery. Those probes remain unrun until independent guest evidence.
+    # Preserve exact host-side observations before teardown. Guest results are
+    # collected separately and cannot be inferred from these observations.
+    record["host_discovery"] = {"status": "passed", "resources": observations}
+    save(journal, record)
     return {
         "run_id": record["plan"]["run_id"],
         "host_resources": observations,

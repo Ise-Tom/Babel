@@ -61,7 +61,14 @@ class ReferenceLabRunnerTests(unittest.TestCase):
         synthetic = b"synthetic not bootable media"
         (self.root / "synthetic.iso").write_bytes(synthetic)
         self.media = {
-            g["id"]: {"path": "synthetic.iso", "sha256": hashlib.sha256(synthetic).hexdigest()}
+            g["id"]: {
+                "path": "synthetic.iso",
+                "sha256": hashlib.sha256(synthetic).hexdigest(),
+                "id": "synthetic-image",
+                "edition": "synthetic",
+                "build": "synthetic-build",
+                "packages": {"synthetic-package": "1"},
+            }
             for g in PROFILE["machines"]
         }
         self.ready = {
@@ -123,6 +130,7 @@ class ReferenceLabRunnerTests(unittest.TestCase):
         discovered = runner.discover(journal, self.backend)
         self.assertEqual(discovered["guest_probes"], "unrun")
         self.assertFalse(discovered["p00_05_cycle_complete"])
+        self.assertEqual(json.loads(journal.read_text())["host_discovery"]["status"], "passed")
         result = runner.teardown(journal, self.backend)
         self.assertEqual(result["phase"], "torn_down")
         self.assertFalse(Path(record["plan"]["storage_dir"]).exists())

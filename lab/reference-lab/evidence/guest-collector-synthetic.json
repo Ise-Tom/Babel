@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "run_id": "00000000000000000000000000000000",
+  "plan_sha256": "fa665974a79d5fedf33432cfcb67b0768e9fdbc4885082091628341654a4295e",
+  "journal_sha256": "1a84510dfc591a14c14302c63e0cfdd3d14580140c46de69be0229c3bfe6a9ea",
+  "guest_results": {},
+  "blockers": [
+    "teardown_incomplete",
+    "host_discovery_missing",
+    "guest_bundle_preparation_missing",
+    "reference-dc:report_missing",
+    "reference-client:report_missing",
+    "reference-probe:report_missing",
+    "babel-dc:report_missing",
+    "babel-client:report_missing",
+    "babel-probe:report_missing"
+  ],
+  "cycle_record_complete": false,
+  "p00_05_accepted": false,
+  "evidence_class": "operator_supplied_guest_reports_for_independent_review",
+  "kind": "synthetic_missing_guest_reports_negative_control",
+  "source_revision": "040a77d92a1137ce6099ea7484bbc1ececc4e2b0"
+}
