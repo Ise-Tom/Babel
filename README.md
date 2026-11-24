@@ -51,9 +51,76 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-24T18:59:16\+01:00.
+GitHub metadata checked: 2026-11-24T22:53:44\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
+
+### [\#52 · Read synthetic directory entries through native LDAP](<https://github.com/Ise-Tom/Babel/pull/52>)
+
+**In review · Pending merge · CI: in\_progress** · Head 15e00a4
+
+<details>
+<summary>Description, changed files and proposed progress</summary>
+
+**PR description (untrusted text):**
+
+    ## Scope
+    
+    - Add the loopback `babel-ldap-directory` binary. It reuses the native LDAP wire/transport implementation and the accepted synthetic directory API for immutable fixture reads.
+    - Serve selected base, one-level and subtree reads, public attribute projection, bounded presence/equality/boolean filters and connection-bound RFC 2696 paging. Preserve the standalone RootDSE behavior and dependency-free parser qualification.
+    - Verify 40 independent ldap3 exchanges, including paging, invalid bases and filters, and referral-related refusals. Retain the [source- and binary-bound report](https://github.com/Ise-Tom/Babel/blob/15e00a4e823fa5094ba44420058c21e8b45c812f/lab/p01-04-ldap-directory-smoke.json) and [reproduction commands](https://github.com/Ise-Tom/Babel/blob/15e00a4e823fa5094ba44420058c21e8b45c812f/docs/validation/p01-04.md).
+    - Run the release, instrumented and archive-extracted binary probes in required CI. Scope the P00-01 LDAP directory routes as lab-only and preserve all existing product outcomes.
+    
+    ## Remaining evidence
+    
+    P01-04 remains in progress. Broader schema and authorization, Compare, referral continuation, additional controls and pinned client/reference interoperability require separate implementation or evidence. Network writes and real credentials remain outside this slice. This PR is for normal review.
+
+**Changed files:**
+
+- .github/workflows/ci.yml
+- .github/workflows/native.yml
+- .gitignore
+- Cargo.lock
+- Cargo.toml
+- dashboard/progress.json
+- docs/ci-cd.md
+- docs/phase-01-progress.md
+- docs/validation/p01-04.md
+- fuzz/corpus/ldap\_frame/directory-page
+- fuzz/fuzz\_targets/ldap\_frame.rs
+- lab/compatibility.json
+- lab/conformance-evidence.json
+- lab/p01-04-ldap-directory-smoke.json
+- lab/specification-pins.json
+- native/babel-directory/src/lib.rs
+- native/babel-ldap-directory/Cargo.toml
+- native/babel-ldap-directory/src/lib.rs
+- native/babel-ldap-directory/src/main.rs
+- native/babel-ldap-directory/tests/probe\_reads.py
+- native/babel-ldap-directory/tests/transport.rs
+- native/babel-ldap/src/ber.rs
+- native/babel-ldap/src/controls.rs
+- native/babel-ldap/src/filter.rs
+- native/babel-ldap/src/lib.rs
+- native/babel-ldap/src/protocol.rs
+- native/babel-ldap/src/server.rs
+- pyproject.toml
+- scripts/check\_ci\_scope.py
+
+#### Proposed W74 · Read synthetic directory fixtures through native LDAP
+
+**Requirements:** P01-04, P00-01
+
+**How it was done:** Composed the dependency-free LDAP wire/transport library with the accepted directory API in a separate loopback binary. Added declared projection, base/one/subtree selection, matching, connection-local paging and controlled refusals.
+
+**Recorded validation:** An independent ldap3 probe passed 40 decoded client checks on the compiled release binary, including RootDSE, returned fixture attributes and paging/filter/base/referral negatives. Required CI also probes the instrumented and archive-extracted binaries.
+
+**Limits and remaining work:** The synthetic ldap-directory Search, paging and critical-control routes run. General authorization, schema, Compare, referrals, network writes and pinned client/reference evidence remain open. P01-04 stays in progress.
+
+**PR-head evidence:** [docs/validation/p01-04.md](<https://github.com/Ise-Tom/Babel/blob/15e00a4e823fa5094ba44420058c21e8b45c812f/docs/validation/p01-04.md>) · [native/babel-ldap-directory/tests/probe\_reads.py](<https://github.com/Ise-Tom/Babel/blob/15e00a4e823fa5094ba44420058c21e8b45c812f/native/babel-ldap-directory/tests/probe_reads.py>) · [lab/compatibility.json](<https://github.com/Ise-Tom/Babel/blob/15e00a4e823fa5094ba44420058c21e8b45c812f/lab/compatibility.json>) · [lab/p01-04-ldap-directory-smoke.json](<https://github.com/Ise-Tom/Babel/blob/15e00a4e823fa5094ba44420058c21e8b45c812f/lab/p01-04-ldap-directory-smoke.json>)
+
+
+</details>
 
 ### [\#51 · Bump coverage from 7.17.3 to 7.17.4](<https://github.com/Ise-Tom/Babel/pull/51>)
 
@@ -393,6 +460,8 @@ The PR \#40 scoped design approval is recorded. The follow-up verifies published
 
 **Validation packet:** P00-01 scoped matrix design increment for the 30 existing families. Covers accountable ownership, 60 wire mappings, 12 workflows, expected success/refusal, evidence requirements and tracking of 12 unresolved mappings. Full gate, exact profiles, licensed real-client runs and production compatibility stay open. [Review packet](<https://github.com/Ise-Tom/Babel/blob/93e1dc956263db27d07fe1192e74205c60294032/docs/validation/p00-01.md>)
 
+**Pending PR proposals:** [\#52: Read synthetic directory entries through native LDAP](<https://github.com/Ise-Tom/Babel/pull/52>). See [open PR progress](#open-pull-requests).
+
 **Implementation explanations:** W32: Inventory the initial 2016 AD profile and Windows/Linux/macOS clients; W33: Enforce versioned conformance evidence integrity in CI; W39: Refine phase requirements by independent acceptance obligations; W55: Pin actual public protocol editions and separate reference use from image/patent clearance; W64: Map owned wire operations and unresolved client variants; W71: Verify additional protocol mappings and enumerate conformance blockers; W72: Run native domain and site DC locator DNS on loopback. See the [implementation journal](#implementation-journal).
 
 ### P00-02
@@ -706,6 +775,8 @@ Loopback bounded RootDSE discovery/filter reads are implemented and tested; dire
 **Associated features:** [AD-04: LDAPv3/LDAPS, AD schema and controls, paging, referrals, ACL filtering, and global catalog](<https://github.com/Ise-Tom/Babel/blob/040a77d92a1137ce6099ea7484bbc1ececc4e2b0/docs/requirements.md>); [AD-05: AD-integrated DNS, SRV discovery, secure dynamic updates, site/subnet placement and DC locator](<https://github.com/Ise-Tom/Babel/blob/040a77d92a1137ce6099ea7484bbc1ececc4e2b0/docs/requirements.md>)
 
 **Acceptance evidence required:** Real probes and negative paging/filter/referral tests pass; RootDSE is not domain join.
+
+**Pending PR proposals:** [\#52: Read synthetic directory entries through native LDAP](<https://github.com/Ise-Tom/Babel/pull/52>). See [open PR progress](#open-pull-requests).
 
 **Implementation explanations:** W02: Bounded BER / LDAP decoder; W03: Read-only RootDSE queries; W05: TCP framing and session budgets; W06: Independent client and packaged-binary checks; W17: Bounded LDAP RootDSE filter discovery; W39: Refine phase requirements by independent acceptance obligations. See the [implementation journal](#implementation-journal).
 
