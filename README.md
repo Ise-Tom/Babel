@@ -51,7 +51,7 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-24T23:04:29\+01:00.
+GitHub metadata checked: 2026-11-24T23:05:39\+01:00.
 
 **Current main CI: in\_progress.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -125,24 +125,13 @@ The six-guest runner and guest setup/collector exist with synthetic checks. The 
 
 ### [\#51 · Bump coverage from 7.17.3 to 7.17.4](<https://github.com/Ise-Tom/Babel/pull/51>)
 
-**In review · Pending merge · CI: success** · Head fdce01a
+**In review · Pending merge · CI: in\_progress** · Head a460a60
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
 
 **PR description (untrusted text):**
 
-    [//]: # (dependabot-start)
-    ⚠️  **Dependabot is rebasing this PR** ⚠️ 
-    
-    Rebasing might not happen immediately, so don't worry if this takes some time.
-    
-    Note: if you make any changes to this PR yourself, they will take precedence over the rebase.
-    
-    ---
-    
-    [//]: # (dependabot-end)
-    
     Bumps [coverage](https://github.com/coveragepy/coveragepy) from 7.17.3 to 7.17.4.
     <details>
     <summary>Release notes</summary>
@@ -230,31 +219,6 @@ The six-guest runner and guest setup/collector exist with synthetic checks. The 
     </ul>
     </details>
     <br />
-    
-    
-    [![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=coverage&package-manager=pip&previous-version=7.17.3&new-version=7.17.4)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)
-    
-    Dependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.
-    
-    [//]: # (dependabot-automerge-start)
-    [//]: # (dependabot-automerge-end)
-    
-    ---
-    
-    <details>
-    <summary>Dependabot commands and options</summary>
-    <br />
-    
-    You can trigger Dependabot actions by commenting on this PR:
-    - `@dependabot rebase` will rebase this PR
-    - `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it
-    - `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency
-    - `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)
-    - `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)
-    - `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this dependency (unless you reopen the PR or upgrade to it yourself)
-    
-    
-    </details>
 
 **Changed files:**
 
@@ -268,24 +232,13 @@ No structured work increment delta was imported; inspect the description/files.
 
 ### [\#50 · Bump ruff from 0.17.5 to 0.17.6](<https://github.com/Ise-Tom/Babel/pull/50>)
 
-**In review · Pending merge · CI: success** · Head 348f6bb
+**In review · Pending merge · CI: queued** · Head 44f994e
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
 
 **PR description (untrusted text):**
 
-    [//]: # (dependabot-start)
-    ⚠️  **Dependabot is rebasing this PR** ⚠️ 
-    
-    Rebasing might not happen immediately, so don't worry if this takes some time.
-    
-    Note: if you make any changes to this PR yourself, they will take precedence over the rebase.
-    
-    ---
-    
-    [//]: # (dependabot-end)
-    
     Bumps [ruff](https://github.com/astral-sh/ruff) from 0.17.5 to 0.17.6.
     <details>
     <summary>Release notes</summary>
@@ -415,28 +368,6 @@ No structured work increment delta was imported; inspect the description/files.
     </ul>
     </details>
     <br />
-    
-    
-    [![Dependabot compatibility score](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=ruff&package-manager=pip&previous-version=0.17.5&new-version=0.17.6)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)
-    
-    Dependabot will resolve any conflicts with this PR as long as you don't alter it yourself. You can also trigger a rebase manually by commenting `@dependabot rebase`.
-    
-    [//]: # (dependabot-automerge-start)
-    [//]: # (dependabot-automerge-end)
-    
-    ---
-    
-    <details>
-    <summary>Dependabot commands and options</summary>
-    <br />
-    
-    You can trigger Dependabot actions by commenting on this PR:
-    - `@dependabot rebase` will rebase this PR
-    - `@dependabot recreate` will recreate this PR, overwriting any edits that have been made to it
-    - `@dependabot show <dependency name> ignore conditions` will show all of the ignore conditions of the specified dependency
-    - `@dependabot ignore this major version` will close this PR and stop Dependabot creating any more for this major version (unless you reopen the PR or upgrade to it yourself)
-    - `@dependabot ignore this minor version` will close this PR and stop Dependabot creating any more for this minor version (unless you reopen the PR or upgrade to it yourself)
-    - `@dependabot ignore this dependency` will close this PR and stop Dependabot creating any more for this de
 
 **Changed files:**
 
