@@ -1,5 +1,5 @@
 # Development/CI tools only; this does not select the product implementation language.
-ruff==0.17.5
+ruff==0.17.6
 mypy==2.4.1
 bandit[toml]==1.9.4
 coverage==7.17.3
