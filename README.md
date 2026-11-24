@@ -51,13 +51,13 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-24T22:54:38\+01:00.
+GitHub metadata checked: 2026-11-24T22:57:24\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#53 · Add run-bound guest setup and P00-05 evidence collector](<https://github.com/Ise-Tom/Babel/pull/53>)
 
-**In review · Pending merge · CI: in\_progress** · Head 3336b82
+**In review · Pending merge · CI: pending** · Head 557bcb2
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
@@ -104,7 +104,7 @@ GitHub metadata checked: 2026-11-24T22:54:38\+01:00.
 
 **Limits and remaining work:** No approved host, scoped VM/switch inventory access, six licensed ISOs or staged update rights were supplied. No real guest setup, platform observation or live cycle was executed. Guest OS/AD DS/Babel services and independent evidence review remain operator/qualification work.
 
-**PR-head evidence:** [docs/validation/p00-05-guest-probes.md](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/docs/validation/p00-05-guest-probes.md>) · [lab/reference-lab/evidence/local-preflight-2026-11-24.json](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/lab/reference-lab/evidence/local-preflight-2026-11-24.json>) · [lab/reference-lab/evidence/guest-collector-synthetic.json](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/lab/reference-lab/evidence/guest-collector-synthetic.json>) · [scripts/reference\_guest\_evidence.py](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/scripts/reference_guest_evidence.py>) · [tests/test\_reference\_guest\_evidence.py](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/tests/test_reference_guest_evidence.py>)
+**PR-head evidence:** [docs/validation/p00-05-guest-probes.md](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/docs/validation/p00-05-guest-probes.md>) · [lab/reference-lab/evidence/local-preflight-2026-11-24.json](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/lab/reference-lab/evidence/local-preflight-2026-11-24.json>) · [lab/reference-lab/evidence/guest-collector-synthetic.json](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/lab/reference-lab/evidence/guest-collector-synthetic.json>) · [scripts/reference\_guest\_evidence.py](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/scripts/reference_guest_evidence.py>) · [tests/test\_reference\_guest\_evidence.py](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/tests/test_reference_guest_evidence.py>)
 
 #### Proposed problem update: I04 · Eligible reference lab host, authorized media and platform runs are missing
 
@@ -118,14 +118,14 @@ The six-guest runner and guest setup/collector exist with synthetic checks. The 
 
 **Provenance:** Explicitly outstanding; no Windows test is marked passed.
 
-[docs/validation/p00-05-guest-probes.md](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/docs/validation/p00-05-guest-probes.md>) · [docs/validation/p00-05-runner.md](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/docs/validation/p00-05-runner.md>) · [docs/validation/p00-05-p00-12.md](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/docs/validation/p00-05-p00-12.md>) · [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/3336b822fc0df6f86ea71d6080194237246cb34f/docs/phase-00-progress.md>)
+[docs/validation/p00-05-guest-probes.md](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/docs/validation/p00-05-guest-probes.md>) · [docs/validation/p00-05-runner.md](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/docs/validation/p00-05-runner.md>) · [docs/validation/p00-05-p00-12.md](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/docs/validation/p00-05-p00-12.md>) · [lab/windows-reference.toml](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/lab/windows-reference.toml>) · [scripts/check\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/scripts/check_lab_definition.py>) · [tests/test\_lab\_definition.py](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/tests/test_lab_definition.py>) · [docs/windows-reference-lab.md](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/docs/windows-reference-lab.md>) · [.github/workflows/ci.yml](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/.github/workflows/ci.yml>) · [scripts/check\_ci\_scope.py](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/scripts/check_ci_scope.py>) · [docs/phase-00-progress.md](<https://github.com/Ise-Tom/Babel/blob/557bcb23a27ba9287453ec8a7c7a10f375409544/docs/phase-00-progress.md>)
 
 
 </details>
 
 ### [\#52 · Read synthetic directory entries through native LDAP](<https://github.com/Ise-Tom/Babel/pull/52>)
 
-**In review · Pending merge · CI: in\_progress** · Head 15e00a4
+**In review · Pending merge · CI: success** · Head 15e00a4
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
