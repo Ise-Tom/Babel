@@ -51,7 +51,7 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-24T23:14:19\+01:00.
+GitHub metadata checked: 2026-11-24T23:14:55\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -164,7 +164,7 @@ No structured work increment delta was imported; inspect the description/files.
 
 ### [\#50 · Bump ruff from 0.17.5 to 0.17.6](<https://github.com/Ise-Tom/Babel/pull/50>)
 
-**In review · Pending merge · CI: in\_progress** · Head 47c6147
+**In review · Pending merge · CI: success** · Head 47c6147
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
