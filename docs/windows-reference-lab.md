@@ -11,9 +11,10 @@ functional lab definition. The [validator](../scripts/check_lab_definition.py)
 checks safety flags, topology, resource bounds and image metadata. CI exercises
 those checks, the [preflight](../scripts/preflight_reference_lab.py) and the
 [provision/teardown runner](../scripts/run_reference_lab.py) with synthetic inputs.
-The [runner packet](validation/p00-05-runner.md) gives the exact plan, local result,
-cleanup contract and guest-installation limits. Domain compatibility requires
-runs on the real lab.
+The [runner packet](validation/p00-05-runner.md) gives the exact plan, local result
+and cleanup contract. The [guest setup and collector packet](validation/p00-05-guest-probes.md)
+adds executable post-install steps and fail-closed cycle records. OS installation,
+real guest probes and domain compatibility still require the approved lab.
 
 ```sh
 python scripts/check_lab_definition.py

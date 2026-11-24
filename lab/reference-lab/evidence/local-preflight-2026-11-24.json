@@ -1,0 +1,51 @@
+{
+  "date_utc": "2026-11-24",
+  "backend": "hyper-v",
+  "status": "blocked",
+  "required": {
+    "guest_vcpus": 16,
+    "guest_memory_mib": 30720,
+    "guest_storage_gib": 344
+  },
+  "host": {
+    "edition": "Professional",
+    "release": "26H2",
+    "build": "10.0.26300.10075",
+    "architecture": "x86_64",
+    "logical_cpus": 24,
+    "total_memory_mib": 32693,
+    "available_memory_mib": 16807,
+    "hypervisor_present": true,
+    "vmms_running": true,
+    "vm_count": null,
+    "switch_count": null,
+    "inventory": "observed",
+    "available_storage_gib": 263
+  },
+  "media": {
+    "reference-dc": "missing",
+    "reference-client": "missing",
+    "reference-probe": "missing",
+    "babel-dc": "missing",
+    "babel-client": "missing",
+    "babel-probe": "missing"
+  },
+  "blockers": [
+    "hyper_v_inventory_unavailable",
+    "guest_memory_capacity_shortfall",
+    "guest_storage_capacity_shortfall",
+    "reference-dc:media_missing",
+    "reference-client:media_missing",
+    "reference-probe:media_missing",
+    "babel-dc:media_missing",
+    "babel-client:media_missing",
+    "babel-probe:media_missing"
+  ],
+  "provisioning_cycles": [
+    "unrun",
+    "unrun"
+  ],
+  "macos": "separate_track",
+  "source_revision": "040a77d92a1137ce6099ea7484bbc1ececc4e2b0",
+  "runner_action": "none"
+}
