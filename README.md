@@ -51,7 +51,7 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-24T23:08:13\+01:00.
+GitHub metadata checked: 2026-11-24T23:08:41\+01:00.
 
 **Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
 
@@ -125,7 +125,7 @@ The six-guest runner and guest setup/collector exist with synthetic checks. The 
 
 ### [\#51 · Bump coverage from 7.17.3 to 7.17.4](<https://github.com/Ise-Tom/Babel/pull/51>)
 
-**In review · Pending merge · CI: in\_progress** · Head a460a60
+**In review · Pending merge · CI: success** · Head a460a60
 
 <details>
 <summary>Description, changed files and proposed progress</summary>
