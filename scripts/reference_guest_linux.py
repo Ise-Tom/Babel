@@ -11,6 +11,7 @@ import os
 import re
 import socket
 import subprocess  # nosec B404
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -55,7 +56,14 @@ def validated(config: dict[str, Any]) -> None:
         raise ValueError("DNS/time source disagreement")
 
 
-def execute(config_path: Path, report_path: Path) -> dict[str, Any]:
+def execute(
+    config_path: Path,
+    report_path: Path,
+    *,
+    system_root: Path = Path("/"),
+    command: Callable[..., str] | None = None,
+) -> dict[str, Any]:
+    call = command or run
     config = json.loads(config_path.read_text(encoding="utf-8"))
     validated(config)
     script_sha256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
@@ -95,7 +103,7 @@ def execute(config_path: Path, report_path: Path) -> dict[str, Any]:
 
         step = "updates_installed"
         for path in updates:
-            run("dpkg", "-i", str(path))
+            call("dpkg", "-i", str(path))
         report["observed"]["applied_update_sha256"] = [
             entry["sha256"] for entry in config["updates"]
         ]
@@ -105,34 +113,34 @@ def execute(config_path: Path, report_path: Path) -> dict[str, Any]:
         step = "network_configured"
         interface = config["interface"]
         address = f"{config['address']}/{config['prefix_length']}"
-        links = run("ip", "-o", "link", "show").splitlines()
+        links = call("ip", "-o", "link", "show").splitlines()
         physical = [line for line in links if not re.search(r"\d+: lo:", line)]
         if len(physical) != 1 or interface not in physical[0]:
             raise ValueError("Exactly one planned non-loopback interface required")
-        if run("ip", "-4", "route", "show", "default"):
+        if call("ip", "-4", "route", "show", "default"):
             raise ValueError("Preexisting default route")
-        run("ip", "link", "set", interface, "up")
-        current = run("ip", "-4", "-o", "addr", "show", "dev", interface)
+        call("ip", "link", "set", interface, "up")
+        current = call("ip", "-4", "-o", "addr", "show", "dev", interface)
         if current and address not in current:
             raise ValueError("Unexpected IPv4 address on private interface")
         if not current:
-            run("ip", "addr", "add", address, "dev", interface)
+            call("ip", "addr", "add", address, "dev", interface)
         report["steps"][step] = "passed"
         checkpoint(report_path, report)
 
         step = "dns_configured"
-        dns_dir = Path("/etc/systemd/resolved.conf.d")
+        dns_dir = system_root / "etc/systemd/resolved.conf.d"
         dns_dir.mkdir(parents=True, exist_ok=True)
         (dns_dir / "90-babel-lab.conf").write_text(
             f"[Resolve]\nDNS={config['dns_server']}\nDomains={config['dns_suffix']}\nFallbackDNS=\n",
             encoding="utf-8",
         )
-        run("systemctl", "restart", "systemd-resolved")
+        call("systemctl", "restart", "systemd-resolved")
         report["steps"][step] = "passed"
         checkpoint(report_path, report)
 
         step = "time_configured"
-        chrony = Path("/etc/chrony/chrony.conf")
+        chrony = system_root / "etc/chrony/chrony.conf"
         if not chrony.is_file():
             raise ValueError("Staged chrony installation required")
         if config["role"] == "babel_linux_dc":
@@ -140,16 +148,16 @@ def execute(config_path: Path, report_path: Path) -> dict[str, Any]:
         else:
             time_config = f"server {config['time_server']} iburst\n"
         chrony.write_text(time_config + "makestep 1.0 3\nrtcsync\n", encoding="utf-8")
-        run("systemctl", "restart", "chrony")
+        call("systemctl", "restart", "chrony")
         report["steps"][step] = "passed"
         checkpoint(report_path, report)
 
         step = "platform_observed"
-        os_release = Path("/etc/os-release").read_text(encoding="utf-8")
+        os_release = (system_root / "etc/os-release").read_text(encoding="utf-8")
         version = re.search(r'^VERSION_ID="?([^"\n]+)', os_release, re.M)
-        kernel = run("uname", "-r")
+        kernel = call("uname", "-r")
         packages = {
-            name: run("dpkg-query", "-W", "-f=${Version}", name)
+            name: call("dpkg-query", "-W", "-f=${Version}", name)
             for name in config["expected_packages"]
         }
         report["observed"].update(
@@ -165,9 +173,9 @@ def execute(config_path: Path, report_path: Path) -> dict[str, Any]:
         step = "dns_probe"
         suffix = config["dns_suffix"]
         server = config["dns_server"]
-        a_lines = run("dig", "+short", "A", f"dc.{suffix}", f"@{server}").splitlines()
+        a_lines = call("dig", "+short", "A", f"dc.{suffix}", f"@{server}").splitlines()
         a_value = a_lines[0] if a_lines else ""
-        srv_lines = run("dig", "+short", "SRV", f"_ldap._tcp.{suffix}", f"@{server}").splitlines()
+        srv_lines = call("dig", "+short", "SRV", f"_ldap._tcp.{suffix}", f"@{server}").splitlines()
         srv_target = srv_lines[0].split()[-1].rstrip(".") if srv_lines else ""
         try:
             with socket.create_connection((server, 389), timeout=3):
@@ -197,7 +205,7 @@ def execute(config_path: Path, report_path: Path) -> dict[str, Any]:
         checkpoint(report_path, report)
 
         step = "time_probe"
-        tracking = run("chronyc", "tracking")
+        tracking = call("chronyc", "tracking")
         match = re.search(r"Last offset\s*:\s*([-+]?[0-9.]+)\s+seconds", tracking)
         if not match:
             raise ValueError("Chrony offset unavailable")
@@ -214,12 +222,12 @@ def execute(config_path: Path, report_path: Path) -> dict[str, Any]:
                 denied = False
         except OSError:
             denied = True
-        routes = run("ip", "-4", "route", "show", "default")
-        dns = run("resolvectl", "dns", interface)
+        routes = call("ip", "-4", "route", "show", "default")
+        dns = call("resolvectl", "dns", interface)
         servers = re.findall(r"\b(?:\d{1,3}\.){3}\d{1,3}\b", dns)
-        domain = run("resolvectl", "domain", interface)
+        domain = call("resolvectl", "domain", interface)
         effective_domains = [part.lstrip("~") for part in domain.partition(":")[2].split()]
-        addresses = run("ip", "-4", "-o", "addr", "show", "dev", interface)
+        addresses = call("ip", "-4", "-o", "addr", "show", "dev", interface)
         effective_ip = re.search(r"\binet\s+((?:\d{1,3}\.){3}\d{1,3})/", addresses)
         report["observed"].update(
             {

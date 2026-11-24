@@ -1,5 +1,6 @@
 """Synthetic bundle and collector checks; no host or guest is configured."""
 
+import contextlib
 import copy
 import hashlib
 import json
@@ -265,6 +266,62 @@ class GuestEvidenceTests(unittest.TestCase):
         interrupted = json.loads(report.read_text())
         self.assertEqual(interrupted["status"], "incomplete")
         self.assertEqual(interrupted["steps"]["updates_installed"], "failed")
+
+    def test_linux_guest_executes_isolated_steps_with_synthetic_commands(self):
+        evidence.prepare(self.journal, self.staging, self.bundle)
+        bundle = self.bundle / "babel-probe"
+        system = self.root / "synthetic-system"
+        (system / "etc/chrony").mkdir(parents=True)
+        (system / "etc/chrony/chrony.conf").write_text("pool outside.example\n")
+        (system / "etc/os-release").write_text('VERSION_ID="24.04"\n')
+        state = {"address_added": False}
+
+        def command(*args):
+            if args == ("ip", "-o", "link", "show"):
+                return "1: lo: <LOOPBACK>\n2: eth0: <UP>"
+            if args == ("ip", "-4", "route", "show", "default"):
+                return ""
+            if args[:6] == ("ip", "-4", "-o", "addr", "show", "dev"):
+                return "2: eth0 inet 198.51.100.30/24" if state["address_added"] else ""
+            if args[:3] == ("ip", "addr", "add"):
+                state["address_added"] = True
+                return ""
+            if args[:2] == ("uname", "-r"):
+                return "6.8.0-test"
+            if args[0] == "dpkg-query":
+                return "1"
+            if args[:3] == ("dig", "+short", "A"):
+                return "198.51.100.10"
+            if args[:3] == ("dig", "+short", "SRV"):
+                return "0 100 389 dc.babel.example.test."
+            if args == ("chronyc", "tracking"):
+                return "Last offset : +0.001 seconds"
+            if args == ("resolvectl", "dns", "eth0"):
+                return "Link 2 (eth0): 198.51.100.10"
+            if args == ("resolvectl", "domain", "eth0"):
+                return "Link 2 (eth0): babel.example.test"
+            if args[0] in {"dpkg", "systemctl", "ip"}:
+                return ""
+            raise AssertionError(args)
+
+        def connect(address, timeout):
+            if address == ("198.51.100.10", 389):
+                return contextlib.nullcontext(object())
+            raise OSError("synthetic egress denied")
+
+        with (
+            patch.object(linux, "os", SimpleNamespace(name="posix", geteuid=lambda: 0)),
+            patch.object(linux.socket, "create_connection", side_effect=connect),
+        ):
+            report = linux.execute(
+                bundle / "config.json", bundle / "report.json", system_root=system, command=command
+            )
+        self.assertEqual(report["status"], "complete")
+        self.assertEqual(set(report["steps"].values()), {"passed"})
+        self.assertEqual(report["observed"]["dns_servers"], ["198.51.100.10"])
+        self.assertEqual(report["observed"]["time_offset_ms"], 1.0)
+        self.assertTrue(report["observed"]["denied_egress"])
+        self.assertNotIn("pool outside.example", (system / "etc/chrony/chrony.conf").read_text())
 
 
 if __name__ == "__main__":
