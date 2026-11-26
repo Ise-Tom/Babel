@@ -51,9 +51,9 @@ No requirements are waiting for an owner decision.
 
 Main-branch totals above exclude these proposals. CI success does not merge a PR or accept a requirement. Validation below is author-recorded until reviewed.
 
-GitHub metadata checked: 2026-11-25T18:27:06\+01:00.
+GitHub metadata checked: 2026-11-26T18:02:38\+01:00.
 
-**Current main CI: success.** A failed build is shown here; it does not qualify a public deployment or product release.
+**Current main CI: in\_progress.** A failed build is shown here; it does not qualify a public deployment or product release.
 
 ### [\#50 · Bump ruff from 0.17.5 to 0.17.6](<https://github.com/Ise-Tom/Babel/pull/50>)
 
